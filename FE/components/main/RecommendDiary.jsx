@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   hashtag: {
     fontFamily: "KoddiUDOnGothic-Regular",
-    fontSize: 12,
+    fontSize: 10,
     color: GlobalColors.colors.gray600,
   },
 });
