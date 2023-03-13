@@ -1,5 +1,6 @@
 package com.ssafy.healingdiary.domain.tag.domain;
 
+import com.ssafy.healingdiary.domain.club.domain.ClubTag;
 import com.ssafy.healingdiary.domain.diary.domain.DiaryTag;
 
 import javax.persistence.*;
@@ -18,4 +19,7 @@ public class Tag {
 
     @OneToMany(mappedBy = "tag")
     private List<DiaryTag> diaryTag = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tag")
+    private List<ClubTag> clubTag = new ArrayList<>();
 }
