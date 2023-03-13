@@ -34,7 +34,6 @@ const BottomTabs = () => {
           fontSize: 24,
         },
         tabBarActiveTintColor: GlobalColors.colors.secondary500,
-        tabBarInactiveBackgroundColor: GlobalColors.colors.gray500,
       }}
     >
       <Tab.Screen
