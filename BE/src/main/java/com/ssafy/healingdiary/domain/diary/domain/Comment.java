@@ -27,8 +27,6 @@ public class Comment {
     @JoinColumn(name="parent_comment_id")
     private Comment parentComment;
 
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL)
-    private List<Comment> childComment;
 
 
 }
