@@ -23,7 +23,5 @@ public class Member {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Enumerated(EnumType.STRING)
-    private RoleType roleType;
 
 }
