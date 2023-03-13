@@ -1,5 +1,6 @@
 package com.ssafy.healingdiary.domain.member.domain;
 
+import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -7,8 +8,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Table(name="member")
-public class Member {
-    @Id @GeneratedValue
+public class Member extends BaseEntity {
+
     @Column(name="member_id")
     private Long id;
 

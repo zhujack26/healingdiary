@@ -1,15 +1,15 @@
 package com.ssafy.healingdiary.domain.member.domain;
 
 import com.ssafy.healingdiary.domain.diary.domain.Comment;
+import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "notice")
-public class Notice {
+public class Notice extends BaseEntity {
 
-    @Id
-    @GeneratedValue
+    @Column(name = "notice_id")
     private Long id;
 
     @ManyToOne
