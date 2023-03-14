@@ -7,6 +7,7 @@ import Buttons from "../components/main/Buttons";
 import Button from "../ui/Button"
 import PlusButton from "../ui/PlusButton";
 
+const deviceWidth = Dimensions.get("window").width - 50;
 const deviceHeight = Dimensions.get("window").height - 130;
 const GroupScreen = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -67,6 +68,7 @@ const GroupScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
+    width: deviceWidth+50,
     flex: 1,
     justifyContent: "center",
     padding: 24,

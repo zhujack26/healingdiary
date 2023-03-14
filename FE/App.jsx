@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
+import UserInformScreen from "./screens/UserInformScreen";
 
 import StackNavigation from "./navigator/StackNavigation";
 

@@ -1,7 +1,9 @@
 import { StyleSheet, Text, TextInput, View } from "react-native"
 import PropTypes from 'prop-types';
+import { GlobalColors } from "../../constants/color";
 
-const userInformation2 = ({title, placeholder}) => {
+
+const Nickname = ({title, placeholder}) => {
 
   return(
     <View style={styles.container}>
@@ -9,13 +11,13 @@ const userInformation2 = ({title, placeholder}) => {
       <TextInput
       style={styles.input}
       placeholder={placeholder ?? title}
-      placeholderTextColor={'#a3a3a3'}
+      placeholderTextColor={GlobalColors.colors.white500}
       />
     </View>
   );
 };
 
-userInformation2.propTypes = {
+Nickname.propTypes = {
   title: PropTypes.string,
   placeholder: PropTypes.string,
 }
@@ -27,13 +29,16 @@ const styles = StyleSheet.create({
   },
   title:{
     marginBottom: 4,
+    fontSize: 20,
   },
   input:{
-    borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 20,
+    borderWidth: 0,
+    borderBottomWidth: 1,
+    borderBottomColor: GlobalColors.colors.white500,
+    borderRadius: 0,
+    paddingHorizontal: 10,
     height: 42,
   },
 
 })
-export default userInformation2
+export default Nickname
