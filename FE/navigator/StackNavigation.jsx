@@ -2,8 +2,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { GlobalColors } from "../constants/color";
-
 import BottomTabs from "./BottomTabs";
+
 
 const Stack = createNativeStackNavigator();
 
