@@ -17,7 +17,7 @@ public class Diary extends BaseEntity {
 
 
     @Column(name = "diary_id")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

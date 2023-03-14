@@ -17,7 +17,7 @@ public class Club extends BaseEntity {
 
 
     @Column(name = "club_id")
-    private Long id;
+    private int id;
 
 
     @NotNull

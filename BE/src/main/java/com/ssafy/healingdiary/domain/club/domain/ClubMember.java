@@ -16,7 +16,7 @@ import javax.persistence.*;
 public class ClubMember extends BaseEntity {
 
     @Column(name="club_member_id")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="club_id")
