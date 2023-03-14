@@ -1,15 +1,14 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "./../constants/color";
 
-const PlusButton = ({ children, onPress }) => {
+const PlusButton = ({ onPress }) => {
     return (
         <View style={styles.container}>
             <Pressable
                 onPress={onPress}
-                style={({ pressed }) => pressed && styles.pressed}
-            >
+                >
                 <View style={styles.button}>
-                    <Text style={styles.buttonText}>{children}</Text>
+                    <Text style={styles.buttonText}> + </Text>
                 </View>
             </Pressable>
         </View>
@@ -20,28 +19,23 @@ export default PlusButton;
 
 const styles = StyleSheet.create({
     container: {
-        marginLeft: 4,
+        position: "absolute",
+        right: 20,
+        bottom: 100,
     },
     pressed: {
         opacity: 0.75,
     },
 
     button: {
-        width: 85,
+        width: 30,
         height: 30,
-        borderRadius: 16,
-        backgroundColor: GlobalColors.colors.white500,
-        alignItems: "center",
-        justifyContent: "center",
-        marginRight: 18,
-    },
-    selected: {
+        borderRadius: 30,
         backgroundColor: GlobalColors.colors.primary500,
     },
     buttonText: {
-        fontFamily: "KoddiUDOnGothic-Regular",
-        color: GlobalColors.colors.gray500,
-        fontSize: 13,
+        color: GlobalColors.colors.white500,
+        fontSize: 20,
         textAlign: "center",
     },
     selectedText: {
