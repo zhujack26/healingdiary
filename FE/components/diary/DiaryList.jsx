@@ -27,7 +27,7 @@ const DiaryList = ({ type }) => {
       <FlatList
         data={DATA}
         renderItem={({ item }) => (
-          <DiaryItem hashtags={item.hashtags} date={item.date} />
+          <DiaryItem id={item.id} hashtags={item.hashtags} date={item.date} />
         )}
         keyExtractor={(item) => item.id}
       />
