@@ -4,6 +4,8 @@ import GroupList2 from "../components/group/GroupList2";
 import GroupList3 from "../components/group/GroupList3";
 import { useState } from "react";
 import Buttons from "../components/main/Buttons";
+import Button from "../ui/Button"
+import PlusButton from "../ui/PlusButton";
 
 const deviceHeight = Dimensions.get("window").height - 130;
 const GroupScreen = () => {
@@ -11,7 +13,30 @@ const GroupScreen = () => {
   const handleActiveIndex = (index) => {
     setActiveIndex(index);
   };
-
+  const Buttons = ({ activeIndex, handleActiveIndex }) => {
+    return (
+        <View style={styles.buttons}>
+            <Button
+                activeIndex={activeIndex}
+                onPress={() => handleActiveIndex(0)}
+            >
+                전체
+            </Button>
+            <Button
+                activeIndex={activeIndex}
+                onPress={() => handleActiveIndex(1)}
+            >
+                내 소모임
+            </Button>
+            <Button
+                activeIndex={activeIndex}
+                onPress={() => handleActiveIndex(2)}
+            >
+                추천 소모임
+            </Button>
+        </View>
+    );
+  };
 
   const renderItem = () => {
     if (activeIndex === 0) {
@@ -35,6 +60,7 @@ const GroupScreen = () => {
         handleActiveIndex={handleActiveIndex}
       />
       {renderItem()}
+      <PlusButton/>
     </View>
   );
 };
@@ -45,6 +71,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 24,
     height: deviceHeight,
+  },
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginBottom: 34,
   },
 });
 
