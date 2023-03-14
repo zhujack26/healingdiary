@@ -1,5 +1,5 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
-import { GlobalColors } from "./../constants/color";
+import { GlobalColors } from "../constants/color";
 
 const Button = ({ activeIndex, children, onPress }) => {
     return (
