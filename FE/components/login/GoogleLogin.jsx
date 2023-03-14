@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     borderRadius: 12,
+    marginBottom: 18,
   },
   image: {
     width: 35,
@@ -49,7 +50,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   loginText: {
-    fontFamily: "Roboto",
     fontSize: 18,
     color: "#949292",
     textAlign: "center",
