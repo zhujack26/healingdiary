@@ -1,5 +1,5 @@
 import { View, ScrollView, StyleSheet, Dimensions } from "react-native";
-c
+import { useState } from "react";
 
 import RecentDiary from "../components/main/RecentDiary";
 import RecommendGroup from "../components/main/RecommendGroup";
@@ -24,10 +24,8 @@ const HomeScreen = () => {
         </ScrollView>
       );
     }
-    if (activeIndex === 1) {
-      return <DiaryList />;
-    }
-    if (activeIndex === 2) return;
+    if (activeIndex === 1) return <DiaryList type="my" />;
+    if (activeIndex === 2) return <DiaryList type="group" />;
   };
 
   return (
