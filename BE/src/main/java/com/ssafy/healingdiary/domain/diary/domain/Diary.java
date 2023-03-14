@@ -13,11 +13,11 @@ import java.util.List;
 
 @Entity
 @Table(name="diary")
+@AttributeOverride(name = "id", column = @Column(name = "diary_id"))
+
 public class Diary extends BaseEntity {
 
 
-    @Column(name = "diary_id")
-    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

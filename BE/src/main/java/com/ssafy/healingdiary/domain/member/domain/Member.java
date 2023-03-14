@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name="member")
+@AttributeOverride(name = "id", column = @Column(name = "member_id"))
 public class Member extends BaseEntity {
 
     @Column(name="member_id")

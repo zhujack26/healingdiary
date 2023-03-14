@@ -9,10 +9,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "comment")
+@AttributeOverride(name = "id", column = @Column(name = "comment_id"))
 public class Comment extends BaseEntity {
 
-    @Column(name = "comment_id")
-    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")

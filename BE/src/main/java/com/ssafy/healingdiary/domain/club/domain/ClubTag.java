@@ -9,10 +9,9 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "club_tag")
+@AttributeOverride(name = "id", column = @Column(name = "diary_tag_id"))
 public class ClubTag extends BaseEntity {
 
-    @Column(name = "diary_tag_id")
-    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")

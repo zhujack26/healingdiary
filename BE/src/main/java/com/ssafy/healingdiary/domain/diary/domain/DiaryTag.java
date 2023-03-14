@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.Fetch;
 
 @Entity
+@AttributeOverride(name = "id", column = @Column(name = "diary_tag_id"))
 public class DiaryTag extends BaseEntity {
 
     @Column(name = "diary_tag_id")

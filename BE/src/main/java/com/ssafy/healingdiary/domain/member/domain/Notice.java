@@ -8,6 +8,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "notice")
+@AttributeOverride(name = "id", column = @Column(name = "notice_id"))
 public class Notice extends BaseEntity {
 
     @Column(name = "notice_id")

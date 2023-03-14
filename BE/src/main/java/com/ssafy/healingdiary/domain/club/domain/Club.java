@@ -13,11 +13,9 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name="club")
+@AttributeOverride(name = "id", column = @Column(name = "club_id"))
 public class Club extends BaseEntity {
 
-
-    @Column(name = "club_id")
-    private int id;
 
 
     @NotNull
