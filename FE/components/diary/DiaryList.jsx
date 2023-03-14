@@ -1,4 +1,5 @@
 import { FlatList } from "react-native-gesture-handler";
+import Title from "../../ui/Title";
 import DiaryItem from "./DiaryItem";
 
 const DATA = [
@@ -19,15 +20,18 @@ const DATA = [
   },
 ];
 
-const DiaryList = () => {
+const DiaryList = ({ type }) => {
   return (
-    <FlatList
-      data={DATA}
-      renderItem={({ item }) => (
-        <DiaryItem hashtags={item.hashtags} date={item.date} />
-      )}
-      keyExtractor={(item) => item.id}
-    />
+    <>
+      {type === "my" ? <Title>나의 일기</Title> : <Title>내 소모임 일기</Title>}
+      <FlatList
+        data={DATA}
+        renderItem={({ item }) => (
+          <DiaryItem id={item.id} hashtags={item.hashtags} date={item.date} />
+        )}
+        keyExtractor={(item) => item.id}
+      />
+    </>
   );
 };
 

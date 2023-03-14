@@ -1,8 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { useFonts } from "expo-font";
-import UserInformScreen from "./screens/UserInformScreen";
+import { Text } from "react-native";
 
 import StackNavigation from "./navigator/StackNavigation";
+
+Text.defaultProps = Text.defaultProps || {};
+Text.defaultProps.allowFontScaling = false;
 
 export default function App() {
   const [fontsLoaded] = useFonts({
