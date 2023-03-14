@@ -10,6 +10,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "club_tag")
 @AttributeOverride(name = "id", column = @Column(name = "diary_tag_id"))
+@AttributeOverride(name = "createdDate", column = @Column(name = "club_tag_created_date"))
+@AttributeOverride(name = "updatedDate", column = @Column(name = "club_tag_updated_date"))
 public class ClubTag extends BaseEntity {
 
 

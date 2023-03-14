@@ -9,10 +9,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "notice")
 @AttributeOverride(name = "id", column = @Column(name = "notice_id"))
+@AttributeOverride(name = "createdDate", column = @Column(name = "notice_created_date"))
+@AttributeOverride(name = "updatedDate", column = @Column(name = "notice_updated_date"))
 public class Notice extends BaseEntity {
 
-    @Column(name = "notice_id")
-    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

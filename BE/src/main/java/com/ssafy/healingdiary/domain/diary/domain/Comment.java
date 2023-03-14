@@ -10,6 +10,8 @@ import java.util.List;
 @Entity
 @Table(name = "comment")
 @AttributeOverride(name = "id", column = @Column(name = "comment_id"))
+@AttributeOverride(name = "createdDate", column = @Column(name = "comment_created_date"))
+@AttributeOverride(name = "updatedDate", column = @Column(name = "comment_updated_date"))
 public class Comment extends BaseEntity {
 
 

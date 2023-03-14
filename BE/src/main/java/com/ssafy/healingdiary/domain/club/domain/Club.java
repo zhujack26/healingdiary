@@ -14,6 +14,8 @@ import java.util.List;
 @Getter
 @Table(name="club")
 @AttributeOverride(name = "id", column = @Column(name = "club_id"))
+@AttributeOverride(name = "createdDate", column = @Column(name = "club_created_date"))
+@AttributeOverride(name = "updatedDate", column = @Column(name = "club_updated_date"))
 public class Club extends BaseEntity {
 
 

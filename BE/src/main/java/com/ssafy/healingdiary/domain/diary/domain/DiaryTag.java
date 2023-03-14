@@ -8,10 +8,10 @@ import javax.persistence.criteria.Fetch;
 
 @Entity
 @AttributeOverride(name = "id", column = @Column(name = "diary_tag_id"))
+@AttributeOverride(name = "createdDate", column = @Column(name = "diary_tag_created_date"))
+@AttributeOverride(name = "updatedDate", column = @Column(name = "diary_tag_updated_date"))
 public class DiaryTag extends BaseEntity {
 
-    @Column(name = "diary_tag_id")
-    private int id;
 
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "diary_id")

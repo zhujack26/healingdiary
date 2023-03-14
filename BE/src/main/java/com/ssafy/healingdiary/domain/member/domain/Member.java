@@ -15,10 +15,10 @@ import java.util.List;
 @Getter
 @Table(name="member")
 @AttributeOverride(name = "id", column = @Column(name = "member_id"))
+@AttributeOverride(name = "createdDate", column = @Column(name = "member_created_date"))
+@AttributeOverride(name = "updatedDate", column = @Column(name = "member_updated_date"))
 public class Member extends BaseEntity {
 
-    @Column(name="member_id")
-    private int id;
 
     @NotNull
     private String email;
