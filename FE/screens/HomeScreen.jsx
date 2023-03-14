@@ -1,5 +1,5 @@
 import { View, ScrollView, StyleSheet, Dimensions } from "react-native";
-import { useState } from "react";
+c
 
 import RecentDiary from "../components/main/RecentDiary";
 import RecommendGroup from "../components/main/RecommendGroup";
