@@ -1,12 +1,9 @@
 package com.ssafy.healingdiary.domain.club.domain;
 
-import com.ssafy.healingdiary.domain.club.domain.Club;
 import com.ssafy.healingdiary.domain.member.domain.Member;
-import com.ssafy.healingdiary.domain.member.domain.Status;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
 import lombok.Getter;
-import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 
@@ -28,6 +25,7 @@ public class ClubMember extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @NotNull
-    private Status status;
+    @Column(name = "is_approved")
+    private Boolean isApproved;
 
 }
