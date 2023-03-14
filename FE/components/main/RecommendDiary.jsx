@@ -1,6 +1,8 @@
-import { View, Text, Image, StyleSheet } from "react-native";
-import Title from "../../ui/Title";
+import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
 import { GlobalColors } from "./../../constants/color";
+import Title from "../../ui/Title";
+
+const deviceWidth = Dimensions.get("window").width - 50;
 
 const RecommendDiary = () => {
   return (
@@ -42,22 +44,19 @@ export default RecommendDiary;
 
 const styles = StyleSheet.create({
   container: {
+    width: deviceWidth,
     marginBottom: 26,
   },
-  wrapper: {
-    marginLeft: 8,
-  },
+  wrapper: {},
   diaries: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  diary: {
-    marginRight: 16,
-  },
+
   image: {
-    width: 100,
-    height: 100,
+    width: 105,
+    height: 105,
     borderRadius: 12,
   },
   name: {
