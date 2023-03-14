@@ -12,7 +12,7 @@ import java.util.List;
 public class Comment extends BaseEntity {
 
     @Column(name = "comment_id")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")

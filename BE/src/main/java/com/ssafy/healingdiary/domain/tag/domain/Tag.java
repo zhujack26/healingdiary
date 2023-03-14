@@ -14,7 +14,7 @@ public class Tag {
     @Id
     @GeneratedValue
     @Column(name="tag_id")
-    private Long id;
+    private int id;
 
     @NotNull
     private String content;

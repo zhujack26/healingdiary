@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Notice extends BaseEntity {
 
     @Column(name = "notice_id")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

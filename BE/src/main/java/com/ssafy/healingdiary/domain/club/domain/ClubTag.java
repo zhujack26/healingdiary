@@ -12,7 +12,7 @@ import javax.persistence.*;
 public class ClubTag extends BaseEntity {
 
     @Column(name = "diary_tag_id")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")

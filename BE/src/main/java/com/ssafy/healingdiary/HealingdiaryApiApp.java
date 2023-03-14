@@ -7,9 +7,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @EnableJpaAuditing
 @EnableScheduling
+//@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 @SpringBootApplication
 public class HealingdiaryApiApp {
     public static void main(String[] args) {
         SpringApplication.run(HealingdiaryApiApp.class, args);
     }
+
 }
