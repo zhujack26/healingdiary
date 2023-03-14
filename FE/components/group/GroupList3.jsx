@@ -6,26 +6,31 @@ import Title from "../../ui/Title";
 
 const DATA = [
   {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
+    id: 'a',
+    title: '소모임 이름',
+    hashtag: '해시태그'
   },
   {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
+    id: 'b',
+    title: '소모임 이름',
+    hashtag: '해시태그'
   },
   {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
+    id: 'c',
+    title: '소모임 이름',
+    hashtag: '해시태그'
   },
 ];
 
-const Item = ({title}) => (
+const Item = ({title, hashtag}) => (
   <View style={styles.item}>
     <Image
       source={require("../../assets/images/SAMPLE1.png")}
       style={styles.image}
     />
-    <Text style={styles.title}>{title}</Text>
+    <Text style={styles.title}>{title}
+      <Text style={styles.hashtag}>{hashtag}</Text>
+    </Text>
   </View>
 );
 
@@ -37,7 +42,7 @@ const GroupList3 = () => {
       </Text>
       <FlatList
         data={DATA}
-        renderItem={({item}) => <Item title={item.title} />}
+        renderItem={({item}) => <Item title={item.title} hashtag={item.hashtag} />}
         keyExtractor={item => item.id}
       />
       
@@ -49,7 +54,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
-    
   },
   item: {
     backgroundColor: GlobalColors.colors.white500,
@@ -57,6 +61,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     marginHorizontal: 20,
     borderRadius: 12,
+    flexDirection: "row"
   },
   image: {
     width: 50,
@@ -64,8 +69,13 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   title: {
-    fontSize: 12,
+    marginLeft: 10,
+    fontWeight: "bold",
+    fontSize: 14,
   },
+  hashtag: {
+    color: GlobalColors.colors.primary500
+  }
 });
 
 export default GroupList3;

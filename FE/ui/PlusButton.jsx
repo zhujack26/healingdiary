@@ -1,7 +1,7 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "./../constants/color";
 
-const Button = ({ activeIndex, children, onPress }) => {
+const PlusButton = ({ children, onPress }) => {
     return (
         <View style={styles.container}>
             <Pressable
@@ -16,7 +16,7 @@ const Button = ({ activeIndex, children, onPress }) => {
     );
 };
 
-export default Button;
+export default PlusButton;
 
 const styles = StyleSheet.create({
     container: {
