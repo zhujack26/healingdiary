@@ -7,8 +7,8 @@ import {
   StatusBar,
 } from "react-native";
 import { GlobalColors } from "../constants/color";
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
-
+import Timer from "../components/write/Timer";
+import AddFile from "../components/write/AddFile";
 
 const DATA = [
   {
@@ -31,10 +31,10 @@ const WriteScreen = () => {
           keyExtractor={(item) => item.id}
         />
         <View style={styles.inform}>
-          <MaterialCommunityIcons name="record-circle-outline" size={72} color="red" />
+          <AddFile/>
+          <Timer/>
         </View>
       </View>
-   
     </SafeAreaView>
   );
 };
