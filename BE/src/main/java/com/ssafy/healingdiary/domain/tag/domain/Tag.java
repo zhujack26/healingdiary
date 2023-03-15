@@ -4,12 +4,14 @@ import com.ssafy.healingdiary.domain.club.domain.ClubTag;
 import com.ssafy.healingdiary.domain.diary.domain.DiaryTag;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @Table(name="tag")
 @AttributeOverride(name = "id", column = @Column(name = "tag_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "tag_created_date"))

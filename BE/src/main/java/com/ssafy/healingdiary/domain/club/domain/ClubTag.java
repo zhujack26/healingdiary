@@ -8,6 +8,7 @@ import lombok.Getter;
 import javax.persistence.*;
 
 @Entity
+@Getter
 @Table(name = "club_tag")
 @AttributeOverride(name = "id", column = @Column(name = "diary_tag_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "club_tag_created_date"))

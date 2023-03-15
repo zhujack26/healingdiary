@@ -3,11 +3,13 @@ package com.ssafy.healingdiary.domain.diary.domain;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
+import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
+@Getter
 @Table(name = "comment")
 @AttributeOverride(name = "id", column = @Column(name = "comment_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "comment_created_date"))

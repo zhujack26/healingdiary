@@ -13,6 +13,7 @@ import java.util.List;
 
 @Entity
 @Table(name="diary")
+@Getter
 @AttributeOverride(name = "id", column = @Column(name = "diary_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "diary_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "diary_updated_date"))
