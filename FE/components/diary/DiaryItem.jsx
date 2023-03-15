@@ -48,7 +48,7 @@ const DiaryItem = ({ id, hashtags, date }) => {
       {isPlaying ? (
         <Pressable style={styles.circle} onPress={handleStopPlay}>
           <View>
-            <Ionicons name="ios-stop" size={16} />
+            <Ionicons name="pause-sharp" size={16} />
           </View>
         </Pressable>
       ) : (
