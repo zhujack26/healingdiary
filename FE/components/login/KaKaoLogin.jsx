@@ -9,7 +9,7 @@ import {
 
 const deviceWidth = Dimensions.get("window").width - 50;
 
-const KaKaoLogin = () => {
+const KakaoLogin = () => {
   const loginWithKakao = () => {
     console.log("kakao login");
   };
@@ -27,7 +27,7 @@ const KaKaoLogin = () => {
   );
 };
 
-export default KaKaoLogin;
+export default KakaoLogin;
 
 const styles = StyleSheet.create({
   kakao: {
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   loginText: {
-    fontFamily: "Roboto",
     fontSize: 18,
     textAlign: "center",
   },
