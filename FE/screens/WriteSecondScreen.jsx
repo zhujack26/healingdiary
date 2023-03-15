@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, SafeAreaView, StatusBar } from "react-native";
+import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
 import { GlobalColors } from "../constants/color";
 
 const WriteSecondScreen = () => {
