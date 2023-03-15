@@ -1,13 +1,11 @@
-import { View, StyleSheet } from "react-native";
-import GoogleLogin from "./GoogleLogin";
-import KaKaoLogin from "./KaKaoLogin";
+import { View, StyleSheet, StatusBar } from "react-native";
+import Logo from "./Logo";
 
 const Login = () => {
   return (
     <View style={styles.container}>
-      <View></View>
-      <KaKaoLogin />
-      <GoogleLogin />
+      <StatusBar hidden />
+      <Logo />
     </View>
   );
 };
