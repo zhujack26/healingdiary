@@ -5,13 +5,43 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
+  FlatList,
+  Animated,
 } from "react-native";
+import { useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
+
 import Slider from "@react-native-community/slider";
+import songs from "../../model/data";
 
 const deviceWidth = Dimensions.get("window").width - 50;
+const { width, height } = Dimensions.get("window");
+
 const SoundPlayer = () => {
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const [songIndex, setSongIndex] = useState(0);
+  useEffect(() => {
+    scrollX.addListener(({ value }) => {
+      const index = Math.round(value / width);
+      setSongIndex(index);
+    });
+  });
+  const renderSongs = ({ index, item }) => {
+    return (
+      <View
+        style={{
+          width: width,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <View style={styles.artworkWrapper}>
+          <Image source={item.image} style={styles.artwork} />
+        </View>
+      </View>
+    );
+  };
   return (
     <View style={styles.playlist}>
       <View style={styles.emotionContainer}>
@@ -23,12 +53,25 @@ const SoundPlayer = () => {
         <Ionicons name="ellipsis-horizontal" size={24} color="black" />
       </View>
       <View style={styles.soundContainer}>
-        <View style={styles.artworkWrapper}>
-          <Image
-            source={require("../../assets/images/SAMPLE4.png")}
-            style={styles.artwork}
-          />
-        </View>
+        <Animated.FlatList
+          data={songs}
+          renderItem={renderSongs}
+          keyExtractor={(item) => item.id}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={16}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: { x: scrollX },
+                },
+              },
+            ],
+            { useNativeDriver: true }
+          )}
+        />
         <View style={styles.hashtags}>
           <View style={styles.hashtag}>
             <Text style={styles.hashtagText}>#해시태그</Text>
@@ -109,6 +152,7 @@ const styles = StyleSheet.create({
   soundContainer: {
     justifyContent: "center",
     alignItems: "center",
+    marginBottom: 100,
   },
   artworkWrapper: {
     width: 260,
