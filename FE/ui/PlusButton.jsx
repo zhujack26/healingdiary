@@ -1,21 +1,22 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "./../constants/color";
 
-const PlusButton = ({ onPress }) => {
+const PlusButton = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Pressable
-                onPress={onPress}
-                >
-                <View style={styles.button}>
-                    <Text style={styles.buttonText}> + </Text>
-                </View>
+                onPress={() => navigation.navigate('Write')}
+                style={({ pressed }) => [
+                    styles.button,
+                    pressed && styles.pressedButton,
+                ]}
+            >
+                <Text style={styles.buttonText}> + </Text>
             </Pressable>
         </View>
     );
 };
 
-export default PlusButton;
 
 const styles = StyleSheet.create({
     container: {
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
         right: 20,
         bottom: 100,
     },
-    pressed: {
+    pressedButton: {
         opacity: 0.75,
     },
 
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: "center",
     },
-    selectedText: {
-        color: GlobalColors.colors.white500,
-    },
 });
+
+export default PlusButton;
