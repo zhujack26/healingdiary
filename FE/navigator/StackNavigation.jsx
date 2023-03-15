@@ -3,11 +3,14 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GlobalColors } from "../constants/color";
 import BottomTabs from "./BottomTabs";
 import LoginScreen from "./../screens/LoginScreen";
+import DiaryDetail from "./../components/diaryDetail/DiaryDetail";
+import Date from "../ui/Date";
 import WriteScreen from "../screens/WriteScreen";
 import {
   Button, Pressable
 } from "react-native";
 import WriteSecondScreen from "../screens/WriteSecondScreen";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -35,6 +38,20 @@ const StackNavigation = () => {
             headerShown: false,
           }}
         />
+
+
+        <Stack.Screen
+          name="diaryDetail"
+          component={DiaryDetail}
+          options={{
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.primary500,
+            },
+          }}
+          />
         <Stack.Screen
           name="Write"
           component={WriteScreen}
