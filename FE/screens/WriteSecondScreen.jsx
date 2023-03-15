@@ -1,10 +1,13 @@
 import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
+import AddHashtag from "../components/write/AddHashtag";
 import { GlobalColors } from "../constants/color";
 
 const WriteSecondScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.inform}></View>
+      <View style={styles.inform}>
+        <AddHashtag/>
+      </View>
     </SafeAreaView>
   );
 };
