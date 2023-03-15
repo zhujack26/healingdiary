@@ -4,7 +4,10 @@ import { GlobalColors } from "../constants/color";
 import BottomTabs from "./BottomTabs";
 import LoginScreen from "./../screens/LoginScreen";
 import WriteScreen from "../screens/WriteScreen";
-
+import {
+  Button, Pressable
+} from "react-native";
+import WriteSecondScreen from "../screens/WriteSecondScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,8 +38,19 @@ const StackNavigation = () => {
         <Stack.Screen
           name="Write"
           component={WriteScreen}
+          options={({ navigation }) => ({
+            headerRight: () => (
+              <Button 
+              onPress={() => navigation.navigate("Write2")}
+              title="다음"
+              />
+              ),
+          })} 
+        />
+        <Stack.Screen
+          name="Write2"
+          component={WriteSecondScreen}
           options={{
-            headerShown: false,
           }}
         />
       </Stack.Navigator>
