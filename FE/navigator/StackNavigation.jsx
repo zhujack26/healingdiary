@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GlobalColors } from "../constants/color";
 import BottomTabs from "./BottomTabs";
 import LoginScreen from "./../screens/LoginScreen";
+import WriteScreen from "../screens/WriteScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +28,13 @@ const StackNavigation = () => {
         <Stack.Screen
           name="Login"
           component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="Write"
+          component={WriteScreen}
           options={{
             headerShown: false,
           }}

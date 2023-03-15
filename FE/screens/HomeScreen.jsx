@@ -29,9 +29,9 @@ const HomeScreen = ({ navigation }) => {
     if (activeIndex === 2) return <DiaryList type="group" />;
   };
 
-  useEffect(() => {
-    navigation.navigate("Login");
-  }, []);
+  // useEffect(() => {
+  //   navigation.navigate("Login");
+  // }, []);
   return (
     <View style={styles.container}>
       <Buttons
