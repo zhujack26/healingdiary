@@ -46,7 +46,7 @@ const Item = ({ title, hashtag }) => (
 
 const GroupList = () => {
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       <Title>전체 소모임</Title>
       <FlatList
         data={DATA}
@@ -55,30 +55,38 @@ const GroupList = () => {
         )}
         keyExtractor={(item) => item.id}
       />
-    </SafeAreaView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: deviceWidth,
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
   item: {
-    backgroundColor: GlobalColors.colors.white500,
-    padding: 30,
-    marginVertical: 12,
-    borderRadius: 12,
     flexDirection: "row",
+    width: deviceWidth,
+    height: 90,
+    borderRadius: 8,
+    elevation: 4,
+    shadowColor: "#fff",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    backgroundColor: GlobalColors.colors.white500,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    padding: 24,
+    marginBottom: 16,
   },
   body: {
-    flexDirection: "column",
+    justifyContent: "center",
+    marginLeft: 15,
   },
   image: {
     width: 50,
     height: 50,
-    borderRadius: 12,
+    borderRadius: 8,
   },
   title: {
     marginLeft: 10,
