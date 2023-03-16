@@ -24,15 +24,28 @@ const SoundPlayer = () => {
   const [soundIndex, setSoundIndex] = useState(0);
 
   const [sound, setSound] = useState();
+  const [position, setPosition] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [sliderValue, setSliderValue] = useState(0);
+
+  const silderValueChange = (value) => {
+    setSliderValue({ value });
+  };
 
   const playSound = async (audio) => {
     console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
+
     setSound(sound);
+    setDuration(duration);
     setIsPlaying(true);
     console.log("Play Sound");
     await sound.playAsync();
+    sound.setOnPlaybackStatusUpdate((status) => {
+      setDuration(status.durationMillis);
+      setPosition(status.positionMillis);
+    });
   };
 
   const stopSound = async () => {
@@ -41,6 +54,7 @@ const SoundPlayer = () => {
       await sound.stopAsync();
     }
   };
+
   const skiptoNext = () => {
     soundSlider.current.scrollToOffset({
       offset: (soundIndex + 1) * width,
@@ -134,17 +148,25 @@ const SoundPlayer = () => {
         <View>
           <Slider
             style={styles.progressContainer}
-            value={10}
+            value={position}
+            step={1}
             minimumValue={0}
-            maximumValue={100}
+            maximumValue={duration}
             thumbTintColor="#EDAD79"
             minimumTrackTintColor="#EDAD79"
             maximumTrackTintColor={GlobalColors.colors.gray400}
-            onSlidingComplete={() => {}}
+            onValueChange={silderValueChange}
+            onSlidingComplete={(value) => sound.setPositionAsync(value)}
           />
           <View style={styles.progressLabelContainer}>
-            <Text style={styles.progressLabelText}>0:00</Text>
-            <Text style={styles.progressLabelText}>3:00</Text>
+            <Text style={styles.progressLabelText}>
+              {new Date(sliderValue * 1000).toISOString().substr(14, 5)}
+            </Text>
+            <Text style={styles.progressLabelText}>
+              {new Date((songs[soundIndex].duration - sliderValue) * 1000)
+                .toISOString()
+                .substr(14, 5)}
+            </Text>
           </View>
         </View>
         <View style={styles.soundControlls}>
