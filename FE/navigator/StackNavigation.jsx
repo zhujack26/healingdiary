@@ -10,6 +10,7 @@ import {
   Button, Text, Pressable, StyleSheet, TouchableOpacity
 } from "react-native";
 import WriteSecondScreen from "../screens/WriteSecondScreen";
+import Hashtag from "../components/write/Hashtag";
 
 
 const Stack = createNativeStackNavigator();
@@ -56,6 +57,8 @@ const StackNavigation = () => {
           name="Write"
           component={WriteScreen}
           options={({ navigation }) => ({
+            headerTitle: '',
+            headerBackTitleVisible: false,
             headerRight: () => (
               <TouchableOpacity
               onPress={() => navigation.navigate("Write2")}
@@ -79,6 +82,7 @@ const StackNavigation = () => {
           name="Write2"
           component={WriteSecondScreen}
           options={({ navigation }) => ({
+            title: "",
             headerRight: () => (
               <TouchableOpacity
               onPress={() => navigation.navigate("Write2")}
@@ -98,6 +102,21 @@ const StackNavigation = () => {
             },
             })} 
         />
+
+        <Stack.Screen
+          name= "hashtag"
+          component={Hashtag}
+          options={{
+            title: "",
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.primary500,
+            },
+          }}
+          />
+
       </Stack.Navigator>
     </NavigationContainer>
   );

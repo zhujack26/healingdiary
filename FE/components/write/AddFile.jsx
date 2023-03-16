@@ -1,4 +1,4 @@
-import { Image, View, StyleSheet, Pressable } from "react-native";
+import { Image, View, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import { useState, useEffect } from "react";
@@ -30,10 +30,10 @@ const AddFile = () => {
   // });
 
   return (
-      <Pressable onPress={pickImage} style={styles.container}>
+      <TouchableOpacity onPress={pickImage} style={styles.container}>
         {image && <Image source={{ uri: image }} style={styles.img} />}
         {!image && <AntDesign name="plus" size={48} color="black" />}
-      </Pressable>
+      </TouchableOpacity>
   );
 };
 
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     borderColor: GlobalColors.colors.white500,
     elevation: 4,
+    backgroundColor: GlobalColors.colors.white500
   },
   img: {
     borderBottomLeftRadius: 60,

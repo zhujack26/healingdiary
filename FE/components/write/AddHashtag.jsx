@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { GlobalColors } from "../../constants/color";
+import { useNavigation } from '@react-navigation/native';
 
 const AddHashtag = () => {
   const [tags1, setTags1] = useState([
@@ -34,6 +35,8 @@ const AddHashtag = () => {
       setSelectedTags([...selectedTags, tag]);
     }
   };
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text>
@@ -48,9 +51,16 @@ const AddHashtag = () => {
           </TouchableOpacity>
         ))}
       </View>
-      <Text>
-        감정
-      </Text>
+      <View style={styles.sub}>
+        <Text>
+          감정
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('hashtag')}
+          >
+          <Text id="전체보기1">전체보기</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.box}>
         {tags1.map((tag) => (
           <TouchableOpacity
@@ -65,9 +75,16 @@ const AddHashtag = () => {
           </TouchableOpacity>
         ))}
       </View>
-      <Text>
-        카테고리
-      </Text>
+      <View style={styles.sub}>
+        <Text>
+          카테고리
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('hashtag')}
+          >
+          <Text id="전체보기2">전체보기</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.box}>
         {tags2.map((tag) => (
           <TouchableOpacity
@@ -82,9 +99,16 @@ const AddHashtag = () => {
           </TouchableOpacity>
         ))}
       </View>
-      <Text>
-        키워드
-      </Text>
+      <View style={styles.sub}>
+        <Text>
+          키워드
+        </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('hashtag')}
+          >
+          <Text id="전체보기3">전체보기</Text>
+        </TouchableOpacity>
+      </View>
       <View style={styles.box}>
         {tags3.map((tag) => (
           <TouchableOpacity
@@ -108,6 +132,10 @@ const styles = StyleSheet.create({
     paddingTop: 50,
     width: "80%",
     backgroundColor: GlobalColors.colors.white500,
+  },
+  sub: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   box : {
     backgroundColor: GlobalColors.colors.white500,
