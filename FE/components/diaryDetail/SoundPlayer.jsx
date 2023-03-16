@@ -5,8 +5,8 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
-  FlatList,
   Animated,
+  FlatList,
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -15,37 +15,35 @@ import { GlobalColors } from "../../constants/color";
 import Slider from "@react-native-community/slider";
 import songs from "../../model/data";
 
-const deviceWidth = Dimensions.get("window").width - 50;
 const { width, height } = Dimensions.get("window");
 
 const SoundPlayer = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
-  const [songIndex, setSongIndex] = useState(0);
-  const songSlider = useRef(null);
+  const [soundIndex, setSoundIndex] = useState(0);
+  const soundSlider = useRef(null);
 
   useEffect(() => {
     scrollX.addListener(({ value }) => {
       const index = Math.round(value / width);
-      setSongIndex(index);
+      setSoundIndex(index);
     });
-
     return () => {
       scrollX.removeAllListeners();
     };
   }, []);
 
   const skiptoNext = () => {
-    songSlider.current.scrollToOffset({
-      offset: (songIndex + 1) * width,
+    soundSlider.current.scrollToOffset({
+      offset: (soundIndex + 1) * width,
     });
   };
   const skipToPrevious = () => {
-    songSlider.current.scrollToOffset({
-      offset: (songIndex - 1) * width,
+    soundSlider.current.scrollToOffset({
+      offset: (soundIndex - 1) * width,
     });
   };
 
-  const renderSongs = ({ index, item }) => {
+  const renderSounds = ({ item }) => {
     return (
       <View
         style={{
@@ -60,6 +58,7 @@ const SoundPlayer = () => {
       </View>
     );
   };
+
   return (
     <View style={styles.playlist}>
       <View style={styles.emotionContainer}>
@@ -71,36 +70,37 @@ const SoundPlayer = () => {
         <Ionicons name="ellipsis-horizontal" size={24} color="black" />
       </View>
       <View style={styles.soundContainer}>
-        <Animated.FlatList
-          ref={songSlider}
-          data={songs}
-          renderItem={renderSongs}
-          keyExtractor={(item) => item.id}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          scrollEventThrottle={16}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: { x: scrollX },
+        <View style={{ width: width }}>
+          <Animated.FlatList
+            style={{
+              width: width,
+            }}
+            ref={soundSlider}
+            data={songs}
+            renderItem={renderSounds}
+            keyExtractor={(item) => item.id}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={16}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: { x: scrollX },
+                  },
                 },
-              },
-            ],
-            { useNativeDriver: true }
-          )}
-        />
+              ],
+              { useNativeDriver: true }
+            )}
+          />
+        </View>
         <View style={styles.hashtags}>
-          <View style={styles.hashtag}>
-            <Text style={styles.hashtagText}>#해시태그</Text>
-          </View>
-          <View style={styles.hashtag}>
-            <Text style={styles.hashtagText}>#해시태그</Text>
-          </View>
-          <View style={styles.hashtag}>
-            <Text style={styles.hashtagText}>#해시태그</Text>
-          </View>
+          {songs[soundIndex].hashtags.map((hashtag, index) => (
+            <View style={styles.hashtag} key={index}>
+              <Text style={styles.hashtagText}>{hashtag}</Text>
+            </View>
+          ))}
         </View>
         <View>
           <Slider
@@ -177,13 +177,15 @@ const styles = StyleSheet.create({
     width: 260,
     height: 260,
     marginBottom: 25,
+    borderRadius: 15,
+    backgroundColor: GlobalColors.colors.white500,
     elevation: 5,
     shadowColor: GlobalColors.colors.black500,
     shadowOffset: {
       width: 5,
       height: 5,
     },
-    shadowOpacity: 0,
+    shadowOpacity: 0.8,
     shadowRadius: 3.84,
   },
   artwork: {
@@ -211,13 +213,13 @@ const styles = StyleSheet.create({
     padding: 4,
   },
   progressContainer: {
-    width: deviceWidth,
+    width: width - 50,
     height: 40,
     marginTop: 25,
     flexDirection: "row",
   },
   progressLabelContainer: {
-    width: deviceWidth,
+    width: width - 50,
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -226,7 +228,7 @@ const styles = StyleSheet.create({
     color: GlobalColors.colors.black500,
   },
   soundControlls: {
-    width: deviceWidth - 120,
+    width: width - 170,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
