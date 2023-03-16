@@ -11,18 +11,43 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
-
+import TrackPlayer, {
+  Capability,
+  Event,
+  State,
+  usePlaybackState,
+  useProgress,
+  useTrackPlayerEvents,
+} from "react-native-track-player";
 import Slider from "@react-native-community/slider";
 import songs from "../../model/data";
 
 const { width, height } = Dimensions.get("window");
 
+const setupPlayer = async () => {
+  await TrackPlayer.setupPlayer();
+  await TrackPlayer.add(songs);
+};
+
+const togglePlayBack = async (playbackState) => {
+  const currentTrack = await TrackPlayer.getCurrentTrack();
+  if (currentTrack !== null) {
+    if (playbackState === State.Paused) {
+      await TrackPlayer.play();
+    } else {
+      await TrackPlayer.pause();
+    }
+  }
+};
+
 const SoundPlayer = () => {
+  const playbackState = usePlaybackState();
   const scrollX = useRef(new Animated.Value(0)).current;
-  const [soundIndex, setSoundIndex] = useState(0);
   const soundSlider = useRef(null);
+  const [soundIndex, setSoundIndex] = useState(0);
 
   useEffect(() => {
+    setupPlayer();
     scrollX.addListener(({ value }) => {
       const index = Math.round(value / width);
       setSoundIndex(index);
@@ -126,9 +151,17 @@ const SoundPlayer = () => {
               color={GlobalColors.colors.secondary500}
             />
           </Pressable>
-          <Pressable onPress={() => {}}>
+          <Pressable
+            onPress={() => {
+              togglePlayBack(playbackState);
+            }}
+          >
             <Ionicons
-              name="ios-pause-circle"
+              name={
+                playbackState === State.Playing
+                  ? "ios-pause-circle"
+                  : "ios-play-circle"
+              }
               size={75}
               color={GlobalColors.colors.secondary500}
             />
