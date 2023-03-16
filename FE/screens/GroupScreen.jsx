@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
   buttons: {
     flexDirection: "row",
     justifyContent: "flex-start",
+    marginBottom: 34,
   },
   selected: {
     backgroundColor: GlobalColors.colors.primary500,
