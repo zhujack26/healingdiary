@@ -11,6 +11,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
+import { Audio } from "expo-av";
 
 import Slider from "@react-native-community/slider";
 import songs from "../../model/data";
@@ -22,21 +23,24 @@ const SoundPlayer = () => {
   const soundSlider = useRef(null);
   const [soundIndex, setSoundIndex] = useState(0);
 
-  useEffect(() => {
-    scrollX.addListener(({ value }) => {
-      const index = Math.round(value / width);
-      setSoundIndex(index);
-    });
-    return () => {
-      scrollX.removeAllListeners();
-    };
-  }, []);
+  const [sound, setSound] = useState();
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const playSound = async (audio) => {
+    console.log("Loading Sound");
+    const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
+    setSound(sound);
+
+    console.log("Play Sound");
+    await sound.playAsync();
+  };
 
   const skiptoNext = () => {
     soundSlider.current.scrollToOffset({
       offset: (soundIndex + 1) * width,
     });
   };
+
   const skipToPrevious = () => {
     soundSlider.current.scrollToOffset({
       offset: (soundIndex - 1) * width,
@@ -58,6 +62,25 @@ const SoundPlayer = () => {
       </View>
     );
   };
+
+  useEffect(() => {
+    scrollX.addListener(({ value }) => {
+      const index = Math.round(value / width);
+      setSoundIndex(index);
+    });
+    return () => {
+      scrollX.removeAllListeners();
+    };
+  }, []);
+
+  useEffect(() => {
+    return sound
+      ? () => {
+          console.log("Unloading Sound");
+          sound.unloadAsync();
+        }
+      : undefined;
+  }, [sound]);
 
   return (
     <View style={styles.playlist}>
@@ -126,9 +149,13 @@ const SoundPlayer = () => {
               color={GlobalColors.colors.secondary500}
             />
           </Pressable>
-          <Pressable onPress={() => {}}>
+          <Pressable
+            onPress={() => {
+              playSound(songs);
+            }}
+          >
             <Ionicons
-              name="ios-pause-circle"
+              name={isPlaying ? "ios-pause-circle" : "ios-play-circle"}
               size={75}
               color={GlobalColors.colors.secondary500}
             />
