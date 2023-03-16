@@ -1,11 +1,19 @@
 package com.ssafy.healingdiary.domain.member.domain;
 
-import com.ssafy.healingdiary.domain.diary.domain.Comment;
+import com.ssafy.healingdiary.domain.comment.domain.Comment;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.Getter;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "notice")
