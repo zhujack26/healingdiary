@@ -21,12 +21,30 @@ const { width, height } = Dimensions.get("window");
 const SoundPlayer = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [songIndex, setSongIndex] = useState(0);
+  const songSlider = useRef(null);
+
   useEffect(() => {
     scrollX.addListener(({ value }) => {
       const index = Math.round(value / width);
       setSongIndex(index);
     });
-  });
+
+    return () => {
+      scrollX.removeAllListeners();
+    };
+  }, []);
+
+  const skiptoNext = () => {
+    songSlider.current.scrollToOffset({
+      offset: (songIndex + 1) * width,
+    });
+  };
+  const skipToPrevious = () => {
+    songSlider.current.scrollToOffset({
+      offset: (songIndex - 1) * width,
+    });
+  };
+
   const renderSongs = ({ index, item }) => {
     return (
       <View
@@ -54,6 +72,7 @@ const SoundPlayer = () => {
       </View>
       <View style={styles.soundContainer}>
         <Animated.FlatList
+          ref={songSlider}
           data={songs}
           renderItem={renderSongs}
           keyExtractor={(item) => item.id}
@@ -100,7 +119,7 @@ const SoundPlayer = () => {
           </View>
         </View>
         <View style={styles.soundControlls}>
-          <Pressable onPress={() => {}}>
+          <Pressable onPress={skipToPrevious}>
             <Ionicons
               name="play-skip-back-outline"
               size={35}
@@ -114,7 +133,7 @@ const SoundPlayer = () => {
               color={GlobalColors.colors.secondary500}
             />
           </Pressable>
-          <Pressable onPress={() => {}}>
+          <Pressable onPress={skiptoNext}>
             <Ionicons
               name="play-skip-forward-outline"
               size={35}
