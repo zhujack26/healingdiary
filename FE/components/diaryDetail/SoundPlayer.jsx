@@ -30,11 +30,17 @@ const SoundPlayer = () => {
     console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
     setSound(sound);
-
+    setIsPlaying(true);
     console.log("Play Sound");
     await sound.playAsync();
   };
 
+  const stopSound = async () => {
+    if (sound) {
+      setIsPlaying(false);
+      await sound.stopAsync();
+    }
+  };
   const skiptoNext = () => {
     soundSlider.current.scrollToOffset({
       offset: (soundIndex + 1) * width,
@@ -151,7 +157,7 @@ const SoundPlayer = () => {
           </Pressable>
           <Pressable
             onPress={() => {
-              playSound(songs);
+              isPlaying ? stopSound() : playSound(songs);
             }}
           >
             <Ionicons
