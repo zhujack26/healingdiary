@@ -7,7 +7,7 @@ import DiaryDetail from "./../components/diaryDetail/DiaryDetail";
 import Date from "../ui/Date";
 import WriteScreen from "../screens/WriteScreen";
 import {
-  Button, Pressable
+  Button, Text, Pressable, StyleSheet, TouchableOpacity
 } from "react-native";
 import WriteSecondScreen from "../screens/WriteSecondScreen";
 
@@ -57,22 +57,49 @@ const StackNavigation = () => {
           component={WriteScreen}
           options={({ navigation }) => ({
             headerRight: () => (
-              <Button 
+              <TouchableOpacity
               onPress={() => navigation.navigate("Write2")}
-              title="다음"
-              />
+              >
+              <Text
+              style={{fontSize: 16, fontWeight: "bold"}}
+              >
+              다음  
+              </Text>  
+              </TouchableOpacity>
               ),
-          })} 
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.primary500,
+            },
+            })} 
         />
         <Stack.Screen
           name="Write2"
           component={WriteSecondScreen}
-          options={{
-          }}
+          options={({ navigation }) => ({
+            headerRight: () => (
+              <TouchableOpacity
+              onPress={() => navigation.navigate("Write2")}
+              >
+              <Text
+              style={{fontSize: 16, fontWeight: "bold"}}
+              >
+              완료  
+              </Text>  
+              </TouchableOpacity>
+              ),
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.primary500,
+            },
+            })} 
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
 export default StackNavigation;

@@ -106,27 +106,32 @@ const AddHashtag = () => {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
-    width: 300,
+    width: "80%",
     backgroundColor: GlobalColors.colors.white500,
   },
   box : {
     backgroundColor: GlobalColors.colors.white500,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginTop: 5,
     marginBottom: 10,
   },
   tagButton: {
     backgroundColor: GlobalColors.colors.primary400,
-    borderRadius: 10,
+    borderRadius: 16,
+    minWidth: 85,
     padding: 5,
     marginRight: 10,
     marginBottom: 5,
     marginTop: 5,
   },
   selectedTagButton: {
+    
     backgroundColor: GlobalColors.colors.primary500,
   },
   tagButtonText: {
+    fontFamily: "KoddiUDOnGothic-Regular",
+    padding: 4,
     fontSize: 12,
     color: GlobalColors.colors.white500
   },
@@ -138,11 +143,16 @@ const styles = StyleSheet.create({
   },
   selectedTag: {
     backgroundColor: GlobalColors.colors.primary500,
-    borderRadius: 10,
+    borderRadius: 16,
+    minWidth: 85,
     padding: 5,
     marginRight: 10,
+    marginBottom: 5,
+    marginTop: 5,
   },
   selectedTagText: {
+    fontFamily: "KoddiUDOnGothic-Regular",
+    padding: 4,
     fontSize: 12,
     color: GlobalColors.colors.white500,
   },

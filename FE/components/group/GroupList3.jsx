@@ -47,8 +47,8 @@ const Item = ({ title, hashtag }) => (
 
 const GroupList3 = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Title>추천 소모임 </Title>
+    <>
+      <Title>추천 소모임</Title>
       <FlatList
         data={DATA}
         renderItem={({ item }) => (
@@ -56,7 +56,7 @@ const GroupList3 = () => {
         )}
         keyExtractor={(item) => item.id}
       />
-    </SafeAreaView>
+    </>
   );
 };
 
