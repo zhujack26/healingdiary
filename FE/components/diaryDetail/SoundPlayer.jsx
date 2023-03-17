@@ -26,12 +26,16 @@ const SoundPlayer = () => {
   const [sound, setSound] = useState();
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [slidervalue, setSliderValue] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const silderValueChange = (value) => {
+  const sliderValueChange = (value) => {
     if (sound) {
       sound.setPositionAsync(value * duration);
-      setPosition(value * duration);
+
+      requestAnimationFrame(() => {
+        setPosition(value * duration);
+      });
     }
   };
 
@@ -55,7 +59,7 @@ const SoundPlayer = () => {
       await newSound.playAsync();
       setIsPlaying(true);
     } else if (isPlaying) {
-      await sound.paseuAsync();
+      await sound.pauseAsync();
       setIsPlaying(false);
     } else {
       await sound.playAsync();
@@ -63,11 +67,10 @@ const SoundPlayer = () => {
     }
   };
 
-  const paseuSound = async () => {
+  const pauseSound = async () => {
     if (sound) {
       await sound.stopAsync();
       setIsPlaying(false);
-      setPosition(0);
       await sound.setPositionAsync(0);
     }
   };
@@ -76,12 +79,14 @@ const SoundPlayer = () => {
     soundSlider.current.scrollToOffset({
       offset: (soundIndex + 1) * width,
     });
+    setSoundIndex(soundIndex + 1);
   };
 
   const skipToPrevious = () => {
     soundSlider.current.scrollToOffset({
       offset: (soundIndex - 1) * width,
     });
+    setSoundIndex(soundIndex - 1);
   };
 
   const renderSounds = ({ item }) => {
@@ -166,7 +171,7 @@ const SoundPlayer = () => {
             thumbTintColor="#EDAD79"
             minimumTrackTintColor="#EDAD79"
             maximumTrackTintColor={GlobalColors.colors.gray400}
-            onValueChange={silderValueChange}
+            onValueChange={sliderValueChange}
           />
           <View style={styles.progressLabelContainer}>
             <Text style={styles.progressLabelText}></Text>
@@ -183,7 +188,7 @@ const SoundPlayer = () => {
           </Pressable>
           <Pressable
             onPress={() => {
-              isPlaying ? paseuSound() : playSound(songs);
+              isPlaying ? pauseSound() : playSound(songs);
             }}
           >
             <Ionicons
