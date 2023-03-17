@@ -1,5 +1,6 @@
 import { SafeAreaView, View, StyleSheet } from "react-native";
 import { GlobalColors } from "./../../constants/color";
+import MusicPlayer from "./MusicPlayer";
 
 import SoundPlayer from "./SoundPlayer";
 
@@ -8,6 +9,7 @@ const DiaryDetail = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.background}></View>
       <SoundPlayer />
+      {/* <MusicPlayer /> */}
     </SafeAreaView>
   );
 };

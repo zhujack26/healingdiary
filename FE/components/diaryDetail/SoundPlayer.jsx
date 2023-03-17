@@ -27,31 +27,33 @@ const SoundPlayer = () => {
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [sliderValue, setSliderValue] = useState(0);
 
   const silderValueChange = (value) => {
-    setSliderValue({ value });
+    if (sound !== null) {
+      console.log(("value", value));
+      console.log(("duration", duration));
+      sound.setPositionAsync(value * duration);
+      setPosition(value * duration);
+    }
   };
 
   const playSound = async (audio) => {
     console.log("Loading Sound");
     const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
-
     setSound(sound);
-    setDuration(duration);
+    setDuration(sound.durationMillis);
     setIsPlaying(true);
-    console.log("Play Sound");
-    await sound.playAsync();
     sound.setOnPlaybackStatusUpdate((status) => {
       setDuration(status.durationMillis);
       setPosition(status.positionMillis);
     });
+    await sound.playAsync();
   };
 
-  const stopSound = async () => {
-    if (sound) {
+  const paseuSound = async () => {
+    if (sound !== null) {
+      await sound.pauseSync();
       setIsPlaying(false);
-      await sound.stopAsync();
     }
   };
 
@@ -94,12 +96,7 @@ const SoundPlayer = () => {
   }, []);
 
   useEffect(() => {
-    return sound
-      ? () => {
-          console.log("Unloading Sound");
-          sound.unloadAsync();
-        }
-      : undefined;
+    return sound ? () => sound.unloadAsync() : undefined;
   }, [sound]);
 
   return (
@@ -148,25 +145,18 @@ const SoundPlayer = () => {
         <View>
           <Slider
             style={styles.progressContainer}
-            value={position}
-            step={1}
+            value={duration ? position / duration : 0}
+            step={0.01}
             minimumValue={0}
-            maximumValue={duration}
+            maximumValue={1}
             thumbTintColor="#EDAD79"
             minimumTrackTintColor="#EDAD79"
             maximumTrackTintColor={GlobalColors.colors.gray400}
             onValueChange={silderValueChange}
-            onSlidingComplete={(value) => sound.setPositionAsync(value)}
           />
           <View style={styles.progressLabelContainer}>
-            <Text style={styles.progressLabelText}>
-              {new Date(sliderValue * 1000).toISOString().substr(14, 5)}
-            </Text>
-            <Text style={styles.progressLabelText}>
-              {new Date((songs[soundIndex].duration - sliderValue) * 1000)
-                .toISOString()
-                .substr(14, 5)}
-            </Text>
+            <Text style={styles.progressLabelText}></Text>
+            <Text style={styles.progressLabelText}></Text>
           </View>
         </View>
         <View style={styles.soundControlls}>
@@ -179,7 +169,7 @@ const SoundPlayer = () => {
           </Pressable>
           <Pressable
             onPress={() => {
-              isPlaying ? stopSound() : playSound(songs);
+              isPlaying ? paseuSound() : playSound(songs);
             }}
           >
             <Ionicons
