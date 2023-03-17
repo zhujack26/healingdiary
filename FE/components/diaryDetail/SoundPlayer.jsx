@@ -8,7 +8,7 @@ import {
   Animated,
   FlatList,
 } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import { Audio } from "expo-av";
@@ -27,6 +27,13 @@ const SoundPlayer = () => {
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+
+  const callBackSetIsPlaying = useCallback(
+    (isPlaying) => {
+      setIsPlaying(isPlaying);
+    },
+    [setIsPlaying]
+  );
 
   const sliderValueChange = (value) => {
     if (sound) {
@@ -48,28 +55,28 @@ const SoundPlayer = () => {
         if (!status.isLoaded) return;
         setDuration(status.durationMillis);
         setPosition(status.positionMillis);
-        setIsPlaying(status.isPlaying);
+        callBackSetIsPlaying(status.isPlaying);
         if (status.didJustFinish) {
-          setIsPlaying(false);
+          callBackSetIsPlaying(false);
           setPosition(0);
           sound.unloadAsync();
         }
       });
       await newSound.playAsync();
-      setIsPlaying(true);
+      callBackSetIsPlaying(true);
     } else if (isPlaying) {
       await sound.pauseAsync();
-      setIsPlaying(false);
+      callBackSetIsPlaying(false);
     } else {
       await sound.playAsync();
-      setIsPlaying(true);
+      callBackSetIsPlaying(true);
     }
   };
 
   const pauseSound = async () => {
     if (sound) {
       await sound.stopAsync();
-      setIsPlaying(false);
+      callBackSetIsPlaying(false);
       await sound.setPositionAsync(0);
     }
   };
