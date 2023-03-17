@@ -29,31 +29,46 @@ const SoundPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false);
 
   const silderValueChange = (value) => {
-    if (sound !== null) {
-      console.log(("value", value));
-      console.log(("duration", duration));
+    if (sound) {
       sound.setPositionAsync(value * duration);
       setPosition(value * duration);
     }
   };
 
   const playSound = async (audio) => {
-    console.log("Loading Sound");
-    const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
-    setSound(sound);
-    setDuration(sound.durationMillis);
-    setIsPlaying(true);
-    sound.setOnPlaybackStatusUpdate((status) => {
-      setDuration(status.durationMillis);
-      setPosition(status.positionMillis);
-    });
-    await sound.playAsync();
+    if (!sound) {
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        audio[soundIndex].url
+      );
+      setSound(newSound);
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+        setDuration(status.durationMillis);
+        setPosition(status.positionMillis);
+        setIsPlaying(status.isPlaying);
+        if (status.didJustFinish) {
+          setIsPlaying(false);
+          setPosition(0);
+          sound.unloadAsync();
+        }
+      });
+      await newSound.playAsync();
+      setIsPlaying(true);
+    } else if (isPlaying) {
+      await sound.paseuAsync();
+      setIsPlaying(false);
+    } else {
+      await sound.playAsync();
+      setIsPlaying(true);
+    }
   };
 
   const paseuSound = async () => {
-    if (sound !== null) {
-      await sound.pauseSync();
+    if (sound) {
+      await sound.stopAsync();
       setIsPlaying(false);
+      setPosition(0);
+      await sound.setPositionAsync(0);
     }
   };
 
@@ -146,7 +161,6 @@ const SoundPlayer = () => {
           <Slider
             style={styles.progressContainer}
             value={duration ? position / duration : 0}
-            step={0.01}
             minimumValue={0}
             maximumValue={1}
             thumbTintColor="#EDAD79"
