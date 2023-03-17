@@ -1,4 +1,4 @@
-import { Calendar} from "react-native-calendars";
+import { Calendar, LocaleConfig } from "react-native-calendars";
 import { View, Text, StyleSheet } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import { Entypo } from "@expo/vector-icons";
@@ -33,12 +33,14 @@ const CustomDayComponent = ({ date, state }) => {
 
   return (
     <View>
-      <View style={styles.box}
-      >
+      <View style={styles.box}>
         <Text
           style={{
             backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
-            color: state === "disabled" ? GlobalColors.colors.gray500: GlobalColors.colors.black500,
+            color:
+              state === "disabled"
+                ? GlobalColors.colors.gray500
+                : GlobalColors.colors.black500,
           }}
         >
           {date.day}
@@ -48,13 +50,38 @@ const CustomDayComponent = ({ date, state }) => {
             <Entypo name="emoji-flirt" size={16} color={"blue"} />
           </View>
         )}
-        {DateList(date, targetDates) ||
-        <View style={styles.empty}>
-        </View>}
+        {DateList(date, targetDates) || <View style={styles.empty}></View>}
       </View>
     </View>
   );
 };
+LocaleConfig.locales["ko"] = {
+  monthNames: [
+    "1월",
+    "2월",
+    "3월",
+    "4월",
+    "5월",
+    "6월",
+    "7월",
+    "8월",
+    "9월",
+    "10월",
+    "11월",
+    "12월",
+  ],
+  dayNames: [
+    "일요일",
+    "월요일",
+    "화요일",
+    "수요일",
+    "목요일",
+    "금요알",
+    "토요일",
+  ],
+  dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"],
+};
+LocaleConfig.defaultLocale = "ko";
 
 const Calendarview = () => {
   
@@ -64,15 +91,27 @@ const Calendarview = () => {
         arrowColor: GlobalColors.colors.gray500,
       }}
       style={styles.container}
-      dayComponent={({ date, state}) => (
-        <CustomDayComponent 
-          date={date} 
-          state={state} 
-          theme={{
-            arrowColor:GlobalColors.colors.black500
-          }}
-          />
-        )}
+      dayComponent={({ date, state }) => (
+        <CustomDayComponent
+          date={date}
+          state={state}
+        />
+      )}
+      locale={"ko"}
+      firstDay={0}
+      monthFormat={"yyyy년 MM월"}
+      renderHeader={(date) => {
+        const year = date.getFullYear();
+        const monthIndex = Number(date.getMonth());
+        return (
+          <Text>
+            {year}년 {LocaleConfig.locales["ko"].monthNames[monthIndex]}
+          </Text>
+        );
+      }}
+      onDayPress={(day) => {
+        console.log("selected day", day);
+      }}
     />
   );
 };
@@ -81,7 +120,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     shadowOpacity: 0.1,
     elevation: 4,
-    backgroundColor: GlobalColors.colors.white500,
     padding: 10,
   },
   box: {
@@ -90,7 +128,7 @@ const styles = StyleSheet.create({
   },
   empty: {
     height: 18,
-    textShadowRadius:10,
-  }
+    textShadowRadius: 10,
+  },
 });
 export default Calendarview;
