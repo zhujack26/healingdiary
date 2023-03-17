@@ -26,7 +26,6 @@ const SoundPlayer = () => {
   const [sound, setSound] = useState();
   const [position, setPosition] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [slidervalue, setSliderValue] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const sliderValueChange = (value) => {
@@ -79,14 +78,16 @@ const SoundPlayer = () => {
     soundSlider.current.scrollToOffset({
       offset: (soundIndex + 1) * width,
     });
-    setSoundIndex(soundIndex + 1);
+    if (soundIndex < songs.length - 1) setSoundIndex(soundIndex + 1);
+    else setSoundIndex(songs.length - 1);
   };
 
   const skipToPrevious = () => {
     soundSlider.current.scrollToOffset({
       offset: (soundIndex - 1) * width,
     });
-    setSoundIndex(soundIndex - 1);
+    if (soundIndex > 0) setSoundIndex(soundIndex - 1);
+    else setSoundIndex(0);
   };
 
   const renderSounds = ({ item }) => {
