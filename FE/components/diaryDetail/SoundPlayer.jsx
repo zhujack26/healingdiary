@@ -6,7 +6,6 @@ import {
   Dimensions,
   Pressable,
   Animated,
-  FlatList,
 } from "react-native";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -44,38 +43,102 @@ const SoundPlayer = () => {
       });
     }
   };
-  const skiptoNext = async () => {
-    soundSlider.current.scrollToOffset({
-      offset: (soundIndex + 1) * width,
-    });
 
+  const skiptoNext = async () => {
+    const nextSoundIndex = soundIndex < songs.length - 1 ? soundIndex + 1 : 0;
+    soundSlider.current.scrollToOffset({
+      offset: nextSoundIndex * width,
+      animated: true,
+    });
     if (soundIndex < songs.length - 1) {
-      setSoundIndex(soundIndex + 1);
-      const { sound } = await Audio.Sound.createAsync(songs[soundIndex].url);
-      setSound(sound);
-      sound.setOnPlaybackStatusUpdate((status) => {
+      const { sound: nextSound } = await Audio.Sound.createAsync(
+        songs[nextSoundIndex].url
+      );
+      nextSound.setOnPlaybackStatusUpdate((status) => {
         if (!status.isLoaded) return;
         setDuration(status.durationMillis);
         setPosition(status.positionMillis);
-        callBackSetIsPlaying(status.isPlaying);
+        if (status.isPlaying !== isPlaying)
+          callBackSetIsPlaying(status.isPlaying);
+        if (status.didJustFinish) {
+          setSoundIndex(nextSoundIndex); // 다음 곡 인덱스로 업데이트
+          nextSound.unloadAsync(); // 현재 재생 중인 음악 언로드
+          skiptoNext(); // 다음 곡으로 재귀 호출
+        }
       });
-      await sound.playAsync();
+      setSound(nextSound);
+      await nextSound.playAsync();
       callBackSetIsPlaying(true);
     } else {
       setSoundIndex(0);
-      setSound(await Audio.Sound.createAsync(songs[0].url));
+      const { sound } = await Audio.Sound.createAsync(songs[0].url);
+      setSound(sound);
       await sound.playAsync();
     }
   };
 
-  const skipToPrevious = () => {
-    soundSlider.current.scrollToOffset({
-      offset: (soundIndex - 1) * width,
-    });
-    if (soundIndex > 0) setSoundIndex(soundIndex - 1);
-    else setSoundIndex(0);
-  };
+  // const skipToPrevious = async () => {
+  //   const previousSoundIndex = soundIndex > 0 ? soundIndex - 1 : songs.length - 1;
+  //   soundSlider.current.scrollToOffset({
+  //     offset: (previousSoundIndex  - 1) * width,
+  //     animated:true
+  //   });
+  //   if (sound) await sound.unloadAsync();
 
+  //   if (soundIndex !== 0) {
+  //     const { sound: prevSound } = await Audio.Sound.createAsync(
+  //       songs[prevSoundIndex].url
+  //     );
+
+  //     prevSound.setOnPlaybackStatusUpdate((status) => {
+  //       if (!status.isLoaded) return;
+  //       setDuration(status.durationMillis);
+  //       setPosition(status.positionMillis);
+  //       callBackSetIsPlaying(status.isPlaying);
+  //       if (status.didJustFinish) {
+  //         skiptoNext();
+  //       }
+  //     });
+  //     await prevSound.playAsync();
+  //     setSound(prevSound);
+  //     callBackSetIsPlaying(true);
+  //   }
+  // };
+  const skipToPrevious = async () => {
+    const previousSoundIndex =
+      soundIndex > 0 ? soundIndex - 1 : songs.length - 1;
+    soundSlider.current.scrollToOffset({
+      offset: previousSoundIndex * width,
+      animated: true,
+    });
+    if (soundIndex > 0) {
+      const { sound: previousSound } = await Audio.Sound.createAsync(
+        songs[previousSoundIndex].url
+      );
+      previousSound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+        setDuration(status.durationMillis);
+        setPosition(status.positionMillis);
+        if (status.isPlaying !== isPlaying)
+          callBackSetIsPlaying(status.isPlaying);
+        if (status.didJustFinish) {
+          setSoundIndex(previousSoundIndex);
+          previousSound.unloadAsync();
+          skipToPrevious();
+        }
+      });
+      setSound(previousSound);
+      await previousSound.playAsync();
+      callBackSetIsPlaying(true);
+    } else {
+      const { sound: previousSound } = await Audio.Sound.createAsync(
+        songs[songs.length - 1].url
+      );
+      setSound(previousSound);
+      await previousSound.playAsync();
+      setSoundIndex(songs.length - 1);
+    }
+  };
   const playSound = async (audio) => {
     if (!sound) {
       const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
@@ -84,22 +147,19 @@ const SoundPlayer = () => {
         if (!status.isLoaded) return;
         setDuration(status.durationMillis);
         setPosition(status.positionMillis);
-        callBackSetIsPlaying(status.isPlaying);
+        if (status.isPlaying !== isPlaying)
+          callBackSetIsPlaying(status.isPlaying);
         if (status.didJustFinish) {
           skiptoNext();
-          callBackSetIsPlaying(false);
           setPosition(0);
           sound.unloadAsync();
         }
       });
       await sound.playAsync();
-      callBackSetIsPlaying(true);
     } else if (isPlaying) {
       await sound.pauseAsync();
-      callBackSetIsPlaying(false);
     } else {
       await sound.playAsync();
-      callBackSetIsPlaying(true);
     }
   };
 
@@ -154,9 +214,10 @@ const SoundPlayer = () => {
         if (!status.isLoaded) return;
         setDuration(status.durationMillis);
         setPosition(status.positionMillis);
-        callBackSetIsPlaying(status.isPlaying);
+
         if (status.didJustFinish) {
-          skiptoNext();
+          if (soundIndex === songs.length - 1) skipToNext(0);
+          else setSoundIndex(soundIndex + 1);
         }
       });
       await newSound.playAsync();
