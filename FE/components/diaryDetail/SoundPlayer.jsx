@@ -44,25 +44,55 @@ const SoundPlayer = () => {
       });
     }
   };
+  const skiptoNext = async () => {
+    soundSlider.current.scrollToOffset({
+      offset: (soundIndex + 1) * width,
+    });
+
+    if (soundIndex < songs.length - 1) {
+      setSoundIndex(soundIndex + 1);
+      const { sound } = await Audio.Sound.createAsync(songs[soundIndex].url);
+      setSound(sound);
+      sound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+        setDuration(status.durationMillis);
+        setPosition(status.positionMillis);
+        callBackSetIsPlaying(status.isPlaying);
+      });
+      await sound.playAsync();
+      callBackSetIsPlaying(true);
+    } else {
+      setSoundIndex(0);
+      setSound(await Audio.Sound.createAsync(songs[0].url));
+      await sound.playAsync();
+    }
+  };
+
+  const skipToPrevious = () => {
+    soundSlider.current.scrollToOffset({
+      offset: (soundIndex - 1) * width,
+    });
+    if (soundIndex > 0) setSoundIndex(soundIndex - 1);
+    else setSoundIndex(0);
+  };
 
   const playSound = async (audio) => {
     if (!sound) {
-      const { sound: newSound } = await Audio.Sound.createAsync(
-        audio[soundIndex].url
-      );
-      setSound(newSound);
-      newSound.setOnPlaybackStatusUpdate((status) => {
+      const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
+      setSound(sound);
+      sound.setOnPlaybackStatusUpdate((status) => {
         if (!status.isLoaded) return;
         setDuration(status.durationMillis);
         setPosition(status.positionMillis);
         callBackSetIsPlaying(status.isPlaying);
         if (status.didJustFinish) {
+          skiptoNext();
           callBackSetIsPlaying(false);
           setPosition(0);
           sound.unloadAsync();
         }
       });
-      await newSound.playAsync();
+      await sound.playAsync();
       callBackSetIsPlaying(true);
     } else if (isPlaying) {
       await sound.pauseAsync();
@@ -79,22 +109,6 @@ const SoundPlayer = () => {
       callBackSetIsPlaying(false);
       await sound.setPositionAsync(0);
     }
-  };
-
-  const skiptoNext = () => {
-    soundSlider.current.scrollToOffset({
-      offset: (soundIndex + 1) * width,
-    });
-    if (soundIndex < songs.length - 1) setSoundIndex(soundIndex + 1);
-    else setSoundIndex(songs.length - 1);
-  };
-
-  const skipToPrevious = () => {
-    soundSlider.current.scrollToOffset({
-      offset: (soundIndex - 1) * width,
-    });
-    if (soundIndex > 0) setSoundIndex(soundIndex - 1);
-    else setSoundIndex(0);
   };
 
   const renderSounds = ({ item }) => {
@@ -126,6 +140,30 @@ const SoundPlayer = () => {
   useEffect(() => {
     return sound ? () => sound.unloadAsync() : undefined;
   }, [sound]);
+
+  useEffect(() => {
+    const playCurrentSound = async () => {
+      if (sound) {
+        await sound.unloadAsync();
+      }
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        songs[soundIndex].url
+      );
+      setSound(newSound);
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+        setDuration(status.durationMillis);
+        setPosition(status.positionMillis);
+        callBackSetIsPlaying(status.isPlaying);
+        if (status.didJustFinish) {
+          skiptoNext();
+        }
+      });
+      await newSound.playAsync();
+      callBackSetIsPlaying(true);
+    };
+    playCurrentSound();
+  }, [soundIndex]);
 
   return (
     <View style={styles.playlist}>
