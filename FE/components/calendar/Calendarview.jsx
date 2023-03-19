@@ -83,7 +83,7 @@ LocaleConfig.locales["ko"] = {
 };
 LocaleConfig.defaultLocale = "ko";
 
-const Calendarview = () => {
+const CalendarView = () => {
   
   return (
     <Calendar
@@ -131,4 +131,4 @@ const styles = StyleSheet.create({
     textShadowRadius: 10,
   },
 });
-export default Calendarview;
+export default CalendarView;
