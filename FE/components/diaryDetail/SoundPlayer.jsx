@@ -54,12 +54,11 @@ const SoundPlayer = () => {
       const { sound: nextSound } = await Audio.Sound.createAsync(
         songs[nextSoundIndex].url
       );
+      callBackSetIsPlaying(true);
       nextSound.setOnPlaybackStatusUpdate((status) => {
         if (!status.isLoaded) return;
         setDuration(status.durationMillis);
         setPosition(status.positionMillis);
-        if (status.isPlaying !== isPlaying)
-          callBackSetIsPlaying(status.isPlaying);
         if (status.didJustFinish) {
           setSoundIndex(nextSoundIndex); // 다음 곡 인덱스로 업데이트
           nextSound.unloadAsync(); // 현재 재생 중인 음악 언로드
@@ -77,33 +76,6 @@ const SoundPlayer = () => {
     }
   };
 
-  // const skipToPrevious = async () => {
-  //   const previousSoundIndex = soundIndex > 0 ? soundIndex - 1 : songs.length - 1;
-  //   soundSlider.current.scrollToOffset({
-  //     offset: (previousSoundIndex  - 1) * width,
-  //     animated:true
-  //   });
-  //   if (sound) await sound.unloadAsync();
-
-  //   if (soundIndex !== 0) {
-  //     const { sound: prevSound } = await Audio.Sound.createAsync(
-  //       songs[prevSoundIndex].url
-  //     );
-
-  //     prevSound.setOnPlaybackStatusUpdate((status) => {
-  //       if (!status.isLoaded) return;
-  //       setDuration(status.durationMillis);
-  //       setPosition(status.positionMillis);
-  //       callBackSetIsPlaying(status.isPlaying);
-  //       if (status.didJustFinish) {
-  //         skiptoNext();
-  //       }
-  //     });
-  //     await prevSound.playAsync();
-  //     setSound(prevSound);
-  //     callBackSetIsPlaying(true);
-  //   }
-  // };
   const skipToPrevious = async () => {
     const previousSoundIndex =
       soundIndex > 0 ? soundIndex - 1 : songs.length - 1;
@@ -115,12 +87,11 @@ const SoundPlayer = () => {
       const { sound: previousSound } = await Audio.Sound.createAsync(
         songs[previousSoundIndex].url
       );
+      callBackSetIsPlaying(true);
       previousSound.setOnPlaybackStatusUpdate((status) => {
         if (!status.isLoaded) return;
         setDuration(status.durationMillis);
         setPosition(status.positionMillis);
-        if (status.isPlaying !== isPlaying)
-          callBackSetIsPlaying(status.isPlaying);
         if (status.didJustFinish) {
           setSoundIndex(previousSoundIndex);
           previousSound.unloadAsync();
@@ -140,6 +111,7 @@ const SoundPlayer = () => {
     }
   };
   const playSound = async (audio) => {
+    callBackSetIsPlaying(true);
     if (!sound) {
       const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
       setSound(sound);
@@ -147,8 +119,7 @@ const SoundPlayer = () => {
         if (!status.isLoaded) return;
         setDuration(status.durationMillis);
         setPosition(status.positionMillis);
-        if (status.isPlaying !== isPlaying)
-          callBackSetIsPlaying(status.isPlaying);
+
         if (status.didJustFinish) {
           skiptoNext();
           setPosition(0);
@@ -164,9 +135,9 @@ const SoundPlayer = () => {
   };
 
   const pauseSound = async () => {
+    callBackSetIsPlaying(false);
     if (sound) {
       await sound.stopAsync();
-      callBackSetIsPlaying(false);
       await sound.setPositionAsync(0);
     }
   };
