@@ -7,11 +7,10 @@ import com.ssafy.healingdiary.domain.diary.dto.DiaryIdResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
+import com.ssafy.healingdiary.domain.diary.repository.DiaryRepositoryImpl;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -38,7 +37,7 @@ public class DiaryService {
 
     public DiaryDetailResponse getDiaryDetail(UserDetails principal, Long diaryId) {
 
-        DiaryDetailResponse diaryDetailResponse = DiaryDetailResponse.builder().build();
+        DiaryDetailResponse diaryDetailResponse = new DiaryDetailResponse();
         return diaryDetailResponse;
     }
 
