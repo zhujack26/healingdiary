@@ -1,16 +1,29 @@
-import { SafeAreaView, Text, StyleSheet } from "react-native";
-import GroupDetailHeader from "./GroupDetailHeader";
+import { View, ScrollView, StyleSheet } from "react-native";
+
+import GroupDiaryList from "./GroupDiaryList";
+import GroupIntroduction from "./GroupIntroduction";
 
 const GroupDetail = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text>그룹디테일</Text>
-    </SafeAreaView>
+    <ScrollView style={styles.container}>
+      <GroupIntroduction />
+      <View style={styles.groupDiaryListContanier}>
+        <GroupDiaryList />
+      </View>
+    </ScrollView>
   );
 };
 
 export default GroupDetail;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+    paddingTop: 32,
+    paddingHorizontal: 16,
+  },
+
+  groupDiaryListContanier: {
+    alignItems: "center",
+  },
 });
