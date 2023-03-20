@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import WriteSecondScreen from "../screens/WriteSecondScreen";
 import Hashtag from "../components/write/Hashtag";
+import UserInformScreen from "../screens/UserInformScreen";
 
 
 const Stack = createNativeStackNavigator();
@@ -19,6 +20,10 @@ const StackNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
+        initialRouteName="userinform"
+        component= {UserInformScreen}
+        >
+      {/* <Stack.Navigator
         initialRouteName="diaryBottomTab"
         screenOptions={{
           headerStyle: {
@@ -26,7 +31,7 @@ const StackNavigation = () => {
           },
           headerTintColor: GlobalColors.colors.black500,
         }}
-      >
+      > */}
         <Stack.Screen
           name="diaryBottomTab"
           component={BottomTabs}
@@ -116,7 +121,11 @@ const StackNavigation = () => {
             },
           }}
           />
-
+        <Stack.Screen
+          name="userinform"
+          component= {UserInformScreen}
+        options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

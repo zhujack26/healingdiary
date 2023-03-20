@@ -39,6 +39,7 @@ const Location = ({ title }) => {
     },
     title:{
       marginBottom: 4,
+      fontSize: 20,
     },
     input:{
       borderWidth: 0,
