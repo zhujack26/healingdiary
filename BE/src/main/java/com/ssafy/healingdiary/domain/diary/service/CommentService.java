@@ -1,9 +1,12 @@
-package com.ssafy.healingdiary.domain.comment.service;
+package com.ssafy.healingdiary.domain.diary.service;
 
-import com.ssafy.healingdiary.domain.comment.repository.CommentRepository;
+import com.ssafy.healingdiary.domain.diary.dto.CommentIdResponse;
+import com.ssafy.healingdiary.domain.diary.repository.CommentRepository;
 import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,12 +23,12 @@ public class CommentService {
         return comments;
     }
 
-    public Long createComment(UserDetails principal, Long diaryId, String content) {
-        return 1L;
+    public CommentIdResponse createComment(UserDetails principal, Long diaryId, String content) {
+        return new CommentIdResponse(1L);
     }
 
-    public Long updateComment(UserDetails principal, Long commentId, String content) {
-        return 1L;
+    public CommentIdResponse updateComment(UserDetails principal, Long commentId, String content) {
+        return new CommentIdResponse(1L);
     }
 
     public void deleteComment(UserDetails principal, Long commentId) {

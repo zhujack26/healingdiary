@@ -1,6 +1,5 @@
-package com.ssafy.healingdiary.domain.comment.domain;
+package com.ssafy.healingdiary.domain.diary.domain;
 
-import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;

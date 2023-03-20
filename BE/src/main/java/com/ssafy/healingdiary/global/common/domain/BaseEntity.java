@@ -20,7 +20,7 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
 
     @Column(name = "created_date",updatable = false)
     @CreatedDate

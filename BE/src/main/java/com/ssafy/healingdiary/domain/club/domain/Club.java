@@ -18,8 +18,6 @@ import java.util.List;
 @AttributeOverride(name = "updatedDate", column = @Column(name = "club_updated_date"))
 public class Club extends BaseEntity {
 
-
-
     @NotNull
     private Long admin; //userId
 

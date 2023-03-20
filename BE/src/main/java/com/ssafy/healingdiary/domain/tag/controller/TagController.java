@@ -1,9 +1,5 @@
 package com.ssafy.healingdiary.domain.tag.controller;
 
-
-import com.ssafy.healingdiary.domain.tag.domain.Tag;
-import com.ssafy.healingdiary.domain.tag.repository.TagRepository;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -18,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TagController {
 
     private final RedisTemplate redisTemplate;
-    private final TagRepository tagRepository;
     @GetMapping
     public ResponseEntity<?> tagAllList() {
         redisTemplate.opsForValue()

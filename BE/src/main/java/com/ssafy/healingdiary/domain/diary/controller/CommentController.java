@@ -1,9 +1,11 @@
-package com.ssafy.healingdiary.domain.comment.controller;
+package com.ssafy.healingdiary.domain.diary.controller;
 
 
-import com.ssafy.healingdiary.domain.comment.service.CommentService;
+import com.ssafy.healingdiary.domain.diary.dto.CommentIdResponse;
+import com.ssafy.healingdiary.domain.diary.service.CommentService;
 import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -33,13 +35,13 @@ public class CommentController {
     }
 
     @PostMapping
-    public Long createComment(Authentication authentication, @RequestParam Long diaryId, @RequestBody String content){
+    public CommentIdResponse createComment(Authentication authentication, @RequestParam Long diaryId, @RequestBody String content){
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         return commentService.createComment(principal, diaryId, content);
     }
 
     @PutMapping("/{commentId}")
-    public Long updateComment(Authentication authentication, @PathVariable Long commentId, @RequestBody String content){
+    public CommentIdResponse updateComment(Authentication authentication, @PathVariable Long commentId, @RequestBody String content){
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         return commentService.updateComment(principal, commentId, content);
     }
