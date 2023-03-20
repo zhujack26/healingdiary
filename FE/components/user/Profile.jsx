@@ -1,13 +1,11 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { View, Text, StyleSheet } from "react-native";
+import AddFile from "./AddFile";
 
 const Profile = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>회원정보</Text>
-      <Image
-        style={styles.img}
-        source={require("../../assets/images/SAMPLE1.png")}/>
+      <AddFile/>
     </View>
   );
 };
@@ -18,11 +16,6 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 30,
-  },
-  img: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
   },
 });
 

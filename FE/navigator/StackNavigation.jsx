@@ -44,8 +44,6 @@ const StackNavigation = () => {
             headerShown: false,
           }}
         />
-
-
         <Stack.Screen
           name="diaryDetail"
           component={DiaryDetail}
