@@ -4,14 +4,13 @@ package com.ssafy.healingdiary.domain.diary.controller;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryIdResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
-import com.ssafy.healingdiary.domain.diary.repository.DiaryRepositoryImpl;
 import com.ssafy.healingdiary.domain.diary.service.DiaryService;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -64,7 +63,7 @@ public class DiaryController {
     }
 
     @PostMapping
-    public DiaryIdResponse createDiary(Authentication authentication, @RequestBody DiaryCreateRequest diaryCreateRequest){
+    public Map<String, Object> createDiary(Authentication authentication, @RequestBody DiaryCreateRequest diaryCreateRequest){
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         return diaryService.createDiary(principal, diaryCreateRequest);
     }

@@ -4,13 +4,14 @@ import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryIdResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -41,11 +42,14 @@ public class DiaryService {
         return diaryDetailResponse;
     }
 
-    public DiaryIdResponse createDiary(UserDetails principal, DiaryCreateRequest diaryCreateRequest) {
-        return new DiaryIdResponse(1L);
+    public Map<String, Object> createDiary(UserDetails principal, DiaryCreateRequest diaryCreateRequest) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("diaryId", 1L);
+        return map;
     }
 
     public void deleteDiary(UserDetails principal, Long diaryId) {
+
     }
 
 

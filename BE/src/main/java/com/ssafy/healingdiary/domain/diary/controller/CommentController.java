@@ -1,7 +1,6 @@
 package com.ssafy.healingdiary.domain.diary.controller;
 
 
-import com.ssafy.healingdiary.domain.diary.dto.CommentIdResponse;
 import com.ssafy.healingdiary.domain.diary.service.CommentService;
 import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import java.util.List;
@@ -35,13 +34,13 @@ public class CommentController {
     }
 
     @PostMapping
-    public CommentIdResponse createComment(Authentication authentication, @RequestParam Long diaryId, @RequestBody String content){
+    public Map<String, Object> createComment(Authentication authentication, @RequestParam Long diaryId, @RequestBody String content){
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         return commentService.createComment(principal, diaryId, content);
     }
 
     @PutMapping("/{commentId}")
-    public CommentIdResponse updateComment(Authentication authentication, @PathVariable Long commentId, @RequestBody String content){
+    public Map<String, Object> updateComment(Authentication authentication, @PathVariable Long commentId, @RequestBody String content){
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         return commentService.updateComment(principal, commentId, content);
     }

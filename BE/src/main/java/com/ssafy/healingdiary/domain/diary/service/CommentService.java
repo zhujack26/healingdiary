@@ -1,6 +1,5 @@
 package com.ssafy.healingdiary.domain.diary.service;
 
-import com.ssafy.healingdiary.domain.diary.dto.CommentIdResponse;
 import com.ssafy.healingdiary.domain.diary.repository.CommentRepository;
 import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import java.util.ArrayList;
@@ -23,12 +22,16 @@ public class CommentService {
         return comments;
     }
 
-    public CommentIdResponse createComment(UserDetails principal, Long diaryId, String content) {
-        return new CommentIdResponse(1L);
+    public Map<String, Object> createComment(UserDetails principal, Long diaryId, String content) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("commentId", 1L);
+        return map;
     }
 
-    public CommentIdResponse updateComment(UserDetails principal, Long commentId, String content) {
-        return new CommentIdResponse(1L);
+    public Map<String, Object> updateComment(UserDetails principal, Long commentId, String content) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("commentId", 1L);
+        return map;
     }
 
     public void deleteComment(UserDetails principal, Long commentId) {
