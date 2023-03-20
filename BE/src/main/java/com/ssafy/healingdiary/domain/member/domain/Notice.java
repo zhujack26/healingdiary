@@ -1,6 +1,6 @@
 package com.ssafy.healingdiary.domain.member.domain;
 
-import com.ssafy.healingdiary.domain.comment.domain.Comment;
+import com.ssafy.healingdiary.domain.diary.domain.Comment;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
 import javax.persistence.AttributeOverride;

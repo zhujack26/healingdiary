@@ -3,11 +3,13 @@ package com.ssafy.healingdiary.domain.diary.service;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
+import com.ssafy.healingdiary.domain.diary.dto.DiaryIdResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,7 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
 
-    public List<DiaryListResponse> getDiaryList(
+    public Slice<DiaryListResponse> getDiaryList(
         UserDetails principal,
         Long clubId,
         String keyword,
@@ -30,9 +32,8 @@ public class DiaryService {
         LocalDate date,
         Pageable pageable){
 
-        //Slice<DiaryListResponse> slice = diaryRepository.findList(clubId, keyword, tag, date, pageable);
-        List<DiaryListResponse> diaryList = new ArrayList<>();
-        return diaryList;
+        Slice<DiaryListResponse> slice = diaryRepository.findByOption(clubId,keyword,tag,date,pageable);
+        return slice;
     }
 
     public DiaryDetailResponse getDiaryDetail(UserDetails principal, Long diaryId) {
@@ -41,8 +42,8 @@ public class DiaryService {
         return diaryDetailResponse;
     }
 
-    public Long createDiary(UserDetails principal, DiaryCreateRequest diaryCreateRequest) {
-        return 1L;
+    public DiaryIdResponse createDiary(UserDetails principal, DiaryCreateRequest diaryCreateRequest) {
+        return new DiaryIdResponse(1L);
     }
 
     public void deleteDiary(UserDetails principal, Long diaryId) {
