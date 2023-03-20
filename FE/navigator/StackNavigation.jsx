@@ -16,8 +16,8 @@ import {
 import WriteSecondScreen from "../screens/WriteSecondScreen";
 import Hashtag from "../components/write/Hashtag";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
-import { Ionicons } from "@expo/vector-icons";
 import GroupDetailHeader from "./../components/groupDetail/GroupDetailHeader";
+import SettingScreen from "./../screens/SettingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -112,6 +112,15 @@ const StackNavigation = () => {
         <Stack.Screen
           name="groupDetail"
           component={GroupDetailScreen}
+          options={{
+            header: () => <GroupDetailHeader isDisplay={true} />,
+            headerTitle: "",
+            headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="setting"
+          component={SettingScreen}
           options={{
             header: () => <GroupDetailHeader />,
             headerTitle: "",
