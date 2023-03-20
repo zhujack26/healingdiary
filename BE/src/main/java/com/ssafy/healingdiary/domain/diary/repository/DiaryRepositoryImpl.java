@@ -38,6 +38,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
                 tagEq(tagContent),
                 dateEq(date)
             )
+            .orderBy(diary.createdDate.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize()+1)
             .transform(
