@@ -16,10 +16,7 @@ import {
 import WriteSecondScreen from "../screens/WriteSecondScreen";
 import Hashtag from "../components/write/Hashtag";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
-import GroupDetailHeader from "./../components/groupDetail/GroupDetailHeader";
-import SettingScreen from "./../screens/SettingScreen";
 import UserInformScreen from "../screens/UserInformScreen";
-
 
 const Stack = createNativeStackNavigator();
 
@@ -119,24 +116,14 @@ const StackNavigation = () => {
           name="groupDetail"
           component={GroupDetailScreen}
           options={{
-            header: () => <GroupDetailHeader isDisplay={true} />,
-            headerTitle: "",
-            headerShadowVisible: false,
+            headerShown: false,
           }}
         />
-        <Stack.Screen
-          name="setting"
-          component={SettingScreen}
-          options={{
-            header: () => <GroupDetailHeader />,
-            headerTitle: "",
-            headerShadowVisible: false,
-          }}
-          />
+
         <Stack.Screen
           name="userinform"
-          component= {UserInformScreen}
-        options={{ headerShown: false }}
+          component={UserInformScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
