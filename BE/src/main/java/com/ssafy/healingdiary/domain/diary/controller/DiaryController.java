@@ -8,18 +8,14 @@ import com.ssafy.healingdiary.domain.diary.dto.DiaryIdResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
+import com.ssafy.healingdiary.domain.diary.repository.DiaryRepositoryImpl;
 import com.ssafy.healingdiary.domain.diary.service.DiaryService;
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,15 +38,10 @@ public class DiaryController {
     //only test
     private final DiaryRepository diaryRepository;
 
-//    @GetMapping("/test")
-//    public Slice<DiaryListResponse> test (
-//        @RequestParam(required = false) Long clubId,
-//        @RequestParam(required = false) String keyword,
-//        @RequestParam(required = false) String tag,
-//        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-//        Pageable pageable
-//    ){
-//        return diaryRepository.findByOption(clubId,keyword,tag,date,pageable);
+//    @GetMapping("/test/{diaryId}")
+//    public DiaryDetailResponse test (
+//        @PathVariable Long diaryId){
+//        return diaryService.getDiaryDetail(diaryId);
 //    }
 
     @GetMapping
@@ -69,7 +60,7 @@ public class DiaryController {
     @GetMapping("/{diaryId}")
     public DiaryDetailResponse getDiaryDetail(Authentication authentication, @PathVariable Long diaryId){
         UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getDiaryDetail(principal,diaryId);
+        return diaryService.getDiaryDetail(diaryId);
     }
 
     @PostMapping

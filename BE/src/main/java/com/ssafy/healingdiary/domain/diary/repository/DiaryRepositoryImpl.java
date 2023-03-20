@@ -7,10 +7,10 @@ import static com.ssafy.healingdiary.domain.diary.domain.QDiaryTag.diaryTag;
 import static com.ssafy.healingdiary.domain.tag.domain.QTag.tag;
 import static org.springframework.util.StringUtils.hasText;
 
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
+import com.ssafy.healingdiary.domain.diary.dto.QDiaryListResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -42,12 +42,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             .limit(pageable.getPageSize()+1)
             .transform(
                 groupBy(diary.id).list(
-                    Projections.fields(DiaryListResponse.class,
-                        diary.id.as("diaryId"),
-                        list(tag.content).as("tags"),
-                        diary.diaryImageUrl.as("imageUrl"),
-                        diary.createdDate
-                    )
+                    new QDiaryListResponse(diary.id, diary.diaryImageUrl, diary.createdDate, list(tag.content))
                 )
             );
 

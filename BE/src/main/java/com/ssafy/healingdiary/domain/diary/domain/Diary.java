@@ -41,10 +41,9 @@ public class Diary extends BaseEntity {
     private String recordUrl;
 
     @NotNull
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "emotion")
     private Emotion emotion;
-
-
 
 
 }
