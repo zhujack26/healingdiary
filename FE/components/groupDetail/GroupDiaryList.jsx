@@ -1,4 +1,4 @@
-import { FlatList } from "react-native-gesture-handler";
+import { View, FlatList, StyleSheet } from "react-native";
 import GroupDiaryListItem from "./GroupDiaryListItem";
 
 const DATA = [
@@ -26,14 +26,22 @@ const DATA = [
 
 const GroupDiaryList = () => {
   return (
-    <FlatList
-      data={DATA}
-      renderItem={({ item }) => <GroupDiaryListItem data={item} />}
-      keyExtractor={(item) => item.id}
-      scrollEnabled={false}
-      contentContainerStyle={{ marginBottom: 48 }}
-    />
+    <View style={styles.container}>
+      <FlatList
+        data={DATA}
+        renderItem={({ item }) => <GroupDiaryListItem data={item} />}
+        keyExtractor={(item) => item.id}
+        scrollEnabled={false}
+        contentContainerStyle={{ marginBottom: 48 }}
+      />
+    </View>
   );
 };
 
 export default GroupDiaryList;
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+  },
+});

@@ -27,8 +27,8 @@ const GroupIntroduction = () => {
       </View>
       <View style={styles.groupIntrocutionContainer}>
         <Text style={styles.groupIntrocutionText}>
-          ㄴㅇㅁ나ㅣㅓㅣㄴㅇㅁ나ㅣㅓㅣㄴㅇㅁ나ㅣㅓㅣㄴㅇㅁ나ㅣㅓㅣㄴㅇㅁ나ㅣㅓㅣ
-          ㄴㅇㅁ나ㅣㅓㅣㄴㅇㅁ나ㅣㅓㅣㄴㅇㅁ나ㅣㅓㅣ
+          소모임 소개입니다.소모임 소개입니다.소모임 소개입니다.소모임
+          소개입니다.소모임 소개입니다.
         </Text>
       </View>
       <View style={styles.hashtags}>

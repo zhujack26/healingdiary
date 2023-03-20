@@ -1,4 +1,4 @@
-import { View, ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 import GroupDiaryList from "./GroupDiaryList";
 import GroupIntroduction from "./GroupIntroduction";
@@ -7,9 +7,7 @@ const GroupDetail = () => {
   return (
     <ScrollView style={styles.container}>
       <GroupIntroduction />
-      <View style={styles.groupDiaryListContanier}>
-        <GroupDiaryList />
-      </View>
+      <GroupDiaryList />
     </ScrollView>
   );
 };
@@ -21,9 +19,5 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 32,
     paddingHorizontal: 16,
-  },
-
-  groupDiaryListContanier: {
-    alignItems: "center",
   },
 });
