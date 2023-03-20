@@ -18,12 +18,18 @@ import Hashtag from "../components/write/Hashtag";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import GroupDetailHeader from "./../components/groupDetail/GroupDetailHeader";
 import SettingScreen from "./../screens/SettingScreen";
+import UserInformScreen from "../screens/UserInformScreen";
+
 
 const Stack = createNativeStackNavigator();
 
 const StackNavigation = () => {
   return (
     <NavigationContainer>
+      {/* <Stack.Navigator
+        initialRouteName="userinform"
+        component= {UserInformScreen}
+        > */}
       <Stack.Navigator
         initialRouteName="diaryBottomTab"
         screenOptions={{
@@ -126,6 +132,11 @@ const StackNavigation = () => {
             headerTitle: "",
             headerShadowVisible: false,
           }}
+          />
+        <Stack.Screen
+          name="userinform"
+          component= {UserInformScreen}
+        options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

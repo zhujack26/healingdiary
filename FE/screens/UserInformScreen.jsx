@@ -32,14 +32,16 @@ const styles = StyleSheet.create({
     width: deviceWidth+50,
   },
   profile: {
-    top: 150
+    top: 100,
+    height:"10%"
   },
   inform: {
-    top: 250,
+    height:"78%",
+    top: 190,
     padding: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingBottom: 200,
+    // paddingBottom: 200,
     backgroundColor: GlobalColors.colors.primary500
   },
   button: {
