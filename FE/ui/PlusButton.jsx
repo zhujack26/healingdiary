@@ -1,5 +1,7 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "./../constants/color";
+import { Entypo } from '@expo/vector-icons'; 
+
 
 const PlusButton = ({ navigation }) => {
     return (
@@ -11,7 +13,7 @@ const PlusButton = ({ navigation }) => {
                     pressed && styles.pressedButton,
                 ]}
             >
-                <Text style={styles.buttonText}> + </Text>
+                <Entypo name="plus" size={24} color={GlobalColors.colors.white500}/>
             </Pressable>
         </View>
     );
@@ -33,12 +35,10 @@ const styles = StyleSheet.create({
         height: 30,
         borderRadius: 30,
         backgroundColor: GlobalColors.colors.primary500,
+        alignItems: "center",
+        justifyContent: "center"
     },
-    buttonText: {
-        color: GlobalColors.colors.white500,
-        fontSize: 20,
-        textAlign: "center",
-    },
+
 });
 
 export default PlusButton;

@@ -7,9 +7,10 @@ import DiaryDetail from "./../components/diaryDetail/DiaryDetail";
 import Date from "../ui/Date";
 import WriteScreen from "../screens/WriteScreen";
 import {
-  Button, Pressable
+  Button, Text, Pressable, StyleSheet, TouchableOpacity
 } from "react-native";
 import WriteSecondScreen from "../screens/WriteSecondScreen";
+import Hashtag from "../components/write/Hashtag";
 
 
 const Stack = createNativeStackNavigator();
@@ -56,23 +57,68 @@ const StackNavigation = () => {
           name="Write"
           component={WriteScreen}
           options={({ navigation }) => ({
+            headerTitle: '',
+            headerBackTitleVisible: false,
             headerRight: () => (
-              <Button 
+              <TouchableOpacity
               onPress={() => navigation.navigate("Write2")}
-              title="다음"
-              />
+              >
+              <Text
+              style={{fontSize: 16, fontWeight: "bold"}}
+              >
+              다음  
+              </Text>  
+              </TouchableOpacity>
               ),
-          })} 
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.primary500,
+            },
+            })} 
         />
         <Stack.Screen
           name="Write2"
           component={WriteSecondScreen}
-          options={{
-          }}
+          options={({ navigation }) => ({
+            title: "",
+            headerRight: () => (
+              <TouchableOpacity
+              onPress={() => navigation.navigate("Write2")}
+              >
+              <Text
+              style={{fontSize: 16, fontWeight: "bold"}}
+              >
+              완료  
+              </Text>  
+              </TouchableOpacity>
+              ),
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.primary500,
+            },
+            })} 
         />
+
+        <Stack.Screen
+          name= "hashtag"
+          component={Hashtag}
+          options={{
+            title: "",
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.primary500,
+            },
+          }}
+          />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
-
 export default StackNavigation;

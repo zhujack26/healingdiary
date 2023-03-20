@@ -1,12 +1,22 @@
-import { View, Text, StyleSheet } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
+import CalendarView from "../components/calendar/CalendarView";
+import Statistics from "../components/calendar/Statistics";
+
 const CalendarScreen = () => {
   return (
-    <View>
-      <Text>Calendar</Text>
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <CalendarView />
+      <Statistics />
+    </ScrollView>
   );
 };
 
-export default CalendarScreen;
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    marginTop: 20,
+    padding: 30,
+  },
+});
 
-const styles = StyleSheet.create({});
+export default CalendarScreen;
