@@ -37,52 +37,64 @@ public class DiaryController {
     //only test
     private final DiaryRepository diaryRepository;
 
-//    @GetMapping("/test/{diaryId}")
-//    public DiaryDetailResponse test (
-//        @PathVariable Long diaryId){
-//        return diaryService.getDiaryDetail(diaryId);
-//    }
+    @GetMapping("/test/{diaryId}")
+    public void test (
+        @PathVariable Long diaryId){
+        diaryService.deleteDiary(diaryId);
+    }
 
     @GetMapping
     public Slice<DiaryListResponse> getDiaryList(
-        Authentication authentication,
+//        Authentication authentication,
         @RequestParam(required = false) Long clubId,
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String tag,
         @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
         Pageable pageable
     ){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getDiaryList(principal,clubId,keyword,tag,date,pageable);
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return diaryService.getDiaryList(clubId,keyword,tag,date,pageable);
     }
 
     @GetMapping("/{diaryId}")
-    public DiaryDetailResponse getDiaryDetail(Authentication authentication, @PathVariable Long diaryId){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
+    public DiaryDetailResponse getDiaryDetail(
+//        Authentication authentication,
+        @PathVariable Long diaryId){
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
         return diaryService.getDiaryDetail(diaryId);
     }
 
     @PostMapping
-    public Map<String, Object> createDiary(Authentication authentication, @RequestBody DiaryCreateRequest diaryCreateRequest){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.createDiary(principal, diaryCreateRequest);
+    public Map<String, Object> createDiary(
+//        Authentication authentication,
+        @RequestBody DiaryCreateRequest diaryCreateRequest){
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return diaryService.createDiary(diaryCreateRequest);
     }
 
     @DeleteMapping("/{diaryId}")
-    public void deleteDiary(Authentication authentication, @PathVariable Long diaryId){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        diaryService.deleteDiary(principal,diaryId);
+    public void deleteDiary(
+//        Authentication authentication,
+        @PathVariable Long diaryId){
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        diaryService.deleteDiary(diaryId);
     }
 
     @GetMapping("/calendar")
-    public List<CalendarResponse> getCalendar(Authentication authentication, @RequestParam int year, @RequestParam int month){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getCalendar(principal,year, month);
+    public List<CalendarResponse> getCalendar(
+//        Authentication authentication,
+        @RequestParam int year,
+        @RequestParam int month){
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return diaryService.getCalendar(year, month);
     }
 
     @GetMapping("/emotion")
-    public List<EmotionResponse> getEmotionStatistics(Authentication authentication, @RequestParam int year, @RequestParam int month){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getEmotionStatistics(principal,year, month);
+    public List<EmotionResponse> getEmotionStatistics(
+//        Authentication authentication,
+        @RequestParam int year,
+        @RequestParam int month){
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return diaryService.getEmotionStatistics(year, month);
     }
 }
