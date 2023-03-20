@@ -1,4 +1,4 @@
-import { Image, View, StyleSheet, Pressable } from "react-native";
+import { Image, View, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import { useState, useEffect } from "react";
@@ -12,7 +12,7 @@ const AddFile = () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [1, 1],
+      aspect: [3, 3],
       quality: 1,
     });
 
@@ -30,14 +30,10 @@ const AddFile = () => {
   // });
 
   return (
-    <View style={styles.container}>
-      <Pressable onPress={pickImage}>
-        {image && (
-          <Image source={{ uri: image }} style={styles.container} />
-        )}
-        {!image && (<AntDesign name="plus" size={48} color="black" />)}
-      </Pressable>
-    </View>
+      <TouchableOpacity onPress={pickImage} style={styles.container}>
+        {image && <Image source={{ uri: image }} style={styles.img} />}
+        {!image && <AntDesign name="plus" size={48} color="black" />}
+      </TouchableOpacity>
   );
 };
 
@@ -45,15 +41,25 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 30,
+    marginTop: 50,
     marginBottom: 10,
     width: 250,
-    height: 400,
-    borderColor: GlobalColors.colors.white500,
+    height: 350,
+    borderWidth: 1,
     borderBottomLeftRadius: 60,
     borderBottomRightRadius: 60,
-    shadowOpacity: 3
+    shadowOpacity: 0.5,
+    borderColor: GlobalColors.colors.white500,
+    elevation: 4,
+    backgroundColor: GlobalColors.colors.white500
   },
+  img: {
+    borderBottomLeftRadius: 60,
+    borderBottomRightRadius: 60,
+    shadowOpacity: 0,
+    width: "100%",
+    height: "100%",
+  }
 });
 
 export default AddFile;
