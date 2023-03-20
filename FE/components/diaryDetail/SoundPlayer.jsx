@@ -6,11 +6,11 @@ import {
   Dimensions,
   Pressable,
   Animated,
-  FlatList,
 } from "react-native";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
+import { Audio } from "expo-av";
 
 import Slider from "@react-native-community/slider";
 import songs from "../../model/data";
@@ -22,25 +22,124 @@ const SoundPlayer = () => {
   const soundSlider = useRef(null);
   const [soundIndex, setSoundIndex] = useState(0);
 
-  useEffect(() => {
-    scrollX.addListener(({ value }) => {
-      const index = Math.round(value / width);
-      setSoundIndex(index);
-    });
-    return () => {
-      scrollX.removeAllListeners();
-    };
-  }, []);
+  const [sound, setSound] = useState();
+  const [position, setPosition] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const skiptoNext = () => {
-    soundSlider.current.scrollToOffset({
-      offset: (soundIndex + 1) * width,
-    });
+  const callBackSetIsPlaying = useCallback(
+    (isPlaying) => {
+      setIsPlaying(isPlaying);
+    },
+    [setIsPlaying]
+  );
+
+  const sliderValueChange = (value) => {
+    if (sound) {
+      sound.setPositionAsync(value * duration);
+
+      requestAnimationFrame(() => {
+        setPosition(value * duration);
+      });
+    }
   };
-  const skipToPrevious = () => {
+
+  const skiptoNext = async () => {
+    const nextSoundIndex = soundIndex < songs.length - 1 ? soundIndex + 1 : 0;
     soundSlider.current.scrollToOffset({
-      offset: (soundIndex - 1) * width,
+      offset: nextSoundIndex * width,
+      animated: true,
     });
+    if (soundIndex < songs.length - 1) {
+      const { sound: nextSound } = await Audio.Sound.createAsync(
+        songs[nextSoundIndex].url
+      );
+      callBackSetIsPlaying(true);
+      nextSound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+        setDuration(status.durationMillis);
+        setPosition(status.positionMillis);
+        if (status.didJustFinish) {
+          setSoundIndex(nextSoundIndex); // 다음 곡 인덱스로 업데이트
+          nextSound.unloadAsync(); // 현재 재생 중인 음악 언로드
+          skiptoNext(); // 다음 곡으로 재귀 호출
+        }
+      });
+      setSound(nextSound);
+      await nextSound.playAsync();
+      callBackSetIsPlaying(true);
+    } else {
+      setSoundIndex(0);
+      const { sound } = await Audio.Sound.createAsync(songs[0].url);
+      setSound(sound);
+      await sound.playAsync();
+    }
+  };
+
+  const skipToPrevious = async () => {
+    const previousSoundIndex =
+      soundIndex > 0 ? soundIndex - 1 : songs.length - 1;
+    soundSlider.current.scrollToOffset({
+      offset: previousSoundIndex * width,
+      animated: true,
+    });
+    if (soundIndex > 0) {
+      const { sound: previousSound } = await Audio.Sound.createAsync(
+        songs[previousSoundIndex].url
+      );
+      callBackSetIsPlaying(true);
+      previousSound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+        setDuration(status.durationMillis);
+        setPosition(status.positionMillis);
+        if (status.didJustFinish) {
+          setSoundIndex(previousSoundIndex);
+          previousSound.unloadAsync();
+          skipToPrevious();
+        }
+      });
+      setSound(previousSound);
+      await previousSound.playAsync();
+      callBackSetIsPlaying(true);
+    } else {
+      const { sound: previousSound } = await Audio.Sound.createAsync(
+        songs[songs.length - 1].url
+      );
+      setSound(previousSound);
+      await previousSound.playAsync();
+      setSoundIndex(songs.length - 1);
+    }
+  };
+  const playSound = async (audio) => {
+    callBackSetIsPlaying(true);
+    if (!sound) {
+      const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
+      setSound(sound);
+      sound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+        setDuration(status.durationMillis);
+        setPosition(status.positionMillis);
+
+        if (status.didJustFinish) {
+          skiptoNext();
+          setPosition(0);
+          sound.unloadAsync();
+        }
+      });
+      await sound.playAsync();
+    } else if (isPlaying) {
+      await sound.pauseAsync();
+    } else {
+      await sound.playAsync();
+    }
+  };
+
+  const pauseSound = async () => {
+    callBackSetIsPlaying(false);
+    if (sound) {
+      await sound.stopAsync();
+      await sound.setPositionAsync(0);
+    }
   };
 
   const renderSounds = ({ item }) => {
@@ -58,6 +157,45 @@ const SoundPlayer = () => {
       </View>
     );
   };
+
+  useEffect(() => {
+    scrollX.addListener(({ value }) => {
+      const index = Math.round(value / width);
+      setSoundIndex(index);
+    });
+    return () => {
+      scrollX.removeAllListeners();
+    };
+  }, []);
+
+  useEffect(() => {
+    return sound ? () => sound.unloadAsync() : undefined;
+  }, [sound]);
+
+  useEffect(() => {
+    const playCurrentSound = async () => {
+      if (sound) {
+        await sound.unloadAsync();
+      }
+      const { sound: newSound } = await Audio.Sound.createAsync(
+        songs[soundIndex].url
+      );
+      setSound(newSound);
+      newSound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded) return;
+        setDuration(status.durationMillis);
+        setPosition(status.positionMillis);
+
+        if (status.didJustFinish) {
+          if (soundIndex === songs.length - 1) skipToNext(0);
+          else setSoundIndex(soundIndex + 1);
+        }
+      });
+      await newSound.playAsync();
+      callBackSetIsPlaying(true);
+    };
+    playCurrentSound();
+  }, [soundIndex]);
 
   return (
     <View style={styles.playlist}>
@@ -105,17 +243,17 @@ const SoundPlayer = () => {
         <View>
           <Slider
             style={styles.progressContainer}
-            value={10}
+            value={duration ? position / duration : 0}
             minimumValue={0}
-            maximumValue={100}
+            maximumValue={1}
             thumbTintColor="#EDAD79"
             minimumTrackTintColor="#EDAD79"
             maximumTrackTintColor={GlobalColors.colors.gray400}
-            onSlidingComplete={() => {}}
+            onValueChange={sliderValueChange}
           />
           <View style={styles.progressLabelContainer}>
-            <Text style={styles.progressLabelText}>0:00</Text>
-            <Text style={styles.progressLabelText}>3:00</Text>
+            <Text style={styles.progressLabelText}></Text>
+            <Text style={styles.progressLabelText}></Text>
           </View>
         </View>
         <View style={styles.soundControlls}>
@@ -126,9 +264,13 @@ const SoundPlayer = () => {
               color={GlobalColors.colors.secondary500}
             />
           </Pressable>
-          <Pressable onPress={() => {}}>
+          <Pressable
+            onPress={() => {
+              isPlaying ? pauseSound() : playSound(songs);
+            }}
+          >
             <Ionicons
-              name="ios-pause-circle"
+              name={isPlaying ? "ios-pause-circle" : "ios-play-circle"}
               size={75}
               color={GlobalColors.colors.secondary500}
             />
