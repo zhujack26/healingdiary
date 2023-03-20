@@ -9,8 +9,11 @@ const Nickname = ({ title, placeholder }) => {
   const users = ["user1", "user2", "user3"]; //더미
 
   useEffect(() => {
-    if (
-      nickname.length <= 2 ||
+    if (!nickname) {
+      setMessage("")
+    }
+    else if (
+      0 < nickname.length <= 2 ||
       nickname.length >= 8 ||
       !/^[a-zA-Z0-9]*$/.test(nickname)
     ) {
