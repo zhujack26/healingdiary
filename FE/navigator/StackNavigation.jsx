@@ -7,10 +7,17 @@ import DiaryDetail from "./../components/diaryDetail/DiaryDetail";
 import Date from "../ui/Date";
 import WriteScreen from "../screens/WriteScreen";
 import {
-  Button, Text, Pressable, StyleSheet, TouchableOpacity
+  Button,
+  Text,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import WriteSecondScreen from "../screens/WriteSecondScreen";
 import Hashtag from "../components/write/Hashtag";
+import GroupDetailScreen from "../screens/GroupDetailScreen";
+import GroupDetailHeader from "./../components/groupDetail/GroupDetailHeader";
+import SettingScreen from "./../screens/SettingScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 
 
@@ -44,6 +51,7 @@ const StackNavigation = () => {
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="diaryDetail"
           component={DiaryDetail}
@@ -55,31 +63,25 @@ const StackNavigation = () => {
               backgroundColor: GlobalColors.colors.primary500,
             },
           }}
-          />
+        />
         <Stack.Screen
           name="Write"
           component={WriteScreen}
           options={({ navigation }) => ({
-            headerTitle: '',
+            headerTitle: "",
             headerBackTitleVisible: false,
             headerRight: () => (
-              <TouchableOpacity
-              onPress={() => navigation.navigate("Write2")}
-              >
-              <Text
-              style={{fontSize: 16, fontWeight: "bold"}}
-              >
-              다음  
-              </Text>  
+              <TouchableOpacity onPress={() => navigation.navigate("Write2")}>
+                <Text style={{ fontSize: 16, fontWeight: "bold" }}>다음</Text>
               </TouchableOpacity>
-              ),
+            ),
             headerTitle: () => <Date />,
             headerTitleAlign: "center",
             headerShadowVisible: false,
             headerStyle: {
               backgroundColor: GlobalColors.colors.primary500,
             },
-            })} 
+          })}
         />
         <Stack.Screen
           name="Write2"
@@ -87,27 +89,21 @@ const StackNavigation = () => {
           options={({ navigation }) => ({
             title: "",
             headerRight: () => (
-              <TouchableOpacity
-              onPress={() => navigation.navigate("Write2")}
-              >
-              <Text
-              style={{fontSize: 16, fontWeight: "bold"}}
-              >
-              완료  
-              </Text>  
+              <TouchableOpacity onPress={() => navigation.navigate("Write2")}>
+                <Text style={{ fontSize: 16, fontWeight: "bold" }}>완료</Text>
               </TouchableOpacity>
-              ),
+            ),
             headerTitle: () => <Date />,
             headerTitleAlign: "center",
             headerShadowVisible: false,
             headerStyle: {
               backgroundColor: GlobalColors.colors.primary500,
             },
-            })} 
+          })}
         />
 
         <Stack.Screen
-          name= "hashtag"
+          name="hashtag"
           component={Hashtag}
           options={{
             title: "",
@@ -117,6 +113,24 @@ const StackNavigation = () => {
             headerStyle: {
               backgroundColor: GlobalColors.colors.primary500,
             },
+          }}
+        />
+        <Stack.Screen
+          name="groupDetail"
+          component={GroupDetailScreen}
+          options={{
+            header: () => <GroupDetailHeader isDisplay={true} />,
+            headerTitle: "",
+            headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="setting"
+          component={SettingScreen}
+          options={{
+            header: () => <GroupDetailHeader />,
+            headerTitle: "",
+            headerShadowVisible: false,
           }}
           />
         <Stack.Screen
