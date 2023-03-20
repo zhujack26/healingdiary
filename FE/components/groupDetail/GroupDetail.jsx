@@ -9,6 +9,7 @@ import {
 import GroupDiaryList from "./GroupDiaryList";
 import GroupIntroduction from "./GroupIntroduction";
 import GroupDetailHeader from "./GroupDetailHeader";
+import GroupSetting from "./GroupSetting";
 
 const GroupDetail = () => {
   const bottomSheetModalRef = useRef(null);
@@ -19,10 +20,6 @@ const GroupDetail = () => {
 
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
-  }, []);
-
-  const handleSheetChanges = useCallback((index) => {
-    console.log("handleChanges", index);
   }, []);
 
   const renderBackdrop = useCallback(
@@ -48,14 +45,10 @@ const GroupDetail = () => {
           ref={bottomSheetModalRef}
           index={0}
           snapPoints={snapPoints}
-          onChange={handleSheetChanges}
           backdropComponent={renderBackdrop}
           enabledPanDownToClose={true}
         >
-          <View style={styles.contentContainer}>
-            <Text>Awesome 🎉</Text>
-            <Button title="닫기" onPress={handleCloseModalPress} />
-          </View>
+          <GroupSetting handleCloseModalPress={handleCloseModalPress} />
         </BottomSheetModal>
       </BottomSheetModalProvider>
     </>
