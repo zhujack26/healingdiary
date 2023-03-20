@@ -29,12 +29,8 @@ public class Member extends BaseEntity {
 
     private String disease;
 
-    @NotNull
-    private String age; //카카오 나이는 문자열로 받음 근데 나이는 정수로 하는게 좋을거같은데 모르겠음
-
     @Column(name = "member_image_url")
     private String memberImageUrl;
-
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Diary> diary = new ArrayList<>();
