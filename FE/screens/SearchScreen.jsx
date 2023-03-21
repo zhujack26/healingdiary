@@ -1,48 +1,103 @@
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
+import SearchBox from "../components/search/SearchBox";
+import SearchDiary from "../components/search/SearchDiary";
+import SearchGroup from "../components/search/SearchGroup";
+import SearchTag from "../components/search/SearchTag";
 import { useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { SearchBar } from "react-native-elements";
 import { GlobalColors } from "../constants/color";
 
-export default function App() {
-  const [search, setSearch] = useState("");
-
-  const updateSearch = (search) => {
-    setSearch(search);
+const deviceHeight = Dimensions.get("window").height - 130;
+const SearchScreen = () => {
+  const getTextStyle = (index) => {
+    return activeIndex === index ? styles.activeText : styles.inactiveText;
   };
-
+  const [activeIndex, setActiveIndex] = useState(0);
+  const handleActiveIndex = (index) => {
+    setActiveIndex(index);
+  };
+  const Type = ({ activeIndex, handleActiveIndex }) => {
+    return (
+      <View style={styles.line}>
+        <Pressable
+          activeIndex={activeIndex}
+          onPress={() => handleActiveIndex(0)}
+          // style={({ pressed }) => pressed && styles.pressed}
+        >
+          <Text style={[styles.leftText, getTextStyle(0)]}>일기</Text>
+        </Pressable>
+        <Pressable
+          activeIndex={activeIndex}
+          onPress={() => handleActiveIndex(1)}
+          // style={({ pressed }) => pressed && styles.pressed}
+        >
+          <Text style={[styles.centerText, getTextStyle(1)]}>소모임</Text>
+        </Pressable>
+        <Pressable
+          activeIndex={activeIndex}
+          onPress={() => handleActiveIndex(2)}
+          // style={({ pressed }) => pressed && styles.pressed}
+        >
+          <Text style={[styles.rightText, getTextStyle(2)]}>해시태그</Text>
+        </Pressable>
+      </View>
+    );
+  };
+  const renderItem = () => {
+    if (activeIndex === 0) {
+      return <SearchDiary />;
+    }
+    if (activeIndex === 1) {
+      return <SearchGroup />;
+    }
+    if (activeIndex === 2) return <SearchTag />;
+  };
   return (
     <View style={styles.container}>
-      <SearchBar
-        placeholder=""
-        onChangeText={updateSearch}
-        value={search}
-        containerStyle={styles.searchContainer}
-        inputContainerStyle={styles.inputContainer}
-        inputStyle={styles.input}
-        searchIcon={{ color: "orange" }}
-        clearIcon={{ color: "orange" }}
-      />
+      <SearchBox />
+      <Type activeIndex={activeIndex} handleActiveIndex={handleActiveIndex} />
+      {renderItem()}
     </View>
   );
-}
-
+};
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    justifyContent: "center",
+    height: deviceHeight,
+  },
+  line: {
+    height: 40,
+    borderTopWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: GlobalColors.colors.gray400,
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
+    marginTop: 34,
+    marginBottom: 34,
   },
-  searchContainer: {
-    backgroundColor: "transparent",
-    borderTopWidth: 0,
-    borderBottomWidth: 0,
-    width: "85%",
+  leftText: {
+    paddingLeft: 30,
+    paddingBottom: 10,
+    paddingTop: 10,
+    paddingRight: 40,
   },
-  inputContainer: {
-    backgroundColor: GlobalColors.colors.gray400,
-    borderRadius: 20,
-    height: 35,
+  centerText: {
+    paddingBottom: 10,
+    paddingTop: 10,
+    paddingLeft: 40,
+    paddingRight: 40,
   },
-  input: {
+  rightText: {
+    paddingRight: 30,
+    paddingLeft: 40,
+    paddingBottom: 10,
+    paddingTop: 10,
+  },
+  activeText: {
     color: "black",
   },
+  inactiveText: {
+    color: "gray",
+  },
 });
+export default SearchScreen;
