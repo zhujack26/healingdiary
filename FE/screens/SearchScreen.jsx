@@ -1,12 +1,48 @@
-import { View, Text, StyleSheet } from "react-native";
-const SearchScreen = () => {
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { SearchBar } from "react-native-elements";
+import { GlobalColors } from "../constants/color";
+
+export default function App() {
+  const [search, setSearch] = useState("");
+
+  const updateSearch = (search) => {
+    setSearch(search);
+  };
+
   return (
-    <View>
-      <Text>Search</Text>
+    <View style={styles.container}>
+      <SearchBar
+        placeholder=""
+        onChangeText={updateSearch}
+        value={search}
+        containerStyle={styles.searchContainer}
+        inputContainerStyle={styles.inputContainer}
+        inputStyle={styles.input}
+        searchIcon={{ color: "orange" }}
+        clearIcon={{ color: "orange" }}
+      />
     </View>
   );
-};
+}
 
-export default SearchScreen;
-
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+  },
+  searchContainer: {
+    backgroundColor: "transparent",
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
+    width: "85%",
+  },
+  inputContainer: {
+    backgroundColor: GlobalColors.colors.gray400,
+    borderRadius: 20,
+    height: 35,
+  },
+  input: {
+    color: "black",
+  },
+});

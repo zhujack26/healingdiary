@@ -68,6 +68,7 @@ const BottomTabs = () => {
         name="Search"
         component={SearchScreen}
         options={{
+          headerTitle: "",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-search" color={color} size={size} />
           ),
