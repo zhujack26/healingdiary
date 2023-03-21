@@ -1,12 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import {
-  StatusBar,
   FlatList,
-  SafeAreaView,
   View,
   StyleSheet,
   Image,
   Text,
   Dimensions,
+  Pressable,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import Title from "../../ui/Title";
@@ -31,8 +31,13 @@ const DATA = [
   },
 ];
 
-const Item = ({ title, hashtag }) => (
-  <View style={styles.item}>
+const Item = ({ title, hashtag, navigation }) => (
+  <Pressable
+    style={styles.item}
+    onPress={() => {
+      navigation.navigate("groupDetail");
+    }}
+  >
     <Image
       source={require("../../assets/images/SAMPLE1.png")}
       style={styles.image}
@@ -41,17 +46,23 @@ const Item = ({ title, hashtag }) => (
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.hashtag}>{hashtag}</Text>
     </View>
-  </View>
+  </Pressable>
 );
 
 const GroupList = () => {
+  const navigation = useNavigation();
+
   return (
     <>
       <Title>전체 소모임</Title>
       <FlatList
         data={DATA}
         renderItem={({ item }) => (
-          <Item title={item.title} hashtag={item.hashtag} />
+          <Item
+            title={item.title}
+            hashtag={item.hashtag}
+            navigation={navigation}
+          />
         )}
         keyExtractor={(item) => item.id}
       />

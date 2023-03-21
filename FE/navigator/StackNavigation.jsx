@@ -11,6 +11,16 @@ import MakingDetailScreen from "../screens/MakingDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 import Hashtag from "../components/making/Hashtag";
 import MakingHashScreen from "../screens/MakingHashScreen";
+import {
+  Button,
+  Text,
+  Pressable,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
+import Hashtag from "../components/write/Hashtag";
+import GroupDetailScreen from "../screens/GroupDetailScreen";
+import UserInformScreen from "../screens/UserInformScreen";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -41,6 +51,7 @@ const StackNavigation = () => {
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="diaryDetail"
           component={DiaryDetail}
@@ -106,6 +117,13 @@ const StackNavigation = () => {
             headerStyle: {
               backgroundColor: GlobalColors.colors.primary500,
             },
+          }}
+        />
+        <Stack.Screen
+          name="groupDetail"
+          component={GroupDetailScreen}
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen
