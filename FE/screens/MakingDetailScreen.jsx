@@ -1,12 +1,12 @@
-import { View, StyleSheet, SafeAreaView, StatusBar } from "react-native";
-import AddHashtag from "../components/write/AddHashtag";
+import { View, StyleSheet} from "react-native";
+import AddHashtag from "../components/making/AddHashtag";
 import { GlobalColors } from "../constants/color";
 
-const WriteSecondScreen = () => {
+const MakingDetailScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
-        <AddHashtag/>
+        <AddHashtag />
       </View>
     </View>
   );
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40,
   },
 });
-export default WriteSecondScreen;
+export default MakingDetailScreen;
