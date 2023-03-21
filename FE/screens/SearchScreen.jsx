@@ -94,10 +94,10 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   activeText: {
-    color: "black",
+    color: GlobalColors.colors.black500,
   },
   inactiveText: {
-    color: "gray",
+    color: GlobalColors.colors.gray500,
   },
 });
 export default SearchScreen;

@@ -42,7 +42,9 @@ const styles = StyleSheet.create({
     height: 35,
   },
   input: {
-    color: "black",
+    fontSize: 15,
+    fontFamily: "KoddiUDOnGothic-Regular",
+    color: GlobalColors.colors.black500,
   },
 });
 
