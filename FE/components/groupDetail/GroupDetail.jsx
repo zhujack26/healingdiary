@@ -1,14 +1,26 @@
 import { ScrollView, StyleSheet } from "react-native";
+import { useCallback, useRef } from "react";
 
 import GroupDiaryList from "./GroupDiaryList";
 import GroupIntroduction from "./GroupIntroduction";
+import GroupDetailHeader from "./GroupDetailHeader";
+import BottomModal from "./BottomModal";
 
 const GroupDetail = () => {
+  const bottomSheetModalRef = useRef(null);
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
+
   return (
-    <ScrollView style={styles.container}>
-      <GroupIntroduction />
-      <GroupDiaryList />
-    </ScrollView>
+    <>
+      <GroupDetailHeader handlePresentModalPress={handlePresentModalPress} />
+      <ScrollView style={styles.container}>
+        <GroupIntroduction />
+        <GroupDiaryList />
+      </ScrollView>
+      <BottomModal bottomSheetModalRef={bottomSheetModalRef} />
+    </>
   );
 };
 
