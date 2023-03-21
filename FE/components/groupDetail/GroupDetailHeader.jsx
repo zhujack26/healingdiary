@@ -12,7 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
-const GroupDetailHeader = ({ isDisplay }) => {
+const GroupDetailHeader = ({ handlePresentModalPress }) => {
   const navigation = useNavigation();
 
   return (
@@ -31,16 +31,12 @@ const GroupDetailHeader = ({ isDisplay }) => {
           }}
         />
 
-        {isDisplay && (
-          <Ionicons
-            name="settings"
-            size={28}
-            color={GlobalColors.colors.secondary500}
-            onPress={() => {
-              navigation.navigate("setting");
-            }}
-          />
-        )}
+        <Ionicons
+          name="settings"
+          size={28}
+          color={GlobalColors.colors.secondary500}
+          onPress={handlePresentModalPress}
+        />
       </View>
     </SafeAreaView>
   );
