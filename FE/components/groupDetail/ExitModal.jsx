@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 50,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -64,8 +64,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    borderRadius: 6,
-    padding: 10,
+    borderRadius: 4,
+    padding: 8,
     elevation: 2,
     alignItems: "center",
     justifyContent: "center",
