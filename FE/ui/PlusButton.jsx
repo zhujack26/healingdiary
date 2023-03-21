@@ -7,7 +7,7 @@ const PlusButton = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <Pressable
-                onPress={() => navigation.navigate('Write')}
+                onPress={() => navigation.navigate('Making')}
                 style={({ pressed }) => [
                     styles.button,
                     pressed && styles.pressedButton,

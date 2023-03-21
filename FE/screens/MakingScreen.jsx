@@ -1,18 +1,14 @@
-import {
-  View,
-  StyleSheet,
-} from "react-native";
+import { View, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
-import Timer from "../components/write/Timer";
-import AddFile from "../components/write/AddFile";
+import Timer from "../components/making/Timer";
+import AddFile from "../components/making/AddFile";
 
-
-const WriteScreen = () => {
+const MakingScreen = () => {
   return (
     <View style={styles.container}>
-        <View style={styles.inform}>
-          <AddFile/>
-          <Timer/>
+      <View style={styles.inform}>
+        <AddFile />
+        <Timer />
       </View>
     </View>
   );
@@ -34,4 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WriteScreen;
+export default MakingScreen;
