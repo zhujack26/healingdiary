@@ -10,5 +10,6 @@ export const GlobalColors = {
     white500: "#ffffff",
     black500: "#000000",
     background500: "#f3f3f3",
+    red500: "#EF4444",
   },
 };
