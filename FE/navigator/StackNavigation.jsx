@@ -12,6 +12,8 @@ import Hashtag from "../components/making/Hashtag";
 import MakingHashScreen from "../screens/MakingHashScreen";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
+import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
+import GroupMemberScreen from "./../screens/GroupMemberScreen";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -115,6 +117,27 @@ const StackNavigation = () => {
           component={GroupDetailScreen}
           options={{
             headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="groupInfoUpdate"
+          component={GroupInfoUpdateScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="groupMember"
+          component={GroupMemberScreen}
+          options={{
+            title: "",
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.background500,
+            },
           }}
         />
         <Stack.Screen
