@@ -5,17 +5,14 @@ import BottomTabs from "./BottomTabs";
 import LoginScreen from "./../screens/LoginScreen";
 import DiaryDetail from "./../components/diaryDetail/DiaryDetail";
 import Date from "../ui/Date";
-import WriteScreen from "../screens/WriteScreen";
-import {
-  Button, Text, Pressable, StyleSheet, TouchableOpacity
-} from "react-native";
-import WriteSecondScreen from "../screens/WriteSecondScreen";
-import Hashtag from "../components/write/Hashtag";
+import MakingScreen from "../screens/MakingScreen";
+import { Text, TouchableOpacity } from "react-native";
+import MakingDetailScreen from "../screens/MakingDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
-
+import Hashtag from "../components/making/Hashtag";
+import MakingHashScreen from "../screens/MakingHashScreen";
 
 const Stack = createNativeStackNavigator();
-
 const StackNavigation = () => {
   return (
     <NavigationContainer>
@@ -55,60 +52,52 @@ const StackNavigation = () => {
               backgroundColor: GlobalColors.colors.primary500,
             },
           }}
-          />
+        />
         <Stack.Screen
-          name="Write"
-          component={WriteScreen}
+          name="Making"
+          component={MakingScreen}
           options={({ navigation }) => ({
-            headerTitle: '',
+            headerTitle: "",
             headerBackTitleVisible: false,
             headerRight: () => (
               <TouchableOpacity
-              onPress={() => navigation.navigate("Write2")}
+                onPress={() => navigation.navigate("MakingDetail")}
               >
-              <Text
-              style={{fontSize: 16, fontWeight: "bold"}}
-              >
-              다음  
-              </Text>  
+                <Text style={{ fontSize: 16, fontWeight: "bold" }}>다음</Text>
               </TouchableOpacity>
-              ),
+            ),
             headerTitle: () => <Date />,
             headerTitleAlign: "center",
             headerShadowVisible: false,
             headerStyle: {
               backgroundColor: GlobalColors.colors.primary500,
             },
-            })} 
+          })}
         />
         <Stack.Screen
-          name="Write2"
-          component={WriteSecondScreen}
+          name="MakingDetail"
+          component={MakingDetailScreen}
           options={({ navigation }) => ({
             title: "",
             headerRight: () => (
               <TouchableOpacity
-              onPress={() => navigation.navigate("Write2")}
+                onPress={() => navigation.navigate("MakingDetail")}
               >
-              <Text
-              style={{fontSize: 16, fontWeight: "bold"}}
-              >
-              완료  
-              </Text>  
+                <Text style={{ fontSize: 16, fontWeight: "bold" }}>완료</Text>
               </TouchableOpacity>
-              ),
+            ),
             headerTitle: () => <Date />,
             headerTitleAlign: "center",
             headerShadowVisible: false,
             headerStyle: {
               backgroundColor: GlobalColors.colors.primary500,
             },
-            })} 
+          })}
         />
 
         <Stack.Screen
-          name= "hashtag"
-          component={Hashtag}
+          name="MakingHash"
+          component={MakingHashScreen}
           options={{
             title: "",
             headerTitle: () => <Date />,
@@ -118,11 +107,11 @@ const StackNavigation = () => {
               backgroundColor: GlobalColors.colors.primary500,
             },
           }}
-          />
+        />
         <Stack.Screen
           name="userinform"
-          component= {UserInformScreen}
-        options={{ headerShown: false }}
+          component={UserInformScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
