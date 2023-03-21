@@ -5,6 +5,9 @@ const songs = [
     image: require("../assets/images/SAMPLE1.png"),
     hashtags: ["해시태그", "해시태그", "해시태그"],
     url: require("../assets/sounds/SAMPLE1.mp3"),
+    // url: {
+    //   uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/mountainrabbit.mp3",
+    // },
     duration: 167,
     id: "1",
   },
