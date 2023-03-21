@@ -23,9 +23,9 @@ const GroupSetting = ({ handleCloseModalPress }) => {
       />
       <Pressable
         style={[styles.settingList, styles.settingListFirst]}
-        onPress={() => navigateAndCloseModal("groupInfo")}
+        onPress={() => navigateAndCloseModal("groupInfoUpdate")}
       >
-        <Text style={styles.settingListText}>소모임 정보</Text>
+        <Text style={styles.settingListText}>소모임 정보수정</Text>
         <Ionicons
           name="chevron-forward-outline"
           size={24}
