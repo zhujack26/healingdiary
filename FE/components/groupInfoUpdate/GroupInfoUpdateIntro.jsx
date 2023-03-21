@@ -9,18 +9,28 @@ import {
   ScrollView,
   Keyboard,
 } from "react-native";
+import { useState } from "react";
 import { GlobalColors } from "./../../constants/color";
 
 const { width } = Dimensions.get("window");
 
 const GroupInfoUpdateIntro = () => {
+  const [inputText, setInputText] = useState("");
+  const [hashtags, setHashtags] = useState([]);
+
+  const FormattedHashTag = (text) => {
+    setInputText(text);
+    const newHashtags = text.match(/#\w+/g) || [];
+    setHashtags(newHashtags);
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : null}
       style={styles.container}
       keyboardVerticalOffset={44}
     >
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.wrapper}>
           <Text style={styles.label}>소모임 이름</Text>
           <TextInput
@@ -47,13 +57,21 @@ const GroupInfoUpdateIntro = () => {
           <Text style={styles.label}>해시태그</Text>
           <TextInput
             style={styles.input}
-            defaultValue="#해시태그 #해시태그"
+            value={inputText}
             returnKeyType="done"
             blurOnSubmit={true}
             onSubmitEditing={() => {
               Keyboard.dismiss();
             }}
+            onChangeText={FormattedHashTag}
           />
+          <View>
+            {hashtags?.map((hashtag) => (
+              <View key={hashtag}>
+                <Text>{hashtag}</Text>
+              </View>
+            ))}
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
@@ -83,8 +101,8 @@ const styles = StyleSheet.create({
     width: width - 50,
     fontFamily: "KoddiUDOnGothic-Regular",
     borderBottomWidth: 2,
-    borderBottomColor: GlobalColors.colors.primary500,
+    borderBottomColor: GlobalColors.colors.white500,
     padding: 3,
-    fontSize: 18,
+    fontSize: 16,
   },
 });
