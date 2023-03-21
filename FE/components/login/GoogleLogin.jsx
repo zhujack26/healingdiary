@@ -6,13 +6,31 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { useEffect, useState } from "react";
 
 const deviceWidth = Dimensions.get("window").width - 50;
 
 const GoogleLogin = () => {
+  const [token, setToken] = useState("");
+  const [userInfo, setUserInfo] = useState(null);
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId:
+      "190243783703-cll6fnkujk0c0h29b4l1fs0bgf27rm4d.apps.googleusercontent.com",
+  });
+
   const loginWithGoogle = () => {
-    console.log("google login");
+    promptAsync();
   };
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      setToken(response.authentication.accessToken);
+    }
+  }, [response, token]);
+
   return (
     <Pressable style={styles.google} onPress={loginWithGoogle}>
       <Image
