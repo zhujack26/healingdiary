@@ -5,14 +5,14 @@ import {
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
 
-import { Button } from "react-native";
-import GroupInfoImageUpdateButton from "./GroupInfoImageUpdateButton";
-const BottomModal = ({ bottomSheetModalRef }) => {
-  const snapPoints = useMemo(() => [150], []);
+import GroupInfoUpdateButton from "./GroupInfoUpdateButton";
 
-  const handleCloseModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.close();
-  }, []);
+const BottomModal = ({
+  bottomSheetModalRef,
+  handleCloseModalPress,
+  navigation,
+}) => {
+  const snapPoints = useMemo(() => [150], []);
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -35,8 +35,9 @@ const BottomModal = ({ bottomSheetModalRef }) => {
         backdropComponent={renderBackdrop}
         enabledPanDownToClose={true}
       >
-        <GroupInfoImageUpdateButton
+        <GroupInfoUpdateButton
           handleCloseModalPress={handleCloseModalPress}
+          navigation={navigation}
         />
       </BottomSheetModal>
     </BottomSheetModalProvider>

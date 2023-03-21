@@ -7,6 +7,10 @@ const { width } = Dimensions.get("window");
 const GroupSetting = ({ handleCloseModalPress }) => {
   const navigation = useNavigation();
 
+  const navigateAndCloseModal = (name) => {
+    navigation.navigate(name);
+    handleCloseModalPress();
+  };
   return (
     <View style={styles.container}>
       <Text style={styles.settingTitle}>설정</Text>
@@ -19,7 +23,7 @@ const GroupSetting = ({ handleCloseModalPress }) => {
       />
       <Pressable
         style={[styles.settingList, styles.settingListFirst]}
-        onPress={() => navigation.navigate("groupInfo")}
+        onPress={() => navigateAndCloseModal("groupInfo")}
       >
         <Text style={styles.settingListText}>소모임 정보</Text>
         <Ionicons

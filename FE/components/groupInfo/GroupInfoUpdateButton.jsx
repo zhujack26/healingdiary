@@ -1,13 +1,18 @@
-import { View, Text, StyleSheet } from "react-native";
+import { Pressable, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { GlobalColors } from "./../../constants/color";
+import { GlobalColors } from "../../constants/color";
 
-const GroupInfoImageUpdateButton = ({ handleCloseModalPress }) => {
+const GroupInfoUpdateButton = ({ handleCloseModalPress, navigation }) => {
+  const navigateAndCloseModal = () => {
+    handleCloseModalPress();
+    navigation.navigate("groupInfoUpdate");
+  };
+
   return (
     <>
-      <View style={styles.buttonContainer}>
+      <Pressable style={styles.buttonContainer} onPress={navigateAndCloseModal}>
         <Text style={styles.updateText}>수정</Text>
-      </View>
+      </Pressable>
       <Ionicons
         name="close"
         size={32}
@@ -19,7 +24,7 @@ const GroupInfoImageUpdateButton = ({ handleCloseModalPress }) => {
   );
 };
 
-export default GroupInfoImageUpdateButton;
+export default GroupInfoUpdateButton;
 
 const styles = StyleSheet.create({
   buttonContainer: {
@@ -28,6 +33,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
+    borderColor: GlobalColors.colors.gray600,
     padding: 12,
   },
 

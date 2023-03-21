@@ -8,12 +8,18 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "./../../constants/color";
-import { useNavigation } from "@react-navigation/native";
+
 const { width } = Dimensions.get("window");
 
-const GroupInfoHeader = ({ handlePresentModalPress }) => {
-  const navigation = useNavigation();
-
+const GroupInfoHeader = ({
+  handlePresentModalPress,
+  handleCloseModalPress,
+  navigation,
+}) => {
+  const navigateAndCloseModal = () => {
+    navigation.goBack();
+    handleCloseModalPress();
+  };
   return (
     <SafeAreaView style={styles.header}>
       <Image
@@ -25,9 +31,7 @@ const GroupInfoHeader = ({ handlePresentModalPress }) => {
           name="chevron-back"
           size={28}
           color={GlobalColors.colors.secondary500}
-          onPress={() => {
-            navigation.goBack();
-          }}
+          onPress={navigateAndCloseModal}
         />
 
         <Ionicons

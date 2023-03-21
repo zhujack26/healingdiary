@@ -18,6 +18,7 @@ import Hashtag from "../components/write/Hashtag";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 import GroupInfoScreen from "../screens/GroupInfoScreen";
+import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -124,6 +125,14 @@ const StackNavigation = () => {
         <Stack.Screen
           name="groupInfo"
           component={GroupInfoScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="groupInfoUpdate"
+          component={GroupInfoUpdateScreen}
           options={{
             headerShown: false,
           }}
