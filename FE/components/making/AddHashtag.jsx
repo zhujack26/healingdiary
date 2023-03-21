@@ -39,8 +39,10 @@ const AddHashtag = () => {
       setSelectedTags(
         selectedTags.filter((selectedTag) => selectedTag !== tag)
       );
+      console.log("if문");
     } else {
       setSelectedTags([...selectedTags, tag]);
+      console.log("선택 if문");
     }
   };
   const navigation = useNavigation();
@@ -59,7 +61,11 @@ const AddHashtag = () => {
         <Text>감정</Text>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("MakingHash", { categoryId: 1, categoryName: "감정", allTags: tags1 })
+            navigation.navigate("MakingHash", {
+              categoryId: 1,
+              categoryName: "감정",
+              allTags: tags1,
+            })
           }
         >
           <Text id="전체보기1">전체보기</Text>
@@ -83,7 +89,11 @@ const AddHashtag = () => {
         <Text>카테고리</Text>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("MakingHash", { categoryId: 2, categoryName: "카테고리", allTags: tags2 })
+            navigation.navigate("MakingHash", {
+              categoryId: 2,
+              categoryName: "카테고리",
+              allTags: tags2,
+            })
           }
         >
           <Text id="전체보기2">전체보기</Text>
@@ -107,7 +117,11 @@ const AddHashtag = () => {
         <Text>키워드</Text>
         <TouchableOpacity
           onPress={() =>
-            navigation.navigate("MakingHash", { categoryId: 3, categoryName: "키워드", allTags: tags3 })
+            navigation.navigate("MakingHash", {
+              categoryId: 3,
+              categoryName: "키워드",
+              allTags: tags3,
+            })
           }
         >
           <Text id="전체보기3">전체보기</Text>

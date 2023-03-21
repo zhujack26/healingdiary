@@ -1,10 +1,33 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { GlobalColors } from "../../constants/color";
 
-const Hashtag = ({ categoryId, categoryName, allTags }) => {
+const Hashtag = ({
+  categoryId,
+  categoryName,
+  allTags,
+  selectedTags,
+  setSelectedTags,
+}) => {
+  const handleTagSelection = (tag) => {
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(
+        selectedTags.filter((selectedTag) => selectedTag !== tag)
+      );
+    } else {
+      setSelectedTags([...selectedTags, tag]);
+    }
+  };
+
   const renderDataByCategory = () => {
     return allTags.map((tag) => (
-      <TouchableOpacity key={tag.id} style={styles.tagButton}>
+      <TouchableOpacity
+        key={tag.id}
+        onPress={() => handleTagSelection(tag)}
+        style={[
+          styles.tagButton,
+          selectedTags.includes(tag) && styles.selectedTagButton,
+        ]}
+      >
         <Text style={styles.tagButtonText}>{tag.name}</Text>
       </TouchableOpacity>
     ));
@@ -13,9 +36,7 @@ const Hashtag = ({ categoryId, categoryName, allTags }) => {
   return (
     <View style={styles.container}>
       <Text>{categoryName}</Text>
-      <View style={styles.box}>
-      {renderDataByCategory()}
-      </View>
+      <View style={styles.box}>{renderDataByCategory()}</View>
     </View>
   );
 };
@@ -41,6 +62,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 5,
     marginTop: 5,
+  },
+  selectedTagButton: {
+    backgroundColor: GlobalColors.colors.primary500,
   },
   tagButtonText: {
     fontFamily: "KoddiUDOnGothic-Regular",

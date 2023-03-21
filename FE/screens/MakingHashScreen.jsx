@@ -1,16 +1,21 @@
 import { View, StyleSheet } from "react-native";
 import Hashtag from "../components/making/Hashtag";
 import { GlobalColors } from "../constants/color";
+import { useState } from "react";
 
 const MakingHashScreen = ({ route }) => {
   const { categoryId, categoryName, allTags } = route.params;
+  const [selectedTags, setSelectedTags] = useState([]);
+
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
-        <Hashtag 
-        categoryId={categoryId}
-        categoryName={categoryName}
-        allTags={allTags}
+        <Hashtag
+          categoryId={categoryId}
+          categoryName={categoryName}
+          allTags={allTags}
+          selectedTags={selectedTags}
+          setSelectedTags={setSelectedTags}
         />
       </View>
     </View>
