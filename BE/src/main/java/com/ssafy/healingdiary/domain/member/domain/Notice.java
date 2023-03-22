@@ -47,4 +47,12 @@ public class Notice extends BaseEntity {
     @NotNull
     @Column(name = "delete_status")
     private DeleteStatus deleteStatus;
+
+    public void changeCheckStatus(CheckStatus checkStatus) {
+        this.checkStatus = checkStatus;
+    }
+
+    public void changeDeleteStatus(DeleteStatus deleteStatus) {
+        this.deleteStatus = deleteStatus;
+    }
 }
