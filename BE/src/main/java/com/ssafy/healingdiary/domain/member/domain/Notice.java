@@ -13,11 +13,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "notice")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "notice_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "notice_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "notice_updated_date"))
@@ -28,12 +33,10 @@ public class Notice extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_id")
-    private Comment comment;
-
     @NotNull
-    private String Content;
+    private String content;
+
+    private String link;
 
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -44,6 +47,4 @@ public class Notice extends BaseEntity {
     @NotNull
     @Column(name = "delete_status")
     private DeleteStatus deleteStatus;
-
-
 }
