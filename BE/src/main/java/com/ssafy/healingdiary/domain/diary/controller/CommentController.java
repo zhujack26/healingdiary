@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,29 +26,48 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private CommentService commentService;
+    private final CommentService commentService;
 
     @GetMapping
-    public List<CommentResponse> getCommentList(Authentication authentication, @RequestParam Long diaryId, Pageable pageable){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return commentService.getCommentList(principal, diaryId, pageable);
+    public Slice<CommentResponse> getCommentList(
+//        Authentication authentication,
+        @RequestParam Long diaryId,
+        Pageable pageable
+    ){
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return commentService.getCommentList(diaryId, pageable);
     }
 
     @PostMapping
-    public Map<String, Object> createComment(Authentication authentication, @RequestParam Long diaryId, @RequestBody String content){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return commentService.createComment(principal, diaryId, content);
+    public Map<String, Object> createComment(
+//        Authentication authentication,
+        @RequestParam Long memberId,
+        @RequestParam Long diaryId,
+        @RequestBody String content
+    ){
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return commentService.createComment(memberId, diaryId, content);
     }
 
     @PutMapping("/{commentId}")
-    public Map<String, Object> updateComment(Authentication authentication, @PathVariable Long commentId, @RequestBody String content){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return commentService.updateComment(principal, commentId, content);
+    public Map<String, Object> updateComment(
+//        Authentication authentication,
+        @RequestParam Long memberId,
+        @PathVariable Long commentId,
+        @RequestBody String content
+    ){
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return commentService.updateComment(memberId, commentId, content);
     }
 
     @DeleteMapping("/{commentId}")
-    public void deleteComment(Authentication authentication, @PathVariable Long commentId, @RequestBody String content){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        commentService.deleteComment(principal, commentId);
+    public void deleteComment(
+//        Authentication authentication,
+        @RequestParam Long memberId,
+        @PathVariable Long commentId,
+        @RequestBody String content
+    ){
+//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        commentService.deleteComment(memberId, commentId);
     }
 }

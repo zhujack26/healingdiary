@@ -11,9 +11,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
+@SuperBuilder
+@NoArgsConstructor
 @Table(name = "comment")
 @AttributeOverride(name = "id", column = @Column(name = "comment_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "comment_created_date"))
