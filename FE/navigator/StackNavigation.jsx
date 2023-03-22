@@ -14,6 +14,7 @@ import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
 import GroupMemberScreen from "./../screens/GroupMemberScreen";
+import KaKaoWebView from "../components/login/KaKaoWebView";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -44,7 +45,13 @@ const StackNavigation = () => {
             headerShown: false,
           }}
         />
-
+        <Stack.Screen
+          name="kakaoLoginWebView"
+          component={KaKaoWebView}
+          options={{
+            headerShown: false,
+          }}
+        />
         <Stack.Screen
           name="diaryDetail"
           component={DiaryDetail}
