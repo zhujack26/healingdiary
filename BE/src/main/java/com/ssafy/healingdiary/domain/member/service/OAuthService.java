@@ -26,7 +26,7 @@ public class OAuthService {
 
     public LoginResDto googleOAuthLogin(GoogleOAuthTokenReqDto googleOAuthTokenReqDto) throws JsonProcessingException {
 
-        // 소셜과 Dto로 사용자 정보 가지고 와서 디비에 있는지 확인하는 로직
+        // 소셜과 Dto로 사용자 정보 가지고 와서 디비에 있는지 확인하는 로직.
         GoogleOAuthTokenResDto oAuthResponse = this.googleOAuthTokenCheck(googleOAuthTokenReqDto);
         // 사용자 이메일을 가져온다
         String userEmail = oAuthResponse.getEmail();
