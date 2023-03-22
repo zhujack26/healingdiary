@@ -26,14 +26,36 @@ repositories {
 }
 
 dependencies {
-	implementation 'mysql:mysql-connector-java:8.0.27'
+	//oauth
+	implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.5.0'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	implementation 'com.google.oauth-client:google-oauth-client:1.35.0'
+	implementation 'com.google.oauth-client:google-oauth-client-jetty:1.35.0'
+
+	//jwt
+	implementation 'com.auth0:java-jwt:3.18.2'
+
+	//jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	//mysql
+	implementation 'mysql:mysql-connector-java:8.0.27'
+
+	//security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	//spring web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	//lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	//test(spring boot, spring security)
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	//redis
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 	//swagger
