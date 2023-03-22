@@ -6,12 +6,12 @@ import {
 } from "@gorhom/bottom-sheet";
 
 import GroupSetting from "./GroupSetting";
-const BottomModal = ({ bottomSheetModalRef }) => {
+const BottomModal = ({
+  bottomSheetModalRef,
+  handleCloseModalPress,
+  openExitModalAndCloseModal,
+}) => {
   const snapPoints = useMemo(() => ["70%"], []);
-
-  const handleCloseModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.close();
-  }, []);
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -34,7 +34,10 @@ const BottomModal = ({ bottomSheetModalRef }) => {
         backdropComponent={renderBackdrop}
         enabledPanDownToClose={true}
       >
-        <GroupSetting handleCloseModalPress={handleCloseModalPress} />
+        <GroupSetting
+          handleCloseModalPress={handleCloseModalPress}
+          openExitModalAndCloseModal={openExitModalAndCloseModal}
+        />
       </BottomSheetModal>
     </BottomSheetModalProvider>
   );

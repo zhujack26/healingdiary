@@ -4,13 +4,17 @@ import { GlobalColors } from "../../constants/color";
 import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
-const GroupSetting = ({ handleCloseModalPress }) => {
+const GroupSetting = ({
+  handleCloseModalPress,
+  openExitModalAndCloseModal,
+}) => {
   const navigation = useNavigation();
 
   const navigateAndCloseModal = (name) => {
     navigation.navigate(name);
     handleCloseModalPress();
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.settingTitle}>설정</Text>
@@ -51,14 +55,17 @@ const GroupSetting = ({ handleCloseModalPress }) => {
           color={GlobalColors.colors.gray600}
         />
       </View>
-      <View style={styles.settingList}>
+      <Pressable
+        style={styles.settingList}
+        onPress={openExitModalAndCloseModal}
+      >
         <Text style={styles.settingListText}>소모임 나가기</Text>
         <Ionicons
           name="chevron-forward-outline"
           size={24}
           color={GlobalColors.colors.gray600}
         />
-      </View>
+      </Pressable>
     </View>
   );
 };
