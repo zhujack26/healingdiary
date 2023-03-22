@@ -1,6 +1,9 @@
 package com.ssafy.healingdiary;
 
+import com.ssafy.healingdiary.domain.member.domain.CheckStatus;
+import com.ssafy.healingdiary.domain.member.domain.DeleteStatus;
 import com.ssafy.healingdiary.domain.member.domain.Member;
+import com.ssafy.healingdiary.domain.member.domain.Notice;
 import com.ssafy.healingdiary.domain.member.dto.NoticeListResponse;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.domain.member.repository.NoticeRepository;
@@ -20,11 +23,23 @@ public class NoticeTest {
     @Test
     void test() {
         Member member = memberRepository.findById(1L).get();
-        List<NoticeListResponse> list = noticeRepository.findByMember(member)
+        List<NoticeListResponse> list = noticeRepository.findByMemberAndDeleteStatus(member, DeleteStatus.UNDELETED)
             .stream().map(NoticeListResponse::of)
             .collect(Collectors.toList());
         list.stream().forEach((item)->{
             System.out.println(item.isCheckStatus()+" "+item.isDeleteStatus());
         });
+    }
+
+    @Test
+    void statusTest() {
+        int situation = 1;
+        Notice notice = noticeRepository.getReferenceById(1L);
+        if(situation == 0) {
+            notice.changeCheckStatus(CheckStatus.CHECKED);
+        } else {
+            notice.changeDeleteStatus(DeleteStatus.DELETED);
+        }
+        noticeRepository.save(notice);
     }
 }
