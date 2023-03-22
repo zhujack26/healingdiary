@@ -1,7 +1,6 @@
 package com.ssafy.healingdiary.domain.member.service;
 
 import com.ssafy.healingdiary.domain.member.domain.CheckStatus;
-import com.ssafy.healingdiary.domain.member.domain.DeleteStatus;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.domain.Notice;
 import com.ssafy.healingdiary.domain.member.dto.DeleteNoticeId;
@@ -21,8 +20,7 @@ public class NoticeService {
     private final MemberRepository memberRepository;
     public List<NoticeListResponse> searchNoticeAll() {
         Member member = memberRepository.findById(1L).get();
-        List<NoticeListResponse> list = noticeRepository.findByMemberAndDeleteStatus(member,
-                DeleteStatus.UNDELETED)
+        List<NoticeListResponse> list = noticeRepository.findByMember(member)
             .stream().map(NoticeListResponse::of)
             .collect(Collectors.toList());
         return list;
@@ -36,8 +34,7 @@ public class NoticeService {
 
     public DeleteNoticeId deleteNotice(Long noticeId) {
         Notice notice = noticeRepository.getReferenceById(noticeId);
-        notice.changeDeleteStatus(DeleteStatus.DELETED);
-        noticeRepository.save(notice);
+        noticeRepository.delete(notice);
         return DeleteNoticeId.builder().noticeId(noticeId).build();
     }
 }
