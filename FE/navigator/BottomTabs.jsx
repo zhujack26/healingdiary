@@ -13,6 +13,7 @@ import CalendarScreen from "../screens/CalendarScreen";
 import GroupScreen from "../screens/GroupScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
+import HeaderRightButtons from "../ui/HeaderRightButtons";
 
 const Tab = createBottomTabNavigator();
 
@@ -46,30 +47,7 @@ const BottomTabs = () => {
         name="Home"
         component={HomeScreen}
         options={({ navigation }) => ({
-          headerRight: () => (
-            <View style={{ flexDirection: "row" }}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Notification")}
-              >
-                <MaterialCommunityIcons
-                  name="bell"
-                  size={24}
-                  color="black"
-                  style={{ marginRight: 10 }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Notification")}
-              >
-                <View>
-                  <Image
-                    style={styles.img}
-                    source={require("../assets/images/SAMPLE1.png")}
-                  />
-                </View>
-              </TouchableOpacity>
-            </View>
-          ),
+          headerRight: () => <HeaderRightButtons navigation={navigation} />,
           title: "메인",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" color={color} size={size} />
