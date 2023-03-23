@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DiaryRepositoryCustom {
-    Slice<DiaryListResponse> findByOption(Long clubId, String keyword, String tagContent, LocalDate date, Pageable pageable);
+    Slice<DiaryListResponse> findByOption(Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable);
 }

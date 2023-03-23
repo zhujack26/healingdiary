@@ -27,7 +27,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<DiaryListResponse> findByOption(Long clubId, String keyword, String tagContent, LocalDate date, Pageable pageable) {
+    public Slice<DiaryListResponse> findByOption(Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable) {
         List<DiaryListResponse> result = queryFactory
             .selectFrom(diary)
             .leftJoin(diary.diaryTag, diaryTag)
@@ -36,7 +36,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
                 clubIdEq(clubId),
                 keywordMatch(keyword),
                 tagEq(tagContent),
-                dateEq(date)
+                dateEq(year, month, day)
             )
             .orderBy(diary.createdDate.desc())
             .offset(pageable.getOffset())
@@ -67,15 +67,21 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
         return hasText(tagContent) ? tag.content.eq(tagContent) : null;
     }
 
-    public static BooleanExpression dateEq(LocalDate date) {
-        if (date != null) {
-            LocalDateTime startOfDay = LocalDateTime.of(date, LocalTime.MIN);
-            LocalDateTime endOfDay = LocalDateTime.of(date, LocalTime.MAX).withNano(0);
+    public static BooleanExpression dateEq(Integer year, Integer month, Integer day) {
+        if (year != null && month != null && day != null) {
+            LocalDateTime startOfDay = LocalDateTime.of(year, month, day, 0, 0, 0);
+            LocalDateTime endOfDay = LocalDateTime.of(year, month, day, 59, 59, 59);
             return diary.createdDate.between(startOfDay, endOfDay);
-        } else {
+        }
+        else if(year != null && month != null) {
+            return diary.createdDate.month().eq(month);
+        }
+        else if(year != null) {
+            return diary.createdDate.year().eq(year);
+        }
+        else {
             return null;
         }
     }
-
 
 }
