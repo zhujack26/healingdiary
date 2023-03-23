@@ -2,18 +2,26 @@ package com.ssafy.healingdiary.domain.diary.domain;
 
 import com.ssafy.healingdiary.domain.club.domain.Club;
 import com.ssafy.healingdiary.domain.member.domain.Member;
-import com.ssafy.healingdiary.domain.tag.domain.Tag;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
-import lombok.Getter;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="diary")
 @Getter
+@NoArgsConstructor
 @AttributeOverride(name = "id", column = @Column(name = "diary_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "diary_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "diary_updated_date"))
@@ -45,5 +53,7 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "emotion")
     private Emotion emotion;
 
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
 }
