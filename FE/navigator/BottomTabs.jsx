@@ -1,14 +1,7 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import {
-  Platform,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  Image,
-} from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import CalendarScreen from "../screens/CalendarScreen";
 import GroupScreen from "../screens/GroupScreen";
 import HomeScreen from "../screens/HomeScreen";

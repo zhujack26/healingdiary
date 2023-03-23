@@ -1,6 +1,8 @@
 import React from "react";
-import { Image, Text, StyleSheet, FlatList, View } from "react-native";
+import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
 import { DATA } from "../../model/DataNotification";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const formatTime = (minutes) => {
   const hours = Math.floor(minutes / 60);
@@ -31,19 +33,42 @@ const Item = ({ name, location, action, time }) => (
   </View>
 );
 const Detail = () => {
+  const [data, setData] = React.useState(DATA);
+
+  const handleDelete = (id) => {
+    setData((prevData) => prevData.filter((item) => item.id !== id));
+  };
+
+  const renderItem = ({ item }) => (
+    <Item
+      name={item.name}
+      location={item.location}
+      action={item.action}
+      time={item.time}
+    />
+  );
+
+  const renderHiddenItem = (rowData, rowMap) => (
+    <TouchableOpacity
+      style={styles.deleteButton}
+      onPress={() => {
+        rowMap[rowData.item.id].closeRow();
+        handleDelete(rowData.item.id);
+      }}
+    >
+      <MaterialCommunityIcons name="trash-can" size={24} color="white" />
+    </TouchableOpacity>
+  );
   return (
     <View style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => (
-          <Item
-            name={item.name}
-            location={item.location}
-            action={item.action}
-            time={item.time}
-          />
-        )}
+      <SwipeListView
+        data={data}
+        renderItem={renderItem}
+        renderHiddenItem={renderHiddenItem}
+        rightOpenValue={-75}
+        disableRightSwipe
         keyExtractor={(item) => item.id}
+        stopLeftSwipe={75}
       />
     </View>
   );
@@ -57,6 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingTop: 20,
+    backgroundColor: "white",
   },
   image: {
     width: 50,
@@ -75,6 +101,16 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 14,
     color: "gray",
+  },
+  deleteButton: {
+    backgroundColor: "red",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 20,
+    bottom: 0,
+    right: 0,
+    width: 75,
   },
 });
 
