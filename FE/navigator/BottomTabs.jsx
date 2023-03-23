@@ -1,6 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { Platform, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  Image,
+} from "react-native";
 import { GlobalColors } from "../constants/color";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import CalendarScreen from "../screens/CalendarScreen";
@@ -55,16 +61,12 @@ const BottomTabs = () => {
               <TouchableOpacity
                 onPress={() => navigation.navigate("Notification")}
               >
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 50,
-                    borderWidth: 1,
-                    marginRight: 30,
-                    marginTop: 3,
-                  }}
-                ></View>
+                <View>
+                  <Image
+                    style={styles.img}
+                    source={require("../assets/images/SAMPLE1.png")}
+                  />
+                </View>
               </TouchableOpacity>
             </View>
           ),
@@ -105,5 +107,12 @@ const BottomTabs = () => {
     </Tab.Navigator>
   );
 };
-
+const styles = StyleSheet.create({
+  img: {
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    marginRight: 30,
+  },
+});
 export default BottomTabs;
