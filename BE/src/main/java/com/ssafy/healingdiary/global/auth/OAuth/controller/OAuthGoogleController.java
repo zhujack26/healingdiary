@@ -30,7 +30,7 @@ public class OAuthGoogleController {
 
     //구글 토큰 체크 컨트롤러
 
-    @PostMapping("/check")
+    @PostMapping("/login")
     public ResponseEntity<LoginResDto> checkOauthToken(@RequestBody GoogleOAuthTokenReqDto googleOAuthTokenReqDto) {
         System.out.println(googleOAuthTokenReqDto);
         try {
