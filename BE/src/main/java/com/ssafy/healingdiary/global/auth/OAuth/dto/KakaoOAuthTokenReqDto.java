@@ -1,17 +1,24 @@
 package com.ssafy.healingdiary.global.auth.OAuth.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class KakaoOAuthTokenReqDto {
 
+    @JsonProperty("access_token")
     private String accessToken;
+
+    @JsonProperty("expires_in")
     private int expiresIn;
-    private String scope;
+
+    @JsonProperty("token_type")
     private String tokenType;
 
-    private String idToken;
 
+    @JsonProperty("refresh_token")
     private String refreshToken;
+
+    @JsonProperty("refresh_token_expires_in")
     private int refreshTokenExpiresIn;
 }
