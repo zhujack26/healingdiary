@@ -1,10 +1,13 @@
 package com.ssafy.healingdiary.global.auth.OAuth.dto;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class LoginResDto {
 
     private Long id;
@@ -18,6 +21,6 @@ public class LoginResDto {
 
     private String memberImageUrl;
 
-    private String jwt_token;
+    private String jwtToken;
 
 }
