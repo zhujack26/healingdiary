@@ -4,7 +4,7 @@ import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
+import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
 import java.time.LocalDate;
@@ -24,7 +24,7 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
 
 
-    public Slice<DiaryListResponse> getDiaryList(
+    public Slice<DiarySimpleResponse> getDiaryList(
 //        UserDetails principal,
         Long clubId,
         String keyword,
@@ -34,7 +34,7 @@ public class DiaryService {
         Integer day,
         Pageable pageable) {
 
-        Slice<DiaryListResponse> slice = diaryRepository.findByOption(clubId,keyword,tag,year,month,day,pageable);
+        Slice<DiarySimpleResponse> slice = diaryRepository.findByOption(clubId,keyword,tag,year,month,day,pageable);
         return slice;
     }
 
