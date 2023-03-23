@@ -8,13 +8,12 @@ import Date from "../ui/Date";
 import MakingScreen from "../screens/MakingScreen";
 import { Text, TouchableOpacity } from "react-native";
 import MakingDetailScreen from "../screens/MakingDetailScreen";
-import Hashtag from "../components/making/Hashtag";
 import MakingHashScreen from "../screens/MakingHashScreen";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
 import GroupMemberScreen from "./../screens/GroupMemberScreen";
-import KakaoWebView from "../components/login/KakaoWebView";
+import KaKaoWebView from "../components/login/KaKaoWebView";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -25,7 +24,7 @@ const StackNavigation = () => {
         component= {UserInformScreen}
         > */}
       <Stack.Navigator
-        initialRouteName="diaryBottomTab"
+        initialRouteName="Login"
         screenOptions={{
           headerStyle: {
             backgroundColor: GlobalColors.colors.background500,
@@ -47,7 +46,7 @@ const StackNavigation = () => {
         />
         <Stack.Screen
           name="kakaoLoginWebView"
-          component={KakaoWebView}
+          component={KaKaoWebView}
           options={{
             headerShown: false,
           }}
