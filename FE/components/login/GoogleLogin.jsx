@@ -9,18 +9,20 @@ import {
 } from "react-native";
 import * as Google from "expo-auth-session/providers/google";
 import { useEffect, useState } from "react";
-import Constants from "expo-constants";
+import * as WebBrowser from "expo-web-browser";
 
 const deviceWidth = Dimensions.get("window").width - 50;
+WebBrowser.maybeCompleteAuthSession();
 
 const GoogleLogin = () => {
   const [accessToken, setAccessToken] = useState("");
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState("");
+
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId:
       "190243783703-jlr28ac2klqm838gpuqqnpmhmhfrm410.apps.googleusercontent.com",
     iosClientId:
-      "190243783703-cgdj807fu3obb5npckkh3jaoh5p1bhk5.apps.googleusercontent.com",
+      "190243783703-cgdj807fu3obb5npckkh3jaoh5p1bhk5.apps.googlusercontent.com",
     expoClientId:
       "190243783703-g3f8iuq3uobr7c2svh8varbsdrpdm8jr.apps.googleusercontent.com",
   });
@@ -31,7 +33,9 @@ const GoogleLogin = () => {
 
   useEffect(() => {
     if (response?.type === "success") {
-      setAccessToken(response.authentication.accessToken);
+      const { accessToken, expiresIn, scope, tokenType } =
+        response.authentication;
+      getUserData();
     }
   }, [response]);
 
@@ -46,7 +50,6 @@ const GoogleLogin = () => {
     userInfoResponse.json().then((data) => {
       setUserInfo(data);
     });
-    console.log(userInfo);
   };
 
   return (
