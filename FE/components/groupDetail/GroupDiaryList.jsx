@@ -1,5 +1,8 @@
-import { View, FlatList, StyleSheet } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
+
 import GroupDiaryListItem from "./GroupDiaryListItem";
+import GroupIntroduction from "./GroupIntroduction";
+import ExitModal from "./ExitModal";
 
 const DATA = [
   {
@@ -22,19 +25,28 @@ const DATA = [
     hashtags: ["#해시태그 ", "#해시태그 ", "#해시태그 "],
     title: "소모임 이이름",
   },
+  {
+    id: "58694a0f-3113da1-471f-bd96-145571e29d72",
+    hashtags: ["#해시태그 ", "#해시태그 ", "#해시태그 "],
+    title: "소모임 이이름",
+  },
 ];
 
-const GroupDiaryList = () => {
+const GroupDiaryList = ({ exitModalVisible, exitCloseModalPress }) => {
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={({ item }) => <GroupDiaryListItem data={item} />}
-        keyExtractor={(item) => item.id}
-        scrollEnabled={false}
-        contentContainerStyle={{ marginBottom: 48 }}
-      />
-    </View>
+    <FlatList
+      style={styles.scrollContainer}
+      data={DATA}
+      renderItem={({ item }) => <GroupDiaryListItem data={item} />}
+      keyExtractor={(item) => item.id}
+      ListHeaderComponent={<GroupIntroduction />}
+      ListFooterComponent={
+        <ExitModal
+          exitModalVisible={exitModalVisible}
+          exitCloseModalPress={exitCloseModalPress}
+        />
+      }
+    />
   );
 };
 
@@ -43,5 +55,11 @@ export default GroupDiaryList;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+  },
+
+  scrollContainer: {
+    flex: 1,
+    marginTop: 32,
+    paddingHorizontal: 16,
   },
 });
