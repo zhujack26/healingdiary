@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long>, TagRepositoryCustom {
 
-    List<String> findByTagLike(String tag);
+    List<Tag> findByTagLike(String tag);
 }
