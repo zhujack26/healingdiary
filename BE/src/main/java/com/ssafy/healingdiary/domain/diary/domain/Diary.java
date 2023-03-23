@@ -48,9 +48,8 @@ public class Diary extends BaseEntity {
     @Column(name="record_url")
     private String recordUrl;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "code")
+    @JoinColumn(name = "emotion")
     private Emotion emotion;
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)

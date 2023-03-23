@@ -15,7 +15,7 @@ public class DiaryDetailResponse {
     private Long diaryId;
     private String recordUrl;
     private String imageUrl;
-    private Emotion emotion;
+    private EmotionResponse emotion;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdDate;
     List<String> tags;
@@ -26,7 +26,7 @@ public class DiaryDetailResponse {
             .diaryId(diary.getId())
             .recordUrl(diary.getRecordUrl())
             .imageUrl(diary.getDiaryImageUrl())
-            .emotion(diary.getEmotion())
+            .emotion(EmotionResponse.of(diary.getEmotion()))
             .createdDate(diary.getCreatedDate())
             .tags(diary.getDiaryTag()
                 .stream()
