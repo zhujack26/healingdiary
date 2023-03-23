@@ -27,13 +27,13 @@ public class NoticeService {
     }
 
     public void changeNoticeStatus(Long noticeId) {
-        Notice notice = noticeRepository.getReferenceById(noticeId);
+        Notice notice = noticeRepository.findById(noticeId).get();
         notice.changeCheckStatus(CheckStatus.CHECKED);
         noticeRepository.save(notice);
     }
 
     public DeleteNoticeId deleteNotice(Long noticeId) {
-        Notice notice = noticeRepository.getReferenceById(noticeId);
+        Notice notice = noticeRepository.findById(noticeId).get();
         noticeRepository.delete(notice);
         return DeleteNoticeId.builder().noticeId(noticeId).build();
     }
