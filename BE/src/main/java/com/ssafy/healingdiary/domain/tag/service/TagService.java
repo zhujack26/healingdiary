@@ -13,9 +13,7 @@ public class TagService {
 
     private final TagRepository tagRepository;
     public List<TagListResponse> searchTagList(String tag) {
-        List<TagListResponse> tagListResponse = tagRepository.findByTagLike(tag)
-            .stream().map(TagListResponse::of)
-            .collect(Collectors.toList());
+        List<TagListResponse> tagListResponse = tagRepository.findByTagLike(tag);
         return tagListResponse;
     }
 }
