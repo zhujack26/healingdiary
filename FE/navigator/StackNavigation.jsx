@@ -13,6 +13,7 @@ import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
 import GroupMemberScreen from "./../screens/GroupMemberScreen";
+import NotificationScreen from "../screens/NotificationScreen";
 import KakaoWebView from "../components/login/KakaoWebView";
 
 const Stack = createNativeStackNavigator();
@@ -150,6 +151,15 @@ const StackNavigation = () => {
           name="userinform"
           component={UserInformScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Notification"
+          component={NotificationScreen}
+          options={{
+            headerTitle: "알림",
+            headerTitleAlign: "center",
+            headerShown: true,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

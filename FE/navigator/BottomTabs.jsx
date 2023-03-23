@@ -1,12 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { Platform } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
-
 import CalendarScreen from "../screens/CalendarScreen";
 import GroupScreen from "../screens/GroupScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
+import HeaderRightButtons from "../ui/HeaderRightButtons";
 
 const Tab = createBottomTabNavigator();
 
@@ -39,12 +39,13 @@ const BottomTabs = () => {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={{
+        options={({ navigation }) => ({
+          headerRight: () => <HeaderRightButtons navigation={navigation} />,
           title: "메인",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" color={color} size={size} />
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="Calendar"
@@ -58,11 +59,13 @@ const BottomTabs = () => {
       <Tab.Screen
         name="Group"
         component={GroupScreen}
-        options={{
+        options={({ navigation }) => ({
+          headerRight: () => <HeaderRightButtons navigation={navigation} />,
+          title: "소모임",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-people-outline" color={color} size={size} />
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="Search"
@@ -77,5 +80,12 @@ const BottomTabs = () => {
     </Tab.Navigator>
   );
 };
-
+const styles = StyleSheet.create({
+  img: {
+    width: 25,
+    height: 25,
+    borderRadius: 50,
+    marginRight: 30,
+  },
+});
 export default BottomTabs;
