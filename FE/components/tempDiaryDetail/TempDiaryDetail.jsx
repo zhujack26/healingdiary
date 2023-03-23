@@ -5,9 +5,11 @@ import {
   Image,
   Dimensions,
   Platform,
+  Text,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
+import Comment from "./Comment";
 
 const { width, height } = Dimensions.get("window");
 
@@ -38,7 +40,12 @@ const TempDiaryDetail = ({ navigation }) => {
           }}
         />
       </View>
+      {/* 해시태그 */}
+      <View>
+        <Text>해시태그</Text>
+      </View>
       {/* 댓글창 */}
+      <Comment />
     </SafeAreaView>
   );
 };
