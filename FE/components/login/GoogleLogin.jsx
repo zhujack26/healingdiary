@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   Dimensions,
-  Button,
 } from "react-native";
 import * as Google from "expo-auth-session/providers/google";
 import { useEffect, useState } from "react";

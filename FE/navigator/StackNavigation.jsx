@@ -8,7 +8,6 @@ import Date from "../ui/Date";
 import MakingScreen from "../screens/MakingScreen";
 import { Text, TouchableOpacity } from "react-native";
 import MakingDetailScreen from "../screens/MakingDetailScreen";
-import Hashtag from "../components/making/Hashtag";
 import MakingHashScreen from "../screens/MakingHashScreen";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
