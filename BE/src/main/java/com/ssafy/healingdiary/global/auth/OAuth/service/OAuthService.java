@@ -1,10 +1,10 @@
-package com.ssafy.healingdiary.domain.member.service;
+package com.ssafy.healingdiary.global.auth.OAuth.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.healingdiary.domain.member.domain.Member;
-import com.ssafy.healingdiary.domain.member.dto.*;
-import com.ssafy.healingdiary.domain.member.repository.OAuthRepository;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.*;
+import com.ssafy.healingdiary.global.auth.OAuth.repository.OAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpEntity;

@@ -1,10 +1,10 @@
-package com.ssafy.healingdiary.domain.member.controller;
+package com.ssafy.healingdiary.global.auth.OAuth.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ssafy.healingdiary.domain.member.dto.KakaoOAuthTokenReqDto;
-import com.ssafy.healingdiary.domain.member.dto.LoginResDto;
-import com.ssafy.healingdiary.domain.member.dto.SignupReqDto;
-import com.ssafy.healingdiary.domain.member.service.OAuthService;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.GoogleOAuthTokenReqDto;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.LoginResDto;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.SignupReqDto;
+import com.ssafy.healingdiary.global.auth.OAuth.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,19 +17,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/auth/account/kakao")
+@RequestMapping("/auth/account/google")
 @Slf4j
-public class OAuthKakaoController {
+public class OAuthGoogleController {
+
     private final OAuthService oAuthService;
+    //리다이렉트를 해주는 요청
 
+    //리다이렉트 후에 엑세스토큰을 받아 디비에 유저가 잇는지 없는지 확인
 
-    //카카오 토큰 체크 컨트롤러
-    @PostMapping("/login")
-    public ResponseEntity<LoginResDto> checkOauthToken(@RequestBody KakaoOAuthTokenReqDto kakaoOAuthTokenReqDto) {
-        System.out.println(kakaoOAuthTokenReqDto);
+    //회원가입 하는 로직
+
+    //구글 토큰 체크 컨트롤러
+
+    @PostMapping("/check")
+    public ResponseEntity<LoginResDto> checkOauthToken(@RequestBody GoogleOAuthTokenReqDto googleOAuthTokenReqDto) {
+        System.out.println(googleOAuthTokenReqDto);
         try {
             //소셜로그인 에 따라서 oAuthLogin을 하자!
-            LoginResDto loginResDto = oAuthService.kakaoOAuthLogin(kakaoOAuthTokenReqDto);
+            LoginResDto loginResDto = oAuthService.googleOAuthLogin(googleOAuthTokenReqDto);
             return new ResponseEntity<>(loginResDto, HttpStatus.OK);
         }catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -37,12 +43,15 @@ public class OAuthKakaoController {
         return null;
     }
 
+
+
+
     @PostMapping("/signup")
     public ResponseEntity<LoginResDto> signupOauthToken(@RequestBody SignupReqDto signupReqDto) {
         System.out.println(signupReqDto);
         try {
             //소셜로그인 에 따라서 oAuthLogin을 하자!
-            LoginResDto loginResDto = oAuthService.kakaoOAuthSignup(signupReqDto);
+            LoginResDto loginResDto = oAuthService.googleOAuthSignup(signupReqDto);
             return new ResponseEntity<>(loginResDto, HttpStatus.OK);
         }catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -53,4 +62,8 @@ public class OAuthKakaoController {
     public void exceptionTest() throws RuntimeException {
         throw new RuntimeException("접근이 금지되었습니다.");
     }
+
+
+
 }
+

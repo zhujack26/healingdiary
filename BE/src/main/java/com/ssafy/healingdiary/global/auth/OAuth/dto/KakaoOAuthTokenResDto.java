@@ -1,10 +1,9 @@
-package com.ssafy.healingdiary.domain.member.dto;
+package com.ssafy.healingdiary.global.auth.OAuth.dto;
 
 import lombok.Data;
 
 @Data
-public class GoogleOAuthTokenResDto {
-
+public class KakaoOAuthTokenResDto {
     public String id;
     public String email;
     public String name;
@@ -12,4 +11,5 @@ public class GoogleOAuthTokenResDto {
     public String familyName;
     public String picture;
     public String locale;
+
 }

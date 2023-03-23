@@ -1,4 +1,4 @@
-package com.ssafy.healingdiary.domain.member.repository;
+package com.ssafy.healingdiary.global.auth.OAuth.repository;
 
 
 import com.ssafy.healingdiary.domain.member.domain.Member;

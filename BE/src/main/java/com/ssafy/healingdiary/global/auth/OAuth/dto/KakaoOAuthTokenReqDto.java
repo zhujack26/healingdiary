@@ -1,9 +1,9 @@
-package com.ssafy.healingdiary.domain.member.dto;
+package com.ssafy.healingdiary.global.auth.OAuth.dto;
 
 import lombok.Data;
 
 @Data
-public class GoogleOAuthTokenReqDto {
+public class KakaoOAuthTokenReqDto {
 
     private String accessToken;
     private int expiresIn;
@@ -12,5 +12,6 @@ public class GoogleOAuthTokenReqDto {
 
     private String idToken;
 
-
+    private String refreshToken;
+    private int refreshTokenExpiresIn;
 }

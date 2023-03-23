@@ -1,7 +1,7 @@
 package com.ssafy.healingdiary.global.auth;
 
 import com.ssafy.healingdiary.domain.member.domain.Member;
-import com.ssafy.healingdiary.domain.member.repository.OAuthRepository;
+import com.ssafy.healingdiary.global.auth.OAuth.repository.OAuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

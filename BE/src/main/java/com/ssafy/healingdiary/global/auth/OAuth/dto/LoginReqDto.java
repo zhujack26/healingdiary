@@ -1,23 +1,25 @@
-package com.ssafy.healingdiary.domain.member.dto;
+package com.ssafy.healingdiary.global.auth.OAuth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 @Data
 @AllArgsConstructor
-public class LoginResDto {
+@NoArgsConstructor
+public class LoginReqDto {
 
-    private Long id;
+
 
     private String nickname;
-
     private String email;
+//    private String roles;
+
     private String region;
 
     private String disease;
 
     private String memberImageUrl;
-
-    private String jwt_token;
 
 }
