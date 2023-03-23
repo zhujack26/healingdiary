@@ -7,6 +7,7 @@ import com.ssafy.healingdiary.global.auth.OAuth.dto.*;
 import com.ssafy.healingdiary.global.auth.OAuth.repository.OAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,7 +20,8 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class OAuthService {
 
-    private final RestTemplate restTemplate;
+    @Autowired
+    private RestTemplate restTemplate;
 
     private final ObjectMapper objectMapper;
     private final OAuthRepository oAuthRepository;
