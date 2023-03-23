@@ -1,22 +1,22 @@
 import React from "react";
 import { Image, Text, StyleSheet, FlatList, View } from "react-native";
+import { DATA } from "../../model/DataNotification";
 
-const DATA = [
-  {
-    id: "1",
-    name: "누구",
-    comment: "내 댓글에 대댓글을 작성했습니다.",
-    time: "53",
-  },
-  {
-    id: "2",
-    name: "누구",
-    comment: "내 일기에 댓글을 작성했습니다. ",
-    time: "53",
-  },
-];
+const formatTime = (minutes) => {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
 
-const Item = ({ name, comment, time }) => (
+  if (hours < 1) {
+    return `${minutes}분 전`;
+  } else if (hours >= 1 && hours < 24) {
+    return `${hours}시간 전`;
+  } else {
+    const days = Math.floor(hours / 24);
+    return `${days}일 전`;
+  }
+};
+
+const Item = ({ name, location, action, time }) => (
   <View style={styles.item}>
     <Image
       style={styles.image}
@@ -24,20 +24,24 @@ const Item = ({ name, comment, time }) => (
     />
     <View style={styles.textContainer}>
       <Text style={styles.text}>
-        {name}님이 {comment}
+        {name}님이 {location}에서 {action}
       </Text>
-      <Text style={styles.time}>{time}분 전</Text>
+      <Text style={styles.time}>{formatTime(time)}</Text>
     </View>
   </View>
 );
-
 const Detail = () => {
   return (
     <View style={styles.container}>
       <FlatList
         data={DATA}
         renderItem={({ item }) => (
-          <Item name={item.name} comment={item.comment} time={item.time} />
+          <Item
+            name={item.name}
+            location={item.location}
+            action={item.action}
+            time={item.time}
+          />
         )}
         keyExtractor={(item) => item.id}
       />
