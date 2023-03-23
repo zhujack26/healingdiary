@@ -10,7 +10,5 @@ public class GoogleOAuthTokenReqDto {
     private String scope;
     private String tokenType;
 
-    private String idToken;
-
 
 }
