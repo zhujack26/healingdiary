@@ -19,11 +19,8 @@ const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator
-        initialRouteName="userinform"
-        component= {UserInformScreen}
-        > */}
-      <Stack.Navigator
+      <Stack.Navigator initialRouteName="diaryBottomTab" component={BottomTabs}>
+        {/* <Stack.Navigator
         initialRouteName="Login"
         screenOptions={{
           headerStyle: {
@@ -31,7 +28,7 @@ const StackNavigation = () => {
           },
           headerTintColor: GlobalColors.colors.black500,
         }}
-      >
+      > */}
         <Stack.Screen
           name="diaryBottomTab"
           component={BottomTabs}
