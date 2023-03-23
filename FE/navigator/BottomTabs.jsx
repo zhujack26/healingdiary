@@ -66,11 +66,13 @@ const BottomTabs = () => {
       <Tab.Screen
         name="Group"
         component={GroupScreen}
-        options={{
+        options={({ navigation }) => ({
+          headerRight: () => <HeaderRightButtons navigation={navigation} />,
+          title: "소모임",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-people-outline" color={color} size={size} />
           ),
-        }}
+        })}
       />
       <Tab.Screen
         name="Search"
