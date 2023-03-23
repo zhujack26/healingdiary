@@ -1,6 +1,6 @@
-import { Text } from "react-native";
+import { Text, StyleSheet } from "react-native";
 
-const detail = () => {
+const Detail = () => {
   return (
     <>
       <Text>알림 페이지</Text>
@@ -8,7 +8,5 @@ const detail = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {},
-});
-export default detail;
+const styles = StyleSheet.create({});
+export default Detail;
