@@ -50,7 +50,7 @@ public class Diary extends BaseEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "emotion")
+    @JoinColumn(name = "code")
     private Emotion emotion;
 
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
