@@ -47,14 +47,17 @@ const GroupSetting = ({
           color={GlobalColors.colors.gray600}
         />
       </Pressable>
-      <View style={styles.settingList}>
+      <Pressable
+        style={styles.settingList}
+        onPress={() => navigateAndCloseModal("groupMemberAllow")}
+      >
         <Text style={styles.settingListText}>멤버 승인</Text>
         <Ionicons
           name="chevron-forward-outline"
           size={24}
           color={GlobalColors.colors.gray600}
         />
-      </View>
+      </Pressable>
       <Pressable
         style={styles.settingList}
         onPress={openExitModalAndCloseModal}
