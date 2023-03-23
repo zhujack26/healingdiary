@@ -7,7 +7,6 @@ import com.ssafy.healingdiary.global.auth.OAuth.dto.*;
 import com.ssafy.healingdiary.global.auth.OAuth.repository.OAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,8 +19,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class OAuthService {
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private final RestTemplate restTemplate;
 
     private final ObjectMapper objectMapper;
     private final OAuthRepository oAuthRepository;
@@ -66,7 +64,7 @@ public class OAuthService {
     // 토큰 유효한 지 검사하고 유효하면 사용자 정보를 가져오는 거까지 함.
     // 구글 토큰인증 -> 구글 사용자 정보까지 받아옴
     public GoogleOAuthTokenResDto googleOAuthTokenCheck (GoogleOAuthTokenReqDto googleOAuthTokenReqDto) throws JsonProcessingException {
-        String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/oauth2/v1/userinfo";
+        String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/userinfo/v2/me";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + googleOAuthTokenReqDto.getAccessToken());
         HttpEntity request = new HttpEntity(headers);
