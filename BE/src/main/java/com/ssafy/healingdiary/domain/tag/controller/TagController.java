@@ -2,6 +2,7 @@ package com.ssafy.healingdiary.domain.tag.controller;
 
 import com.ssafy.healingdiary.domain.tag.dto.TagListResponse;
 import com.ssafy.healingdiary.domain.tag.service.TagService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class TagController {
 //    }
 
     @GetMapping
-    public TagListResponse searchTagList(@RequestParam String tag) {
+    public List<TagListResponse> searchTagList(@RequestParam String tag) {
         return tagService.searchTagList(tag);
     }
 }
