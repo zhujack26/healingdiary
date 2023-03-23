@@ -7,16 +7,21 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "backgroundColor": "#f3f3f3",
+    "scheme": "com.ssafy.healingdiary",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ssafy.healingdiary"
     },
     "android": {
+      "package": "com.ssafy.healingdiary",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -26,7 +31,18 @@
       "favicon": "./assets/favicon.png"
     },
     "packagerOpts": {
-      "sourceExts": ["js", "json", "ts", "tsx", "jsx"]
+      "sourceExts": [
+        "js",
+        "json",
+        "ts",
+        "tsx",
+        "jsx"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ee79468f-4e27-4c3b-938e-b4bb318c851e"
+      }
     }
   }
 }
