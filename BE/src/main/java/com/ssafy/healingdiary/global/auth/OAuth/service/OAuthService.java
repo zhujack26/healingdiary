@@ -33,7 +33,7 @@ public class OAuthService {
         Member foundUser = oAuthRepository.findByProviderEmail("GOOGLE"+"_"+userEmail);
 
         if(foundUser == null){
-            return new LoginResDto(null, null,null, null, null, null, null);
+            return new LoginResDto(null, null,oAuthResponse.getEmail(), null, null, null, null);
         }
         //jwt토큰 만들어 내야함.
 //                    String jwtToken = jwtToken
@@ -50,7 +50,7 @@ public class OAuthService {
         Member foundUser = oAuthRepository.findByProviderEmail("KAKAO"+"_"+userEmail);
 
         if(foundUser == null){
-            return new LoginResDto(null,null, null, null, null, null, null);
+            return new LoginResDto(null,null, oAuthResponse.getEmail(), null, null, null, null);
         }
         //jwt토큰 만들어 내야함.
 //                    String jwtToken = jwtToken
