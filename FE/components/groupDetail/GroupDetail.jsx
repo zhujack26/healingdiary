@@ -1,11 +1,9 @@
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useCallback, useRef, useState } from "react";
 
 import GroupDiaryList from "./GroupDiaryList";
-import GroupIntroduction from "./GroupIntroduction";
 import GroupDetailHeader from "./GroupDetailHeader";
 import BottomModal from "./BottomModal";
-import ExitModal from "./ExitModal";
 import { GlobalColors } from "../../constants/color";
 
 const GroupDetail = () => {
@@ -32,14 +30,10 @@ const GroupDetail = () => {
   return (
     <View style={[exitModalVisible && styles.blur, styles.container]}>
       <GroupDetailHeader handlePresentModalPress={handlePresentModalPress} />
-      <ScrollView style={styles.scrollContainer}>
-        <GroupIntroduction />
-        <GroupDiaryList />
-        <ExitModal
-          exitModalVisible={exitModalVisible}
-          exitCloseModalPress={exitCloseModalPress}
-        />
-      </ScrollView>
+      <GroupDiaryList
+        exitModalVisible={exitModalVisible}
+        exitCloseModalPress={exitCloseModalPress}
+      />
       <BottomModal
         bottomSheetModalRef={bottomSheetModalRef}
         handleCloseModalPress={handleCloseModalPress}
@@ -60,11 +54,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: GlobalColors.colors.gray500,
     opacity: 0.6,
-  },
-
-  scrollContainer: {
-    flex: 1,
-    paddingTop: 32,
-    paddingHorizontal: 16,
   },
 });
