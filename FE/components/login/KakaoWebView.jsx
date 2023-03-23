@@ -6,7 +6,7 @@ const REST_API_KEY = "ea24aef24b022accc550da42d6c80097";
 const REDIRECT_URI = "http://j8b203.p.ssafy.io:8080";
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage("message from webView");`;
 
-const KaKaoWebView = () => {
+const KakaoWebView = () => {
   const requestToken = async (code) => {
     const requestTokenUrl = "https://kauth.kakao.com/oauth/token";
 
@@ -62,7 +62,7 @@ const KaKaoWebView = () => {
   );
 };
 
-export default KaKaoWebView;
+export default KakaoWebView;
 
 const styles = StyleSheet.create({
   container: {

@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-import KaKaoWebView from "./KaKaoWebView";
+import KakaoWebView from "./KakaoWebView";
 import { useNavigation } from "@react-navigation/native";
 
 const deviceWidth = Dimensions.get("window").width - 50;
