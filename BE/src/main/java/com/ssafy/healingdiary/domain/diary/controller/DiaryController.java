@@ -49,11 +49,13 @@ public class DiaryController {
         @RequestParam(required = false) Long clubId,
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String tag,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+        @RequestParam(required = false) Integer year,
+        @RequestParam(required = false) Integer month,
+        @RequestParam(required = false) Integer day,
         Pageable pageable
     ){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getDiaryList(clubId,keyword,tag,date,pageable);
+        return diaryService.getDiaryList(clubId, keyword, tag, year, month, day, pageable);
     }
 
     @GetMapping("/{diaryId}")

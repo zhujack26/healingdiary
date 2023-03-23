@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class DiaryListResponse {
+public class DiarySimpleResponse {
     Long diaryId;
     String imageUrl;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
@@ -17,7 +17,7 @@ public class DiaryListResponse {
     List<String> tags;
 
     @QueryProjection
-    public DiaryListResponse(Long diaryId, String imageUrl, LocalDateTime createdDate, List<String> tags) {
+    public DiarySimpleResponse(Long diaryId, String imageUrl, LocalDateTime createdDate, List<String> tags) {
         this.diaryId = diaryId;
         this.imageUrl = imageUrl;
         this.createdDate = createdDate;

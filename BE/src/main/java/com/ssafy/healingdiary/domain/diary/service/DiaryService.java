@@ -23,17 +23,21 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
 
+
     public Slice<DiaryListResponse> getDiaryList(
 //        UserDetails principal,
         Long clubId,
         String keyword,
         String tag,
-        LocalDate date,
-        Pageable pageable){
+        Integer year,
+        Integer month,
+        Integer day,
+        Pageable pageable) {
 
-        Slice<DiaryListResponse> slice = diaryRepository.findByOption(clubId,keyword,tag,date,pageable);
+        Slice<DiaryListResponse> slice = diaryRepository.findByOption(clubId,keyword,tag,year,month,day,pageable);
         return slice;
     }
+
 
 //    public DiaryDetailResponse getDiaryDetail(UserDetails principal, Long diaryId) {
     public DiaryDetailResponse getDiaryDetail(Long diaryId) {
