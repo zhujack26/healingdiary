@@ -9,8 +9,8 @@ import static org.springframework.util.StringUtils.hasText;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
-import com.ssafy.healingdiary.domain.diary.dto.QDiaryListResponse;
+import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
+import com.ssafy.healingdiary.domain.diary.dto.QDiarySimpleResponse;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -27,8 +27,8 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<DiaryListResponse> findByOption(Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable) {
-        List<DiaryListResponse> result = queryFactory
+    public Slice<DiarySimpleResponse> findByOption(Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable) {
+        List<DiarySimpleResponse> result = queryFactory
             .selectFrom(diary)
             .leftJoin(diary.diaryTag, diaryTag)
             .leftJoin(diaryTag.tag, tag)
@@ -43,7 +43,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             .limit(pageable.getPageSize()+1)
             .transform(
                 groupBy(diary.id).list(
-                    new QDiaryListResponse(diary.id, diary.diaryImageUrl, diary.createdDate, list(tag.content))
+                    new QDiarySimpleResponse(diary.id, diary.diaryImageUrl, diary.createdDate, list(tag.content))
                 )
             );
 

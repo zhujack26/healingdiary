@@ -4,19 +4,15 @@ package com.ssafy.healingdiary.domain.diary.controller;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
+import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
 import com.ssafy.healingdiary.domain.diary.service.DiaryService;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,7 +40,7 @@ public class DiaryController {
     }
 
     @GetMapping
-    public Slice<DiaryListResponse> getDiaryList(
+    public Slice<DiarySimpleResponse> getDiaryList(
 //        Authentication authentication,
         @RequestParam(required = false) Long clubId,
         @RequestParam(required = false) String keyword,
