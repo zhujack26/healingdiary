@@ -153,7 +153,9 @@ const StackNavigation = () => {
           name="Notification"
           component={NotificationScreen}
           options={{
-            headerShown: false,
+            headerTitle: "알림",
+            headerTitleAlign: "center",
+            headerShown: true,
           }}
         />
       </Stack.Navigator>

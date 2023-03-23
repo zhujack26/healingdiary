@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
-import { Platform, TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity, View } from "react-native";
 import { GlobalColors } from "../constants/color";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import CalendarScreen from "../screens/CalendarScreen";
@@ -41,11 +41,32 @@ const BottomTabs = () => {
         component={HomeScreen}
         options={({ navigation }) => ({
           headerRight: () => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate("Notification")}
-            >
-              <MaterialCommunityIcons name="bell" size={24} color="black" />
-            </TouchableOpacity>
+            <View style={{ flexDirection: "row" }}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Notification")}
+              >
+                <MaterialCommunityIcons
+                  name="bell"
+                  size={24}
+                  color="black"
+                  style={{ marginRight: 10 }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => navigation.navigate("Notification")}
+              >
+                <View
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: 50,
+                    borderWidth: 1,
+                    marginRight: 30,
+                    marginTop: 3,
+                  }}
+                ></View>
+              </TouchableOpacity>
+            </View>
           ),
           title: "메인",
           tabBarIcon: ({ color, size }) => (
