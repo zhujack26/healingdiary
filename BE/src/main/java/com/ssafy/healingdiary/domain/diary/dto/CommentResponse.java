@@ -1,7 +1,10 @@
 package com.ssafy.healingdiary.domain.diary.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.ssafy.healingdiary.domain.diary.domain.Comment;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,16 +19,6 @@ public class CommentResponse {
     private String nickname;
     private LocalDateTime datetime;
     private String content;
+    private List<CommentResponse> children;
 
-    @QueryProjection
-    public CommentResponse(Long commentId, Long memberId, Long parentId, String memberImageUrl, String nickname,
-        LocalDateTime datetime, String content) {
-        this.commentId = commentId;
-        this.memberId = memberId;
-        this.parentId = parentId;
-        this.memberImageUrl = memberImageUrl;
-        this.nickname = nickname;
-        this.datetime = datetime;
-        this.content = content;
-    }
 }
