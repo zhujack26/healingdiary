@@ -5,20 +5,57 @@ import {
   Text,
   StyleSheet,
   Dimensions,
+  Button,
 } from "react-native";
+import * as Google from "expo-auth-session/providers/google";
+import { useEffect, useState } from "react";
+import Constants from "expo-constants";
 
 const deviceWidth = Dimensions.get("window").width - 50;
 
 const GoogleLogin = () => {
+  const [accessToken, setAccessToken] = useState("");
+  const [userInfo, setUserInfo] = useState();
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId:
+      "190243783703-jlr28ac2klqm838gpuqqnpmhmhfrm410.apps.googleusercontent.com",
+    iosClientId:
+      "190243783703-cgdj807fu3obb5npckkh3jaoh5p1bhk5.apps.googleusercontent.com",
+    expoClientId:
+      "190243783703-g3f8iuq3uobr7c2svh8varbsdrpdm8jr.apps.googleusercontent.com",
+  });
+
   const loginWithGoogle = () => {
-    console.log("google login");
+    promptAsync({ useProxy: true, showInRecents: true });
   };
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      setAccessToken(response.authentication.accessToken);
+    }
+  }, [response]);
+
+  const getUserData = async () => {
+    let userInfoResponse = await fetch(
+      "https://www.googleapis.com/userinfo/v2/me",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+
+    userInfoResponse.json().then((data) => {
+      setUserInfo(data);
+    });
+    console.log(userInfo);
+  };
+
   return (
     <Pressable style={styles.google} onPress={loginWithGoogle}>
       <Image
         style={styles.image}
         source={require("../../assets/images/google_logo.png")}
       />
+
       <View style={styles.googleLogin}>
         <Text style={styles.loginText}>구글 계정으로 로그인</Text>
       </View>
