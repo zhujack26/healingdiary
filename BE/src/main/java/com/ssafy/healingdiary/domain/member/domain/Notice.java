@@ -43,8 +43,7 @@ public class Notice extends BaseEntity {
     @Column(name = "check_status")
     private CheckStatus checkStatus;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    @Column(name = "delete_status")
-    private DeleteStatus deleteStatus;
+    public void changeCheckStatus(CheckStatus checkStatus) {
+        this.checkStatus = checkStatus;
+    }
 }

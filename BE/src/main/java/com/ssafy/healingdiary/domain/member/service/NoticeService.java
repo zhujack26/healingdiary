@@ -1,6 +1,9 @@
 package com.ssafy.healingdiary.domain.member.service;
 
+import com.ssafy.healingdiary.domain.member.domain.CheckStatus;
 import com.ssafy.healingdiary.domain.member.domain.Member;
+import com.ssafy.healingdiary.domain.member.domain.Notice;
+import com.ssafy.healingdiary.domain.member.dto.DeleteNoticeId;
 import com.ssafy.healingdiary.domain.member.dto.NoticeListResponse;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.domain.member.repository.NoticeRepository;
@@ -21,5 +24,17 @@ public class NoticeService {
             .stream().map(NoticeListResponse::of)
             .collect(Collectors.toList());
         return list;
+    }
+
+    public void changeNoticeStatus(Long noticeId) {
+        Notice notice = noticeRepository.findById(noticeId).get();
+        notice.changeCheckStatus(CheckStatus.CHECKED);
+        noticeRepository.save(notice);
+    }
+
+    public DeleteNoticeId deleteNotice(Long noticeId) {
+        Notice notice = noticeRepository.findById(noticeId).get();
+        noticeRepository.delete(notice);
+        return DeleteNoticeId.builder().noticeId(noticeId).build();
     }
 }

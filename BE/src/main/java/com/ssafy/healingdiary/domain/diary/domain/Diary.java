@@ -49,7 +49,7 @@ public class Diary extends BaseEntity {
     private String recordUrl;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "emotion")
     private Emotion emotion;
 
