@@ -33,14 +33,31 @@ public class OAuthService {
         Member foundUser = oAuthRepository.findByProviderEmail("GOOGLE"+"_"+userEmail);
 
         if(foundUser == null){
-            return new LoginResDto(null, null,oAuthResponse.getEmail(), null, null, null, null);
-        }
+            LoginResDto loginResDto = LoginResDto.builder()
+                    .id(null)
+                    .nickname(null)
+                    .email(null)
+                    .region(null)
+                    .disease(null)
+                    .memberImageUrl(null)
+                    .jwtToken(null)
+                    .build();
+            return loginResDto;        }
         //jwt토큰 만들어 내야함.
 //                    String jwtToken = jwtToken
         //더미 jwtToken
         String jwtToken = "jwtToken더미";
-        return new LoginResDto(foundUser.getId(),foundUser.getNickname(), userEmail ,foundUser.getRegion(), foundUser.getDisease(), foundUser.getMemberImageUrl(), jwtToken);
-    }
+        LoginResDto loginResDto = LoginResDto.builder()
+                .id(foundUser.getId())
+                .nickname(foundUser.getNickname())
+                .email(userEmail)
+                .region(foundUser.getRegion())
+                .disease(foundUser.getDisease())
+                .memberImageUrl(foundUser.getMemberImageUrl())
+                .jwtToken(jwtToken)
+                .build();
+        System.out.println(loginResDto);
+        return loginResDto;    }
     public LoginResDto kakaoOAuthLogin(KakaoOAuthTokenReqDto kakaoOAuthTokenReqDto) throws JsonProcessingException {
 
         // 소셜과 Dto로 사용자 정보 가지고 와서 디비에 있는지 확인하는 로직
@@ -50,14 +67,31 @@ public class OAuthService {
         Member foundUser = oAuthRepository.findByProviderEmail("KAKAO"+"_"+userEmail);
 
         if(foundUser == null){
-            return new LoginResDto(null,null, oAuthResponse.getEmail(), null, null, null, null);
-        }
+            LoginResDto loginResDto = LoginResDto.builder()
+                    .id(null)
+                    .nickname(null)
+                    .email(null)
+                    .region(null)
+                    .disease(null)
+                    .memberImageUrl(null)
+                    .jwtToken(null)
+                    .build();
+            return loginResDto;        }
         //jwt토큰 만들어 내야함.
 //                    String jwtToken = jwtToken
         //더미 jwtToken
         String jwtToken = "jwtToken더미";
-        return new LoginResDto(foundUser.getId(), foundUser.getNickname(),userEmail, foundUser.getRegion(), foundUser.getDisease(), foundUser.getMemberImageUrl(), jwtToken);
-
+        LoginResDto loginResDto = LoginResDto.builder()
+                .id(foundUser.getId())
+                .nickname(foundUser.getNickname())
+                .email(userEmail)
+                .region(foundUser.getRegion())
+                .disease(foundUser.getDisease())
+                .memberImageUrl(foundUser.getMemberImageUrl())
+                .jwtToken(jwtToken)
+                .build();
+        System.out.println(loginResDto);
+        return loginResDto;
     }
 
 
@@ -100,8 +134,16 @@ public class OAuthService {
         System.out.println(oAuthResponse    );
 
         if (oAuthResponse == null) {
-            return new LoginResDto(null,null, null, null, null, null, null);
-        }
+            LoginResDto loginResDto = LoginResDto.builder()
+                    .id(null)
+                    .nickname(null)
+                    .email(null)
+                    .region(null)
+                    .disease(null)
+                    .memberImageUrl(null)
+                    .jwtToken(null)
+                    .build();
+            return loginResDto;        }
         String userEmail = oAuthResponse.getEmail();
 
         Member newMember = Member.builder()
@@ -117,7 +159,14 @@ public class OAuthService {
         //String jwtToken = jwtTokenProvider.createToken(savedUser.getEmail(), savedUser.getRoleList());
         String jwtToken = "jwtToken더미";
 
-        LoginResDto loginResDto = new LoginResDto(savedUser.getId(), savedUser.getNickname(),userEmail, savedUser.getRegion(), savedUser.getDisease(), savedUser.getMemberImageUrl(), jwtToken);
+        LoginResDto loginResDto = LoginResDto.builder()
+                .id(savedUser.getId())
+                .nickname(savedUser.getNickname())
+                .email(userEmail)
+                .region(savedUser.getRegion()).disease(savedUser.getDisease())
+                .memberImageUrl(savedUser.getMemberImageUrl())
+                .jwtToken(jwtToken)
+                .build();
         System.out.println(loginResDto);
         return loginResDto;
 
@@ -128,8 +177,16 @@ public class OAuthService {
         KakaoOAuthTokenResDto oAuthResponse = this.kakaoOAuthTokenCheck(signupReqDto.getKakaoTokenInfo());
 
         if (oAuthResponse == null) {
-            return new LoginResDto(null, null, null, null, null, null,null);
-        }
+            LoginResDto loginResDto = LoginResDto.builder()
+                    .id(null)
+                    .nickname(null)
+                    .email(null)
+                    .region(null)
+                    .disease(null)
+                    .memberImageUrl(null)
+                    .jwtToken(null)
+                    .build();
+            return loginResDto;        }
         String userEmail = oAuthResponse.getEmail();
         Member newMember = Member.builder()
                 .providerEmail("KAKAO" + "_" + signupReqDto.getUserInfo().getEmail())
@@ -143,8 +200,15 @@ public class OAuthService {
         //jwt토큰 만들어줘용
         //String jwtToken = jwtTokenProvider.createToken(savedUser.getEmail(), savedUser.getRoleList());
         String jwtToken = "jwtToken더미";
-        LoginResDto loginResDto = new LoginResDto(savedUser.getId(), savedUser.getNickname(),userEmail , savedUser.getRegion(), savedUser.getDisease(), savedUser.getMemberImageUrl(), jwtToken);
-        System.out.println(loginResDto);
+
+        LoginResDto loginResDto = LoginResDto.builder()
+                .id(savedUser.getId())
+                .nickname(savedUser.getNickname())
+                .email(userEmail)
+                .region(savedUser.getRegion()).disease(savedUser.getDisease())
+                .memberImageUrl(savedUser.getMemberImageUrl())
+                .jwtToken(jwtToken)
+                .build();
         return loginResDto;
 
     }
