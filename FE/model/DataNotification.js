@@ -20,4 +20,11 @@ export const DATA = [
     action: "나갔습니다.",
     time: "11153",
   },
+  {
+    id: "4",
+    name: "누구",
+    location: "내 모임",
+    action: "나갔습니다.",
+    time: "9953",
+  },
 ];
