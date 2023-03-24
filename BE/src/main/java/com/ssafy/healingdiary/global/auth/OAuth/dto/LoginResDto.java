@@ -3,10 +3,13 @@ package com.ssafy.healingdiary.global.auth.OAuth.dto;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
-@AllArgsConstructor
+
+@Getter
+@Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class LoginResDto {
 
