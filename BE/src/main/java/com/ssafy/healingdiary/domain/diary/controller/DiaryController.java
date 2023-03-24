@@ -5,8 +5,7 @@ import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
-import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
-import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
+import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.service.DiaryService;
 import java.util.List;
 import java.util.Map;
@@ -29,15 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DiaryController {
 
     private final DiaryService diaryService;
-
-    //only test
-    private final DiaryRepository diaryRepository;
-
-    @GetMapping("/test/{diaryId}")
-    public void test (
-        @PathVariable Long diaryId){
-        diaryService.deleteDiary(diaryId);
-    }
 
     @GetMapping
     public Slice<DiarySimpleResponse> getDiaryList(
@@ -73,26 +63,29 @@ public class DiaryController {
     @DeleteMapping("/{diaryId}")
     public void deleteDiary(
 //        Authentication authentication,
+        @RequestParam Long memberId,
         @PathVariable Long diaryId){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        diaryService.deleteDiary(diaryId);
+        diaryService.deleteDiary(memberId, diaryId);
     }
 
     @GetMapping("/calendar")
     public List<CalendarResponse> getCalendar(
 //        Authentication authentication,
+        @RequestParam Long memberId,
         @RequestParam int year,
         @RequestParam int month){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getCalendar(year, month);
+        return diaryService.getCalendar(memberId, year, month);
     }
 
     @GetMapping("/emotion")
-    public List<EmotionResponse> getEmotionStatistics(
+    public List<EmotionStatisticResponse> getEmotionStatistics(
 //        Authentication authentication,
+        @RequestParam Long memberId,
         @RequestParam int year,
         @RequestParam int month){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getEmotionStatistics(year, month);
+        return diaryService.getEmotionStatistics(memberId, year, month);
     }
 }

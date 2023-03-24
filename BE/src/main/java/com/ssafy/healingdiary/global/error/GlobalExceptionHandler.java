@@ -1,7 +1,6 @@
 package com.ssafy.healingdiary.global.error;
 
 import javax.persistence.EntityNotFoundException;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -16,6 +15,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     protected ResponseEntity<ErrorResponse> handleCustomException(final CustomException e) {
         log.error("handleCustomException: {}", e.getErrorCode());
+        e.printStackTrace();
         return ResponseEntity
             .status(e.getErrorCode().getStatus().value())
             .body(new ErrorResponse(e.getErrorCode()));
