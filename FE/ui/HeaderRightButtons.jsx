@@ -13,7 +13,7 @@ const HeaderRightButtons = ({ navigation }) => {
           style={{ marginRight: 10 }}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Notification")}>
+      <TouchableOpacity onPress={() => navigation.navigate("ModifyingInform")}>
         <View>
           <Image
             style={styles.img}

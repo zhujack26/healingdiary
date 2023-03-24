@@ -44,7 +44,8 @@ const SoundPlayer = () => {
     }
   };
 
-  const skiptoNext = async () => {
+  const skipToNext = async () => {
+    //다음곡으로 이동
     const nextSoundIndex = soundIndex < songs.length - 1 ? soundIndex + 1 : 0;
     soundSlider.current.scrollToOffset({
       offset: nextSoundIndex * width,
@@ -56,13 +57,14 @@ const SoundPlayer = () => {
       );
       callBackSetIsPlaying(true);
       nextSound.setOnPlaybackStatusUpdate((status) => {
+        //플레이시 실행
         if (!status.isLoaded) return;
         setDuration(status.durationMillis);
         setPosition(status.positionMillis);
         if (status.didJustFinish) {
           setSoundIndex(nextSoundIndex); // 다음 곡 인덱스로 업데이트
           nextSound.unloadAsync(); // 현재 재생 중인 음악 언로드
-          skiptoNext(); // 다음 곡으로 재귀 호출
+          skipToNext(); // 다음 곡으로 재귀 호출
         }
       });
       setSound(nextSound);
@@ -77,6 +79,7 @@ const SoundPlayer = () => {
   };
 
   const skipToPrevious = async () => {
+    //이전 곡으로 이동
     const previousSoundIndex =
       soundIndex > 0 ? soundIndex - 1 : songs.length - 1;
     soundSlider.current.scrollToOffset({
@@ -111,6 +114,7 @@ const SoundPlayer = () => {
     }
   };
   const playSound = async (audio) => {
+    //재생버튼 누르는 동시에 실행
     callBackSetIsPlaying(true);
     if (!sound) {
       const { sound } = await Audio.Sound.createAsync(audio[soundIndex].url);
@@ -121,7 +125,7 @@ const SoundPlayer = () => {
         setPosition(status.positionMillis);
 
         if (status.didJustFinish) {
-          skiptoNext();
+          skipToNext();
           setPosition(0);
           sound.unloadAsync();
         }
@@ -243,7 +247,7 @@ const SoundPlayer = () => {
         <View>
           <Slider
             style={styles.progressContainer}
-            value={duration ? position / duration : 0}
+            value={duration ? position / duration : 0} //프로그레스 바 진행 위치 설정
             minimumValue={0}
             maximumValue={1}
             thumbTintColor="#EDAD79"
@@ -275,7 +279,7 @@ const SoundPlayer = () => {
               color={GlobalColors.colors.secondary500}
             />
           </Pressable>
-          <Pressable onPress={skiptoNext}>
+          <Pressable onPress={skipToNext}>
             <Ionicons
               name="play-skip-forward-outline"
               size={35}
