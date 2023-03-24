@@ -3,8 +3,6 @@ package com.ssafy.healingdiary.domain.club.controller;
 
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
 import com.ssafy.healingdiary.domain.club.service.ClubService;
-import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
-import com.ssafy.healingdiary.domain.member.dto.NoticeListResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -12,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -28,7 +24,16 @@ private final ClubService clubService;
             Pageable pageable
     ){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return clubService.getClubList(tag, pageable);
+        if (tag !=null){
+            return clubService.getClubListByTag(tag, pageable);
+        }
+        else if(keyword !=null){
+            return clubService.getClubListByKeyword(keyword, pageable);
+        }
+        else {
+            return null;
+        }
+
     }
 
 
