@@ -13,8 +13,10 @@ import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
 import GroupMemberScreen from "./../screens/GroupMemberScreen";
+import NotificationScreen from "../screens/NotificationScreen";
 import KakaoWebView from "../components/login/KakaoWebView";
 import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
+import TempDiaryDetail from "../components/tempDiaryDetail/TempDiaryDetail";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -25,7 +27,7 @@ const StackNavigation = () => {
         component= {UserInformScreen}
         > */}
       <Stack.Navigator
-        initialRouteName="diaryBottomTab"
+        initialRouteName="diaryBottmTab"
         screenOptions={{
           headerStyle: {
             backgroundColor: GlobalColors.colors.background500,
@@ -62,6 +64,14 @@ const StackNavigation = () => {
             headerStyle: {
               backgroundColor: GlobalColors.colors.primary500,
             },
+          }}
+        />
+        {/* 테스트용 */}
+        <Stack.Screen
+          name="tempDiaryDetail"
+          component={TempDiaryDetail}
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -166,6 +176,15 @@ const StackNavigation = () => {
           name="userinform"
           component={UserInformScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Notification"
+          component={NotificationScreen}
+          options={{
+            headerTitle: "알림",
+            headerTitleAlign: "center",
+            headerShown: true,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

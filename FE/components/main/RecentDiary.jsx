@@ -30,7 +30,7 @@ const RecentDiary = () => {
               <Text style={styles.tagText}>#해시태그</Text>
             </View>
           </Pressable>
-          <Pressable>
+          <Pressable onPress={() => navigation.navigate("tempDiaryDetail")}>
             <Image
               source={require("../../assets/images/SAMPLE4.png")}
               style={styles.image}
