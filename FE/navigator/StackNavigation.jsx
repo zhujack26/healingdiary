@@ -16,6 +16,8 @@ import GroupMemberScreen from "./../screens/GroupMemberScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import KakaoWebView from "../components/login/KakaoWebView";
 import ModifyingInformScreen from "../screens/ModifyingInformScreen";
+import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
+import TempDiaryDetail from "../components/tempDiaryDetail/TempDiaryDetail";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -26,7 +28,7 @@ const StackNavigation = () => {
         component= {UserInformScreen}
         > */}
       <Stack.Navigator
-        initialRouteName="diaryBottomTab"
+        initialRouteName="diaryBottmTab"
         screenOptions={{
           headerStyle: {
             backgroundColor: GlobalColors.colors.background500,
@@ -63,6 +65,14 @@ const StackNavigation = () => {
             headerStyle: {
               backgroundColor: GlobalColors.colors.primary500,
             },
+          }}
+        />
+        {/* 테스트용 */}
+        <Stack.Screen
+          name="tempDiaryDetail"
+          component={TempDiaryDetail}
+          options={{
+            headerShown: false,
           }}
         />
         <Stack.Screen
@@ -148,6 +158,21 @@ const StackNavigation = () => {
             },
           }}
         />
+
+        <Stack.Screen
+          name="groupMemberAllow"
+          component={GroupMemberAllow}
+          options={{
+            title: "",
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.background500,
+            },
+          }}
+        />
+
         <Stack.Screen
           name="userinform"
           component={UserInformScreen}
