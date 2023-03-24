@@ -24,10 +24,10 @@ public class OAuthService {
     private final ObjectMapper objectMapper;
     private final OAuthRepository oAuthRepository;
 
-    public LoginResDto googleOAuthLogin(GoogleOAuthTokenReqDto googleOAuthTokenReqDto) throws JsonProcessingException {
+    public LoginResDto googleOAuthLogin(OAuthTokenReqDto OAuthTokenReqDto) throws JsonProcessingException {
 
         // 소셜과 Dto로 사용자 정보 가지고 와서 디비에 있는지 확인하는 로직.
-        GoogleOAuthTokenResDto oAuthResponse = this.googleOAuthTokenCheck(googleOAuthTokenReqDto);
+        OAuthTokenResDto oAuthResponse = this.googleOAuthTokenCheck(OAuthTokenReqDto);
         // 사용자 이메일을 가져온다
         String userEmail = oAuthResponse.getEmail();
         Member foundUser = oAuthRepository.findByProviderEmail("GOOGLE"+"_"+userEmail);
@@ -63,10 +63,10 @@ public class OAuthService {
 
     // 토큰 유효한 지 검사하고 유효하면 사용자 정보를 가져오는 거까지 함.
     // 구글 토큰인증 -> 구글 사용자 정보까지 받아옴
-    public GoogleOAuthTokenResDto googleOAuthTokenCheck (GoogleOAuthTokenReqDto googleOAuthTokenReqDto) throws JsonProcessingException {
+    public OAuthTokenResDto googleOAuthTokenCheck (OAuthTokenReqDto OAuthTokenReqDto) throws JsonProcessingException {
         String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/userinfo/v2/me";
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + googleOAuthTokenReqDto.getAccessToken());
+        headers.set("Authorization", "Bearer " + OAuthTokenReqDto.getAccessToken());
         HttpEntity request = new HttpEntity(headers);
         ResponseEntity<String> response = restTemplate.exchange(
                 GOOGLE_USERINFO_REQUEST_URL,
@@ -74,7 +74,7 @@ public class OAuthService {
                 request,
                 String.class
         );
-        return objectMapper.readValue(response.getBody(), GoogleOAuthTokenResDto.class);
+        return objectMapper.readValue(response.getBody(), OAuthTokenResDto.class);
 
     }
 
@@ -96,7 +96,7 @@ public class OAuthService {
     }
 
     public LoginResDto googleOAuthSignup (SignupReqDto signupReqDto) throws JsonProcessingException {
-        GoogleOAuthTokenResDto oAuthResponse = this.googleOAuthTokenCheck(signupReqDto.getGoogleTokenInfo());
+        OAuthTokenResDto oAuthResponse = this.googleOAuthTokenCheck(signupReqDto.getGoogleTokenInfo());
         System.out.println(oAuthResponse    );
 
         if (oAuthResponse == null) {

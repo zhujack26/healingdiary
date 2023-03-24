@@ -3,7 +3,7 @@ package com.ssafy.healingdiary.global.auth.OAuth.dto;
 import lombok.Data;
 
 @Data
-public class GoogleOAuthTokenResDto {
+public class OAuthTokenResDto {
 
     public String email;
 

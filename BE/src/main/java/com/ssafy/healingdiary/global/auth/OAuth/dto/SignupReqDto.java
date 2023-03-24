@@ -13,12 +13,8 @@ public class SignupReqDto {
     @JsonProperty("user_info")
     private LoginReqDto userInfo;
 
-
-
     @JsonProperty("google_token_info")
-    private GoogleOAuthTokenReqDto googleTokenInfo;
+    private OAuthTokenResDto googleTokenInfo;
 
-    @JsonProperty("kakao_token_info")
-    private KakaoOAuthTokenReqDto kakaoTokenInfo;
 
 }

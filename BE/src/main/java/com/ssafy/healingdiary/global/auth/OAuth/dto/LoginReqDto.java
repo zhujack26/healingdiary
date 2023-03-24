@@ -11,11 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LoginReqDto {
 
-
-
     private String nickname;
     private String email;
-//    private String roles;
 
     private String region;
 
