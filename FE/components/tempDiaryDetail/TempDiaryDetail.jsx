@@ -10,8 +10,20 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import Comment from "./Comment";
+import Hashtag from "./Hashtag";
 
 const { width, height } = Dimensions.get("window");
+const DATA = {
+  createdDate: "2023-03-23T13:47:02.140Z",
+  diaryId: 0,
+  emotion: {
+    code: 0,
+    value: "string",
+  },
+  imageUrl: require("../../assets/images/SAMPLE1.png"),
+  recordUrl: require("../../assets/sounds/SAMPLE1.mp3"),
+  tags: ["해시태그", "해그태시", "해해해시"],
+};
 
 const TempDiaryDetail = ({ navigation }) => {
   return (
@@ -41,9 +53,7 @@ const TempDiaryDetail = ({ navigation }) => {
         />
       </View>
       {/* 해시태그 */}
-      <View>
-        <Text>해시태그</Text>
-      </View>
+      <Hashtag tags={DATA.tags} />
       {/* 댓글창 */}
       <Comment />
     </SafeAreaView>
