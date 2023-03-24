@@ -2,6 +2,8 @@ package com.ssafy.healingdiary.domain.tag.service;
 
 import com.ssafy.healingdiary.domain.tag.dto.TagListResponse;
 import com.ssafy.healingdiary.domain.tag.repository.TagRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +12,8 @@ import org.springframework.stereotype.Service;
 public class TagService {
 
     private final TagRepository tagRepository;
-    public TagListResponse searchTagList(String tag) {
-        TagListResponse tagListResponse = TagListResponse.builder()
-            .tags(tagRepository.findByTagLike(tag))
-            .build();
+    public List<TagListResponse> searchTagList(String tag) {
+        List<TagListResponse> tagListResponse = tagRepository.findByTagLike(tag);
         return tagListResponse;
     }
 }

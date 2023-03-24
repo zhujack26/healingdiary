@@ -1,12 +1,16 @@
 package com.ssafy.healingdiary.domain.tag.dto;
 
-import java.util.List;
-import lombok.Builder;
+import com.querydsl.core.annotations.QueryProjection;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class TagListResponse {
 
-    List<String> tags;
+    Long id;
+    String content;
 }
