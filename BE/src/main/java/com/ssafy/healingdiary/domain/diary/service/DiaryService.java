@@ -1,13 +1,16 @@
 package com.ssafy.healingdiary.domain.diary.service;
 
+import com.ssafy.healingdiary.domain.diary.domain.Comment;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
+import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
-import java.time.LocalDate;
+import com.ssafy.healingdiary.global.error.CustomException;
+import com.ssafy.healingdiary.global.error.ErrorCode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,19 +57,24 @@ public class DiaryService {
     }
 
 //    public void deleteDiary(UserDetails principal, Long diaryId) {
-    public void deleteDiary(Long diaryId) {
+    public void deleteDiary(Long memberId, Long diaryId) {
+        Diary diary = diaryRepository.findById(diaryId)
+            .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+        if(memberId != diary.getMember().getId()){
+            throw new CustomException(ErrorCode.FORBIDDEN);
+        }
         diaryRepository.deleteById(diaryId);
     }
 
 //    public List<CalendarResponse> getCalendar(UserDetails principal, int year, int month) {
-    public List<CalendarResponse> getCalendar(int year, int month) {
-        List<CalendarResponse> calendarList = new ArrayList<>();
+    public List<CalendarResponse> getCalendar(Long memberId, int year, int month) {
+        List<CalendarResponse> calendarList = diaryRepository.getEmotionByMonthOfYear(memberId, year, month);
         return calendarList;
     }
 
-//    public List<EmotionResponse> getEmotionStatistics(UserDetails principal, int year, int month) {
-    public List<EmotionResponse> getEmotionStatistics(int year, int month) {
-        List<EmotionResponse> emotionList = new ArrayList<>();
+//    public List<EmotionStatisticResponse> getEmotionStatistics(UserDetails principal, int year, int month) {
+    public List<EmotionStatisticResponse> getEmotionStatistics(Long memberId, int year, int month) {
+        List<EmotionStatisticResponse> emotionList = diaryRepository.countEmotion(memberId, year, month);
         return emotionList;
     }
 
