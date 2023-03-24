@@ -15,6 +15,7 @@ import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
 import GroupMemberScreen from "./../screens/GroupMemberScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import KakaoWebView from "../components/login/KakaoWebView";
+import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
 import TempDiaryDetail from "../components/tempDiaryDetail/TempDiaryDetail";
 
 const Stack = createNativeStackNavigator();
@@ -156,6 +157,21 @@ const StackNavigation = () => {
             },
           }}
         />
+
+        <Stack.Screen
+          name="groupMemberAllow"
+          component={GroupMemberAllow}
+          options={{
+            title: "",
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.background500,
+            },
+          }}
+        />
+
         <Stack.Screen
           name="userinform"
           component={UserInformScreen}
