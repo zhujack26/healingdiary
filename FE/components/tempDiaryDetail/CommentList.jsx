@@ -1,9 +1,8 @@
-import React from "react";
 import { FlatList } from "react-native";
 import CommentListItem from "./CommentListItem";
 
-const CommentList = ({ comment }) => {
-  return <FlatList renderItem={CommentListItem} data={comment} />;
+const CommentList = ({ comments }) => {
+  return <FlatList renderItem={CommentListItem} data={comments} />;
 };
 
 export default CommentList;

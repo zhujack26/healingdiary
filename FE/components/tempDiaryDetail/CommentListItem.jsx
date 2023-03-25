@@ -1,16 +1,7 @@
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Dimensions,
-  FlatList,
-} from "react-native";
+import { View, StyleSheet, Text, Image, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import ReplyListItem from "./ReplyListItem";
-
-const { width } = Dimensions.get("window");
 
 const CommentListItem = ({ item }) => {
   return (
@@ -23,12 +14,10 @@ const CommentListItem = ({ item }) => {
       </View>
       <View style={styles.commnetContainer}>
         <View>
-          <Text style={[styles.regular, styles.nickname]}>
-            {item?.nickname}
-          </Text>
+          <Text style={[styles.regular, styles.text]}>{item?.nickname}</Text>
           <Text style={[styles.regular, styles.time]}>1일전</Text>
           <View>
-            <Text>{item?.content}</Text>
+            <Text style={[styles.regular, styles.text]}>{item?.content}</Text>
             {item.children && (
               <View>
                 <FlatList renderItem={ReplyListItem} data={item?.children} />
@@ -88,7 +77,7 @@ const styles = StyleSheet.create({
     right: 0,
   },
 
-  nickname: {
+  text: {
     color: GlobalColors.colors.black500,
     fontSize: 12,
   },
@@ -96,20 +85,5 @@ const styles = StyleSheet.create({
   time: {
     color: GlobalColors.colors.gray500,
     fontSize: 10,
-  },
-
-  reply: {
-    color: GlobalColors.colors.black500,
-    fontSize: 12,
-  },
-
-  replyContainer: {
-    width: "80%",
-    flexDirection: "row",
-    marginTop: 8,
-  },
-
-  replyCommentContainer: {
-    flexDirection: "row",
   },
 });
