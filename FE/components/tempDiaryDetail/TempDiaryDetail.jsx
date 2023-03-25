@@ -52,9 +52,7 @@ const TempDiaryDetail = ({ navigation }) => {
           }}
         />
       </View>
-      {/* 해시태그 */}
       <Hashtag tags={DATA.tags} />
-      {/* 댓글창 */}
       <Comment />
     </SafeAreaView>
   );

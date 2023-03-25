@@ -12,7 +12,7 @@ const renderHashTagItem = ({ item }) => {
 const Hashtag = ({ tags }) => {
   return (
     <View style={styles.container}>
-      <FlatList data={tags} renderItem={renderHashTagItem} />
+      <FlatList data={tags} renderItem={renderHashTagItem} horizontal />
     </View>
   );
 };
@@ -21,11 +21,9 @@ export default Hashtag;
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex",
-    flexDirection: "row",
-    marginTop: 12,
+    flexDirection: "column",
     paddingHorizontal: 16,
-    backgroundColor: "black",
+    marginVertical: 12,
   },
 
   hashtag: {
@@ -35,6 +33,7 @@ const styles = StyleSheet.create({
     height: 30,
     backgroundColor: GlobalColors.colors.primary500,
     borderRadius: 12,
+    marginRight: 8,
   },
 
   hashtagText: {

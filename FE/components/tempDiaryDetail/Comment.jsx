@@ -1,17 +1,19 @@
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image,
-  Dimensions,
-  ScrollView,
-} from "react-native";
-import { GlobalColors } from "../../constants/color";
-import { Ionicons } from "@expo/vector-icons";
+import CommentList from "./CommentList";
 
 const comment = [
   {
-    children: ["별론데?", "별로인데?", "별로네"],
+    children: [
+      {
+        commentId: 3,
+        memberId: 1,
+        parentId: 1,
+        memberImageUrl: "회원1.jpg",
+        nickname: "닉넴",
+        datetime: "2023-03-24T02:00:00",
+        content: "댓글1",
+        children: null,
+      },
+    ],
     commentId: "1",
     content: "댓글이지",
     datetime: "2023-03-23T13:47:02.140Z",
@@ -21,7 +23,18 @@ const comment = [
     parentId: 1,
   },
   {
-    children: null,
+    children: [
+      {
+        commentId: 3,
+        memberId: 1,
+        parentId: 1,
+        memberImageUrl: "회원1.jpg",
+        nickname: "닉넴",
+        datetime: "2023-03-24T02:00:00",
+        content: "댓글2",
+        children: null,
+      },
+    ],
     commentId: "2",
     content: "두번째 댓글임",
     datetime: "2023-03-23T13:47:02.140Z",
@@ -30,18 +43,63 @@ const comment = [
     nickname: "닉네임임",
     parentId: 2,
   },
+  {
+    children: [
+      {
+        commentId: 3,
+        memberId: 1,
+        parentId: 1,
+        memberImageUrl: "회원1.jpg",
+        nickname: "닉넴",
+        datetime: "2023-03-24T02:00:00",
+        content: "댓글3",
+        children: null,
+      },
+    ],
+    commentId: "3",
+    content: "세번째 댓글임",
+    datetime: "2023-03-23T13:47:02.140Z",
+    memberId: 2,
+    memberImageUrl: "",
+    nickname: "닉네임임",
+    parentId: 3,
+  },
+  {
+    children: null,
+    commentId: "1",
+    content: "댓글이지",
+    datetime: "2023-03-23T13:47:02.140Z",
+    memberId: 0,
+    memberImageUrl: "",
+    nickname: "닉네임임",
+    parentId: 1,
+  },
+
+  {
+    children: [
+      {
+        commentId: 3,
+        memberId: 1,
+        parentId: 1,
+        memberImageUrl: "회원1.jpg",
+        nickname: "닉넴",
+        datetime: "2023-03-24T02:00:00",
+        content: "댓글1",
+        children: null,
+      },
+    ],
+    commentId: "1",
+    content: "댓글이지",
+    datetime: "2023-03-23T13:47:02.140Z",
+    memberId: 0,
+    memberImageUrl: "",
+    nickname: "닉네임임",
+    parentId: 1,
+  },
 ];
 
-const { width } = Dimensions.get("window");
-
 const Comment = () => {
-  return (
-    <View style={styles.container}>
-      <Text>댓글창</Text>
-    </View>
-  );
+  return <CommentList comment={comment} />;
 };
 
 export default Comment;
-
-const styles = StyleSheet.create({});
