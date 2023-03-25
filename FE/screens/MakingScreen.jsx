@@ -2,26 +2,28 @@ import { View, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
 import Timer from "../components/making/Timer";
 import AddFile from "../components/making/AddFile";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NextButton from "../components/making/NextButton";
 
 const MakingScreen = ({ navigation }) => {
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
 
-  // 이 함수를 Timer 컴포넌트에 전달하여 타이머의 상태에 따라 버튼이 표시되도록
-  const toggleNextButtonVisibility = (visible) => {
+  const toggleNextButtonVisibility = (visible = true) => {
     setNextButtonVisible(visible);
   };
-  // headerRight에 전달할 NextButton 컴포넌트를 설정
-  navigation.setOptions({
-    headerRight: (props) => (
-      <NextButton
-        {...props}
-        visible={nextButtonVisible}
-        navigation={navigation}
-      />
-    ),
-  });
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: (props) => (
+        <NextButton
+          {...props}
+          visible={nextButtonVisible}
+          navigation={navigation}
+        />
+      ),
+    });
+  }, [navigation, nextButtonVisible]);
+
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
