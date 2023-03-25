@@ -18,7 +18,7 @@ import KakaoWebView from "../components/login/KakaoWebView";
 import ModifyingInformScreen from "../screens/ModifyingInformScreen";
 import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
 import TempDiaryDetail from "../components/tempDiaryDetail/TempDiaryDetail";
-
+import NextButton from "../components/making/NextButton";
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
   return (
@@ -81,12 +81,8 @@ const StackNavigation = () => {
           options={({ navigation }) => ({
             headerTitle: "",
             headerBackTitleVisible: false,
-            headerRight: () => (
-              <TouchableOpacity
-                onPress={() => navigation.navigate("MakingDetail")}
-              >
-                <Text style={{ fontSize: 16, fontWeight: "bold" }}>다음</Text>
-              </TouchableOpacity>
+            headerRight: (props) => (
+              <NextButton {...props} navigation={navigation} />
             ),
             headerTitle: () => <Date />,
             headerTitleAlign: "center",

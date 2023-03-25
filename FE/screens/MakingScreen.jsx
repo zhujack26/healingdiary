@@ -2,13 +2,33 @@ import { View, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
 import Timer from "../components/making/Timer";
 import AddFile from "../components/making/AddFile";
+import { useState, useEffect } from "react";
+import NextButton from "../components/making/NextButton";
 
-const MakingScreen = () => {
+const MakingScreen = ({ navigation }) => {
+  const [nextButtonVisible, setNextButtonVisible] = useState(false);
+
+  const toggleNextButtonVisibility = (visible = true) => {
+    setNextButtonVisible(visible);
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: (props) => (
+        <NextButton
+          {...props}
+          visible={nextButtonVisible}
+          navigation={navigation}
+        />
+      ),
+    });
+  }, [navigation, nextButtonVisible]);
+
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
         <AddFile />
-        <Timer />
+        <Timer onToggleNextButtonVisibility={toggleNextButtonVisibility} />
       </View>
     </View>
   );
