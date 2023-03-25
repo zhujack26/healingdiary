@@ -30,11 +30,38 @@ const GROUP = [
   },
 ];
 
+const DIARYIES = [
+  {
+    id: 0,
+    hashtags: "감정1",
+    image: require("../../assets/images/SAMPLE6.png"),
+  },
+  {
+    id: 1,
+    hashtags: "감정2",
+    image: require("../../assets/images/SAMPLE5.png"),
+  },
+  {
+    id: 2,
+    hashtags: "감정3",
+    image: require("../../assets/images/SAMPLE4.png"),
+  },
+  {
+    id: 3,
+    hashtags: "감정4",
+    image: require("../../assets/images/SAMPLE3.png"),
+  },
+  {
+    id: 4,
+    hashtags: "감정5",
+    image: require("../../assets/images/SAMPLE1.png"),
+  },
+];
 const Home = () => {
   return (
     <ScrollView style={styles.container}>
       <RecommendGroup groups={GROUP} />
-      <RecommendDiary />
+      <RecommendDiary diaries={DIARYIES} />
       <RecentDiary />
     </ScrollView>
   );
