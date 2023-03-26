@@ -5,6 +5,7 @@ import Comment from "./Comment";
 import Hashtag from "./Hashtag";
 import DiaryDetailThumbAndPlayer from "./DiaryDetailThumbAndPlayer";
 import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 
 const DATA = {
   createdDate: "2023-03-23T13:47:02.140Z",
@@ -116,7 +117,8 @@ const comments = [
   },
 ];
 
-const DiaryDetail = ({ navigation, route }) => {
+const DiaryDetail = ({ route }) => {
+  const navigation = useNavigation();
   const id = route.params.id;
 
   const [sound, setSound] = useState();

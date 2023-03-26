@@ -19,6 +19,8 @@ import ModifyingInformScreen from "../screens/ModifyingInformScreen";
 import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
 import NextButton from "../components/making/NextButton";
 import DiaryDetail from "../components/diaryDetail/DiaryDetail";
+import DiaryDetailScreen from "../screens/DiaryDetailScreen";
+import CalendarDetailScreen from "../screens/CalendarDetailScreen";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -59,7 +61,15 @@ const StackNavigation = () => {
 
         <Stack.Screen
           name="diaryDetail"
-          component={DiaryDetail}
+          component={DiaryDetailScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="calendarDetail"
+          component={CalendarDetailScreen}
           options={{
             headerShown: false,
           }}
