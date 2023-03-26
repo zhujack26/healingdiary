@@ -19,6 +19,7 @@ import ModifyingInformScreen from "../screens/ModifyingInformScreen";
 import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
 import NextButton from "../components/making/NextButton";
 import DiaryDetail from "../components/diaryDetail/DiaryDetail";
+import InviteScreen from "../screens/InviteScreen";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -176,6 +177,11 @@ const StackNavigation = () => {
             headerTitleAlign: "center",
             headerShown: true,
           }}
+        />
+        <Stack.Screen
+          name="Invite"
+          component={InviteScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>

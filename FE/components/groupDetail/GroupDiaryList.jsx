@@ -1,5 +1,5 @@
 import { StyleSheet, FlatList } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
 import GroupDiaryListItem from "./GroupDiaryListItem";
 import GroupIntroduction from "./GroupIntroduction";
 import ExitModal from "./ExitModal";
@@ -33,13 +33,14 @@ const DATA = [
 ];
 
 const GroupDiaryList = ({ exitModalVisible, exitCloseModalPress }) => {
+  const navigation = useNavigation();
   return (
     <FlatList
       style={styles.scrollContainer}
       data={DATA}
       renderItem={({ item }) => <GroupDiaryListItem data={item} />}
       keyExtractor={(item) => item.id}
-      ListHeaderComponent={<GroupIntroduction />}
+      ListHeaderComponent={<GroupIntroduction navigation={navigation} />}
       ListFooterComponent={
         <ExitModal
           exitModalVisible={exitModalVisible}
