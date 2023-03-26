@@ -8,7 +8,6 @@ import Date from "../ui/Date";
 import MakingScreen from "../screens/MakingScreen";
 import { Text, TouchableOpacity } from "react-native";
 import MakingDetailScreen from "../screens/MakingDetailScreen";
-import MakingHashScreen from "../screens/MakingHashScreen";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
@@ -19,6 +18,7 @@ import ModifyingInformScreen from "../screens/ModifyingInformScreen";
 import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
 import NextButton from "../components/making/NextButton";
 import DiaryDetail from "../components/diaryDetail/DiaryDetail";
+import InviteScreen from "../screens/InviteScreen";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -101,20 +101,6 @@ const StackNavigation = () => {
             },
           })}
         />
-
-        <Stack.Screen
-          name="MakingHash"
-          component={MakingHashScreen}
-          options={{
-            title: "",
-            headerTitle: () => <Date />,
-            headerTitleAlign: "center",
-            headerShadowVisible: false,
-            headerStyle: {
-              backgroundColor: GlobalColors.colors.primary500,
-            },
-          }}
-        />
         <Stack.Screen
           name="groupDetail"
           component={GroupDetailScreen}
@@ -176,6 +162,11 @@ const StackNavigation = () => {
             headerTitleAlign: "center",
             headerShown: true,
           }}
+        />
+        <Stack.Screen
+          name="Invite"
+          component={InviteScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
