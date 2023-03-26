@@ -5,6 +5,7 @@ import Title from "../../ui/Title";
 import RecommendDiaryListItem from "./RecommendDiaryListItem";
 
 const { width } = Dimensions.get("window");
+
 const RecommendDiary = ({ diaries }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   return (
@@ -17,7 +18,7 @@ const RecommendDiary = ({ diaries }) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         decelerationRate={0.8}
-        snapToInterval={width / 3.5}
+        snapToInterval={width / 3}
         bounces={false}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { x: scrollX } } }],

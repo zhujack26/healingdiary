@@ -1,4 +1,5 @@
 import { ScrollView, StyleSheet, Dimensions } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import RecommendDiary from "./RecommendDiary";
 import RecommendGroup from "./RecommendGroup";
@@ -58,11 +59,16 @@ const DIARYIES = [
   },
 ];
 const Home = () => {
+  const navigation = useNavigation();
+  const navigateToScreen = (screen, id) => {
+    navigation.navigate(screen, { id: id });
+  };
+
   return (
     <ScrollView style={styles.container}>
-      <RecommendGroup groups={GROUP} />
-      <RecommendDiary diaries={DIARYIES} />
-      <RecentDiary />
+      <RecommendGroup groups={GROUP} navigateToScreen={navigateToScreen} />
+      <RecommendDiary diaries={DIARYIES} navigateToScreen={navigateToScreen} />
+      <RecentDiary diaries={DIARYIES} navigateToScreen={navigateToScreen} />
     </ScrollView>
   );
 };
@@ -71,6 +77,7 @@ export default Home;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: width,
     height: height,
     paddingHorizontal: 16,

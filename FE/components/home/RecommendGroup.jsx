@@ -7,7 +7,7 @@ import RecommentGroupListItem from "./RecommentGroupListItem";
 
 const { width } = Dimensions.get("window");
 
-const RecommendGroup = ({ groups }) => {
+const RecommendGroup = ({ groups, navigateToScreen }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
 
   return (
@@ -16,7 +16,12 @@ const RecommendGroup = ({ groups }) => {
       <Animated.FlatList
         data={groups}
         keyExtractor={(item) => item.id}
-        renderItem={RecommentGroupListItem}
+        renderItem={({ item }) => (
+          <RecommentGroupListItem
+            item={item}
+            navigateToScreen={navigateToScreen}
+          />
+        )}
         horizontal
         showsHorizontalScrollIndicator={false}
         decelerationRate={0.8}

@@ -116,7 +116,9 @@ const comments = [
   },
 ];
 
-const TempDiaryDetail = ({ navigation }) => {
+const TempDiaryDetail = ({ navigation, route }) => {
+  const id = route.params.id;
+
   const [sound, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -137,6 +139,7 @@ const TempDiaryDetail = ({ navigation }) => {
       setIsPlaying(false);
     }
   };
+
   useEffect(() => {
     return sound
       ? () => {
@@ -145,6 +148,7 @@ const TempDiaryDetail = ({ navigation }) => {
       : undefined;
   }, [sound]);
 
+  useEffect(() => {});
   return (
     <SafeAreaView style={styles.container}>
       <DiaryDetailThumbAndPlayer

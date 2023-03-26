@@ -1,64 +1,66 @@
+import { useNavigation } from "@react-navigation/native";
 import {
+  Pressable,
   View,
-  Image,
   Text,
+  Image,
   StyleSheet,
   Dimensions,
-  Pressable,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
 
 const { width } = Dimensions.get("window");
 
-const RecommendDiaryListItem = ({ item, navigateToScreen }) => {
-  console.log(item);
+const RecentDiaryListItem = ({ item, navigateToScreen }) => {
   return (
-    <Pressable style={styles.diaries} onPress={() => {}}>
-      <View style={styles.diary}>
+    <View style={styles.recentDiary}>
+      <Pressable
+        onPress={() => {
+          navigateToScreen("tempDiaryDetail", item.id);
+        }}
+      >
         <Image source={item?.image} style={styles.image} />
         <View style={styles.hashtag}>
-          <Text style={styles.hashtagText}>#{item?.hashtags}</Text>
+          <Text style={styles.tagText}>#{item?.hashtags}</Text>
         </View>
-      </View>
-    </Pressable>
+      </Pressable>
+    </View>
   );
 };
 
-export default RecommendDiaryListItem;
+export default RecentDiaryListItem;
 
 const styles = StyleSheet.create({
-  diaries: {
+  recentDiary: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-
-  diary: {
-    marginBottom: 8,
     marginRight: 8,
+    marginBottom: 8,
   },
 
   image: {
-    width: width / 2,
-    height: width / 2,
+    position: "relative",
+    width: width / 3,
+    height: width / 3,
     borderRadius: 12,
   },
 
   hashtag: {
-    position: "absolute",
-    top: 8,
-    left: 8,
-    minWidth: 65,
+    minWidth: 75,
     height: 25,
+    borderRadius: 16,
     backgroundColor: GlobalColors.colors.white500,
-    borderRadius: 13,
-    alignItems: "center",
-    justifyContent: "center",
+    position: "absolute",
+    top: 10,
+    left: 10,
   },
 
-  hashtagText: {
+  tagText: {
     fontFamily: "KoddiUDOnGothic-ExtraBold",
     fontSize: 12,
     color: GlobalColors.colors.primary500,
+    textAlign: "center",
+    marginTop: 5,
   },
 });

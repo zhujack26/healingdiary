@@ -16,7 +16,7 @@ const BottomTabs = () => {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarStyle: {
-          position: "absolute",
+          position: "relative",
           bottom: 0,
           height: 80,
           backgroundColor: GlobalColors.colors.white500,
