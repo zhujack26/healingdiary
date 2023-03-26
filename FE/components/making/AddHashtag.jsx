@@ -12,6 +12,8 @@ const AddHashtag = () => {
     { id: 5, name: "해시태그1-5" },
     { id: 6, name: "해시태그1-6" },
     { id: 7, name: "해시태그1-7" },
+    { id: 8, name: "해시태그1-7" },
+    { id: 9, name: "해시태그1-7" },
   ]);
   const [tags2, setTags2] = useState([
     { id: 11, name: "해시태그2-1" },
@@ -21,15 +23,17 @@ const AddHashtag = () => {
     { id: 15, name: "해시태그2-5" },
     { id: 16, name: "해시태그2-6" },
     { id: 17, name: "해시태그2-7" },
-  ]);
-  const [tags3, setTags3] = useState([
-    { id: 21, name: "해시태그3-1" },
-    { id: 22, name: "해시태그3-2" },
-    { id: 23, name: "해시태그3-3" },
-    { id: 24, name: "해시태그3-4" },
-    { id: 25, name: "해시태그3-5" },
-    { id: 26, name: "해시태그3-6" },
-    { id: 27, name: "해시태그3-7" },
+    { id: 18, name: "해시태그2-7" },
+    { id: 19, name: "해시태그2-7" },
+    { id: 20, name: "해시태그2-7" },
+    { id: 21, name: "해시태그2-7" },
+    { id: 22, name: "해시태그2-7" },
+    { id: 23, name: "해시태그2-7" },
+    { id: 24, name: "해시태그2-7" },
+    { id: 25, name: "해시태그2-7" },
+    { id: 26, name: "해시태그2-7" },
+    { id: 27, name: "해시태그2-7" },
+    { id: 28, name: "해시태그2-7" },
   ]);
 
   const [selectedTags, setSelectedTags] = useState([]);
@@ -39,10 +43,8 @@ const AddHashtag = () => {
       setSelectedTags(
         selectedTags.filter((selectedTag) => selectedTag !== tag)
       );
-      console.log("if문");
     } else {
       setSelectedTags([...selectedTags, tag]);
-      console.log("선택 if문");
     }
   };
   const navigation = useNavigation();
@@ -59,48 +61,9 @@ const AddHashtag = () => {
       </View>
       <View style={styles.sub}>
         <Text>감정</Text>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("MakingHash", {
-              categoryId: 1,
-              categoryName: "감정",
-              allTags: tags1,
-            })
-          }
-        >
-          <Text id="전체보기1">전체보기</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.box}>
-        {tags1.slice(0, 6).map((tag) => (
-          <TouchableOpacity
-            key={tag.id}
-            onPress={() => handleTagSelection(tag)}
-            style={[
-              styles.tagButton,
-              selectedTags.includes(tag) && styles.selectedTagButton,
-            ]}
-          >
-            <Text style={styles.tagButtonText}>{tag.name}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <View style={styles.sub}>
-        <Text>카테고리</Text>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("MakingHash", {
-              categoryId: 2,
-              categoryName: "카테고리",
-              allTags: tags2,
-            })
-          }
-        >
-          <Text id="전체보기2">전체보기</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={styles.box}>
-        {tags2.slice(0, 6).map((tag) => (
+        {tags1.map((tag) => (
           <TouchableOpacity
             key={tag.id}
             onPress={() => handleTagSelection(tag)}
@@ -115,20 +78,9 @@ const AddHashtag = () => {
       </View>
       <View style={styles.sub}>
         <Text>키워드</Text>
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("MakingHash", {
-              categoryId: 3,
-              categoryName: "키워드",
-              allTags: tags3,
-            })
-          }
-        >
-          <Text id="전체보기3">전체보기</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.box}>
-        {tags3.slice(0, 6).map((tag) => (
+        {tags2.map((tag) => (
           <TouchableOpacity
             key={tag.id}
             onPress={() => handleTagSelection(tag)}
