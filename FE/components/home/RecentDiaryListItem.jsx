@@ -16,7 +16,7 @@ const RecentDiaryListItem = ({ item, navigateToScreen }) => {
     <View style={styles.recentDiary}>
       <Pressable
         onPress={() => {
-          navigateToScreen("tempDiaryDetail", item.id);
+          navigateToScreen("diaryDetail", item.id);
         }}
       >
         <Image source={item?.image} style={styles.image} />

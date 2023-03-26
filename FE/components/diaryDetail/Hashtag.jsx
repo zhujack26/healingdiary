@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { GlobalColors } from "./../../constants/color";
+import { GlobalColors } from "../../constants/color";
 
 const renderHashTagItem = ({ item }) => {
   return (
