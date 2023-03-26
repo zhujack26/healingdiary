@@ -1,12 +1,12 @@
 import { ScrollView, StyleSheet } from "react-native";
 import CalendarView from "../components/calendar/CalendarView";
-import Statistics from "../components/calendar/Statistics";
+import Statistics2 from "../components/calendar/Statistics2";
 
 const CalendarScreen = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <CalendarView />
-      <Statistics />
+      <Statistics2 />
     </ScrollView>
   );
 };
