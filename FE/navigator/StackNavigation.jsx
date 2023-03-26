@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GlobalColors } from "../constants/color";
 import BottomTabs from "./BottomTabs";
 import LoginScreen from "./../screens/LoginScreen";
-import DiaryDetail from "./../components/diaryDetail/DiaryDetail";
+
 import Date from "../ui/Date";
 import MakingScreen from "../screens/MakingScreen";
 import { Text, TouchableOpacity } from "react-native";
@@ -17,8 +17,9 @@ import NotificationScreen from "../screens/NotificationScreen";
 import KakaoWebView from "../components/login/KakaoWebView";
 import ModifyingInformScreen from "../screens/ModifyingInformScreen";
 import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
-import TempDiaryDetail from "../components/tempDiaryDetail/TempDiaryDetail";
 import NextButton from "../components/making/NextButton";
+import DiaryDetail from "../components/diaryDetail/DiaryDetail";
+
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
   return (
@@ -55,22 +56,10 @@ const StackNavigation = () => {
             headerShown: false,
           }}
         />
+
         <Stack.Screen
           name="diaryDetail"
           component={DiaryDetail}
-          options={{
-            headerTitle: () => <Date />,
-            headerTitleAlign: "center",
-            headerShadowVisible: false,
-            headerStyle: {
-              backgroundColor: GlobalColors.colors.primary500,
-            },
-          }}
-        />
-        {/* 테스트용 */}
-        <Stack.Screen
-          name="tempDiaryDetail"
-          component={TempDiaryDetail}
           options={{
             headerShown: false,
           }}

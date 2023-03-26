@@ -1,56 +1,45 @@
-import {
-  View,
-  SafeAreaView,
-  StyleSheet,
-  Image,
-  Dimensions,
-  Platform,
-  Text,
-} from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { View, Image, Dimensions, StyleSheet, Pressable } from "react-native";
 import { GlobalColors } from "../../constants/color";
-import Comment from "./Comment";
+import { Ionicons } from "@expo/vector-icons";
 
 const { width, height } = Dimensions.get("window");
 
-const TempDiaryDetail = ({ navigation }) => {
+const DiaryDetailThumbAndPlayer = ({
+  navigationGoBack,
+  playSound,
+  stopSound,
+  isPlaying,
+}) => {
   return (
-    <SafeAreaView style={styles.container}>
-      {/* 플레이어 창 */}
+    <>
       <View style={styles.header}>
         <Image
           style={styles.image}
           source={require("../../assets/images/SAMPLE3.png")}
         />
-        <View style={styles.circle}>
+
+        <Pressable style={styles.circle}>
           <Ionicons
-            name="play"
+            name={isPlaying ? "ios-stop" : "play"}
             size={24}
             color={GlobalColors.colors.white500}
+            onPress={isPlaying ? stopSound : playSound}
           />
-        </View>
+        </Pressable>
       </View>
       <View style={styles.iconContainer}>
         <Ionicons
           name="chevron-back"
           size={28}
           color={GlobalColors.colors.secondary500}
-          onPress={() => {
-            navigation.goBack();
-          }}
+          onPress={navigationGoBack}
         />
       </View>
-      {/* 해시태그 */}
-      <View>
-        <Text>해시태그</Text>
-      </View>
-      {/* 댓글창 */}
-      <Comment />
-    </SafeAreaView>
+    </>
   );
 };
 
-export default TempDiaryDetail;
+export default DiaryDetailThumbAndPlayer;
 
 const styles = StyleSheet.create({
   container: {
