@@ -1,9 +1,10 @@
 import { View, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
-import Timer from "../components/making/Timer";
+// import Timer from "../components/making/Timer";
 import AddFile from "../components/making/AddFile";
 import { useState, useEffect } from "react";
 import NextButton from "../components/making/NextButton";
+import TimerRecord from "../components/making/TimerRecord";
 
 const MakingScreen = ({ navigation }) => {
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
@@ -28,7 +29,10 @@ const MakingScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.inform}>
         <AddFile />
-        <Timer onToggleNextButtonVisibility={toggleNextButtonVisibility} />
+        {/* <Timer onToggleNextButtonVisibility={toggleNextButtonVisibility} /> */}
+        <TimerRecord
+          onToggleNextButtonVisibility={toggleNextButtonVisibility}
+        />
       </View>
     </View>
   );

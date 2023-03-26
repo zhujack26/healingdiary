@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.4.5",
+    "@rainbow-me/animated-charts": "^1.0.0-alpha.6",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-native-community/slider": "^4.2.4",
     "@react-navigation/bottom-tabs": "^6.5.7",
@@ -42,7 +43,8 @@
     "react-native-svg": "13.4.0",
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-tab-view": "^3.5.1",
-    "react-native-webview": "11.23.1"
+    "react-native-webview": "11.23.1",
+    "victory-native": "^36.6.8"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
