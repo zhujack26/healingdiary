@@ -2,40 +2,11 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import { useNavigation } from "@react-navigation/native";
+import { tags1, tags2 } from "../../model/DataHashtag";
 
 const AddHashtag = () => {
-  const [tags1, setTags1] = useState([
-    { id: 1, name: "해시태그1-1" },
-    { id: 2, name: "해시태그1-2" },
-    { id: 3, name: "해시태그1-3" },
-    { id: 4, name: "해시태그1-4" },
-    { id: 5, name: "해시태그1-5" },
-    { id: 6, name: "해시태그1-6" },
-    { id: 7, name: "해시태그1-7" },
-    { id: 8, name: "해시태그1-7" },
-    { id: 9, name: "해시태그1-7" },
-  ]);
-  const [tags2, setTags2] = useState([
-    { id: 11, name: "해시태그2-1" },
-    { id: 12, name: "해시태그2-2" },
-    { id: 13, name: "해시태그2-3" },
-    { id: 14, name: "해시태그2-4" },
-    { id: 15, name: "해시태그2-5" },
-    { id: 16, name: "해시태그2-6" },
-    { id: 17, name: "해시태그2-7" },
-    { id: 18, name: "해시태그2-7" },
-    { id: 19, name: "해시태그2-7" },
-    { id: 20, name: "해시태그2-7" },
-    { id: 21, name: "해시태그2-7" },
-    { id: 22, name: "해시태그2-7" },
-    { id: 23, name: "해시태그2-7" },
-    { id: 24, name: "해시태그2-7" },
-    { id: 25, name: "해시태그2-7" },
-    { id: 26, name: "해시태그2-7" },
-    { id: 27, name: "해시태그2-7" },
-    { id: 28, name: "해시태그2-7" },
-  ]);
-
+  const [tags1State, setTags1State] = useState(tags1);
+  const [tags2State, setTags2State] = useState(tags2);
   const [selectedTags, setSelectedTags] = useState([]);
 
   const handleTagSelection = (tag) => {
@@ -44,7 +15,9 @@ const AddHashtag = () => {
         selectedTags.filter((selectedTag) => selectedTag !== tag)
       );
     } else {
-      setSelectedTags([...selectedTags, tag]);
+      if (selectedTags.length < 3) {
+        setSelectedTags([...selectedTags, tag]);
+      }
     }
   };
   const navigation = useNavigation();
@@ -93,6 +66,9 @@ const AddHashtag = () => {
           </TouchableOpacity>
         ))}
       </View>
+      <Text style={styles.warningText}>
+        * 해시태그는 최대 3개까지 선택 가능합니다 *
+      </Text>
     </View>
   );
 };
@@ -152,6 +128,12 @@ const styles = StyleSheet.create({
     padding: 4,
     fontSize: 12,
     color: GlobalColors.colors.white500,
+  },
+  warningText: {
+    padding: 10,
+    color: "red",
+    fontSize: 12,
+    fontWeight: "bold",
   },
 });
 
