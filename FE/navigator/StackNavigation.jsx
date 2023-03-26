@@ -18,10 +18,8 @@ import KakaoWebView from "../components/login/KakaoWebView";
 import ModifyingInformScreen from "../screens/ModifyingInformScreen";
 import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
 import NextButton from "../components/making/NextButton";
-import DiaryDetail from "../components/diaryDetail/DiaryDetail";
 import DiaryDetailScreen from "../screens/DiaryDetailScreen";
-import CalendarDetailScreen from "../screens/CalendarDetailScreen";
-
+import CalendarDiaryListScreen from "../screens/CalendarDiaryListScreen";
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
   return (
@@ -68,10 +66,16 @@ const StackNavigation = () => {
         />
 
         <Stack.Screen
-          name="calendarDetail"
-          component={CalendarDetailScreen}
+          name="calendarDiaryList"
+          component={CalendarDiaryListScreen}
           options={{
-            headerShown: false,
+            title: "",
+            headerTitle: () => <Date />,
+            headerTitleAlign: "center",
+            headerShadowVisible: false,
+            headerStyle: {
+              backgroundColor: GlobalColors.colors.background500,
+            },
           }}
         />
         <Stack.Screen
