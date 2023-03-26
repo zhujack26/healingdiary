@@ -1,6 +1,8 @@
 import React from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { DATA } from "../../model/DataInvite";
+import { GlobalColors } from "../../constants/color";
+import { useState } from "react";
 
 const formatTime = (minutes) => {
   const hours = Math.floor(minutes / 60);
@@ -16,21 +18,33 @@ const formatTime = (minutes) => {
   }
 };
 
-const Item = ({ name, time }) => (
-  <View style={styles.item}>
-    <Image
-      style={styles.image}
-      source={require("../../assets/images/SAMPLE1.png")}
-    />
-    <View style={styles.textContainer}>
-      <Text style={styles.text}>{name}</Text>
-      <Text style={styles.time}>{formatTime(time)}</Text>
+const Item = ({ name, time }) => {
+  const [backgroundColor, setBackgroundColor] = useState("blue");
+
+  const toggleBackgroundColor = () => {
+    setBackgroundColor((prevColor) => (prevColor === "blue" ? "gray" : "blue"));
+  };
+
+  return (
+    <View style={styles.item}>
+      <Image
+        style={styles.image}
+        source={require("../../assets/images/SAMPLE1.png")}
+      />
+      <View style={styles.textContainer}>
+        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.time}>{formatTime(time)}</Text>
+      </View>
+      <TouchableOpacity
+        style={[styles.inviteButton, { backgroundColor: backgroundColor }]}
+        onPress={toggleBackgroundColor}
+      >
+        <Text style={styles.inviteButtonText}>초대하기</Text>
+      </TouchableOpacity>
     </View>
-    <TouchableOpacity style={styles.inviteButton}>
-      <Text style={styles.inviteButtonText}>초대하기</Text>
-    </TouchableOpacity>
-  </View>
-);
+  );
+};
+
 const InviteDetail = () => {
   const [data, setData] = React.useState(DATA);
   return (
@@ -71,7 +85,6 @@ const styles = StyleSheet.create({
     color: "gray",
   },
   inviteButton: {
-    backgroundColor: "blue",
     borderRadius: 16,
     paddingHorizontal: 10,
     paddingVertical: 5,
