@@ -73,7 +73,6 @@ public class OauthService {
         }
 
         String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
-
         return LoginResDto.builder()
                 .id(foundMember.getId())
                 .email(memberEmail)
