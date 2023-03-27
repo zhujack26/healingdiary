@@ -10,6 +10,6 @@ import lombok.Getter;
 @Table(name = "emotion")
 public class Emotion {
     @Id
-    private int code;
+    private int emotionCode;
     private String value;
 }
