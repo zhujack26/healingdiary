@@ -9,19 +9,29 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "./../../constants/color";
-import { useNavigation } from "@react-navigation/native";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
-const GroupInfoUpdateHeader = () => {
-  const navigation = useNavigation();
-
+const GroupInfoUpdateHeader = ({ isEdit, navigation }) => {
   return (
     <SafeAreaView style={styles.header}>
-      <Image
-        style={styles.image}
-        source={require("../../assets/images/SAMPLE2.png")}
-      />
+      {/*
+      isEdit 값에 따라 이미지 또는 +아이콘을 렌더링한다.
+      - isEdit: boolean 값으로, 수정 모드일 경우 true, VIEW 모드일 경우 false
+      - 수정 모드: "기존 소모임 대표 이미지" 파일을 보여줌.
+      - 추가 모드: "+" 아이콘을 가져와 사진을 추가 할 수 있는뷰에 보여줍니다.
+      */}
+      {isEdit ? (
+        <Image
+          style={styles.image}
+          source={require("../../assets/images/SAMPLE2.png")}
+        />
+      ) : (
+        <Pressable style={styles.defaultImage}>
+          <Ionicons name="add" size={48} color={GlobalColors.colors.black500} />
+        </Pressable>
+      )}
+
       <Pressable style={styles.updateContainer}>
         <Ionicons name="copy-outline" size={24} color="black" />
       </Pressable>
@@ -35,7 +45,7 @@ const GroupInfoUpdateHeader = () => {
         />
 
         <Pressable onPress={() => {}}>
-          <Text style={styles.updateText}>수정</Text>
+          <Text style={styles.text}>{isEdit ? "수정" : "등록"}</Text>
         </Pressable>
       </View>
     </SafeAreaView>
@@ -47,7 +57,7 @@ export default GroupInfoUpdateHeader;
 const styles = StyleSheet.create({
   header: {
     width: width,
-    height: 265,
+    height: height / 3,
   },
 
   updateContainer: {
@@ -70,6 +80,14 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 12,
   },
 
+  defaultImage: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: GlobalColors.colors.gray500,
+  },
+
   iconContainer: {
     width: width,
     flexDirection: "row",
@@ -80,7 +98,7 @@ const styles = StyleSheet.create({
     top: Platform.OS === "ios" ? 56 : 32,
   },
 
-  updateText: {
+  text: {
     color: GlobalColors.colors.secondary500,
     lineHeight: 16,
   },
