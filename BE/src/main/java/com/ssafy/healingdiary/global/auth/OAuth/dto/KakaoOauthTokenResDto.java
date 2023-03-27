@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class KakaoOAuthTokenResDto {
+public class KakaoOauthTokenResDto {
 
     @JsonProperty("profile_nickname")
     public String nickname;

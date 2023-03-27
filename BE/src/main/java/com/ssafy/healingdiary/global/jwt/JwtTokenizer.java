@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -35,15 +36,18 @@ public class JwtTokenizer {
     }
 
     //jwt 엑세스토큰 생성 메서드
-    public String createAccessToken(Map<String, Object> claims,
-                                    String subject,
-                                    Date expiration,
-                                    String encodedSecretKey) {
-        Key key = getKeyFromEncodedKey(encodedSecretKey);
+    public String createAccessToken(String email, List<String> roleList) {
+        Key key = getKeyFromEncodedKey(encodeBase64SecretKey(this.secretKey));
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("roles", roleList);
+        System.out.println(claims);
+        Date currenttime = new Date();
+        Date expiration = new Date(currenttime.getTime() +accesstokenExpiration);
+        System.out.println("currenttime:" + currenttime);
+        System.out.println("expiration:" + expiration);
         return Jwts.builder()
                 .setClaims(claims) // claims는 사용자와 관련된 정보가 들어가있는 Map
-                .setSubject(subject) // Jwt토큰의 제목
-                .setIssuedAt(Calendar.getInstance().getTime()) // 발행일자
+                .setIssuedAt(currenttime) // 발행일자
                 .setExpiration(expiration) // 만기일자
                 .signWith(key) // 시크릿키로 서명하기
                 .compact(); // jwt토큰 만들기
