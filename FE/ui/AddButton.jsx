@@ -61,7 +61,12 @@ const AddButton = ({ opened, toggleOpened }) => {
           </Animated.View>
         </Pressable>
 
-        <Pressable>
+        <Pressable
+          onPress={() => {
+            toggleOpened();
+            navigation.navigate("groupInfoUpdate", { isEdit: false });
+          }}
+        >
           <Animated.View
             style={[
               styles.item,

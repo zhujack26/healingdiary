@@ -1,7 +1,7 @@
 import GroupInfoUpdateHeader from "./GroupInfoUpdateHeader";
 import GroupInfoUpdateIntro from "./GroupInfoUpdateIntro";
 
-const GroupInfoUpdate = () => {
+const GroupInfoUpdate = ({ isEdit }) => {
   return (
     <>
       <GroupInfoUpdateHeader />
