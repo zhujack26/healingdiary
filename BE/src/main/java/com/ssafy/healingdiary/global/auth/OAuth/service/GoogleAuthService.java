@@ -28,7 +28,7 @@ public class GoogleAuthService {
     public LoginResDto googleOauthLogin(String accesstoken) throws JsonProcessingException {
         GoogleOauthTokenResDto googleOAuthResponse = this.googleOauthCheckToken(accesstoken);
         System.out.println("GoogleOAuthResponse: " + googleOAuthResponse);
-        String memberEmail = googleOAuthResponse.getEmail();
+        String memberEmail = "GOOGLE"+"_"+googleOAuthResponse.getEmail();
         Member foundMember = memberRepository.getMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
 
@@ -85,11 +85,11 @@ public class GoogleAuthService {
                 .build();
 
     }
-    public LoginResDto googleSignUp(SignupReqDto signupReqDto)
-            throws JsonProcessingException {
-
-
-    }
+//    public LoginResDto googleSignUp(SignupReqDto signupReqDto)
+//            throws JsonProcessingException {
+//
+//
+//    }
 
     public GoogleOauthTokenResDto googleOauthCheckToken(String accesstoken)
             throws JsonProcessingException {
