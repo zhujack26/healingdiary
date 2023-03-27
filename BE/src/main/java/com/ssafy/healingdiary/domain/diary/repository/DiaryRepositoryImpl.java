@@ -8,7 +8,6 @@ import static com.ssafy.healingdiary.domain.diary.domain.QEmotion.emotion;
 import static com.ssafy.healingdiary.domain.tag.domain.QTag.tag;
 import static org.springframework.util.StringUtils.hasText;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -36,12 +34,14 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<DiarySimpleResponse> findByOption(Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable) {
+    public Slice<DiarySimpleResponse> findByOption(Long memberId, Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable) {
         List<DiarySimpleResponse> result = queryFactory
             .selectFrom(diary)
+            .innerJoin(diary.emotion, emotion)
             .leftJoin(diary.diaryTag, diaryTag)
             .leftJoin(diaryTag.tag, tag)
             .where(
+                memberIdEq(memberId),
                 clubIdEq(clubId),
                 keywordMatch(keyword),
                 tagEq(tagContent),
@@ -52,7 +52,13 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             .limit(pageable.getPageSize()+1)
             .transform(
                 groupBy(diary.id).list(
-                    new QDiarySimpleResponse(diary.id, diary.diaryImageUrl, diary.createdDate, list(tag.content))
+                    new QDiarySimpleResponse(
+                        diary.id,
+                        diary.diaryImageUrl,
+                        diary.createdDate,
+                        new QEmotionResponse(emotion.emotionCode, emotion.value),
+                        list(tag.content)
+                    )
                 )
             );
 
@@ -69,7 +75,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
         List<EmotionStatisticResponse> result = queryFactory
             .select(
                 new QEmotionStatisticResponse(
-                    diary.emotion.code,
+                    diary.emotion.emotionCode,
                     diary.emotion.value,
                     diary.count().as("count")
                 )
@@ -103,7 +109,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
                 diary.createdDate.year(),
                 diary.createdDate.month(),
                 diary.createdDate.dayOfMonth(),
-                diary.emotion.code
+                diary.emotion.emotionCode
             )
             .orderBy(
                 diary.createdDate.dayOfMonth().asc(),
@@ -115,14 +121,14 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
                     diary.createdDate.year(),
                     diary.createdDate.month(),
                     diary.createdDate.dayOfMonth(),
-                    diary.emotion.code
+                    diary.emotion.emotionCode
                 ).list(
                     new QCalendarResponse(
                         diary.createdDate.year(),
                         diary.createdDate.month(),
                         diary.createdDate.dayOfMonth(),
                         new QEmotionResponse(
-                            diary.emotion.code,
+                            diary.emotion.emotionCode,
                             diary.emotion.value
                         )
                     )
@@ -136,6 +142,10 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
         }
 
         return new ArrayList<CalendarResponse>(calendar.values());
+    }
+
+    private BooleanExpression memberIdEq(Long memberId) {
+        return memberId != null ? diary.member.id.eq(memberId) : null;
     }
 
     private BooleanExpression clubIdEq(Long clubId) {
