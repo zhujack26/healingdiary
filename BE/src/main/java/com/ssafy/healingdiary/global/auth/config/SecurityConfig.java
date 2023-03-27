@@ -1,8 +1,6 @@
 package com.ssafy.healingdiary.global.auth.config;
 
-import com.ssafy.healingdiary.global.jwt.JwtAuthenticationFilter;
-import com.ssafy.healingdiary.global.jwt.JwtAuthorizationFilter;
-import io.swagger.models.HttpMethod;
+
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;

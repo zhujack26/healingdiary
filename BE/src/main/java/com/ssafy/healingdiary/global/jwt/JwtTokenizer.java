@@ -38,13 +38,13 @@ public class JwtTokenizer {
     }
 
     //jwt 엑세스토큰 생성 메서드
-    public String createAccessToken(String email, List<String> roleList) {
+    public String createAccessToken(String providerEmail, List<String> roleList) {
         Key key = getKeyFromEncodedKey(encodeBase64SecretKey(this.secretKey));
-        Claims claims = Jwts.claims().setSubject(email);
+        Claims claims = Jwts.claims().setSubject(providerEmail);
         claims.put("roles", roleList);
         System.out.println(claims);
         Date currenttime = new Date();
-        Date expiration = new Date(currenttime.getTime() +accesstokenExpiration);
+        Date expiration = this.getTokenExpiration(this.accesstokenExpiration);
         System.out.println("currenttime:" + currenttime);
         System.out.println("expiration:" + expiration);
         return Jwts.builder()
