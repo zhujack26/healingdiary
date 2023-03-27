@@ -18,12 +18,6 @@ const DateList = (date, dateList) => {
 };
 
 const CustomDayComponent = ({ date, state, onPress }) => {
-  const targetDates = [
-    { year: 2023, month: 3, day: 7 },
-    { year: 2023, month: 3, day: 10 },
-    { year: 2023, month: 3, day: 15 },
-  ];
-
   const today = new Date();
   const currentDate = {
     year: today.getFullYear(),
@@ -51,12 +45,6 @@ const CustomDayComponent = ({ date, state, onPress }) => {
         >
           {date.day}
         </Text>
-        {DateList(date, targetDates) && (
-          <View style={styles.empty}>
-            <Entypo name="emoji-flirt" size={16} color={"blue"} />
-          </View>
-        )}
-        {DateList(date, targetDates) || <View style={styles.empty}></View>}
       </TouchableOpacity>
     </View>
   );

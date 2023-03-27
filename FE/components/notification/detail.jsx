@@ -76,12 +76,13 @@ const Detail = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 20,
+    marginTop: 0,
   },
   item: {
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: 20,
+    paddingTop: 10,
+    paddingBottom: 10,
     backgroundColor: "white",
   },
   image: {
@@ -107,10 +108,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    top: 20,
     bottom: 0,
     right: 0,
     width: 75,
+    height: 70,
   },
 });
 
