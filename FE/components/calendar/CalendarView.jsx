@@ -1,5 +1,5 @@
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
@@ -17,25 +17,13 @@ const DateList = (date, dateList) => {
   return dateList.some((d) => DateCheck(date, d));
 };
 
-const CustomDayComponent = ({ date, state, marking, onPress }) => {
-  const {day} = date;
-  const {emoji} = marking || {};
+const CustomDayComponent = ({ date, state, onPress }) => {
+  const targetDates = [
+    { year: 2023, month: 3, day: 7 },
+    { year: 2023, month: 3, day: 10 },
+    { year: 2023, month: 3, day: 15 },
+  ];
 
-  const handlePress = () => {
-    if (state !== 'disabled') {
-      onPress(date);
-    }
-  };
-  return (
-    <TouchableOpacity onPress={handlePress} style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      {emoji ? (
-        <Text style={{fontSize: 24}}>{emoji}</Text>
-      ) : (
-        <Text style={{fontSize: 18}}>{day}</Text>
-      )}
-    </TouchableOpacity>
-  );
-};
   const today = new Date();
   const currentDate = {
     year: today.getFullYear(),
@@ -44,10 +32,14 @@ const CustomDayComponent = ({ date, state, marking, onPress }) => {
   };
 
   const isToday = DateCheck(date, currentDate);
-
+  const handlePress = () => {
+    if (state !== "disabled") {
+      onPress(date);
+    }
+  };
   return (
     <View>
-      <View style={styles.box}>
+      <TouchableOpacity onPress={handlePress} style={styles.box}>
         <Text
           style={{
             backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
@@ -65,7 +57,7 @@ const CustomDayComponent = ({ date, state, marking, onPress }) => {
           </View>
         )}
         {DateList(date, targetDates) || <View style={styles.empty}></View>}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -107,7 +99,16 @@ const CalendarView = () => {
       }}
       style={styles.container}
       dayComponent={({ date, state }) => (
-        <CustomDayComponent date={date} state={state} />
+        <CustomDayComponent
+          date={date}
+          state={state}
+          onPress={(day) => {
+            console.log("selected day", day.year);
+            navigation.navigate("calendarDiaryList", {
+              date: { year: day.year, month: day.month, day: day.day },
+            });
+          }}
+        />
       )}
       locale={"ko"}
       firstDay={0}
@@ -120,12 +121,6 @@ const CalendarView = () => {
             {year}년 {LocaleConfig.locales["ko"].monthNames[monthIndex]}
           </Text>
         );
-      }}
-      onDayPress={(day) => {
-        console.log("selected day", day.year);
-        navigation.navigate("calendarDiaryList", {
-          date: { year: day.year, month: day.month, day: day.day },
-        });
       }}
     />
   );
