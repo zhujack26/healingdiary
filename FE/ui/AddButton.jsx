@@ -1,11 +1,12 @@
 import { useRef, useEffect } from "react";
-import { Pressable, View, StyleSheet, Text, Animated } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { Pressable, View, StyleSheet, Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "./../constants/color";
 
 const AddButton = ({ opened, toggleOpened }) => {
+  const navigation = useNavigation();
   const animation = useRef(new Animated.Value(0)).current;
-
   const opacity = {
     opacity: animation.interpolate({
       inputRange: [0, 0.5, 1],
@@ -23,7 +24,12 @@ const AddButton = ({ opened, toggleOpened }) => {
   return (
     <View style={styles.container}>
       <View style={styles.box}>
-        <Pressable>
+        <Pressable
+          onPress={() => {
+            toggleOpened();
+            navigation.navigate("Making");
+          }}
+        >
           <Animated.View
             style={[
               styles.item,
