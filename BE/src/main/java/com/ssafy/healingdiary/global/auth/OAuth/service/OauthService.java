@@ -28,7 +28,7 @@ public class OauthService {
         GoogleOauthTokenResDto googleOAuthResponse = this.googleOauthCheckToken(accesstoken);
         System.out.println("GoogleOAuthResponse: " + googleOAuthResponse);
         String memberEmail = "GOOGLE_" + googleOAuthResponse.getEmail();
-        Member foundMember = memberRepository.getMemberByProviderEmail(memberEmail);
+        Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
 
             return LoginResDto.builder()
@@ -58,7 +58,7 @@ public class OauthService {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
         System.out.println("KakaoOauthtoken: " + kakaoOauthTokenResDto);
         String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getEmail();
-        Member foundMember = memberRepository.getMemberByProviderEmail(memberEmail);
+        Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
 
             return LoginResDto.builder()
