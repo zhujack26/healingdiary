@@ -4,19 +4,14 @@ package com.ssafy.healingdiary.domain.diary.controller;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryListResponse;
-import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
-import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
+import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
+import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.service.DiaryService;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,26 +29,19 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-    //only test
-    private final DiaryRepository diaryRepository;
-
-    @GetMapping("/test/{diaryId}")
-    public void test (
-        @PathVariable Long diaryId){
-        diaryService.deleteDiary(diaryId);
-    }
-
     @GetMapping
-    public Slice<DiaryListResponse> getDiaryList(
+    public Slice<DiarySimpleResponse> getDiaryList(
 //        Authentication authentication,
         @RequestParam(required = false) Long clubId,
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String tag,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
+        @RequestParam(required = false) Integer year,
+        @RequestParam(required = false) Integer month,
+        @RequestParam(required = false) Integer day,
         Pageable pageable
     ){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getDiaryList(clubId,keyword,tag,date,pageable);
+        return diaryService.getDiaryList(clubId, keyword, tag, year, month, day, pageable);
     }
 
     @GetMapping("/{diaryId}")
@@ -75,26 +63,29 @@ public class DiaryController {
     @DeleteMapping("/{diaryId}")
     public void deleteDiary(
 //        Authentication authentication,
+        @RequestParam Long memberId,
         @PathVariable Long diaryId){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        diaryService.deleteDiary(diaryId);
+        diaryService.deleteDiary(memberId, diaryId);
     }
 
     @GetMapping("/calendar")
     public List<CalendarResponse> getCalendar(
 //        Authentication authentication,
+        @RequestParam Long memberId,
         @RequestParam int year,
         @RequestParam int month){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getCalendar(year, month);
+        return diaryService.getCalendar(memberId, year, month);
     }
 
     @GetMapping("/emotion")
-    public List<EmotionResponse> getEmotionStatistics(
+    public List<EmotionStatisticResponse> getEmotionStatistics(
 //        Authentication authentication,
+        @RequestParam Long memberId,
         @RequestParam int year,
         @RequestParam int month){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getEmotionStatistics(year, month);
+        return diaryService.getEmotionStatistics(memberId, year, month);
     }
 }
