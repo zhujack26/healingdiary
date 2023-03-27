@@ -9,6 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 @Getter
 @Component
+@Service
 public class JwtTokenizer {
 
     @Value("${jwt.secret}")
@@ -103,6 +105,13 @@ public class JwtTokenizer {
         return expirationTime;
     }
 
+
+    public String getUsernameFromToken(String token) {
+        Jws<Claims>  claims = getClaims(token, secretKey);
+        Claims claim = claims.getBody();
+        String providerEmail = claim.get("email", String.class);
+        return providerEmail;
+    }
 
 
 
