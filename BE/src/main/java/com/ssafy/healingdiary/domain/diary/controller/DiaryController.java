@@ -12,6 +12,7 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,7 @@ public class DiaryController {
     @GetMapping
     public Slice<DiarySimpleResponse> getDiaryList(
 //        Authentication authentication,
+        @RequestParam boolean all,
         @RequestParam(required = false) Long clubId,
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String tag,
@@ -40,8 +42,9 @@ public class DiaryController {
         @RequestParam(required = false) Integer day,
         Pageable pageable
     ){
-//        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.getDiaryList(clubId, keyword, tag, year, month, day, pageable);
+        UserDetails principal = null;
+//        if(!all) principal = (UserDetails) authentication.getPrincipal();
+        return diaryService.getDiaryList(principal, clubId, keyword, tag, year, month, day, pageable);
     }
 
     @GetMapping("/{diaryId}")
@@ -51,6 +54,14 @@ public class DiaryController {
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
         return diaryService.getDiaryDetail(diaryId);
     }
+
+//    @PostMapping
+//    public Map<String, Object> analyzeDiary(
+////        Authentication authentication,
+//        @RequestPart MultipartFile record
+//    ){
+//        return diaryService.analyzeDiary(record);
+//    }
 
     @PostMapping
     public Map<String, Object> createDiary(
