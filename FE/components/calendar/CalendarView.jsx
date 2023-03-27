@@ -17,13 +17,25 @@ const DateList = (date, dateList) => {
   return dateList.some((d) => DateCheck(date, d));
 };
 
-const CustomDayComponent = ({ date, state }) => {
-  const targetDates = [
-    { year: 2023, month: 3, day: 7 },
-    { year: 2023, month: 3, day: 10 },
-    { year: 2023, month: 3, day: 15 },
-  ];
+const CustomDayComponent = ({ date, state, marking, onPress }) => {
+  const {day} = date;
+  const {emoji} = marking || {};
 
+  const handlePress = () => {
+    if (state !== 'disabled') {
+      onPress(date);
+    }
+  };
+  return (
+    <TouchableOpacity onPress={handlePress} style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      {emoji ? (
+        <Text style={{fontSize: 24}}>{emoji}</Text>
+      ) : (
+        <Text style={{fontSize: 18}}>{day}</Text>
+      )}
+    </TouchableOpacity>
+  );
+};
   const today = new Date();
   const currentDate = {
     year: today.getFullYear(),
