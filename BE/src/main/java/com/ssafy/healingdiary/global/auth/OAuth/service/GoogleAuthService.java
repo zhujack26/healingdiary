@@ -29,7 +29,7 @@ public class GoogleAuthService {
         GoogleOauthTokenResDto googleOAuthResponse = this.googleOauthCheckToken(accesstoken);
         System.out.println("GoogleOAuthResponse: " + googleOAuthResponse);
         String memberEmail = "GOOGLE"+"_"+googleOAuthResponse.getEmail();
-        Member foundMember = memberRepository.getMemberByProviderEmail(memberEmail);
+        Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
 
             return LoginResDto.builder()
@@ -59,7 +59,7 @@ public class GoogleAuthService {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
         System.out.println("KakaoOauthtoken: " + kakaoOauthTokenResDto);
         String memberEmail = kakaoOauthTokenResDto.getEmail();
-        Member foundMember = memberRepository.getMemberByProviderEmail(memberEmail);
+        Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
 
             return LoginResDto.builder()
