@@ -37,19 +37,11 @@ public class Member extends BaseEntity {
 
     private String disease;
 
-<<<<<<< BE/src/main/java/com/ssafy/healingdiary/domain/member/domain/Member.java
-
     @Column(name = "member_image_url")
     private String memberImageUrl;
 
     private String roles; // USER, MANAGER, ADMIN
 
-
-=======
-    @Column(name = "member_image_url")
-    private String memberImageUrl;
-
->>>>>>> BE/src/main/java/com/ssafy/healingdiary/domain/member/domain/Member.java
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Diary> diary = new ArrayList<>();
 
