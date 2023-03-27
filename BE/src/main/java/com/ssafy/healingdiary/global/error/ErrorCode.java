@@ -3,11 +3,11 @@ package com.ssafy.healingdiary.global.error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-
 
     BAD_REQUEST(HttpStatus.BAD_REQUEST, -1,"잘못된 요청입니다."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, -2,"허용되지 않은 메서드입니다."),
@@ -15,10 +15,9 @@ public enum ErrorCode {
     FORBIDDEN(HttpStatus.FORBIDDEN, -4, "권한이 없는 사용자입니다."),
     ENTITY_NOT_FOUND(HttpStatus.OK, -5,"엔티티를 찾을 수 없습니다."),
     COMMENT_NOT_FOUND(HttpStatus.OK, -6,"댓글을 찾을 수 없습니다."),
-    NOT_FOUND_USER(HttpStatus.OK, -7,"사용자를 찾을 수 없습니다.")
+    NOT_FOUND_USER(HttpStatus.OK, -7,"사용자를 찾을 수 없습니다."),
+    CONFLICT(HttpStatus.CONFLICT, -409, "이미 가입된 회원입니다.");
 
-
-            ;
 
     private final HttpStatus status;
     private final int code;

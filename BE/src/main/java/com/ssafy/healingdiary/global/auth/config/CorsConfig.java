@@ -11,7 +11,7 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowCredentials(true)
-                .allowedOrigins("*") // 일반적으로 localhost:3000이나 http://hostname/uri~로 설정할텐데 앱으로 하게되면 어떨지 모르겠음
+                .allowedOriginPatterns("*") // 일반적으로 localhost:3000이나 http://hostname/uri~로 설정할텐데 앱으로 하게되면 어떨지 모르겠음
                 .allowedMethods("*")
                 .allowedHeaders("*");
 

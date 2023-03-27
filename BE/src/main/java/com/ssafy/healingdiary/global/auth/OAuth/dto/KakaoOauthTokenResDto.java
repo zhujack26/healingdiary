@@ -2,16 +2,15 @@ package com.ssafy.healingdiary.global.auth.OAuth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 public class KakaoOauthTokenResDto {
 
-    @JsonProperty("profile_nickname")
-    public String nickname;
+    private String email;
 
-    @JsonProperty("account_email")
-    public String email;
-    @JsonProperty("profile_image")
-    public String picture;
+    private String imageUrl;
+
+
 
 }
