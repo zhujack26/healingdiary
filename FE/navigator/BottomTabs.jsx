@@ -2,15 +2,19 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
 import { Platform, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
+import { useTabMenu } from "../context/BottomTabContext";
+
 import CalendarScreen from "../screens/CalendarScreen";
 import GroupScreen from "../screens/GroupScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
 import HeaderRightButtons from "../ui/HeaderRightButtons";
+import AddButton from "./../ui/AddButton";
 
 const Tab = createBottomTabNavigator();
-
 const BottomTabs = () => {
+  const { opened, toggleOpened } = useTabMenu();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -18,7 +22,7 @@ const BottomTabs = () => {
         tabBarStyle: {
           position: "relative",
           bottom: 0,
-          height: 80,
+          height: 70,
           backgroundColor: GlobalColors.colors.white500,
           borderTopRightRadius: Platform.OS === "ios" ? 0 : 24,
           borderTopLeftRadius: Platform.OS === "ios" ? 0 : 24,
@@ -41,11 +45,15 @@ const BottomTabs = () => {
         component={HomeScreen}
         options={({ navigation }) => ({
           headerRight: () => <HeaderRightButtons navigation={navigation} />,
+          headerShadowVisible: false,
           title: "메인",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" color={color} size={size} />
           ),
         })}
+        listeners={{
+          tabPress: (e) => opened && e.preventDefault(),
+        }}
       />
       <Tab.Screen
         name="Calendar"
@@ -55,7 +63,26 @@ const BottomTabs = () => {
             <Ionicons name="calendar-sharp" color={color} size={size} />
           ),
         }}
+        listeners={{
+          tabPress: (e) => opened && e.preventDefault(),
+        }}
       />
+
+      <Tab.Screen
+        name="Add"
+        component={HomeScreen}
+        options={{
+          tabBarItemStyle: { height: 0 },
+          tabBarButton: ({ keyboardHidesTabBar }) => (
+            <AddButton
+              keyboardHidesTabBar={keyboardHidesTabBar}
+              opened={opened}
+              toggleOpened={toggleOpened}
+            />
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="Group"
         component={GroupScreen}
@@ -66,6 +93,9 @@ const BottomTabs = () => {
             <Ionicons name="md-people-outline" color={color} size={size} />
           ),
         })}
+        listeners={{
+          tabPress: (e) => opened && e.preventDefault(),
+        }}
       />
       <Tab.Screen
         name="Search"
@@ -75,6 +105,9 @@ const BottomTabs = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-search" color={color} size={size} />
           ),
+        }}
+        listeners={{
+          tabPress: (e) => opened && e.preventDefault(),
         }}
       />
     </Tab.Navigator>
