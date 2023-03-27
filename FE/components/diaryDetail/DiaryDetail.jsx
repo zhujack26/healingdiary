@@ -1,9 +1,9 @@
-import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView, StyleSheet, FlatList } from "react-native";
 import { Audio } from "expo-av";
 
-import Comment from "./Comment";
 import Hashtag from "./Hashtag";
 import DiaryDetailThumbAndPlayer from "./DiaryDetailThumbAndPlayer";
+import CommnetListItem from "./CommentListItem";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -150,17 +150,24 @@ const DiaryDetail = ({ route }) => {
       : undefined;
   }, [sound]);
 
-  useEffect(() => {});
   return (
     <SafeAreaView style={styles.container}>
-      <DiaryDetailThumbAndPlayer
-        navigationGoBack={navigationGoBack}
-        playSound={playSound}
-        stopSound={stopSound}
-        isPlaying={isPlaying}
+      <FlatList
+        style={styles.container}
+        data={comments}
+        renderItem={({ item }) => <CommnetListItem comment={item} />}
+        ListHeaderComponent={
+          <>
+            <DiaryDetailThumbAndPlayer
+              navigationGoBack={navigationGoBack}
+              playSound={playSound}
+              stopSound={stopSound}
+              isPlaying={isPlaying}
+            />
+            <Hashtag tags={DATA.tags} />
+          </>
+        }
       />
-      <Hashtag tags={DATA.tags} />
-      <Comment comments={comments} />
     </SafeAreaView>
   );
 };

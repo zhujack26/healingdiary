@@ -1,4 +1,4 @@
-import { FlatList } from "react-native-gesture-handler";
+import { FlatList } from "react-native";
 import Title from "../../ui/Title";
 import DiaryItem from "./DiaryItem";
 
