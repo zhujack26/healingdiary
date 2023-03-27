@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 
   header: {
     width: width,
-    height: height / 2.5,
+    height: height / 1.8,
   },
 
   image: {

@@ -3,7 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import ReplyListItem from "./ReplyListItem";
 
-const CommentListItem = ({ item }) => {
+const CommentListItem = ({ comment }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
@@ -14,13 +14,15 @@ const CommentListItem = ({ item }) => {
       </View>
       <View style={styles.commnetContainer}>
         <View>
-          <Text style={[styles.regular, styles.text]}>{item?.nickname}</Text>
+          <Text style={[styles.regular, styles.text]}>{comment?.nickname}</Text>
           <Text style={[styles.regular, styles.time]}>1일전</Text>
           <View>
-            <Text style={[styles.regular, styles.text]}>{item?.content}</Text>
-            {item.children && (
+            <Text style={[styles.regular, styles.text]}>
+              {comment?.content}
+            </Text>
+            {comment.children && (
               <View>
-                <FlatList renderItem={ReplyListItem} data={item?.children} />
+                <FlatList renderItem={ReplyListItem} data={comment?.children} />
               </View>
             )}
           </View>
