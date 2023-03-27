@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
 const DateCheck = (date1, date2) => {
   return (
@@ -86,19 +87,16 @@ LocaleConfig.defaultLocale = "ko";
 
 const CalendarView = () => {
   const navigation = useNavigation();
-
+  const [selected, setSelected] = useState("");
   return (
     <Calendar
       theme={{
         arrowColor: GlobalColors.colors.gray500,
       }}
       style={styles.container}
-      // dayComponent={({ date, state }) => (
-      //   <CustomDayComponent
-      //     date={date}
-      //     state={state}
-      //   />
-      // )}
+      dayComponent={({ date, state }) => (
+        <CustomDayComponent date={date} state={state} />
+      )}
       locale={"ko"}
       firstDay={0}
       monthFormat={"yyyy년 MM월"}
