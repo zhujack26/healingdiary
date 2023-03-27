@@ -1,11 +1,8 @@
 package com.ssafy.healingdiary.global.auth.OAuth.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.ssafy.healingdiary.global.auth.OAuth.dto.GoogleOauthTokenReqDto;
-import com.ssafy.healingdiary.global.auth.OAuth.dto.GoogleOauthTokenResDto;
-import com.ssafy.healingdiary.global.auth.OAuth.dto.LoginResDto;
-import com.ssafy.healingdiary.global.auth.OAuth.dto.SignupReqDto;
-import com.ssafy.healingdiary.global.auth.OAuth.service.GoogleAuthService;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.*;
+import com.ssafy.healingdiary.global.auth.OAuth.service.OauthService;
 import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +19,15 @@ import org.springframework.web.bind.annotation.*;
 public class OAuthController {
 
 
-    private final GoogleAuthService googleAuthService;
+    private final OauthService oauthService;
     private final JwtTokenizer jwtTokenizer;
-    private final OAuthService oauthService;
 
     @ApiOperation(value = "구글 로그인", notes = "구글 엑세스 토큰을 이용하여 사용자 정보 받아 저장하고 앱의 토큰 반환해줌")
-    @GetMapping(value = "/google")
+    @GetMapping(value = "/google/login")
     public ResponseEntity<LoginResDto> googleAuthRequest(@RequestHeader("Authorization") String accessToken) {
         String oauthAcessToken = accessToken.replace("Bearer ", "");
         try {
-            LoginResDto loginResDto = googleAuthService.googleOauthLogin(oauthAcessToken);
+            LoginResDto loginResDto = oauthService.googleOauthLogin(oauthAcessToken);
             return new ResponseEntity<>(loginResDto, HttpStatus.OK);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -40,23 +36,24 @@ public class OAuthController {
     }
 
     @ApiOperation(value = "카카오 로그인", notes = "카카오 엑세스 토큰을 이용해서 사용자 정보 받아 저장하고 앱의 토큰 반환해줌")
-    @GetMapping(value = "/kakao")
-    public ResponseEntity<GoogleOauthTokenResDto> kakaoAuthRequest(@RequestBody GoogleOauthTokenReqDto googleOauthTokenReqDto) {
+    @GetMapping(value = "/kakao/login")
+    public ResponseEntity<LoginResDto> kakaoAuthRequest(@RequestHeader("Authorization") String accessToken) {
         try {
-            GoogleOauthTokenResDto googleoauthTokenResDto = KakaoAuthService.kakaoOauthLogin(googleOauthTokenReqDto);
-            return new ResponseEntity<>(googleoauthTokenResDto, HttpStatus.OK);
+            LoginResDto loginResDto = oauthService.kakaoOauthLogin(accessToken);
+            return new ResponseEntity<>(loginResDto, HttpStatus.OK);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;
 
     }
-    @PostMapping("/signup")
-    public ResponseEntity<LoginResDto> signupOauthToken(@RequestBody SignupReqDto signupReqDto) {
+    @PostMapping("google/signup")
+    public ResponseEntity<LoginResDto> googleSignUp(@RequestHeader("Authorization") String accessToken,
+                                                    @RequestBody SignupReqDto signupReqDto) {
         System.out.println(signupReqDto);
         try {
-            //소셜로그인 에 따라서 oAuthLogin을 하자!
-            LoginResDto loginResDto = oAuthService.kakaoOAuthSignup(signupReqDto);
+            //소셜로그인에 따라 회원가입을 하자
+            LoginResDto loginResDto = oauthService.googleSignUp(accessToken, signupReqDto);
             return new ResponseEntity<>(loginResDto, HttpStatus.OK);
         }catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -64,6 +61,18 @@ public class OAuthController {
         return null;
     }
 
+    @PostMapping("kakao/signup")
+    public ResponseEntity<LoginResDto> kakaoSignUp(@RequestHeader("Authorization") String accessToken,
+                                                   @RequestBody SignupReqDto signupReqDto) {
+        try {
+            //소셜로그인에 따라 회원가입을 하자
+            LoginResDto loginResDto = oauthService.kakaoSignup(accessToken, signupReqDto);
+            return new ResponseEntity<>(loginResDto, HttpStatus.OK);
+        }catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 //    @ApiOperation(value = "appToken 갱신", notes = "appToken 갱신")
 //    @GetMapping("/refresh")

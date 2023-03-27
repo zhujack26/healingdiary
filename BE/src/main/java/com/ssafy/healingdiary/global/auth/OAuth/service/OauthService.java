@@ -15,26 +15,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
-
 @Service
 @RequiredArgsConstructor
-public class GoogleAuthService {
+public class OauthService {
 
-    private RestTemplate restTemplate;
-    private ObjectMapper objectMapper;
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
     private final JwtTokenizer jwtTokenizer;
     private final MemberRepository memberRepository;
 
     public LoginResDto googleOauthLogin(String accesstoken) throws JsonProcessingException {
         GoogleOauthTokenResDto googleOAuthResponse = this.googleOauthCheckToken(accesstoken);
         System.out.println("GoogleOAuthResponse: " + googleOAuthResponse);
-        String memberEmail = "GOOGLE"+"_"+googleOAuthResponse.getEmail();
-        Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
+        String memberEmail = "GOOGLE_" + googleOAuthResponse.getEmail();
+        Member foundMember = memberRepository.getMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
 
             return LoginResDto.builder()
                     .id(null)
-                    .email(googleOAuthResponse.getEmail())
+                    .email(memberEmail)
                     .region(null)
                     .disease(null)
                     .nickname(null)
@@ -58,8 +57,8 @@ public class GoogleAuthService {
     public LoginResDto kakaoOauthLogin(String accesstoken) throws JsonProcessingException {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
         System.out.println("KakaoOauthtoken: " + kakaoOauthTokenResDto);
-        String memberEmail = kakaoOauthTokenResDto.getEmail();
-        Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
+        String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getEmail();
+        Member foundMember = memberRepository.getMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
 
             return LoginResDto.builder()
@@ -85,11 +84,58 @@ public class GoogleAuthService {
                 .build();
 
     }
-//    public LoginResDto googleSignUp(SignupReqDto signupReqDto)
-//            throws JsonProcessingException {
-//
-//
-//    }
+    public LoginResDto googleSignUp(String accesstoken, SignupReqDto signupReqDto)
+            throws JsonProcessingException {
+        GoogleOauthTokenResDto googleOauthTokenResDto = this.googleOauthCheckToken(accesstoken);
+        String providerEmail = "GOOGLE_" + googleOauthTokenResDto.getEmail();
+
+        Member newMember = Member.builder()
+                .providerEmail(providerEmail)
+                .nickname(signupReqDto.getNickname())
+                .region(signupReqDto.getRegion())
+                .disease(signupReqDto.getDisease())
+                .memberImageUrl(googleOauthTokenResDto.getMemberImageUrl())
+                .roles("USER")
+                .build();
+        Member saveUser = memberRepository.save(newMember);
+
+        String jwt = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
+
+        return LoginResDto.builder()
+                .id(saveUser.getId())
+                .memberImageUrl(saveUser.getMemberImageUrl())
+                .region(saveUser.getRegion())
+                .disease(saveUser.getDisease())
+                .email(saveUser.getProviderEmail())
+                .jwtToken(jwt)
+                .build();
+    }
+    public LoginResDto kakaoSignup(String accesstoken, SignupReqDto signupReqDto)
+            throws JsonProcessingException {
+        KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
+        String providerEmail = "KAKAO_" + kakaoOauthTokenResDto.getEmail();
+
+        Member newMember = Member.builder()
+                .providerEmail(providerEmail)
+                .nickname(signupReqDto.getNickname())
+                .region(signupReqDto.getRegion())
+                .disease(signupReqDto.getDisease())
+                .memberImageUrl(kakaoOauthTokenResDto.getEmail())
+                .roles("USER")
+                .build();
+        Member saveUser = memberRepository.save(newMember);
+
+        String jwt = jwtTokenizer.createAccessToken(saveUser.getProviderEmail(), saveUser.getRoleList());
+
+        return LoginResDto.builder()
+                .id(saveUser.getId())
+                .memberImageUrl(saveUser.getMemberImageUrl())
+                .region(saveUser.getRegion())
+                .disease(saveUser.getDisease())
+                .email(saveUser.getProviderEmail())
+                .jwtToken(jwt)
+                .build();
+    }
 
     public GoogleOauthTokenResDto googleOauthCheckToken(String accesstoken)
             throws JsonProcessingException {
