@@ -16,35 +16,26 @@ const bgs = [
   GlobalColors.colors.primary400,
   GlobalColors.colors.secondary500,
   GlobalColors.colors.primary500,
-  "#B98EFF",
 ];
 const DATA = [
   {
     key: "3571572",
-    title: "Multi-lateral intermediate moratorium",
-    description:
-      "I'll back up the multi-byte XSS matrix, that should feed the SCSI application!",
-    image: require("../../assets/images/diary.png"),
+    title: "환자를 위한 치료 동반 다이어리",
+    description: "지금의 감정을 표시하고 간단히 목소리로 일기를 남기세요!",
+    image: require("../../assets/images/icons/good.gif"),
   },
   {
     key: "3571747",
-    title: "Automated radical data-warehouse",
-    description:
-      "Use the optical SAS system, then you can navigate the auxiliary alarm!",
-    image: require("../../assets/images/dinosaur.png"),
+    title: "나누고 싶은 감정은 공유해보세요",
+    description: "공감대를 형성하고 함께 이겨낼 수 있어요!",
+    image: require("../../assets/images/icons/gloomy.gif"),
   },
   {
     key: "3571680",
-    title: "Inverse attitude-oriented system engine",
+    title: "감정 공유의 힘, 함께 이겨낼 수 있어요",
     description:
-      "The ADP array is down, compress the online sensor so we can input the HTTP panel!",
-    image: require("../../assets/images/pager.png"),
-  },
-  {
-    key: "3571603",
-    title: "Monitored global data-warehouse",
-    description: "We need to program the open-source IB interface!",
-    image: require("../../assets/images/camera.png"),
+      "치료를 받는 동안 함께 성장하는 일기를 써보세요. 치료 과정에서 느꼈던 감정과 발전하는 모습을 기록해보세요!",
+    image: require("../../assets/images/icons/satisfied.gif"),
   },
 ];
 
@@ -152,7 +143,6 @@ const Logo = () => {
           { useNativeDriver: false }
         )}
         contentContainerStyle={{ paddingBottom: 100 }}
-        showHorizontalScrollIndicatior={false}
         pagingEnabled
         renderItem={({ item }) => {
           return (
@@ -172,8 +162,8 @@ const Logo = () => {
                 <Image
                   source={item.image}
                   style={{
-                    width: width / 2,
-                    height: width / 2,
+                    width: width / 1.3,
+                    height: width / 1.1,
                     resizeMode: "contain",
                   }}
                 />
@@ -182,7 +172,7 @@ const Logo = () => {
                 <Text
                   style={{
                     fontFamily: "KoddiUDOnGothic-ExtraBold",
-                    fontSize: 32,
+                    fontSize: 28,
                     marginBottom: 10,
                   }}
                 >
@@ -191,7 +181,8 @@ const Logo = () => {
                 <Text
                   style={{
                     fontFamily: "KoddiUDOnGothic-Regular",
-                    fontWeight: "300",
+                    fontWeight: "400",
+                    fontSize: 16,
                   }}
                 >
                   {item.description}
