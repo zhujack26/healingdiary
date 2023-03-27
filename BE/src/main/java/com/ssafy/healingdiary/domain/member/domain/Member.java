@@ -42,9 +42,11 @@ public class Member extends BaseEntity {
 
     private String roles; // USER, MANAGER, ADMIN
 
+    @Builder.Default
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
     private List<Diary> diary = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "club",cascade = CascadeType.ALL)
     private List<ClubMember> clubMember = new ArrayList<>();
 
