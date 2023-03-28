@@ -15,7 +15,9 @@ public enum ErrorCode {
     FORBIDDEN(HttpStatus.FORBIDDEN, -4, "권한이 없는 사용자입니다."),
     ENTITY_NOT_FOUND(HttpStatus.OK, -5,"엔티티를 찾을 수 없습니다."),
     COMMENT_NOT_FOUND(HttpStatus.OK, -6,"댓글을 찾을 수 없습니다."),
-    NOT_FOUND_USER(HttpStatus.OK, -7,"사용자를 찾을 수 없습니다.")
+    NOT_FOUND_USER(HttpStatus.OK, -7,"사용자를 찾을 수 없습니다."),
+    NOT_FOUND_DATA(HttpStatus.OK, -8,"요청하신 데이터가 없습니다.")
+
 
 
             ;
