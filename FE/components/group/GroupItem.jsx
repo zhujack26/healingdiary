@@ -11,7 +11,9 @@ import { GlobalColors } from "../../constants/color";
 
 const deviceWidth = Dimensions.get("window").width - 50;
 
-const GroupItem = ({ title, hashtag, navigation }) => (
+const GroupItem = ({ content }) => {
+  console.log(content);
+
   <Pressable
     style={styles.item}
     onPress={() => {
@@ -23,11 +25,13 @@ const GroupItem = ({ title, hashtag, navigation }) => (
       style={styles.image}
     />
     <View style={styles.body}>
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.hashtag}>{hashtag}</Text>
+      {/* <Text style={styles.title}>{title}</Text>
+      <Text style={styles.hashtag}>{hashtag}</Text> */}
     </View>
-  </Pressable>
-);
+  </Pressable>;
+};
+
+export default GroupItem;
 
 const styles = StyleSheet.create({
   item: {
@@ -69,5 +73,3 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
 });
-
-export default GroupItem;

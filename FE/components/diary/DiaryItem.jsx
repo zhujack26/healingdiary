@@ -7,41 +7,22 @@ import {
   Pressable,
 } from "react-native";
 import { GlobalColors } from "./../../constants/color";
-import { Ionicons } from "@expo/vector-icons";
-import { useState } from "react";
 
-const deviceWidth = Dimensions.get("window").width - 50;
+const { width, height } = Dimensions.get("window");
 
-const DiaryItem = ({ id, hashtags, date }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [count, setCount] = useState(0);
-  const handleStartPlay = () => setIsPlaying(true);
-  const handleStopPlay = () => setIsPlaying(false);
-
+const DiaryItem = ({ content }) => {
   return (
     <View style={styles.container}>
-      <Image
-        source={require("../../assets/images/SAMPLE1.png")}
-        style={styles.image}
-      />
-      <View style={styles.diaryInfo}>
-        <Text style={styles.hashtag}>{hashtags}</Text>
-        <Text style={styles.date}>{date}</Text>
+      <View style={styles.imageContainer}>
+        <Image source={content.imageUrl} style={styles.image} />
+        <View style={styles.hashtags}>
+          {content?.tags.map((hashtag, index) => (
+            <View style={styles.hashtag} key={index}>
+              <Text style={styles.tagText}>#{hashtag}</Text>
+            </View>
+          ))}
+        </View>
       </View>
-
-      {isPlaying ? (
-        <Pressable style={styles.circle} onPress={handleStopPlay}>
-          <View>
-            <Ionicons name="pause-sharp" size={16} />
-          </View>
-        </Pressable>
-      ) : (
-        <Pressable style={styles.circle} onPress={handleStartPlay}>
-          <View>
-            <Ionicons name="play" size={16} />
-          </View>
-        </Pressable>
-      )}
     </View>
   );
 };
@@ -50,53 +31,61 @@ export default DiaryItem;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    width: width,
+    height: height / 2.1,
     flexDirection: "row",
-    width: deviceWidth,
-    height: 90,
-    borderRadius: 8,
-    elevation: 4,
-    shadowColor: "#fff",
+    borderRadius: 16,
+    elevation: 5,
+    shadowColor: "#f9f9f9",
     shadowOffset: {
       width: 0,
       height: 2,
     },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    backgroundColor: GlobalColors.colors.white500,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    padding: 24,
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
     marginBottom: 16,
-  },
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 8,
-  },
-  diaryInfo: {
+    borderRadius: 16,
+    alignItems: "center",
     justifyContent: "center",
-    marginLeft: 15,
   },
+
+  imageContainer: {
+    width: width / 1.3,
+    height: "100%",
+    borderRadius: 16,
+  },
+
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 16,
+  },
+
+  hashtags: {
+    minWidth: 75,
+    height: 25,
+    flexDirection: "row",
+    position: "absolute",
+    top: 15,
+    left: 15,
+    justifyContent: "center",
+  },
+
   hashtag: {
+    backgroundColor: GlobalColors.colors.white500,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 18,
+  },
+
+  tagText: {
     fontFamily: "KoddiUDOnGothic-ExtraBold",
     fontSize: 12,
-    color: GlobalColors.colors.black500,
-    marginBottom: 8,
-  },
-  date: {
-    fontFamily: "KoddiUDOnGothic-Regular",
-    fontSize: 12,
-    color: GlobalColors.colors.gray500,
-    marginBottom: 8,
-  },
-  circle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: GlobalColors.colors.primary500,
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    right: 25,
+    color: GlobalColors.colors.primary500,
+    paddingHorizontal: 10,
+    textAlign: "center",
+    textAlignVertical: "center",
   },
 });

@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     width: width,
     paddingHorizontal: 24,
     alignItems: "center",
-    marginVertical: 34,
+    marginVertical: 22,
   },
 
   innerContainer: {
