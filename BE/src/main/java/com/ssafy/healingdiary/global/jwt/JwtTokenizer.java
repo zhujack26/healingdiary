@@ -87,8 +87,8 @@ public class JwtTokenizer {
     }
 
     // jws안에 있는 Claims얻는 메서드
-    public Jws<Claims> getClaims(String jws, String encodedSecretKey) {
-        Key key = getKeyFromEncodedKey(encodedSecretKey);
+    public Jws<Claims> getClaims(String jws) {
+        Key key = getKeyFromEncodedKey(encodeBase64SecretKey(secretKey));
 
         Jws<Claims> claims = Jwts.parserBuilder()
                 .setSigningKey(key)
@@ -107,7 +107,7 @@ public class JwtTokenizer {
 
 
     public String getUsernameFromToken(String token) {
-        Jws<Claims>  claims = getClaims(token, secretKey);
+        Jws<Claims>  claims = getClaims(token);
         Claims claim = claims.getBody();
         String providerEmail = claim.get("email", String.class);
         return providerEmail;
