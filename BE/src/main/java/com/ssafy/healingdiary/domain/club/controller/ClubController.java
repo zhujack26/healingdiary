@@ -5,6 +5,7 @@ import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
+import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
 import com.ssafy.healingdiary.domain.club.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -41,9 +43,14 @@ public class ClubController {
         return clubService.getInvitationList(clubId, pageable);
     }
 
+    @PostMapping("/invitation/{clubId}")
+    public void registInvitationList(@PathVariable Long clubId, @RequestBody InvitationRegisterRequest request) {
+        clubService.registInvitationList(clubId, request);
+    }
+
     @PostMapping
-    public ClubRegisterResponse registClub(@RequestPart(value = "ClubRegister") ClubRegisterRequest registerRequest,
+    public ClubRegisterResponse registClub(@RequestPart(value = "ClubRegister") ClubRegisterRequest request,
         @RequestPart(value = "file", required = false) MultipartFile file){
-        return clubService.registClub(registerRequest, file);
+        return clubService.registClub(request, file);
     }
 }

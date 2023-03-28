@@ -1,9 +1,11 @@
 package com.ssafy.healingdiary.domain.club.service;
 
+import com.ssafy.healingdiary.domain.club.domain.Club;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
+import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
 import com.ssafy.healingdiary.domain.club.repository.ClubMemberRepository;
 import com.ssafy.healingdiary.domain.club.repository.ClubRepository;
 import com.ssafy.healingdiary.domain.member.domain.Member;
@@ -48,5 +50,13 @@ public class ClubService {
         String imageUrl = "";
         clubRepository.save(ClubRegisterRequest.toEntity(registerRequest, member, imageUrl));
         return ClubRegisterResponse.builder().build();
+    }
+
+    public void registInvitationList(Long clubId, InvitationRegisterRequest request) {
+        request.getList().stream().forEach((memberId) -> {
+            Member member = memberRepository.findById(memberId).get();
+            Club club = clubRepository.findById(clubId).get();
+            clubMemberRepository.save(InvitationRegisterRequest.toEntity(club, member));
+        });
     }
 }
