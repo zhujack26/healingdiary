@@ -39,4 +39,7 @@ public class ClubMember extends BaseEntity {
     @Column(name = "is_approved")
     private Boolean isApproved;
 
+    public void approve() {
+        this.isApproved = true;
+    }
 }
