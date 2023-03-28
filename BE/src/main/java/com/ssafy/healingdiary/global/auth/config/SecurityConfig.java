@@ -1,41 +1,60 @@
 package com.ssafy.healingdiary.global.auth.config;
 
 
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
+import com.ssafy.healingdiary.global.jwt.JwtAuthenticationFilter;
+import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 //@EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private final JwtTokenizer jwtTokenizer;
+    private final PrincipalDetailsService principalDetailsService;
+
+    @Autowired
+    public SecurityConfig(JwtTokenizer jwtTokenizer, PrincipalDetailsService principalDetailsService) {
+        this.jwtTokenizer = jwtTokenizer;
+        this.principalDetailsService = principalDetailsService;
+    }
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/swagger*/**");
+                .antMatchers(
+                        "/v2/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/auth/account/**");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .csrf().disable()
+            .httpBasic().disable()
             .cors()
                 .and()
                 .formLogin().disable()
-                .httpBasic().disable()
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/account/**").permitAll()
+                .antMatchers(
+                        "/auth/account/**",
+                        "/v2/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                // 이후에 http메소드 등 기타 추가하면 될듯
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//                .and()
-//                .addFilterBefore(JwtAuthenticationFilter, JwtAuthorizationFilter.class);
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(principalDetailsService, jwtTokenizer), UsernamePasswordAuthenticationFilter.class);
 
     }
 }
