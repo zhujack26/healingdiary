@@ -6,10 +6,10 @@ import lombok.Getter;
 
 @Data
 public class KakaoOauthTokenResDto {
-
-    private String email;
-
-    private String imageUrl;
+    @JsonProperty("properties")
+    private KakaoOauthTokenResProperties kakaoOauthTokenResProperties;
+    @JsonProperty("kakao_account")
+    private KakaoOauthTokenResAccount kakaoOauthTokenResAccount;
 
 
 

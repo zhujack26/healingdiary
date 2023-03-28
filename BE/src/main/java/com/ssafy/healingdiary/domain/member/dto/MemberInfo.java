@@ -1,5 +1,6 @@
 package com.ssafy.healingdiary.domain.member.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +9,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MemberInfo {
-    private Long id;
 
     private String nickname;
 

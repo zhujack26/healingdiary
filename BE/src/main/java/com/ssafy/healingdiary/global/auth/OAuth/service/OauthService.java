@@ -16,6 +16,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Map;
+
+import static com.ssafy.healingdiary.global.error.ErrorCode.NOT_VALID_TOKEN;
+
 
 @Service
 @RequiredArgsConstructor
@@ -32,16 +36,7 @@ public class OauthService {
         String memberEmail = "GOOGLE_" + googleOAuthResponse.getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
-
-            return LoginResDto.builder()
-                    .id(null)
-                    .email(memberEmail)
-                    .region(null)
-                    .disease(null)
-                    .nickname(null)
-                    .memberImageUrl(null)
-                    .jwtToken(null)
-                    .build();
+            throw new CustomException(ErrorCode.NOT_FOUND_USER);
         }
 
         String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
@@ -59,19 +54,10 @@ public class OauthService {
     public LoginResDto kakaoOauthLogin(String accesstoken) throws JsonProcessingException {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
         System.out.println("KakaoOauthtoken: " + kakaoOauthTokenResDto);
-        String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getEmail();
+        String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResAccount().getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
-
-            return LoginResDto.builder()
-                    .id(null)
-                    .email(memberEmail)
-                    .region(null)
-                    .disease(null)
-                    .nickname(null)
-                    .memberImageUrl(null)
-                    .jwtToken(null)
-                    .build();
+            throw new CustomException(ErrorCode.NOT_FOUND_USER);
         }
 
         String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
@@ -119,7 +105,8 @@ public class OauthService {
     public LoginResDto kakaoSignup(String accesstoken, SignupReqDto signupReqDto)
             throws JsonProcessingException {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
-        String providerEmail = "KAKAO_" + kakaoOauthTokenResDto.getEmail();
+        String providerEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResAccount().getEmail();
+
         Member duplicatedMember = memberRepository.findMemberByProviderEmail(providerEmail);
         if (duplicatedMember != null) {
             throw new CustomException(ErrorCode.CONFLICT);
@@ -129,7 +116,7 @@ public class OauthService {
                 .nickname(signupReqDto.getNickname())
                 .region(signupReqDto.getRegion())
                 .disease(signupReqDto.getDisease())
-                .memberImageUrl(kakaoOauthTokenResDto.getEmail())
+                .memberImageUrl(kakaoOauthTokenResDto.getKakaoOauthTokenResProperties().getProfileImage())
                 .roles("USER")
                 .build();
         Member saveUser = memberRepository.save(newMember);
@@ -138,6 +125,7 @@ public class OauthService {
 
         return LoginResDto.builder()
                 .id(saveUser.getId())
+                .nickname(saveUser.getNickname())
                 .memberImageUrl(saveUser.getMemberImageUrl())
                 .region(saveUser.getRegion())
                 .disease(saveUser.getDisease())
@@ -158,7 +146,7 @@ public class OauthService {
                 request,
                 String.class
         );
-        System.out.println(response.getBody());
+
         return objectMapper.readValue(response.getBody(), GoogleOauthTokenResDto.class);
     }
     public KakaoOauthTokenResDto kakaoOauthCheckToken(String accessToken)
@@ -167,13 +155,13 @@ public class OauthService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", accessToken);
         HttpEntity request = new HttpEntity(headers);
+        System.out.println("hi");
         ResponseEntity<String> response = restTemplate.exchange(
                 KAKAO_USERINFO_REQUEST_URL,
                 HttpMethod.GET,
                 request,
                 String.class
         );
-        System.out.println(response.getBody());
         return objectMapper.readValue(response.getBody(), KakaoOauthTokenResDto.class);
     }
 

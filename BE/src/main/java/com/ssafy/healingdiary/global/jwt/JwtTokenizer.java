@@ -124,7 +124,8 @@ public class JwtTokenizer {
     public String getUsernameFromToken(String token) {
         Jws<Claims>  claims = getClaims(token);
         Claims claim = claims.getBody();
-        String providerEmail = claim.get("email", String.class);
+        String providerEmail = claim.get("sub", String.class);
+
         return providerEmail;
     }
 
