@@ -34,7 +34,7 @@ const SearchGroup = () => {
         renderItem={({ item }) => (
           <GroupItem content={item} navigation={navigation} />
         )}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.clubId}
       />
     </View>
   );

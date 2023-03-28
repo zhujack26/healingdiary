@@ -12,7 +12,7 @@ const { width, height } = Dimensions.get("window");
 
 const DiaryItem = ({ content }) => {
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container}>
       <View style={styles.imageContainer}>
         <Image source={content.imageUrl} style={styles.image} />
         <View style={styles.hashtags}>
@@ -23,7 +23,7 @@ const DiaryItem = ({ content }) => {
           ))}
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

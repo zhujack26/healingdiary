@@ -9,67 +9,94 @@ import {
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
 
-const deviceWidth = Dimensions.get("window").width - 50;
+const { width, height } = Dimensions.get("window");
 
-const GroupItem = ({ content }) => {
-  console.log(content);
-
-  <Pressable
-    style={styles.item}
-    onPress={() => {
-      navigation.navigate("groupDetail");
-    }}
-  >
-    <Image
-      source={require("../../assets/images/SAMPLE1.png")}
-      style={styles.image}
-    />
-    <View style={styles.body}>
-      {/* <Text style={styles.title}>{title}</Text>
-      <Text style={styles.hashtag}>{hashtag}</Text> */}
-    </View>
-  </Pressable>;
+const GroupItem = ({ content, navigation }) => {
+  return (
+    <Pressable>
+      <View style={styles.container}>
+        <View>
+          <Image
+            source={content.clubImageUrl}
+            style={styles.image}
+            resizeMode="cover"
+          />
+          <View style={styles.hashtags}>
+            {content.tags.map((hashtag, index) => (
+              <View style={styles.hashtag} key={index}>
+                <Text style={styles.tagText}>#{hashtag}</Text>
+              </View>
+            ))}
+          </View>
+          <View style={styles.infoContainer}>
+            <Text style={styles.title}>{content.name}</Text>
+            {/* <Text style={styles.description}>{description}</Text> */}
+          </View>
+        </View>
+      </View>
+    </Pressable>
+  );
 };
 
 export default GroupItem;
 
 const styles = StyleSheet.create({
-  item: {
-    flexDirection: "row",
-    width: deviceWidth,
-    height: 90,
-    borderRadius: 8,
-    elevation: 4,
-    shadowColor: "#fff",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    backgroundColor: GlobalColors.colors.white500,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    padding: 24,
-    marginBottom: 16,
-  },
-  body: {
+  container: {
+    width: width,
+    marginBottom: 26,
     justifyContent: "center",
-    marginLeft: 15,
+    alignItems: "center",
   },
+
   image: {
-    width: 50,
-    height: 50,
-    borderRadius: 8,
+    width: width - 35,
+    height: height / 4,
+    borderRadius: 12,
+    marginRight: 4,
   },
-  title: {
-    marginLeft: 10,
-    fontWeight: "bold",
-    fontSize: 14,
+
+  hashtags: {
+    minWidth: 75,
+    height: 25,
+    flexDirection: "row",
+    position: "absolute",
+    top: 10,
+    left: 15,
+    justifyContent: "center",
   },
+
   hashtag: {
+    backgroundColor: GlobalColors.colors.white500,
+    borderRadius: 16,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 18,
+  },
+
+  tagText: {
+    fontFamily: "KoddiUDOnGothic-ExtraBold",
+    fontSize: 12,
     color: GlobalColors.colors.primary500,
-    paddingTop: 10,
-    marginLeft: 10,
+    paddingHorizontal: 10,
+    textAlign: "center",
+    textAlignVertical: "center",
+  },
+
+  infoContainer: {
+    position: "absolute",
+    bottom: 10,
+    left: 15,
+  },
+
+  title: {
+    fontFamily: "KoddiUDOnGothic-ExtraBold",
+    fontSize: 16,
+    color: GlobalColors.colors.white500,
+  },
+
+  description: {
+    fontFamily: "KoddiUDOnGothic-Regular",
+    fontSize: 12,
+    color: GlobalColors.colors.white500,
   },
 });
