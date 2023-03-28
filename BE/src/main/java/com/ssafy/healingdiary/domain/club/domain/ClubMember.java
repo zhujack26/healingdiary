@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,8 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Table(name="club_member")
 @SuperBuilder
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "club_member_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "club_member_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "club_member_updated_date"))

@@ -10,6 +10,7 @@ import com.ssafy.healingdiary.domain.club.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,5 +53,10 @@ public class ClubController {
     public ClubRegisterResponse registClub(@RequestPart(value = "ClubRegister") ClubRegisterRequest request,
         @RequestPart(value = "file", required = false) MultipartFile file){
         return clubService.registClub(request, file);
+    }
+
+    @DeleteMapping("/{clubId}/{clubMemberId}")
+    public void leaveClub (@PathVariable Long clubId, @PathVariable Long clubMemberId){
+        clubService.leaveClub(clubId, clubMemberId);
     }
 }
