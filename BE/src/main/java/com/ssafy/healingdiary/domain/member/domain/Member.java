@@ -24,14 +24,8 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @Getter
 @Builder
-<<<<<<< BE/src/main/java/com/ssafy/healingdiary/domain/member/domain/Member.java
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-=======
-@NoArgsConstructor
-@AllArgsConstructor
-@DynamicUpdate
->>>>>>> BE/src/main/java/com/ssafy/healingdiary/domain/member/domain/Member.java
 @Table(name="member")
 @AttributeOverride(name = "id", column = @Column(name = "member_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "member_created_date"))
