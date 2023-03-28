@@ -24,8 +24,8 @@ import org.hibernate.annotations.BatchSize;
 @NoArgsConstructor
 public class Club extends BaseEntity {
 
-    @NotNull
-    private Long admin; //userId
+    @OneToOne(fetch = FetchType.LAZY)
+    private Member host;
 
     @NotNull
     private String name;
