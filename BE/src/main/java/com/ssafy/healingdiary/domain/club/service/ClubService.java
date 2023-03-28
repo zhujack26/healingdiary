@@ -71,4 +71,10 @@ public class ClubService {
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         clubMemberRepository.delete(clubMember);
     }
+
+    public void approveClub(Long clubMemberId) {
+        ClubMember clubMember = clubMemberRepository.findById(clubMemberId).get();
+        clubMember.approve();
+        clubMemberRepository.save(clubMember);
+    }
 }
