@@ -8,6 +8,7 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,9 +26,9 @@ import java.util.Map;
 @Getter
 @Component
 @Service
+@RequiredArgsConstructor
 public class JwtTokenizer {
 
-    private PrincipalDetailsService principalDetailsService;
     @Value("${jwt.secret}")
     private String secretKey;
 
@@ -79,10 +80,7 @@ public class JwtTokenizer {
                 .signWith(key)
                 .compact();
     }
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = principalDetailsService.loadUserByUsername(this.getEmail(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
+
 
     // 서명 검증
     public void verifySignature(String jws, // jws는 signature가 들어간 jwt라는 의미
@@ -119,7 +117,8 @@ public class JwtTokenizer {
     }
 
     public String getEmail(String token) {
-        String email = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+        String email = Jwts.parserBuilder().setSigningKey(encodeBase64SecretKey(secretKey)).build().parseClaimsJws(token).getBody().getSubject();
+        System.out.println(email);
         return email;
     }
     public String getUsernameFromToken(String token) {

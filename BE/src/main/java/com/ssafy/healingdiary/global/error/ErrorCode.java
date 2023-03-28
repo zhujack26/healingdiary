@@ -7,7 +7,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode {
+public enum     ErrorCode {
 
     BAD_REQUEST(HttpStatus.BAD_REQUEST, -1,"잘못된 요청입니다."),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, -2,"허용되지 않은 메서드입니다."),

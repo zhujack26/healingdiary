@@ -1,6 +1,7 @@
 package com.ssafy.healingdiary.global.auth.config;
 
 
+import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
 import com.ssafy.healingdiary.global.jwt.JwtAuthenticationFilter;
 import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
 import lombok.AllArgsConstructor;
@@ -18,16 +19,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenizer jwtTokenizer;
+    private final PrincipalDetailsService principalDetailsService;
 
     @Autowired
-    public SecurityConfig(JwtTokenizer jwtTokenizer) {
+    public SecurityConfig(JwtTokenizer jwtTokenizer, PrincipalDetailsService principalDetailsService) {
         this.jwtTokenizer = jwtTokenizer;
+        this.principalDetailsService = principalDetailsService;
     }
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
                 .ignoring()
-                .antMatchers("/swagger*/**","/auth/account/**");
+                .antMatchers("/swagger*","/auth/account/**");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,13 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/account/**").permitAll()
+                .antMatchers("/auth/account/**","/swagger*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenizer), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(principalDetailsService, jwtTokenizer), UsernamePasswordAuthenticationFilter.class);
 
     }
 }
