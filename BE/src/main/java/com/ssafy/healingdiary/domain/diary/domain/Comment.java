@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,7 +27,8 @@ import org.hibernate.annotations.DynamicInsert;
 @DynamicInsert
 @Getter
 @SuperBuilder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "comment")
 @AttributeOverride(name = "id", column = @Column(name = "comment_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "comment_created_date"))
