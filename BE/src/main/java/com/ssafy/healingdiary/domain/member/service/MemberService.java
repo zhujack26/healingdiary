@@ -28,8 +28,9 @@ public class MemberService {
 
 
     public MemberInfo memberInfoFind(String accessToken) {
-        PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
-        Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
+//        PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
+//        Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
+        Member member = memberRepository.findMemberByProviderEmail("asdfasdfasdf");
         if(member == null){
             throw new CustomException(NOT_FOUND_USER);
         }
