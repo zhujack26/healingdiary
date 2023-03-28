@@ -54,7 +54,7 @@ public class CommentService {
                     .nickname(comment.getMember().getNickname())
                     .datetime(comment.getCreatedDate())
                     .content(comment.getContent())
-                    .children(children)
+                    .children(children != null && !children.isEmpty() ? children : null)
                     .build();
             })
             .collect(Collectors.toList());
