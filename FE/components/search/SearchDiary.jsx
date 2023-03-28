@@ -1,9 +1,9 @@
-import { FlatList, View, StyleSheet } from "react-native";
+import { FlatList, KeyboardAvoidingView, StyleSheet } from "react-native";
 import DiaryItem from "../diary/DiaryItem";
 import { DATA } from "../../model/DataDiary";
 const SearchDiary = () => {
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView style={styles.container}>
       <FlatList
         data={DATA}
         renderItem={({ item }) => (
@@ -11,7 +11,7 @@ const SearchDiary = () => {
         )}
         keyExtractor={(item) => item.id}
       />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 const styles = StyleSheet.create({

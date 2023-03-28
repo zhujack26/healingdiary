@@ -29,18 +29,22 @@ const SearchBox = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
+    marginTop: 45,
   },
+
   searchContainer: {
     backgroundColor: "transparent",
     borderTopWidth: 0,
     borderBottomWidth: 0,
     width: "85%",
   },
+
   inputContainer: {
     backgroundColor: GlobalColors.colors.gray400,
     borderRadius: 20,
     height: 35,
   },
+
   input: {
     fontSize: 15,
     fontFamily: "KoddiUDOnGothic-Regular",

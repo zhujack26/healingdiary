@@ -7,38 +7,43 @@ import { useState } from "react";
 import { GlobalColors } from "../constants/color";
 import BottomTabContainer from "../components/BottomTabContainer/BottomTabContainer";
 
-const deviceHeight = Dimensions.get("window").height - 130;
+const { width, height } = Dimensions.get("window");
 const SearchScreen = () => {
   const getTextStyle = (index) => {
     return activeIndex === index ? styles.activeText : styles.inactiveText;
   };
+
   const [activeIndex, setActiveIndex] = useState(0);
   const handleActiveIndex = (index) => {
     setActiveIndex(index);
   };
-  const Type = ({ activeIndex, handleActiveIndex }) => {
+
+  const Type = ({ handleActiveIndex }) => {
     return (
       <View style={styles.line}>
         <Pressable
-          activeIndex={activeIndex}
+          style={[styles.innerContainer, getTextStyle(0)]}
           onPress={() => handleActiveIndex(0)}
-          // style={({ pressed }) => pressed && styles.pressed}
         >
-          <Text style={[styles.leftText, getTextStyle(0)]}>일기</Text>
+          <Text style={[styles.text, styles.leftText, , getTextStyle(0)]}>
+            일기
+          </Text>
         </Pressable>
         <Pressable
-          activeIndex={activeIndex}
+          style={[styles.innerContainer, getTextStyle(1)]}
           onPress={() => handleActiveIndex(1)}
-          // style={({ pressed }) => pressed && styles.pressed}
         >
-          <Text style={[styles.centerText, getTextStyle(1)]}>소모임</Text>
+          <Text style={[styles.text, styles.centerText, getTextStyle(1)]}>
+            소모임
+          </Text>
         </Pressable>
         <Pressable
-          activeIndex={activeIndex}
+          style={[styles.innerContainer, getTextStyle(2)]}
           onPress={() => handleActiveIndex(2)}
-          // style={({ pressed }) => pressed && styles.pressed}
         >
-          <Text style={[styles.rightText, getTextStyle(2)]}>해시태그</Text>
+          <Text style={[styles.text, styles.RightText, getTextStyle(2)]}>
+            해시태그
+          </Text>
         </Pressable>
       </View>
     );
@@ -52,53 +57,47 @@ const SearchScreen = () => {
     }
     if (activeIndex === 2) return <SearchTag />;
   };
+
   return (
     <BottomTabContainer>
       <View style={styles.container}>
         <SearchBox />
-        <Type activeIndex={activeIndex} handleActiveIndex={handleActiveIndex} />
+        <Type handleActiveIndex={handleActiveIndex} />
         {renderItem()}
       </View>
     </BottomTabContainer>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    height: deviceHeight,
+    height: height,
   },
+
   line: {
-    height: 40,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    borderColor: GlobalColors.colors.gray400,
     flexDirection: "row",
-    justifyContent: "space-between",
+    width: width,
+    paddingHorizontal: 24,
     alignItems: "center",
-    marginTop: 34,
-    marginBottom: 34,
+    marginVertical: 34,
   },
-  leftText: {
-    paddingLeft: 30,
-    paddingBottom: 10,
-    paddingTop: 10,
-    paddingRight: 40,
+
+  innerContainer: {
+    width: "33.333%",
   },
-  centerText: {
-    paddingBottom: 10,
-    paddingTop: 10,
-    paddingLeft: 40,
-    paddingRight: 40,
+
+  text: {
+    fontFamily: "KoddiUDOnGothic-Regular",
+    textAlign: "center",
+    fontSize: 16,
   },
-  rightText: {
-    paddingRight: 30,
-    paddingLeft: 40,
-    paddingBottom: 10,
-    paddingTop: 10,
-  },
+
   activeText: {
-    color: GlobalColors.colors.black500,
+    fontFamily: "KoddiUDOnGothic-ExtraBold",
+    borderBottomWidth: Platform.OS === "ios" ? 2 : 1,
   },
+
   inactiveText: {
     color: GlobalColors.colors.gray500,
   },
