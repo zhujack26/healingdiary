@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MemberInfo {
-    private Long id;
 
     private String nickname;
 
