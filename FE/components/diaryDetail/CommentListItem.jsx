@@ -1,35 +1,41 @@
 import { View, StyleSheet, Text, Image, FlatList } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import ReplyListItem from "./ReplyListItem";
+import { SwipeListView } from "react-native-swipe-list-view";
 
 const CommentListItem = ({ comment }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={styles.image}
-          source={require("../../assets/images/SAMPLE3.png")}
-        />
-      </View>
-      <View style={styles.commnetContainer}>
-        <View>
-          <Text style={[styles.regular, styles.text]}>{comment?.nickname}</Text>
-          <Text style={[styles.regular, styles.time]}>1일전</Text>
-          <View>
-            <Text style={[styles.regular, styles.text]}>
-              {comment?.content}
-            </Text>
-            {comment.children && (
-              <View>
-                <FlatList renderItem={ReplyListItem} data={comment?.children} />
-              </View>
-            )}
-          </View>
+      <View style={styles.container2}>
+        {/* <SwipeListView
+          rightOpenValue={-75}
+          disableRightSwipe
+          stopLeftSwipe={75}
+        /> */}
+        <View style={styles.imageContainer}>
+          <Image
+            style={styles.image}
+            source={require("../../assets/images/SAMPLE3.png")}
+          />
         </View>
-
-        <View style={styles.IconContainer}>
-          <Ionicons name="ellipsis-horizontal" size={24} color="black" />
+        <View style={styles.commentContainer}>
+          {/* 닉네임 */}
+          <Text style={[styles.bold, styles.text]}>{comment?.nickname}</Text>
+          {/* 댓글 */}
+          <Text style={[styles.regular, styles.text2]}>{comment?.content}</Text>
+        </View>
+      </View>
+      {/* 시간경과, 답글달기 */}
+      <View style={styles.container3}>
+        <View style={styles.etc}>
+          <Text style={[styles.regular, styles.time]}>1일전</Text>
+          <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
+        </View>
+        {/* 대댓글 */}
+        <View>
+          {comment.children && (
+            <FlatList renderItem={ReplyListItem} data={comment?.children} />
+          )}
         </View>
       </View>
     </View>
@@ -44,48 +50,57 @@ const styles = StyleSheet.create({
   },
 
   bold: {
-    fontFamily: "KoddiUDOnGothic-Bold",
+    fontFamily: "KoddiUDOnGothic-ExtraBold",
   },
 
   container: {
-    flexDirection: "row",
-    paddingHorizontal: 16,
-    marginBottom: 12,
+    paddingHorizontal: 15,
+    paddingBottom: 15,
   },
-
+  container2: {
+    flexDirection: "row",
+  },
+  container3: {
+    paddingLeft: 50,
+  },
+  etc: {
+    flexDirection: "row",
+  },
   imageContainer: {
     width: 42,
     height: 42,
-    borderRadius: 21,
-    marginRight: 8,
+    marginRight: 10,
   },
-
   image: {
     width: "100%",
     height: "100%",
     borderRadius: 24,
   },
 
-  commnetContainer: {
-    width: "80%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  commentContainer: {
+    // width: "80%",
+    paddingTop: 3,
+    paddingBottom: 3,
+    justifyContent: "space-around",
   },
-
-  IconContainer: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-  },
-
   text: {
     color: GlobalColors.colors.black500,
     fontSize: 12,
+  },
+  text2: {
+    fontSize: 14,
   },
 
   time: {
     color: GlobalColors.colors.gray500,
     fontSize: 10,
+    paddingRight: 15,
   },
+  reply: {
+    color: GlobalColors.colors.gray500,
+    fontSize: 10,
+  },
+  // replyList: {
+  //   marginLeft: 100,
+  // },
 });

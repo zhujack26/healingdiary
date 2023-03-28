@@ -34,7 +34,7 @@ const comments = [
       },
     ],
     commentId: "1",
-    content: "댓글이지",
+    content: "안녕하세요 ssafy 입니다. 잘부탁드립니다.",
     datetime: "2023-03-23T13:47:02.140Z",
     memberId: 0,
     memberImageUrl: "",

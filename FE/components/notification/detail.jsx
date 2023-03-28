@@ -7,7 +7,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const formatTime = (minutes) => {
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
-
+  //1분 이하는 방금 전으로
   if (hours < 1) {
     return `${minutes}분 전`;
   } else if (hours >= 1 && hours < 24) {
