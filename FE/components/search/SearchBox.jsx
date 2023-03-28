@@ -2,6 +2,7 @@ import { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { GlobalColors } from "../../constants/color";
+import { Ionicons } from "@expo/vector-icons";
 
 const SearchBox = () => {
   const [search, setSearch] = useState("");
@@ -12,6 +13,13 @@ const SearchBox = () => {
 
   return (
     <View style={styles.container}>
+      <View>
+        <Ionicons
+          name="chevron-back"
+          color={GlobalColors.colors.secondary500}
+          size={24}
+        />
+      </View>
       <SearchBar
         placeholder=""
         onChangeText={updateSearch}
@@ -28,6 +36,8 @@ const SearchBox = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
     marginTop: 45,
   },

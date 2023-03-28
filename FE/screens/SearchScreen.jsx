@@ -48,13 +48,10 @@ const SearchScreen = () => {
       </View>
     );
   };
+
   const renderItem = () => {
-    if (activeIndex === 0) {
-      return <SearchDiary />;
-    }
-    if (activeIndex === 1) {
-      return <SearchGroup />;
-    }
+    if (activeIndex === 0) return <SearchDiary />;
+    if (activeIndex === 1) return <SearchGroup />;
     if (activeIndex === 2) return <SearchTag />;
   };
 
@@ -95,7 +92,7 @@ const styles = StyleSheet.create({
 
   activeText: {
     fontFamily: "KoddiUDOnGothic-ExtraBold",
-    borderBottomWidth: Platform.OS === "ios" ? 2 : 1,
+    borderBottomWidth: Platform.OS === "ios" ? 1.2 : 0.6,
   },
 
   inactiveText: {
