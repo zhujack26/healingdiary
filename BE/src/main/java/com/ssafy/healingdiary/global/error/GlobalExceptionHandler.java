@@ -48,7 +48,8 @@ public class GlobalExceptionHandler {
     //500 error
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleException(final Exception e) {
-        log.error("handleHttpRequestMethodNotSupportedException: {}", e.getMessage());
+        e.printStackTrace();
+        log.error("handleException: {}", e.getMessage());
         return ResponseEntity
             .status(ErrorCode.INTERNAL_SERVER_ERROR.getStatus().value())
             .body(new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR));

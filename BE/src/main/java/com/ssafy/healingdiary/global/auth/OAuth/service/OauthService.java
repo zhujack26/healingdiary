@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 
-
 @Service
 @RequiredArgsConstructor
 public class OauthService {
@@ -162,7 +161,6 @@ public class OauthService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", accessToken);
         HttpEntity request = new HttpEntity(headers);
-        System.out.println("hi");
         ResponseEntity<String> response = restTemplate.exchange(
                 KAKAO_USERINFO_REQUEST_URL,
                 HttpMethod.GET,
