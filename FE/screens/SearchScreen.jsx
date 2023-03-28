@@ -5,6 +5,7 @@ import SearchGroup from "../components/search/SearchGroup";
 import SearchTag from "../components/search/SearchTag";
 import { useState } from "react";
 import { GlobalColors } from "../constants/color";
+import BottomTabContainer from "../components/BottomTabContainer/BottomTabContainer";
 
 const deviceHeight = Dimensions.get("window").height - 130;
 const SearchScreen = () => {
@@ -52,11 +53,13 @@ const SearchScreen = () => {
     if (activeIndex === 2) return <SearchTag />;
   };
   return (
-    <View style={styles.container}>
-      <SearchBox />
-      <Type activeIndex={activeIndex} handleActiveIndex={handleActiveIndex} />
-      {renderItem()}
-    </View>
+    <BottomTabContainer>
+      <View style={styles.container}>
+        <SearchBox />
+        <Type activeIndex={activeIndex} handleActiveIndex={handleActiveIndex} />
+        {renderItem()}
+      </View>
+    </BottomTabContainer>
   );
 };
 const styles = StyleSheet.create({

@@ -10,21 +10,23 @@ import { GlobalColors } from "../../constants/color";
 
 const { width, height } = Dimensions.get("window");
 
-const CalendarDiaryListItem = ({ emotion, image }) => {
+const CalendarDiaryListItem = ({ content }) => {
   return (
-    <>
-      <Pressable style={styles.diary}>
-        <View style={styles.date}>
-          <Text style={styles.days}>26</Text>
-          <Text style={styles.dayOf}>일</Text>
-          <Text>{emotion.value}</Text>
-        </View>
+    <Pressable style={styles.diary}>
+      <View style={styles.date}>
+        <Text style={styles.days}>{content.createdDate.slice(8, 10)}</Text>
+        <Text style={styles.dayOf}>일</Text>
+        <Text>{content.emotion.value}</Text>
+      </View>
 
-        <View style={styles.imageContainer}>
-          <Image source={image} style={styles.image} resizeMode="cover" />
-        </View>
-      </Pressable>
-    </>
+      <View style={styles.imageContainer}>
+        <Image
+          source={content.imageUrl}
+          style={styles.image}
+          resizeMode="cover"
+        />
+      </View>
+    </Pressable>
   );
 };
 

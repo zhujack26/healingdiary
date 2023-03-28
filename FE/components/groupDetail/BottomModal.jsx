@@ -4,6 +4,7 @@ import {
   BottomSheetModalProvider,
   BottomSheetBackdrop,
 } from "@gorhom/bottom-sheet";
+import { useNavigation } from "@react-navigation/native";
 
 import GroupSetting from "./GroupSetting";
 const BottomModal = ({
@@ -12,6 +13,13 @@ const BottomModal = ({
   openExitModalAndCloseModal,
 }) => {
   const snapPoints = useMemo(() => ["70%"], []);
+  const navigation = useNavigation();
+
+  const navigateAndCloseModal = (name, isEdit) => {
+    const params = { isEdit };
+    navigation.navigate(name, params);
+    handleCloseModalPress();
+  };
 
   const renderBackdrop = useCallback(
     (props) => (
@@ -37,6 +45,7 @@ const BottomModal = ({
         <GroupSetting
           handleCloseModalPress={handleCloseModalPress}
           openExitModalAndCloseModal={openExitModalAndCloseModal}
+          navigateAndCloseModal={navigateAndCloseModal}
         />
       </BottomSheetModal>
     </BottomSheetModalProvider>
