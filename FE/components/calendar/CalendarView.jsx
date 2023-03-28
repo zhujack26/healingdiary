@@ -16,12 +16,43 @@ const DateCheck = (date1, date2) => {
 const DateList = (date, dateList) => {
   return dateList.some((d) => DateCheck(date, d));
 };
-
+const getIconNameFromEmotionCode = (emotionCode) => {
+  switch (emotionCode) {
+    case 1:
+      return "emoji-happy";
+    case 2:
+      return "emoji-sad";
+    // 여기에 더 추가
+  }
+};
+const getEmotionForDate = (date, dateList) => {
+  const targetDate = dateList.find((d) => DateCheck(date, d));
+  if (targetDate) {
+    const iconName = getIconNameFromEmotionCode(targetDate.emotion.code);
+    return { ...targetDate.emotion, iconName };
+  }
+  return null;
+};
 const CustomDayComponent = ({ date, state, onPress }) => {
-  const targetDates = [
-    { year: 2023, month: 3, day: 7 },
-    { year: 2023, month: 3, day: 10 },
-    { year: 2023, month: 3, day: 15 },
+  const dummyData = [
+    {
+      day: 12,
+      emotion: {
+        code: 1,
+        value: "기쁨",
+      },
+      month: 3,
+      year: 2023,
+    },
+    {
+      day: 13,
+      emotion: {
+        code: 2,
+        value: "슬픔",
+      },
+      month: 3,
+      year: 2023,
+    },
   ];
 
   const today = new Date();
@@ -37,6 +68,9 @@ const CustomDayComponent = ({ date, state, onPress }) => {
       onPress(date);
     }
   };
+
+  const emotion = getEmotionForDate(date, dummyData);
+
   return (
     <View>
       <TouchableOpacity onPress={handlePress} style={styles.box}>
@@ -54,12 +88,16 @@ const CustomDayComponent = ({ date, state, onPress }) => {
         >
           {date.day}
         </Text>
-        {DateList(date, targetDates) && (
+        {emotion && (
           <View style={styles.empty}>
-            <Entypo name="emoji-flirt" size={16} color={"blue"} />
+            <Entypo
+              name={emotion.iconName}
+              size={16}
+              color={GlobalColors.colors.primary500}
+            />
           </View>
         )}
-        {DateList(date, targetDates) || <View style={styles.empty}></View>}
+        {!emotion && <View style={styles.empty}></View>}
       </TouchableOpacity>
     </View>
   );
@@ -106,7 +144,7 @@ const CalendarView = () => {
           date={date}
           state={state}
           onPress={(day) => {
-            console.log("selected day", day.year);
+            console.log("selected day");
             navigation.navigate("calendarDiaryList", {
               date: { year: day.year, month: day.month, day: day.day },
             });
