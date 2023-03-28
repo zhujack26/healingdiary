@@ -11,10 +11,13 @@ import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
 import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient;
 import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient.NestRequestEntity;
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -77,15 +80,28 @@ public class DiaryService {
     }
 
 //    public List<EmotionStatisticResponse> getEmotionStatistics(UserDetails principal, int year, int month) {
-    public List<EmotionStatisticResponse> getEmotionStatistics(Long memberId, int year, int month) {
+    public List<EmotionStatisticResponse> getEmotionStatistics(Long memberId, Integer year, Integer month) {
         List<EmotionStatisticResponse> emotionList = diaryRepository.countEmotion(memberId, year, month);
         return emotionList;
     }
 
-    public String analyzeDiary(MultipartFile record) {
-        File convRecord = new File(record.getOriginalFilename());
+    public String analyzeDiary(MultipartFile rec) throws IOException {
+
+        String originalFile = rec.getOriginalFilename();
+
+        int pos = originalFile.lastIndexOf(".");
+        String type = originalFile.substring(pos + 1);
+
+//        String saveFolder = "/healing/records/";
+        String saveFolder = "C:\\Users\\SSAFY\\Desktop\\SSAFY\\특화프로젝트\\record\\";
+        String saveFile = UUID.randomUUID() + "." + type;
+
+        File file = new File(saveFolder + saveFile);
+        file.getParentFile().mkdirs();
+        rec.transferTo(file);
+
         NestRequestEntity requestEntity = new NestRequestEntity();
-        final String result = clovaSpeechClient.upload(convRecord, requestEntity);
+        final String result = clovaSpeechClient.upload(file, requestEntity);
         return result;
     }
 }

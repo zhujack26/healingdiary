@@ -7,6 +7,7 @@ import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.service.DiaryService;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -61,7 +62,7 @@ public class DiaryController {
     public String analyzeDiary(
 //        Authentication authentication,
         @RequestPart MultipartFile record
-    ){
+    ) throws IOException {
         return diaryService.analyzeDiary(record);
     }
 
@@ -96,8 +97,8 @@ public class DiaryController {
     public List<EmotionStatisticResponse> getEmotionStatistics(
 //        Authentication authentication,
         @RequestParam Long memberId,
-        @RequestParam int year,
-        @RequestParam int month){
+        @RequestParam(required = false) Integer year,
+        @RequestParam(required = false) Integer month){
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
         return diaryService.getEmotionStatistics(memberId, year, month);
     }

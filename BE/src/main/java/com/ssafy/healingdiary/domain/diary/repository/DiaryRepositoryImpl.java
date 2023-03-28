@@ -99,7 +99,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
     }
 
     @Override
-    public List<EmotionStatisticResponse> countEmotion(Long memberId, int year, int month) {
+    public List<EmotionStatisticResponse> countEmotion(Long memberId, Integer year, Integer month) {
         List<EmotionStatisticResponse> result = queryFactory
             .select(
                 new QEmotionStatisticResponse(
