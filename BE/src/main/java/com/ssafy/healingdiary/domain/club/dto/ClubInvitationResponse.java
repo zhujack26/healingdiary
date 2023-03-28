@@ -10,12 +10,12 @@ import lombok.Getter;
 @Builder
 public class ClubInvitationResponse {
     private String nickname;
-    private String imageUrl;
+    private String memberImageUrl;
 
     @QueryProjection
-    public ClubInvitationResponse(String nickname, String imageUrl) {
+    public ClubInvitationResponse(String nickname, String memberImageUrl) {
         this.nickname = nickname;
-        this.imageUrl = imageUrl;
+        this.memberImageUrl = memberImageUrl;
     }
 
 //    public static ClubInvitationResponse of(Member member) {

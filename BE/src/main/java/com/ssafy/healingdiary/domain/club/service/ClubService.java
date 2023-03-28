@@ -35,16 +35,13 @@ public class ClubService {
         Long id = null;
         if(!all) {
             id = 1L;
-
         }
         Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByIdAndTagId(id, tag, keyword, pageable);
-
         return clubSimpleResponseList;
     }
 
     public Slice<ClubInvitationResponse> getInvitationList(Long clubId, Pageable pageable) {
-        // 방장 ID
-        Long hostId = 1L;
+        Long hostId = 1L; // 방장 ID
         Slice<ClubInvitationResponse> clubInvitationResponseList = clubMemberRepository.findDistinctByClubIdNot(clubId, hostId, pageable);
         return clubInvitationResponseList;
     }
@@ -52,7 +49,8 @@ public class ClubService {
     public ClubRegisterResponse registClub(ClubRegisterRequest registerRequest, MultipartFile file) {
         Member member = memberRepository.findById(1L).get();
         // image 저장
-        clubRepository.save(ClubRegisterRequest.toEntity(registerRequest));
+        String imageUrl = "";
+        clubRepository.save(ClubRegisterRequest.toEntity(registerRequest, member, imageUrl));
         return ClubRegisterResponse.builder().build();
     }
 }
