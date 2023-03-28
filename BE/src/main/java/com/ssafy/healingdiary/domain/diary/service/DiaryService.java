@@ -1,24 +1,23 @@
 package com.ssafy.healingdiary.domain.diary.service;
 
-import com.ssafy.healingdiary.domain.diary.domain.Comment;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
-import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -28,7 +27,7 @@ public class DiaryService {
 
 
     public Slice<DiarySimpleResponse> getDiaryList(
-//        UserDetails principal,
+        UserDetails principal,
         Long clubId,
         String keyword,
         String tag,
@@ -37,7 +36,9 @@ public class DiaryService {
         Integer day,
         Pageable pageable) {
 
-        Slice<DiarySimpleResponse> slice = diaryRepository.findByOption(clubId,keyword,tag,year,month,day,pageable);
+        Long memberId = null;
+        if(principal != null) memberId = Long.valueOf(principal.getUsername());
+        Slice<DiarySimpleResponse> slice = diaryRepository.findByOption(memberId, clubId,keyword,tag,year,month,day,pageable);
         return slice;
     }
 
@@ -78,4 +79,7 @@ public class DiaryService {
         return emotionList;
     }
 
+    public Map<String, Object> analyzeDiary(MultipartFile record) {
+        return null;
+    }
 }
