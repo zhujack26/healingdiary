@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.dto.MemberInfo;
 import com.ssafy.healingdiary.domain.member.dto.MemberUpdate;
+import com.ssafy.healingdiary.domain.member.dto.NicknameCheck;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
@@ -13,8 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.Map;
 import java.util.Optional;
 
+import static com.ssafy.healingdiary.global.error.ErrorCode.NOT_FOUND_DATA;
 import static com.ssafy.healingdiary.global.error.ErrorCode.NOT_FOUND_USER;
 
 @Service
@@ -30,7 +33,7 @@ public class MemberService {
     public MemberInfo memberInfoFind(String accessToken) {
 //        PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
 //        Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
-        Member member = memberRepository.findMemberByProviderEmail("asdfasdfasdf");
+        Member member = memberRepository.findMemberByProviderEmail("asdfaasdf");
         if(member == null){
             throw new CustomException(NOT_FOUND_USER);
         }
@@ -56,6 +59,21 @@ public class MemberService {
         MemberUpdate foundMember =  MemberUpdate.of(member);
 
         return foundMember;
+    }
+
+    public NicknameCheck nicknameCheck(Map <String,String>nicknameMap) {
+        String nickname = nicknameMap.get("nickname");
+        Member member = memberRepository.findMemberByNickname(nickname);
+        if(member == null){
+            NicknameCheck foundMember =  NicknameCheck.of(false);
+            return foundMember;
+        }
+        else{
+            NicknameCheck foundMember =  NicknameCheck.of(true);
+            System.out.println(foundMember);
+            return foundMember;
+        }
+
     }
 
 }

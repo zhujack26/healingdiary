@@ -4,6 +4,7 @@ package com.ssafy.healingdiary.domain.member.controller;
 import com.amazonaws.Response;
 import com.ssafy.healingdiary.domain.member.dto.MemberInfo;
 import com.ssafy.healingdiary.domain.member.dto.MemberUpdate;
+import com.ssafy.healingdiary.domain.member.dto.NicknameCheck;
 import com.ssafy.healingdiary.domain.member.service.MemberService;
 import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,6 +42,13 @@ public class MemberController {
         return memberService.memberUpdate(accessToken,memberUpdate);
 
 
+    }
+
+    @PostMapping("/nickname")
+    public NicknameCheck result (@RequestBody Map<String, String> nicknameMap){
+        // 닉네임 조회
+
+        return memberService.nicknameCheck(nicknameMap);
     }
 
 
