@@ -1,6 +1,5 @@
 package com.ssafy.healingdiary.domain.club.repository;
 
-import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
