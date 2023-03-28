@@ -4,22 +4,28 @@ import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.BatchSize;
 
 @Entity
 @Getter
 @Table(name="club")
+@SuperBuilder
 @AttributeOverride(name = "id", column = @Column(name = "club_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "club_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "club_updated_date"))
+@NoArgsConstructor
 public class Club extends BaseEntity {
 
-    @NotNull
-    private Long admin; //userId
+    @OneToOne(fetch = FetchType.LAZY)
+    private Member host;
 
     @NotNull
     private String name;

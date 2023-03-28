@@ -1,5 +1,6 @@
 package com.ssafy.healingdiary.global.jwt;
 
+import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -7,7 +8,11 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +26,7 @@ import java.util.Map;
 @Getter
 @Component
 @Service
+@RequiredArgsConstructor
 public class JwtTokenizer {
 
     @Value("${jwt.secret}")
@@ -75,6 +81,7 @@ public class JwtTokenizer {
                 .compact();
     }
 
+
     // 서명 검증
     public void verifySignature(String jws, // jws는 signature가 들어간 jwt라는 의미
                                 String encodedSecretKey) {
@@ -105,11 +112,16 @@ public class JwtTokenizer {
         return expirationTime;
     }
 
-
+    public String getEmail(String token) {
+        String email = Jwts.parserBuilder().setSigningKey(encodeBase64SecretKey(secretKey)).build().parseClaimsJws(token).getBody().getSubject();
+        System.out.println(email);
+        return email;
+    }
     public String getUsernameFromToken(String token) {
         Jws<Claims>  claims = getClaims(token);
         Claims claim = claims.getBody();
-        String providerEmail = claim.get("email", String.class);
+        String providerEmail = claim.get("sub", String.class);
+
         return providerEmail;
     }
 

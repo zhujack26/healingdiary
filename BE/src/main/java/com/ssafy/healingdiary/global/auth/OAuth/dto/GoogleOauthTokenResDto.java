@@ -12,7 +12,7 @@ public class GoogleOauthTokenResDto {
     public String email;
 
     public String name;
-    @JsonProperty(namespace = "member_image_url")
-    public String memberImageUrl;
+
+    public String picture;
 
 }
