@@ -6,6 +6,7 @@ import { useState } from "react";
 import Button from "../ui/Button";
 import PlusButton from "../ui/PlusButton";
 import { GlobalColors } from "../constants/color";
+import BottomTabContainer from "../components/BottomTabContainer/BottomTabContainer";
 
 const deviceHeight = Dimensions.get("window").height - 130;
 const GroupScreen = ({ navigation }) => {
@@ -52,14 +53,16 @@ const GroupScreen = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Buttons
-        activeIndex={activeIndex}
-        handleActiveIndex={handleActiveIndex}
-      />
-      {renderItem()}
-      <PlusButton navigation={navigation} />
-    </View>
+    <BottomTabContainer>
+      <View style={styles.container}>
+        <Buttons
+          activeIndex={activeIndex}
+          handleActiveIndex={handleActiveIndex}
+        />
+        {renderItem()}
+        <PlusButton navigation={navigation} />
+      </View>
+    </BottomTabContainer>
   );
 };
 

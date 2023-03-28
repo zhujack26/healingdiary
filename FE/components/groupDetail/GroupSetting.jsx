@@ -1,20 +1,13 @@
 import { View, Text, StyleSheet, Dimensions, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
-import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 const GroupSetting = ({
   handleCloseModalPress,
   openExitModalAndCloseModal,
+  navigateAndCloseModal,
 }) => {
-  const navigation = useNavigation();
-
-  const navigateAndCloseModal = (name) => {
-    navigation.navigate(name);
-    handleCloseModalPress();
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.settingTitle}>설정</Text>
@@ -27,7 +20,7 @@ const GroupSetting = ({
       />
       <Pressable
         style={[styles.settingList, styles.settingListFirst]}
-        onPress={() => navigateAndCloseModal("groupInfoUpdate")}
+        onPress={() => navigateAndCloseModal("groupInfoUpdate", true)}
       >
         <Text style={styles.settingListText}>소모임 정보수정</Text>
         <Ionicons

@@ -1,7 +1,8 @@
 import GroupInfoUpdate from "../components/groupInfoUpdate/GroupInfoUpdate";
 
-const GroupInfoUpdateScreen = () => {
-  return <GroupInfoUpdate />;
+const GroupInfoUpdateScreen = ({ route }) => {
+  const isEdit = route.params?.isEdit ?? false;
+  return <GroupInfoUpdate isEdit={isEdit} />;
 };
 
 export default GroupInfoUpdateScreen;

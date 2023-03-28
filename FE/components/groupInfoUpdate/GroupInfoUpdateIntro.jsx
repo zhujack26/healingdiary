@@ -13,7 +13,7 @@ import { GlobalColors } from "./../../constants/color";
 
 const { width } = Dimensions.get("window");
 
-const GroupInfoUpdateIntro = () => {
+const GroupInfoUpdateIntro = ({ isEdit }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : null}
@@ -25,7 +25,7 @@ const GroupInfoUpdateIntro = () => {
           <Text style={styles.label}>소모임 이름</Text>
           <TextInput
             style={styles.input}
-            defaultValue="소모임이름"
+            defaultValue={isEdit ? "소모임이름" : ""}
             returnKeyType="done"
           />
         </View>
@@ -34,7 +34,7 @@ const GroupInfoUpdateIntro = () => {
           <Text style={styles.label}>소모임 소개</Text>
           <TextInput
             style={styles.input}
-            defaultValue="소모임소개 글"
+            defaultValue={isEdit ? "소모임소개 글" : ""}
             returnKeyType="done"
             multiline={true}
             blurOnSubmit={true}
@@ -47,7 +47,7 @@ const GroupInfoUpdateIntro = () => {
           <Text style={styles.label}>해시태그</Text>
           <TextInput
             style={styles.input}
-            defaultValue="#해시태그 #해시태그"
+            defaultValue={isEdit ? "#해시태그 #해시태그" : ""}
             returnKeyType="done"
             blurOnSubmit={true}
             onSubmitEditing={() => {

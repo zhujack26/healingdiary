@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import RecommendDiary from "./RecommendDiary";
 import RecommendGroup from "./RecommendGroup";
 import RecentDiary from "./RecentDiary";
+import BottomTabContainer from "../BottomTabContainer/BottomTabContainer";
 
 const { width, height } = Dimensions.get("window");
 
@@ -65,11 +66,16 @@ const Home = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <RecommendGroup groups={GROUP} navigateToScreen={navigateToScreen} />
-      <RecommendDiary diaries={DIARYIES} navigateToScreen={navigateToScreen} />
-      <RecentDiary diaries={DIARYIES} navigateToScreen={navigateToScreen} />
-    </ScrollView>
+    <BottomTabContainer>
+      <ScrollView style={styles.container}>
+        <RecommendGroup groups={GROUP} navigateToScreen={navigateToScreen} />
+        <RecommendDiary
+          diaries={DIARYIES}
+          navigateToScreen={navigateToScreen}
+        />
+        <RecentDiary diaries={DIARYIES} navigateToScreen={navigateToScreen} />
+      </ScrollView>
+    </BottomTabContainer>
   );
 };
 
@@ -81,5 +87,6 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
     paddingHorizontal: 16,
+    margintTop: 8,
   },
 });
