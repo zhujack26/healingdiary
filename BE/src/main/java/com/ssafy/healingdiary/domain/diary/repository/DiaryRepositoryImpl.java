@@ -10,8 +10,10 @@ import static org.springframework.util.StringUtils.hasText;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
+import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.dto.QCalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.QDiarySimpleResponse;
@@ -19,9 +21,12 @@ import com.ssafy.healingdiary.domain.diary.dto.QEmotionResponse;
 import com.ssafy.healingdiary.domain.diary.dto.QEmotionStatisticResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -35,8 +40,9 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
 
     @Override
     public Slice<DiarySimpleResponse> findByOption(Long memberId, Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable) {
-        List<DiarySimpleResponse> result = queryFactory
-            .selectFrom(diary)
+        Set<Long> idSet = queryFactory
+            .select(diary.id)
+            .from(diary)
             .innerJoin(diary.emotion, emotion)
             .leftJoin(diary.diaryTag, diaryTag)
             .leftJoin(diaryTag.tag, tag)
@@ -47,16 +53,38 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
                 tagEq(tagContent),
                 dateEq(year, month, day)
             )
+            .groupBy(diary.id)
             .orderBy(diary.createdDate.desc())
             .offset(pageable.getOffset())
             .limit(pageable.getPageSize()+1)
+            .fetch()
+            .stream()
+            .collect(Collectors.toUnmodifiableSet());
+
+        if (idSet.isEmpty()) {
+            return new SliceImpl<>(Collections.emptyList(), pageable, false);
+        }
+
+        List<DiarySimpleResponse> result = queryFactory
+            .select(diary)
+            .from(diary)
+            .innerJoin(diary.emotion, emotion)
+            .leftJoin(diary.diaryTag, diaryTag)
+            .leftJoin(diaryTag.tag, tag)
+            .where(
+                diary.id.in(idSet)
+            )
+            .orderBy(diary.createdDate.desc())
             .transform(
                 groupBy(diary.id).list(
                     new QDiarySimpleResponse(
                         diary.id,
                         diary.diaryImageUrl,
                         diary.createdDate,
-                        new QEmotionResponse(emotion.emotionCode, emotion.value),
+                        new QEmotionResponse(
+                            diary.emotion.emotionCode,
+                            diary.emotion.value
+                        ),
                         list(tag.content)
                     )
                 )
@@ -71,7 +99,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
     }
 
     @Override
-    public List<EmotionStatisticResponse> countEmotion(Long memberId, int year, int month) {
+    public List<EmotionStatisticResponse> countEmotion(Long memberId, Integer year, Integer month) {
         List<EmotionStatisticResponse> result = queryFactory
             .select(
                 new QEmotionStatisticResponse(
