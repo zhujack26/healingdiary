@@ -9,6 +9,7 @@ import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
+import com.ssafy.healingdiary.infra.speech.ClovaSentimentClient;
 import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient;
 import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient.NestRequestEntity;
 import java.awt.Desktop;
@@ -31,6 +32,7 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final ClovaSpeechClient clovaSpeechClient;
+    private final ClovaSentimentClient clovaSentimentClient;
 
     public Slice<DiarySimpleResponse> getDiaryList(
         UserDetails principal,
@@ -101,7 +103,8 @@ public class DiaryService {
         rec.transferTo(file);
 
         NestRequestEntity requestEntity = new NestRequestEntity();
-        final String result = clovaSpeechClient.upload(file, requestEntity);
+        String result = clovaSpeechClient.upload(file, requestEntity);
+
         return result;
     }
 }
