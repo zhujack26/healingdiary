@@ -43,7 +43,7 @@ public class ClubService {
     }
 
     public Slice<ClubInvitationResponse> getInvitationList(Long clubId, Pageable pageable) {
-        Slice<ClubMember> list = clubMemberRepository.findAllByClubIdNot(clubId, pageable);
+        Slice<ClubMember> list = clubMemberRepository.findDistinctByClubIdNot(clubId, pageable);
         List<ClubInvitationResponse> clubInvitationResponseList = list.stream()
             .map((clubMember) -> ClubInvitationResponse.of(clubMember.getMember()))
             .collect(Collectors.toList());

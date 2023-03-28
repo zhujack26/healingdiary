@@ -6,6 +6,5 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
-    Slice<ClubMember> findAllByClubIdNot(Long clubId, Pageable pageable);
-
+    Slice<ClubMember> findDistinctByClubIdNot(Long clubId, Pageable pageable);
 }
