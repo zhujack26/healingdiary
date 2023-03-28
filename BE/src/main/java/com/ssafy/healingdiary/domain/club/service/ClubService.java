@@ -43,11 +43,10 @@ public class ClubService {
     }
 
     public Slice<ClubInvitationResponse> getInvitationList(Long clubId, Pageable pageable) {
-        Slice<ClubMember> list = clubMemberRepository.findDistinctByClubIdNot(clubId, pageable);
-        List<ClubInvitationResponse> clubInvitationResponseList = list.stream()
-            .map((clubMember) -> ClubInvitationResponse.of(clubMember.getMember()))
-            .collect(Collectors.toList());
-        return new SliceImpl<ClubInvitationResponse>(clubInvitationResponseList, pageable, list.hasNext());
+        // 방장 ID
+        Long hostId = 1L;
+        Slice<ClubInvitationResponse> clubInvitationResponseList = clubMemberRepository.findDistinctByClubIdNot(clubId, hostId, pageable);
+        return clubInvitationResponseList;
     }
 
     public ClubRegisterResponse registClub(ClubRegisterRequest registerRequest, MultipartFile file) {
