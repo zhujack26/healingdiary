@@ -1,5 +1,6 @@
 package com.ssafy.healingdiary.domain.diary.service;
 
+import com.google.gson.Gson;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
@@ -9,10 +10,9 @@ import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
-import com.ssafy.healingdiary.infra.speech.ClovaSentimentClient;
+import com.ssafy.healingdiary.infra.speech.ClovaClient;
 import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient;
 import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient.NestRequestEntity;
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -32,7 +32,8 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final ClovaSpeechClient clovaSpeechClient;
-    private final ClovaSentimentClient clovaSentimentClient;
+    private final ClovaClient clovaClient;
+    private final Gson gson;
 
     public Slice<DiarySimpleResponse> getDiaryList(
         UserDetails principal,
@@ -87,7 +88,7 @@ public class DiaryService {
         return emotionList;
     }
 
-    public String analyzeDiary(MultipartFile rec) throws IOException {
+    public Map<String, Object> analyzeDiary(MultipartFile rec) throws IOException{
 
         String originalFile = rec.getOriginalFilename();
 
@@ -104,7 +105,17 @@ public class DiaryService {
 
         NestRequestEntity requestEntity = new NestRequestEntity();
         String result = clovaSpeechClient.upload(file, requestEntity);
+        Map<String, Object> sttMap = gson.fromJson(result, Map.class);
 
-        return result;
+//        String summary = clovaClient.summerize(sttMap.get("text").toString());
+//        Map<String, Object> summaryMap = gson.fromJson(summary, Map.class);
+//
+//        String analysis = clovaClient.analyze(summaryMap.get("summary").toString());
+
+        String analysis = clovaClient.analyze(sttMap.get("text").toString());
+        Map<String, Object> analysisMap = gson.fromJson(analysis, Map.class);
+        analysisMap.put("content", sttMap.get("text").toString());
+
+        return analysisMap;
     }
 }

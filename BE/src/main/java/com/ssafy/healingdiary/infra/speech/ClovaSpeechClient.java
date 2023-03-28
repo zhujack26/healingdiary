@@ -1,11 +1,12 @@
 package com.ssafy.healingdiary.infra.speech;
 
+import com.google.gson.Gson;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import lombok.RequiredArgsConstructor;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -14,15 +15,13 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
-
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ClovaSpeechClient {
 
     // Clova Speech secret key
@@ -33,6 +32,10 @@ public class ClovaSpeechClient {
     @Value("${clova.speech.secret-key}")
     private void setSECRET(String secret){
         SECRET = secret;
+        HEADERS = new Header[] {
+            new BasicHeader("Accept", "application/json"),
+            new BasicHeader("X-CLOVASPEECH-API-KEY", SECRET),
+        };
     }
 
     @Value("${clova.speech.invoke-url}")
@@ -41,13 +44,10 @@ public class ClovaSpeechClient {
     }
 
 
-    private CloseableHttpClient httpClient = HttpClients.createDefault();
-    private Gson gson = new Gson();
+    private final CloseableHttpClient httpClient;
+    private final Gson gson;
 
-    private static final Header[] HEADERS = new Header[] {
-        new BasicHeader("Accept", "application/json"),
-        new BasicHeader("X-CLOVASPEECH-API-KEY", SECRET),
-    };
+    private static Header[] HEADERS;
 
     public static class Boosting {
         private String words;
@@ -180,12 +180,6 @@ public class ClovaSpeechClient {
         }
     }
 
-    /**
-     * recognize media using URL
-     * @param url required, the media URL
-     * @param nestRequestEntity optional
-     * @return string
-     */
     public String url(String url, NestRequestEntity nestRequestEntity) {
         HttpPost httpPost = new HttpPost(INVOKE_URL + "/recognizer/url");
         httpPost.setHeaders(HEADERS);
@@ -205,12 +199,6 @@ public class ClovaSpeechClient {
         return execute(httpPost);
     }
 
-    /**
-     * recognize media using Object Storage
-     * @param dataKey required, the Object Storage key
-     * @param nestRequestEntity optional
-     * @return string
-     */
     public String objectStorage(String dataKey, NestRequestEntity nestRequestEntity) {
         HttpPost httpPost = new HttpPost(INVOKE_URL + "/recognizer/object-storage");
         httpPost.setHeaders(HEADERS);
@@ -230,13 +218,6 @@ public class ClovaSpeechClient {
         return execute(httpPost);
     }
 
-    /**
-     *
-     * recognize media using a file
-     * @param file required, the media file
-     * @param nestRequestEntity optional
-     * @return string
-     */
     public String upload(File file, NestRequestEntity nestRequestEntity) {
         HttpPost httpPost = new HttpPost(INVOKE_URL + "/recognizer/upload");
         httpPost.setHeaders(HEADERS);
@@ -249,7 +230,6 @@ public class ClovaSpeechClient {
     }
 
     private String execute(HttpPost httpPost) {
-        System.out.println(httpPost);
         try (final CloseableHttpResponse httpResponse = httpClient.execute(httpPost)) {
             final HttpEntity entity = httpResponse.getEntity();
             return EntityUtils.toString(entity, StandardCharsets.UTF_8);

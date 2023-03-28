@@ -59,10 +59,10 @@ public class DiaryController {
     }
 
     @PostMapping("/analyze")
-    public String analyzeDiary(
+    public Map<String, Object> analyzeDiary(
 //        Authentication authentication,
         @RequestPart MultipartFile record
-    ) throws IOException {
+    ) throws IOException{
         return diaryService.analyzeDiary(record);
     }
 
