@@ -24,7 +24,7 @@ public class ClubMemberRepositoryImpl implements ClubMemberRepositoryCustom {
     @Override
     public Slice<ClubInvitationResponse> findDistinctByClubIdNot(Long clubId, Long hostId,Pageable pageable) {
         JPAQuery<ClubInvitationResponse> query = queryFactory
-            .select(new QClubInvitationResponse(member.nickname, member.memberImageUrl))
+            .select(new QClubInvitationResponse(member.id, member.nickname, member.memberImageUrl))
             .from(member)
             .where(
                 member.id.in(
