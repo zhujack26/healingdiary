@@ -96,15 +96,11 @@ public class JwtTokenizer {
     // jws안에 있는 Claims얻는 메서드
     public Jws<Claims> getClaims(String jws) {
         Key key = getKeyFromEncodedKey(encodeBase64SecretKey(secretKey));
-        System.out.println(jws);
 
         Jws<Claims> claims = Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(jws);
-        System.out.println("claims:" + claims);
-        System.out.println("jws:" + jws);
-        System.out.println("Jwts.parserBuilder():" + claims);
         return claims;
     }
 

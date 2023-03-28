@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.*;
 import com.ssafy.healingdiary.global.auth.OAuth.service.OauthService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -45,6 +46,7 @@ public class OAuthController {
         return null;
 
     }
+    @ApiOperation(value = "회원가입", notes = "회원가입, 어떤 소셜 회원가입인지 넣어주는 것이 중요함")
     @PostMapping("/signup")
     public ResponseEntity<LoginResDto> googleSignUp(@RequestHeader("Authorization") String accessToken,
                                                     @RequestBody SignupReqDto signupReqDto) {

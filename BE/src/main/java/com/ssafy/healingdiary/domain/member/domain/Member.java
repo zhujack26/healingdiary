@@ -2,6 +2,7 @@ package com.ssafy.healingdiary.domain.member.domain;
 
 import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
+import com.ssafy.healingdiary.domain.member.dto.MemberUpdate;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
@@ -17,12 +18,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
 @Table(name="member")
 @AttributeOverride(name = "id", column = @Column(name = "member_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "member_created_date"))
@@ -58,6 +61,28 @@ public class Member extends BaseEntity {
             return Arrays.asList(this.roles.split(","));
         }
         return new ArrayList<>();
+    }
+    public void updateMember(MemberUpdate memberInfo){
+        if(memberInfo.getNickname() != null){
+            this.nickname = memberInfo.getNickname();
+        }
+        else{
+            this.nickname = this.getNickname();
+        }
+        if(memberInfo.getRegion() != null){
+            this.region = memberInfo.getRegion();
+        }
+        else{
+            this.region = this.getRegion();
+            System.out.println("region : null");
+        }
+        if(memberInfo.getDisease() != null){
+            this.disease = memberInfo.getDisease();
+        }else{
+            this.disease = this.getDisease();
+
+        }
+
     }
 
 
