@@ -17,6 +17,12 @@ public class EmotionResponse {
         this.value = value;
     }
 
+    @QueryProjection
+    public EmotionResponse(Emotion emotion) {
+        this.emotionCode = emotion.getEmotionCode();
+        this.value = emotion.getValue();
+    }
+
     public static EmotionResponse of(Emotion emotion){
         return EmotionResponse.builder()
             .emotionCode(emotion.getEmotionCode())

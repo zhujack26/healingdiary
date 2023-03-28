@@ -9,6 +9,9 @@ import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
+import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient;
+import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient.NestRequestEntity;
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
-
+    private final ClovaSpeechClient clovaSpeechClient;
 
     public Slice<DiarySimpleResponse> getDiaryList(
         UserDetails principal,
@@ -79,7 +82,10 @@ public class DiaryService {
         return emotionList;
     }
 
-    public Map<String, Object> analyzeDiary(MultipartFile record) {
-        return null;
+    public String analyzeDiary(MultipartFile record) {
+        File convRecord = new File(record.getOriginalFilename());
+        NestRequestEntity requestEntity = new NestRequestEntity();
+        final String result = clovaSpeechClient.upload(convRecord, requestEntity);
+        return result;
     }
 }

@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RequiredArgsConstructor
@@ -55,13 +57,13 @@ public class DiaryController {
         return diaryService.getDiaryDetail(diaryId);
     }
 
-//    @PostMapping
-//    public Map<String, Object> analyzeDiary(
-////        Authentication authentication,
-//        @RequestPart MultipartFile record
-//    ){
-//        return diaryService.analyzeDiary(record);
-//    }
+    @PostMapping("/analyze")
+    public String analyzeDiary(
+//        Authentication authentication,
+        @RequestPart MultipartFile record
+    ){
+        return diaryService.analyzeDiary(record);
+    }
 
     @PostMapping
     public Map<String, Object> createDiary(
@@ -99,4 +101,5 @@ public class DiaryController {
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
         return diaryService.getEmotionStatistics(memberId, year, month);
     }
+
 }

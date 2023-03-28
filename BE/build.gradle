@@ -53,6 +53,11 @@ dependencies {
 	testImplementation("org.junit.vintage:junit-vintage-engine") {
 		exclude group: "org.hamcrest", module: "hamcrest-core"
 	}
+
+	//clova speech
+	implementation 'org.apache.httpcomponents:httpclient:4.5'
+	implementation 'org.apache.httpcomponents:httpmime:4.5.14'
+	implementation 'com.google.code.gson:gson:2.7'
 }
 
 tasks.named('test') {
