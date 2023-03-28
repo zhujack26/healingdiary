@@ -17,17 +17,18 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name = "notice")
 @Getter
+@SuperBuilder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "notice_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "notice_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "notice_updated_date"))
 public class Notice extends BaseEntity {
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -45,5 +46,14 @@ public class Notice extends BaseEntity {
 
     public void changeCheckStatus(CheckStatus checkStatus) {
         this.checkStatus = checkStatus;
+    }
+
+    public static Notice toEntity(Member member, String content, String link) {
+        return Notice.builder()
+            .member(member)
+            .content(content)
+            .link(link)
+            .checkStatus(CheckStatus.UNCHECKED)
+            .build();
     }
 }
