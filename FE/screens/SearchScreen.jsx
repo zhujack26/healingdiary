@@ -25,36 +25,28 @@ const SearchScreen = () => {
           style={[styles.innerContainer, getTextStyle(0)]}
           onPress={() => handleActiveIndex(0)}
         >
-          <Text style={[styles.text, styles.leftText, , getTextStyle(0)]}>
-            일기
-          </Text>
+          <Text style={[styles.text, getTextStyle(0)]}>일기</Text>
         </Pressable>
         <Pressable
           style={[styles.innerContainer, getTextStyle(1)]}
           onPress={() => handleActiveIndex(1)}
         >
-          <Text style={[styles.text, styles.centerText, getTextStyle(1)]}>
-            소모임
-          </Text>
+          <Text style={[styles.text, getTextStyle(1)]}>소모임</Text>
         </Pressable>
         <Pressable
           style={[styles.innerContainer, getTextStyle(2)]}
           onPress={() => handleActiveIndex(2)}
         >
-          <Text style={[styles.text, styles.RightText, getTextStyle(2)]}>
-            해시태그
-          </Text>
+          <Text style={[styles.text, getTextStyle(2)]}>해시태그</Text>
         </Pressable>
       </View>
     );
   };
 
   const renderItem = () => {
-    if (activeIndex === 0) return <SearchDiary />;
-    if (activeIndex === 1) return <SearchGroup />;
-    if (activeIndex === 2) return <SearchTag />;
+    const searchComponent = [<SearchDiary />, <SearchGroup />, <SearchTag />];
+    return searchComponent[activeIndex];
   };
-
   return (
     <BottomTabContainer>
       <View style={styles.container}>
