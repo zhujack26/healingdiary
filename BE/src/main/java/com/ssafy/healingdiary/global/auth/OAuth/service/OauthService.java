@@ -16,9 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Map;
-
-import static com.ssafy.healingdiary.global.error.ErrorCode.NOT_VALID_TOKEN;
 
 
 @Service
@@ -72,6 +69,16 @@ public class OauthService {
                 .build();
 
     }
+    public LoginResDto signUp(String accesstoken, SignupReqDto signupReqDto) throws JsonProcessingException {
+        if (signupReqDto.getProvider().equals("GOOGLE")) {
+            return this.googleSignUp(accesstoken, signupReqDto);
+        } else if (signupReqDto.getProvider().equals("KAKAO")) {
+            return this.kakaoSignup(accesstoken, signupReqDto);
+        } else {
+            throw new CustomException(ErrorCode.BAD_REQUEST);
+        }
+    }
+
     public LoginResDto googleSignUp(String accesstoken, SignupReqDto signupReqDto)
             throws JsonProcessingException {
         GoogleOauthTokenResDto googleOauthTokenResDto = this.googleOauthCheckToken(accesstoken);
@@ -162,6 +169,7 @@ public class OauthService {
                 request,
                 String.class
         );
+
         return objectMapper.readValue(response.getBody(), KakaoOauthTokenResDto.class);
     }
 

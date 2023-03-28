@@ -3,7 +3,6 @@ package com.ssafy.healingdiary.global.auth.OAuth.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.*;
 import com.ssafy.healingdiary.global.auth.OAuth.service.OauthService;
-import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,14 +45,11 @@ public class OAuthController {
         return null;
 
     }
-    @PostMapping("/google/signup")
+    @PostMapping("/signup")
     public ResponseEntity<LoginResDto> googleSignUp(@RequestHeader("Authorization") String accessToken,
                                                     @RequestBody SignupReqDto signupReqDto) {
-        System.out.println(signupReqDto);
-        System.out.println(accessToken);
         try {
-            //소셜로그인에 따라 회원가입을 하자
-            LoginResDto loginResDto = oauthService.googleSignUp(accessToken, signupReqDto);
+            LoginResDto loginResDto = oauthService.signUp(accessToken, signupReqDto);
             return new ResponseEntity<>(loginResDto, HttpStatus.OK);
         }catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -61,19 +57,19 @@ public class OAuthController {
         return null;
     }
 
-    @PostMapping("/kakao/signup")
-    public ResponseEntity<LoginResDto> kakaoSignUp(@RequestHeader("Authorization") String accessToken,
-                                                   @RequestBody SignupReqDto signupReqDto) {
-        try {
-            //소셜로그인에 따라 회원가입을 하자
-            LoginResDto loginResDto = oauthService.kakaoSignup(accessToken, signupReqDto);
-
-            return new ResponseEntity<>(loginResDto, HttpStatus.OK);
-        }catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    @PostMapping("/kakao/signup")
+//    public ResponseEntity<LoginResDto> kakaoSignUp(@RequestHeader("Authorization") String accessToken,
+//                                                   @RequestBody SignupReqDto signupReqDto) {
+//        try {
+//            //소셜로그인에 따라 회원가입을 하자
+//            LoginResDto loginResDto = oauthService.kakaoSignup(accessToken, signupReqDto);
+//
+//            return new ResponseEntity<>(loginResDto, HttpStatus.OK);
+//        }catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
 //    @ApiOperation(value = "appToken 갱신", notes = "appToken 갱신")
 //    @GetMapping("/refresh")

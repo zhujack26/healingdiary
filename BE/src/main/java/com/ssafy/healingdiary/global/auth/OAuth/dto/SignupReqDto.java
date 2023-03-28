@@ -1,6 +1,6 @@
 package com.ssafy.healingdiary.global.auth.OAuth.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,6 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class SignupReqDto {
 
+    private String provider;
     private String nickname;
     private String email;
     private String region;
