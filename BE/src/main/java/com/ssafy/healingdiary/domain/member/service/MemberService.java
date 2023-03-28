@@ -5,6 +5,7 @@ import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.dto.MemberInfo;
 import com.ssafy.healingdiary.domain.member.dto.MemberUpdate;
 import com.ssafy.healingdiary.domain.member.dto.NicknameCheck;
+import com.ssafy.healingdiary.domain.member.dto.NicknameCheckReqDto;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.beans.ConstructorProperties;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,9 +33,9 @@ public class MemberService {
 
 
     public MemberInfo memberInfoFind(String accessToken) {
-//        PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
-//        Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
-        Member member = memberRepository.findMemberByProviderEmail("asdfaasdf");
+        PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
+        Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
+//        Member member = memberRepository.findMemberByProviderEmail("asdfaasdf");
         if(member == null){
             throw new CustomException(NOT_FOUND_USER);
         }
@@ -44,26 +46,25 @@ public class MemberService {
     }
 
     public MemberUpdate memberUpdate(String accessToken, MemberUpdate memberUpdate) {
-//        PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
-//        Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
-        Member member = memberRepository.findById(1L)
-                .orElseThrow(() -> {
-                    throw new CustomException(NOT_FOUND_USER);
-                });
+        PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
+        Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
+//        Member member = memberRepository.findById(1L)
+//                .orElseThrow(() -> {
+//                    throw new CustomException(NOT_FOUND_USER);
+//                });
         System.out.println("컴온");
         System.out.println(member.getProviderEmail());
-//        if(member == null){
-//            throw new CustomException(NOT_FOUND_USER);
-//        }
+        if(member == null){
+            throw new CustomException(NOT_FOUND_USER);
+        }
         member.updateMember(memberUpdate);
         MemberUpdate foundMember =  MemberUpdate.of(member);
 
         return foundMember;
     }
 
-    public NicknameCheck nicknameCheck(Map <String,String>nicknameMap) {
-        String nickname = nicknameMap.get("nickname");
-        Member member = memberRepository.findMemberByNickname(nickname);
+    public NicknameCheck nicknameCheck(NicknameCheckReqDto nickname) {
+        Member member = memberRepository.findMemberByNickname(nickname.getNickname());
         if(member == null){
             NicknameCheck foundMember =  NicknameCheck.of(false);
             return foundMember;

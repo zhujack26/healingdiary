@@ -18,12 +18,10 @@ public enum ErrorCode {
     COMMENT_NOT_FOUND(HttpStatus.OK, -6,"댓글을 찾을 수 없습니다."),
     NOT_FOUND_USER(HttpStatus.OK, -7,"사용자를 찾을 수 없습니다."),
     NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, -8,"토큰이 유효하지 않습니다."),
-    NOT_FOUND_DATA(HttpStatus.OK, -9,"요청하신 데이터가 없습니다.")
+    NOT_FOUND_DATA(HttpStatus.OK, -9,"요청하신 데이터가 없습니다."),
 
 
     CONFLICT(HttpStatus.CONFLICT, -409, "이미 가입된 회원입니다.");
-
-            ;
 
     private final HttpStatus status;
     private final int code;

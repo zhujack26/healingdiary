@@ -5,6 +5,7 @@ import com.amazonaws.Response;
 import com.ssafy.healingdiary.domain.member.dto.MemberInfo;
 import com.ssafy.healingdiary.domain.member.dto.MemberUpdate;
 import com.ssafy.healingdiary.domain.member.dto.NicknameCheck;
+import com.ssafy.healingdiary.domain.member.dto.NicknameCheckReqDto;
 import com.ssafy.healingdiary.domain.member.service.MemberService;
 import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
@@ -45,10 +46,10 @@ public class MemberController {
     }
 
     @PostMapping("/nickname")
-    public NicknameCheck result (@RequestBody Map<String, String> nicknameMap){
+    public NicknameCheck result (@RequestBody NicknameCheckReqDto memberNickname){
         // 닉네임 조회
 
-        return memberService.nicknameCheck(nicknameMap);
+        return memberService.nicknameCheck(memberNickname);
     }
 
 
