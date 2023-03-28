@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.RestClientException;
 
 @RestControllerAdvice
 @Slf4j
@@ -37,7 +38,13 @@ public class GlobalExceptionHandler {
             .status(ErrorCode.METHOD_NOT_ALLOWED.getStatus().value())
             .body(new ErrorResponse(ErrorCode.METHOD_NOT_ALLOWED));
     }
-
+    @ExceptionHandler(RestClientException.class)
+    protected ResponseEntity<ErrorResponse> handleRestClientException(final Exception e) {
+        log.error("handleRestClientException: {}", e.getMessage());
+        return ResponseEntity
+                .status(ErrorCode.NOT_VALID_TOKEN.getStatus().value())
+                .body(new ErrorResponse(ErrorCode.NOT_VALID_TOKEN));
+    }
     //500 error
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleException(final Exception e) {
