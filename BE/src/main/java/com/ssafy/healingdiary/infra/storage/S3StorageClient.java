@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
-public class S3StorageClient implements storageClient{
+public class S3StorageClient implements StorageClient {
 
     private AmazonS3 s3Client;
 

@@ -76,24 +76,24 @@ public class ClubService {
         String imageUrl = s3Service.uploadFile(file);
         List<ClubTag> clubTags = new ArrayList<>();
         Club club = ClubRegisterRequest.toEntity(registerRequest, member, imageUrl);
-        registerRequest.getTags().stream()
-            .forEach((tagId) -> {
+        List<ClubTag> tags = registerRequest.getTags()
+            .stream()
+            .map((tagId) -> {
                 Tag tag = tagRepository.findById(tagId)
                     .orElseThrow(() -> new CustomException(ErrorCode.ENTITY_NOT_FOUND));
                 ClubTag clubTag = ClubRegisterRequest.toEntity(club, tag);
-                clubTags.add(clubTag);
-                clubTagRepository.save(clubTag);
-            });
-        club.addTags(clubTags);
-        clubRepository.save(club);
-        Long clubId = club.getId();
-        return ClubRegisterResponse.of(clubId);
+                return clubTag;
+            })
+            .collect(Collectors.toList());
+        club.setClubTag(tags);
+        Club savedClub = clubRepository.save(club);
+        return ClubRegisterResponse.of(savedClub.getId());
     }
 
     public InvitationRegisterResponse registInvitation(Long clubId,
         InvitationRegisterRequest request) {
         Member member = memberRepository.findById(request.getMemberId())
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Club club = clubRepository.findById(clubId).get();
 
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
@@ -109,9 +109,9 @@ public class ClubService {
 
     public void leaveClub(Long clubId, Long memberId) {
         Club club = clubRepository.findById(clubId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         clubMemberRepository.delete(clubMember);
     }
@@ -128,8 +128,10 @@ public class ClubService {
     }
 
     public ClubJoinResponse joinClub(Long clubId) {
-        Member member = memberRepository.findById(1L).get(); // 가입 신청한 사용자
-        Club club = clubRepository.findById(clubId).get();
+        Member member = memberRepository.findById(1L)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        Club club = clubRepository.findById(clubId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         if (clubMember == null) {
             clubMemberRepository.save(InvitationRegisterRequest.toEntity(club, member));
@@ -144,7 +146,7 @@ public class ClubService {
 
     public Slice<ClubMemberResponse> getClubMemberList(Long clubId, Pageable pageable) {
         Club club = clubRepository.findById(clubId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         Slice<ClubMember> list = clubMemberRepository.findByClubAndIsApproved(club, true, pageable);
         List<ClubMemberResponse> clubMemberResponses = list.stream()
             .map((clubMember ->
@@ -156,7 +158,7 @@ public class ClubService {
 
     public void deleteClub(Long clubId) {
         Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         club.getClubMember().stream().forEach((clubMember -> {
             clubMemberRepository.delete(clubMember);
         }));

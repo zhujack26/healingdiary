@@ -59,19 +59,22 @@ public class DiaryController {
     }
 
     @PostMapping("/analyze")
-    public String analyzeDiary(
+    public Map<String, Object> analyzeDiary(
 //        Authentication authentication,
         @RequestPart MultipartFile record
-    ) throws IOException {
+    ) throws IOException{
         return diaryService.analyzeDiary(record);
     }
 
     @PostMapping
     public Map<String, Object> createDiary(
 //        Authentication authentication,
-        @RequestBody DiaryCreateRequest diaryCreateRequest){
+        @RequestParam Long memberId,
+        @RequestPart DiaryCreateRequest diaryCreateRequest,
+        @RequestPart MultipartFile image
+    ) throws IOException {
 //        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return diaryService.createDiary(diaryCreateRequest);
+        return diaryService.createDiary(memberId, diaryCreateRequest, image);
     }
 
     @DeleteMapping("/{diaryId}")

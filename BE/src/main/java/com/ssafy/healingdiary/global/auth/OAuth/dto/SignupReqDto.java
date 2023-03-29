@@ -2,10 +2,12 @@ package com.ssafy.healingdiary.global.auth.OAuth.dto;
 
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Builder
 public class SignupReqDto {
 
     private String provider;
@@ -13,5 +15,7 @@ public class SignupReqDto {
     private String email;
     private String region;
     private String disease;
+
+
 
 }

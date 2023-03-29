@@ -6,13 +6,11 @@ import lombok.Data;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class GoogleOauthTokenResDto {
 
     public String email;
 
     public String name;
-
     public String picture;
 
 }
