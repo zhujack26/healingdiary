@@ -15,6 +15,7 @@ const KakaoWebView = () => {
       const response = await getToken(code);
       // access_token을 가지고 backend 서버에 유저 정보 요청하기
       const res = await kakaoLogin(response.access_token);
+      console.log(res);
       if (res.message === "사용자를 찾을 수 없습니다.") {
         navigation.navigate("userinform");
       } else {

@@ -10,9 +10,15 @@ const Location = ({ title }) => {
     { label: "서울", value: "1" },
     { label: "부산", value: "2" },
     { label: "대구", value: "3" },
-    { label: "인천", value: "4" },
-    { label: "경기도", value: "5" },
-    { label: "충북", value: "6" },
+    { label: "대전", value: "4" },
+    { label: "광주", value: "5" },
+    { label: "울산", value: "6" },
+    { label: "경기도", value: "7" },
+    { label: "강원도", value: "7" },
+    { label: "충청도", value: "8" },
+    { label: "전라도", value: "9" },
+    { label: "경상도", value: "10" },
+    { label: "제주도", value: "11" },
   ];
 
   return (
@@ -66,7 +72,7 @@ const pickerSelectStyles = StyleSheet.create({
   viewContainer: {
     borderBottomWidth: 1,
     borderBottomColor: GlobalColors.colors.white500,
-  }
+  },
 });
 
 export default Location;
