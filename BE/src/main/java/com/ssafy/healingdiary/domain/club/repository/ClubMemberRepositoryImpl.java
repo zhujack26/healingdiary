@@ -19,10 +19,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class ClubMemberRepositoryImpl implements ClubMemberRepositoryCustom {
+
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<ClubInvitationResponse> findDistinctByClubIdNot(Long clubId, Long hostId,Pageable pageable) {
+    public Slice<ClubInvitationResponse> findDistinctByClubIdNot(Long clubId, Long hostId,
+        Pageable pageable) {
         JPAQuery<ClubInvitationResponse> query = queryFactory
             .select(new QClubInvitationResponse(member.id, member.nickname, member.memberImageUrl))
             .from(member)

@@ -1,6 +1,6 @@
 package com.ssafy.healingdiary.domain.member.controller;
 
-import com.ssafy.healingdiary.domain.member.dto.DeleteNoticeId;
+import com.ssafy.healingdiary.domain.member.dto.DeleteNoticeRequest;
 import com.ssafy.healingdiary.domain.member.dto.NoticeListResponse;
 import com.ssafy.healingdiary.domain.member.service.NoticeService;
 import java.util.List;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class NoticeController {
     }
 
     @DeleteMapping("/{noticeId}")
-    public DeleteNoticeId deleteNotice(@PathVariable Long noticeId) {
+    public DeleteNoticeRequest deleteNotice(@PathVariable Long noticeId) {
         return noticeService.deleteNotice(noticeId);
     }
 }

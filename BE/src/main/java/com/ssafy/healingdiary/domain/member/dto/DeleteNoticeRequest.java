@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class DeleteNoticeId {
+public class DeleteNoticeRequest {
+
     Long noticeId;
 }

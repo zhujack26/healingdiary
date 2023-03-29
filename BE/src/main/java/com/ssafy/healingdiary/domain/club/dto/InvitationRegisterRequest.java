@@ -8,7 +8,8 @@ import lombok.Getter;
 
 @Getter
 public class InvitationRegisterRequest {
-    List<Long> list;
+
+    Long memberId;
 
     public static ClubMember toEntity(Club club, Member member) {
         return ClubMember.builder()
