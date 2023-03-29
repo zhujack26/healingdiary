@@ -1,9 +1,14 @@
-import { SafeAreaView, StyleSheet, FlatList } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Audio } from "expo-av";
-
 import Hashtag from "./Hashtag";
 import DiaryDetailThumbAndPlayer from "./DiaryDetailThumbAndPlayer";
-import CommnetListItem from "./CommentListItem";
+import CommentListItem from "./CommentListItem";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -34,7 +39,7 @@ const comments = [
       },
     ],
     commentId: "1",
-    content: "댓글이지",
+    content: "안녕하세요 ssafy 입니다. 잘부탁드립니다.",
     datetime: "2023-03-23T13:47:02.140Z",
     memberId: 0,
     memberImageUrl: "",
@@ -159,13 +164,20 @@ const DiaryDetail = ({ route }) => {
         }
       : undefined;
   }, [sound]);
-
+  const handleDeleteComment = (commentId) => {
+    console.log(`댓글 ID ${commentId}가 삭제되었습니다.`);
+  };
+  const navigateToMakingInput = () => {
+    navigation.navigate("MakingInput");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         style={styles.container}
         data={comments}
-        renderItem={({ item }) => <CommnetListItem comment={item} />}
+        renderItem={({ item }) => (
+          <CommentListItem comment={item} onDelete={handleDeleteComment} />
+        )}
         ListHeaderComponent={
           <>
             <DiaryDetailThumbAndPlayer
@@ -175,6 +187,9 @@ const DiaryDetail = ({ route }) => {
               isPlaying={isPlaying}
             />
             <Hashtag tags={DATA.tags} />
+            <TouchableOpacity onPress={navigateToMakingInput}>
+              <Text style={styles.reply}>댓글 달기</Text>
+            </TouchableOpacity>
           </>
         }
       />
@@ -187,5 +202,10 @@ export default DiaryDetail;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  reply: {
+    paddingLeft: 10,
+    paddingBottom: 10,
+    color: "gray",
   },
 });
