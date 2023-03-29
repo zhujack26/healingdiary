@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DiaryRepositoryCustom {
-    Slice<DiarySimpleResponse> findByOption(Long memberId, Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable);
+    Slice<DiarySimpleResponse> findByOption(Boolean all, Long memberId, Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable);
     List<EmotionStatisticResponse> countEmotion(Long memberId, Integer year, Integer month);
     List<CalendarResponse> getEmotionByMonthOfYear(Long memberId, int year, int month);
 }

@@ -63,7 +63,8 @@ public class DiaryService {
     private final StorageClient storageClient;
 
     public Slice<DiarySimpleResponse> getDiaryList(
-        UserDetails principal,
+        Boolean all,
+        Long memberId,
         Long clubId,
         String keyword,
         String tag,
@@ -72,9 +73,7 @@ public class DiaryService {
         Integer day,
         Pageable pageable) {
 
-        Long memberId = null;
-        if(principal != null) memberId = Long.valueOf(principal.getUsername());
-        Slice<DiarySimpleResponse> slice = diaryRepository.findByOption(memberId, clubId,keyword,tag,year,month,day,pageable);
+        Slice<DiarySimpleResponse> slice = diaryRepository.findByOption(all, memberId,clubId,keyword,tag,year,month,day,pageable);
         return slice;
     }
 
