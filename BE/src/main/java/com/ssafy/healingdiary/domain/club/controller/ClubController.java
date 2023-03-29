@@ -8,6 +8,8 @@ import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubUpdateRequest;
+import com.ssafy.healingdiary.domain.club.dto.ClubUpdateResponse;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterResponse;
 import com.ssafy.healingdiary.domain.club.service.ClubService;
@@ -73,6 +75,14 @@ public class ClubController {
         @RequestPart(value = "ClubRegister") ClubRegisterRequest request,
         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         return clubService.registClub(request, file);
+    }
+
+    @PostMapping("/{clubId}")
+    public ClubUpdateResponse updateClub(
+        @PathVariable Long clubId,
+        @RequestPart(value = "ClubRegister") ClubUpdateRequest request,
+        @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+        return clubService.updateClub(clubId, request, file);
     }
 
     @PostMapping("/{clubId}/join")
