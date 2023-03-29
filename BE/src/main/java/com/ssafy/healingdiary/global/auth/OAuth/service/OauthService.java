@@ -32,7 +32,7 @@ public class OauthService {
         String memberEmail = "GOOGLE_" + googleOAuthResponse.getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_USER);
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
         String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
@@ -53,7 +53,7 @@ public class OauthService {
         String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResAccount().getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_USER);
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
         String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());

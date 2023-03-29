@@ -14,7 +14,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@SuperBuilder
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)

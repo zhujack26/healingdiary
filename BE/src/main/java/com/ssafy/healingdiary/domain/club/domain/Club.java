@@ -6,6 +6,7 @@ import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ import org.hibernate.annotations.BatchSize;
 @Entity
 @Getter
 @Table(name="club")
-@SuperBuilder
+@Builder
 @AttributeOverride(name = "id", column = @Column(name = "club_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "club_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "club_updated_date"))

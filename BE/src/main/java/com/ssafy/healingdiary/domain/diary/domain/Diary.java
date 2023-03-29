@@ -1,6 +1,7 @@
 package com.ssafy.healingdiary.domain.diary.domain;
 
 import com.ssafy.healingdiary.domain.club.domain.Club;
+import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
@@ -17,12 +18,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name="diary")
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "diary_id"))
@@ -58,4 +62,7 @@ public class Diary extends BaseEntity {
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    public void setDiaryTag(List<DiaryTag> diaryTag) {
+        this.diaryTag = diaryTag;
+    }
 }

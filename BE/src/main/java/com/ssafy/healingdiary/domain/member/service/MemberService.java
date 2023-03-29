@@ -1,6 +1,5 @@
 package com.ssafy.healingdiary.domain.member.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.dto.MemberInfo;
 import com.ssafy.healingdiary.domain.member.dto.MemberUpdate;
@@ -15,12 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import java.beans.ConstructorProperties;
-import java.util.Map;
-import java.util.Optional;
-
-import static com.ssafy.healingdiary.global.error.ErrorCode.NOT_FOUND_DATA;
-import static com.ssafy.healingdiary.global.error.ErrorCode.NOT_FOUND_USER;
+import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
 @Transactional
@@ -37,7 +31,7 @@ public class MemberService {
         Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
 //        Member member = memberRepository.findMemberByProviderEmail("asdfaasdf");
         if(member == null){
-            throw new CustomException(NOT_FOUND_USER);
+            throw new CustomException(MEMBER_NOT_FOUND);
         }
 
         MemberInfo foundMember =  MemberInfo.of(member);
@@ -55,7 +49,7 @@ public class MemberService {
         System.out.println("컴온");
         System.out.println(member.getProviderEmail());
         if(member == null){
-            throw new CustomException(NOT_FOUND_USER);
+            throw new CustomException(MEMBER_NOT_FOUND);
         }
         member.updateMember(memberUpdate);
         MemberUpdate foundMember =  MemberUpdate.of(member);
