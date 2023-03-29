@@ -5,15 +5,12 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ClubApprovalRequest {
-
-    private Long clubMemberId;
+public class ClubApprovalResponse {
     private Long clubId;
     private Long memberId;
 
-    public static ClubApprovalRequest toEntity(Long clubMemberId, Long clubId, Long memberId) {
-        return ClubApprovalRequest.builder()
-            .clubMemberId(clubMemberId)
+    public static ClubApprovalResponse of(Long clubId, Long memberId) {
+        return ClubApprovalResponse.builder()
             .clubId(clubId)
             .memberId(memberId)
             .build();

@@ -12,14 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
-@Table(name="club_member")
-@SuperBuilder
+@Table(name = "club_member")
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "club_member_id"))
@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 public class ClubMember extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="club_id")
+    @JoinColumn(name = "club_id")
     private Club club;
 
     @ManyToOne(fetch = FetchType.LAZY)

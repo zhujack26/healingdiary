@@ -7,7 +7,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClubRepository extends JpaRepository<Club, Long>, ClubRepositoryCustom {
-    Slice<Club> findByDescriptionContains(String keyword, Pageable pageable);
 
     Slice<ClubSimpleResponse> findByIdAndTagId(Long id, Long tag, String keyword, Pageable pageable);
 }
