@@ -1,6 +1,5 @@
-import { SafeAreaView, StyleSheet, FlatList } from "react-native";
+import { SafeAreaView, StyleSheet, FlatList, Text, View } from "react-native";
 import { Audio } from "expo-av";
-
 import Hashtag from "./Hashtag";
 import DiaryDetailThumbAndPlayer from "./DiaryDetailThumbAndPlayer";
 import CommentListItem from "./CommentListItem";
@@ -149,13 +148,17 @@ const DiaryDetail = ({ route }) => {
         }
       : undefined;
   }, [sound]);
-
+  const handleDeleteComment = (commentId) => {
+    console.log(`댓글 ID ${commentId}가 삭제되었습니다.`);
+  };
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         style={styles.container}
         data={comments}
-        renderItem={({ item }) => <CommentListItem comment={item} />}
+        renderItem={({ item }) => (
+          <CommentListItem comment={item} onDelete={handleDeleteComment} />
+        )}
         ListHeaderComponent={
           <>
             <DiaryDetailThumbAndPlayer
@@ -165,6 +168,7 @@ const DiaryDetail = ({ route }) => {
               isPlaying={isPlaying}
             />
             <Hashtag tags={DATA.tags} />
+            <Text style={styles.reply}>댓글 달기</Text>
           </>
         }
       />
@@ -177,5 +181,10 @@ export default DiaryDetail;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  reply: {
+    paddingLeft: 10,
+    paddingBottom: 10,
+    color: "gray",
   },
 });

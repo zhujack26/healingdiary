@@ -1,7 +1,11 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { GlobalColors } from "../../constants/color";
+import { AntDesign } from "@expo/vector-icons";
 
-const ReplyListItem = ({ item }) => {
+const ReplyListItem = ({ item, onDelete }) => {
+  const handleDelete = () => {
+    onDelete && onDelete(item.commentId);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
@@ -19,6 +23,9 @@ const ReplyListItem = ({ item }) => {
       <View style={styles.etc}>
         <Text style={[styles.regular, styles.time]}>1일전</Text>
         <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
+        <Pressable style={styles.trash} onPress={handleDelete}>
+          <AntDesign name="delete" size={12} color="gray" />
+        </Pressable>
       </View>
     </View>
   );
@@ -27,34 +34,11 @@ const ReplyListItem = ({ item }) => {
 export default ReplyListItem;
 
 const styles = StyleSheet.create({
-  deleteButton: {
-    position: "absolute",
-    right: 0,
-    width: 70,
-    justifyContent: "center",
-    backgroundColor: "red",
-  },
-  deleteButtonText: {
-    color: "white",
-    fontWeight: "bold",
-  },
   regular: {
     fontFamily: "KoddiUDOnGothic-Regular",
   },
-
   bold: {
     fontFamily: "KoddiUDOnGothic-ExtraBold",
-  },
-  rowBack: {
-    backgroundColor: "red",
-    justifyContent: "flex-end",
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  deleteText: {
-    color: "#FFF",
-    fontSize: 16,
-    padding: 15,
   },
   container: {
     paddingTop: 10,
@@ -78,7 +62,6 @@ const styles = StyleSheet.create({
   },
 
   commentContainer: {
-    // width: "80%",
     paddingTop: 3,
     paddingBottom: 3,
     justifyContent: "space-around",
@@ -101,10 +84,13 @@ const styles = StyleSheet.create({
   time: {
     color: GlobalColors.colors.gray500,
     fontSize: 10,
-    paddingRight: 15,
   },
   reply: {
     color: GlobalColors.colors.gray500,
     fontSize: 10,
+    paddingLeft: 15,
+  },
+  trash: {
+    paddingLeft: 15,
   },
 });
