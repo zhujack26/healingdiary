@@ -4,16 +4,14 @@ package com.ssafy.healingdiary.domain.member.dto;
 import lombok.Builder;
 import lombok.Getter;
 
-import static io.swagger.models.properties.PropertyBuilder.build;
-
 @Getter
 @Builder
-public class NicknameCheck {
+public class NicknameCheckResponse {
 
     private Boolean result;
 
-    public static NicknameCheck of(Boolean result){
-        return NicknameCheck.builder()
+    public static NicknameCheckResponse of(Boolean result){
+        return NicknameCheckResponse.builder()
                 .result(result)
                 .build();
     }
