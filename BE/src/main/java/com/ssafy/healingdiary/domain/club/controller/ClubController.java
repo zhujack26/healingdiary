@@ -11,6 +11,7 @@ import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterResponse;
 import com.ssafy.healingdiary.domain.club.service.ClubService;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -70,7 +71,7 @@ public class ClubController {
     @PostMapping
     public ClubRegisterResponse registClub(
         @RequestPart(value = "ClubRegister") ClubRegisterRequest request,
-        @RequestPart(value = "file", required = false) MultipartFile file) {
+        @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         return clubService.registClub(request, file);
     }
 
