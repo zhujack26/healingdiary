@@ -1,14 +1,15 @@
-import { View, Dimensions, StyleSheet } from "react-native";
-import GroupList from "../components/group/GroupList";
-import GroupList2 from "../components/group/GroupList2";
-import GroupList3 from "../components/group/GroupList3";
 import { useState } from "react";
-import Button from "../ui/Button";
-import PlusButton from "../ui/PlusButton";
+import { View, Dimensions, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
+
+import GroupList from "../components/group/GroupList";
+import MyGroupList from "../components/group/MyGroupList";
+import RecommendGroup from "../components/group/RecommendGroup";
+import Button from "../ui/Button";
 import BottomTabContainer from "../components/BottomTabContainer/BottomTabContainer";
 
-const deviceHeight = Dimensions.get("window").height - 130;
+const { width, height } = Dimensions.get("window");
+
 const GroupScreen = ({ navigation }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const handleActiveIndex = (index) => {
@@ -43,13 +44,12 @@ const GroupScreen = ({ navigation }) => {
   };
 
   const renderItem = () => {
-    if (activeIndex === 0) {
-      return <GroupList />;
-    }
-    if (activeIndex === 1) {
-      return <GroupList2 />;
-    }
-    if (activeIndex === 2) return <GroupList3 />;
+    const searchComponent = [
+      <GroupList />,
+      <MyGroupList />,
+      <RecommendGroup />,
+    ];
+    return searchComponent[activeIndex];
   };
 
   return (
@@ -59,25 +59,27 @@ const GroupScreen = ({ navigation }) => {
           activeIndex={activeIndex}
           handleActiveIndex={handleActiveIndex}
         />
-        {renderItem()}
-        <PlusButton navigation={navigation} />
       </View>
+      {renderItem()}
     </BottomTabContainer>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    width: width,
+    height: height,
     flex: 1,
-    justifyContent: "center",
     padding: 24,
-    height: deviceHeight,
+    marginBottom: 16,
   },
+
   buttons: {
     flexDirection: "row",
     justifyContent: "flex-start",
     marginBottom: 34,
   },
+
   selected: {
     backgroundColor: GlobalColors.colors.primary500,
     color: GlobalColors.colors.white500,

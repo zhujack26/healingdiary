@@ -1,6 +1,5 @@
-import { FlatList, View, StyleSheet } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import GroupItem from "../group/GroupItem";
+import { FlatList } from "react-native";
+import GroupItem from "./GroupItem";
 
 const DATA = {
   content: [
@@ -25,26 +24,16 @@ const DATA = {
   ],
 };
 
-const SearchGroup = () => {
-  const navigation = useNavigation();
+const MyGroupList = () => {
   return (
-    <View style={styles.container}>
+    <>
       <FlatList
         data={DATA.content}
-        renderItem={({ item }) => (
-          <GroupItem content={item} navigation={navigation} />
-        )}
+        renderItem={({ item }) => <GroupItem content={item} />}
         keyExtractor={(item) => item.clubId}
       />
-    </View>
+    </>
   );
 };
 
-export default SearchGroup;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-  },
-});
+export default MyGroupList;
