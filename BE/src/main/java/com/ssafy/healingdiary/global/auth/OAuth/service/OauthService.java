@@ -96,11 +96,11 @@ public class OauthService {
         Member newMember = Member.kakaoSignupMember(providerEmail, signupReqDto, kakaoOauthTokenResDto, userRole);
         Member saveUser = memberRepository.save(newMember);
 
-        String accessToken = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
+        String jwtToken = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
 
         String refreshToken = jwtTokenizer.createRefreshToken(newMember.getProviderEmail(), newMember.getRoleList());
 
-        return LoginResDto.toEntity(saveUser, jwt);
+        return LoginResDto.toEntity(saveUser, jwtToken);
     }
 
     public GoogleOauthTokenResDto googleOauthCheckToken(String accesstoken)
