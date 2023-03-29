@@ -80,7 +80,7 @@ public class ClubController {
     @PostMapping("/{clubId}")
     public ClubUpdateResponse updateClub(
         @PathVariable Long clubId,
-        @RequestPart(value = "ClubRegister") ClubUpdateRequest request,
+        @RequestPart(value = "ClubUpdateRequest") ClubUpdateRequest request,
         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         return clubService.updateClub(clubId, request, file);
     }
