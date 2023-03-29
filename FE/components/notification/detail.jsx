@@ -1,89 +1,117 @@
-import { View, Text, Image, StyleSheet } from "react-native";
-import { GlobalColors } from "../../constants/color";
+import React from "react";
+import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import { SwipeListView } from "react-native-swipe-list-view";
+import { DATA } from "../../model/DataNotification";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const ReplyListItem = ({ item }) => {
+const formatTime = (minutes) => {
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  if (hours < 1) {
+    return `${minutes}분 전`;
+  } else if (hours >= 1 && hours < 24) {
+    return `${hours}시간 전`;
+  } else {
+    const days = Math.floor(hours / 24);
+    return `${days}일 전`;
+  }
+};
+
+const Item = ({ name, location, action, time }) => (
+  <View style={styles.item}>
+    <Image
+      style={styles.image}
+      source={require("../../assets/images/SAMPLE1.png")}
+    />
+    <View style={styles.textContainer}>
+      <Text style={styles.text}>
+        {name}님이 {location}에서 {action}
+      </Text>
+      <Text style={styles.time}>{formatTime(time)}</Text>
+    </View>
+  </View>
+);
+const Detail = () => {
+  const [data, setData] = React.useState(DATA);
+
+  const handleDelete = (id) => {
+    setData((prevData) => prevData.filter((item) => item.id !== id));
+  };
+
+  const renderItem = ({ item }) => (
+    <Item
+      name={item.name}
+      location={item.location}
+      action={item.action}
+      time={item.time}
+    />
+  );
+
+  const renderHiddenItem = (rowData, rowMap) => (
+    <TouchableOpacity
+      style={styles.deleteButton}
+      onPress={() => {
+        rowMap[rowData.item.id].closeRow();
+        handleDelete(rowData.item.id);
+      }}
+    >
+      <MaterialCommunityIcons name="trash-can" size={24} color="white" />
+    </TouchableOpacity>
+  );
   return (
     <View style={styles.container}>
-      <View style={styles.container2}>
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={require("../../assets/images/SAMPLE3.png")}
-          />
-        </View>
-        <View style={styles.commentContainer}>
-          <Text style={[styles.bold, styles.text]}>{item.nickname} </Text>
-          <Text style={[styles.regular, styles.text]}>{item.content}</Text>
-        </View>
-      </View>
-      <View style={styles.etc}>
-        <Text style={[styles.regular, styles.time]}>1일전</Text>
-        <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
-      </View>
+      <SwipeListView
+        data={data}
+        renderItem={renderItem}
+        renderHiddenItem={renderHiddenItem}
+        rightOpenValue={-75}
+        disableRightSwipe
+        keyExtractor={(item) => item.id}
+        stopLeftSwipe={75}
+      />
     </View>
   );
 };
 
-export default ReplyListItem;
-
 const styles = StyleSheet.create({
-  regular: {
-    fontFamily: "KoddiUDOnGothic-Regular",
-  },
-
-  bold: {
-    fontFamily: "KoddiUDOnGothic-ExtraBold",
-  },
-
   container: {
-    paddingTop: 10,
+    marginTop: 20,
   },
-  container2: {
+  item: {
     flexDirection: "row",
-  },
-  etc: {
-    flexDirection: "row",
-    paddingLeft: 50,
-  },
-  imageContainer: {
-    width: 42,
-    height: 42,
-    marginRight: 10,
+    alignItems: "center",
+    paddingTop: 20,
+    backgroundColor: "white",
   },
   image: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 24,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginLeft: 15,
   },
-
-  commentContainer: {
-    // width: "80%",
-    paddingTop: 3,
-    paddingBottom: 3,
-    justifyContent: "space-around",
+  textContainer: {
+    flex: 1,
+    marginLeft: 15,
+    justifyContent: "space-between",
   },
-
-  IconContainer: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-  },
-
   text: {
-    color: GlobalColors.colors.black500,
-    fontSize: 12,
+    fontSize: 16,
   },
-  text2: {
-    fontSize: 14,
-  },
-
   time: {
-    color: GlobalColors.colors.gray500,
-    fontSize: 10,
-    paddingRight: 15,
+    fontSize: 14,
+    color: "gray",
   },
-  reply: {
-    color: GlobalColors.colors.gray500,
-    fontSize: 10,
+  deleteButton: {
+    backgroundColor: "red",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 20,
+    bottom: 0,
+    right: 0,
+    width: 75,
   },
 });
+
+export default Detail;

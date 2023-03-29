@@ -169,51 +169,6 @@ const StackNavigation = () => {
               },
             }}
           />
-
-        <Stack.Screen
-          name="userinform"
-          component={UserInformScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ModifyingInform"
-          component={ModifyingInformScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Notification"
-          component={NotificationScreen}
-          options={{
-            headerTitle: "알림",
-            headerTitleAlign: "center",
-            headerShown: true,
-          }}
-        />
-        <Stack.Screen
-          name="Invite"
-          component={InviteScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="MakingInput"
-          component={MakingInput}
-          options={{
-            headerTitle: "댓글 달기",
-            headerShown: true,
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
-          <Stack.Screen
-            name="userinform"
-            component={UserInformScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="ModifyingInform"
-            component={ModifyingInformScreen}
-            options={{ headerShown: false }}
-          />
           <Stack.Screen
             name="Notification"
             component={NotificationScreen}
@@ -226,6 +181,24 @@ const StackNavigation = () => {
           <Stack.Screen
             name="Invite"
             component={InviteScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MakingInput"
+            component={MakingInput}
+            options={{
+              headerTitle: "댓글 달기",
+              headerShown: true,
+            }}
+          />
+          <Stack.Screen
+            name="userinform"
+            component={UserInformScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ModifyingInform"
+            component={ModifyingInformScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>
