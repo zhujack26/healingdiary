@@ -2,7 +2,7 @@ package com.ssafy.healingdiary.domain.member.domain;
 
 import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
-import com.ssafy.healingdiary.domain.member.dto.MemberUpdate;
+import com.ssafy.healingdiary.domain.member.dto.MemberUpdateRequest;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.GoogleOauthTokenResDto;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.KakaoOauthTokenResDto;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.SignupReqDto;
