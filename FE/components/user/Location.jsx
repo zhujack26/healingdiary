@@ -1,32 +1,29 @@
-import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import RNPickerSelect from "react-native-picker-select";
 import { GlobalColors } from "../../constants/color";
+import RNPickerSelect from "react-native-picker-select";
 
-const Location = ({ title }) => {
-  const [selectedValue, setSelectedValue] = useState(null);
+const items = [
+  { id: 1, label: "서울", value: "서울" },
+  { id: 2, label: "부산", value: "부산" },
+  { id: 3, label: "대구", value: "대구" },
+  { id: 4, label: "대전", value: "대전" },
+  { id: 5, label: "광주", value: "광주" },
+  { id: 6, label: "울신", value: "울산" },
+  { id: 7, label: "경기도", value: "경기도" },
+  { id: 8, label: "강원도", value: "강원도" },
+  { id: 9, label: "충청도", value: "충청도" },
+  { id: 10, label: "전라도", value: "전라도" },
+  { id: 11, label: "경상도", value: "경상도" },
+  { id: 12, label: "제주도", value: "제주도" },
+];
 
-  const items = [
-    { label: "서울", value: "1" },
-    { label: "부산", value: "2" },
-    { label: "대구", value: "3" },
-    { label: "대전", value: "4" },
-    { label: "광주", value: "5" },
-    { label: "울산", value: "6" },
-    { label: "경기도", value: "7" },
-    { label: "강원도", value: "7" },
-    { label: "충청도", value: "8" },
-    { label: "전라도", value: "9" },
-    { label: "경상도", value: "10" },
-    { label: "제주도", value: "11" },
-  ];
-
+const Location = ({ title, onChangeLocation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <RNPickerSelect
         style={pickerSelectStyles}
-        onValueChange={(value) => setSelectedValue(value)}
+        onValueChange={onChangeLocation}
         items={items}
         placeholder={{
           label: "선택하세요",
