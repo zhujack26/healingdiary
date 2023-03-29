@@ -4,6 +4,7 @@ import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -21,7 +22,8 @@ import org.hibernate.annotations.BatchSize;
 @AttributeOverride(name = "id", column = @Column(name = "club_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "club_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "club_updated_date"))
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Club extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
