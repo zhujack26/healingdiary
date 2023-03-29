@@ -2,7 +2,7 @@ package com.ssafy.healingdiary.domain.member.domain;
 
 import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
-import com.ssafy.healingdiary.domain.member.dto.MemberUpdate;
+import com.ssafy.healingdiary.domain.member.dto.MemberUpdateRequest;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ public class Member extends BaseEntity {
     private List<Diary> diary = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     private List<ClubMember> clubMember = new ArrayList<>();
 
     public List<String> getRoleList() {
@@ -62,26 +62,17 @@ public class Member extends BaseEntity {
         return new ArrayList<>();
     }
 
-    public void updateMember(MemberUpdate memberInfo) {
+    public void updateMember(MemberUpdateRequest memberInfo) {
         if (memberInfo.getNickname() != null) {
             this.nickname = memberInfo.getNickname();
-        } else {
-            this.nickname = this.getNickname();
         }
+
         if (memberInfo.getRegion() != null) {
             this.region = memberInfo.getRegion();
-        } else {
-            this.region = this.getRegion();
-            System.out.println("region : null");
         }
+
         if (memberInfo.getDisease() != null) {
             this.disease = memberInfo.getDisease();
-        } else {
-            this.disease = this.getDisease();
-
         }
-
     }
-
-
 }
