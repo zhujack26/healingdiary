@@ -132,9 +132,15 @@ const BottomTabs = () => {
             <Ionicons name="md-search" color={color} size={size} />
           ),
         }}
-        listeners={{
-          tabPress: (e) => opened && e.preventDefault(),
-        }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            if (opened) e.preventDefault();
+            else {
+              e.preventDefault();
+              navigation.navigate("searchModal");
+            }
+          },
+        })}
       />
     </Tab.Navigator>
   );

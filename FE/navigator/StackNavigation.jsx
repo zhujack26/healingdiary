@@ -21,6 +21,7 @@ import DiaryDetailScreen from "../screens/DiaryDetailScreen";
 import CalendarDiaryListScreen from "../screens/CalendarDiaryListScreen";
 import InviteScreen from "../screens/InviteScreen";
 import { BottomTabContextProvider } from "../context/BottomTabContext";
+import SearchScreen from "./../screens/SearchScreen";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -67,7 +68,15 @@ const StackNavigation = () => {
               headerShown: false,
             }}
           />
-
+          <Stack.Screen
+            name="searchModal"
+            component={SearchScreen}
+            options={{
+              presentation: "containedModal",
+              animation: "fade_from_bottom",
+              headerShown: false,
+            }}
+          />
           <Stack.Screen
             name="calendarDiaryList"
             component={CalendarDiaryListScreen}

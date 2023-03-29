@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { FlatList } from "react-native";
 import GroupItem from "./GroupItem";
 
@@ -25,20 +24,14 @@ const DATA = {
   ],
 };
 
-const GroupList = () => {
-  const navigation = useNavigation();
-
+const RecommendGroup = () => {
   return (
-    <>
-      <FlatList
-        data={DATA.content}
-        renderItem={({ item }) => (
-          <GroupItem content={item} navigation={navigation} />
-        )}
-        keyExtractor={(item) => item.clubId}
-      />
-    </>
+    <FlatList
+      data={DATA.content}
+      renderItem={({ item }) => <GroupItem content={item} />}
+      keyExtractor={(item) => item.clubId}
+    />
   );
 };
 
-export default GroupList;
+export default RecommendGroup;
