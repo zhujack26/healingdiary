@@ -5,7 +5,6 @@ import static com.querydsl.core.group.GroupBy.list;
 import static com.ssafy.healingdiary.domain.club.domain.QClub.club;
 import static com.ssafy.healingdiary.domain.club.domain.QClubMember.clubMember;
 import static com.ssafy.healingdiary.domain.club.domain.QClubTag.clubTag;
-import static com.ssafy.healingdiary.domain.diary.domain.QDiary.diary;
 import static com.ssafy.healingdiary.domain.tag.domain.QTag.tag;
 import static org.springframework.util.StringUtils.hasText;
 

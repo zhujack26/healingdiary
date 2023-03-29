@@ -1,19 +1,20 @@
 package com.ssafy.healingdiary.domain.club.dto;
 
-import com.ssafy.healingdiary.domain.member.domain.Member;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
 public class ClubInvitationResponse {
+    private Long memberId;
     private String nickname;
-    private String imageUrl;
+    private String memberImageUrl;
 
-    public static ClubInvitationResponse of(Member member) {
-        return ClubInvitationResponse.builder()
-            .nickname(member.getNickname())
-            .imageUrl(member.getMemberImageUrl())
-            .build();
+    @QueryProjection
+    public ClubInvitationResponse(Long memberId, String nickname, String memberImageUrl) {
+        this.memberId = memberId;
+        this.nickname = nickname;
+        this.memberImageUrl = memberImageUrl;
     }
 }
