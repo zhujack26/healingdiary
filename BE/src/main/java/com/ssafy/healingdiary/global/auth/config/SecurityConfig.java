@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -35,7 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**",
                         "/swagger-ui.html",
                         "/auth/account/**",
-                        "/members/nickname");
+                        "/members/nickname",
+                        "/**"
+                );
     }
 
     @Override
@@ -47,10 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .csrf().disable()
                 .authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(
                         "/auth/account/**",
-                        "/v2/api-docs/**", "/swagger-ui/**", "/swagger-resources/**",
-                        "/members/nickname").permitAll()
+                        "/v2/api-docs/**", "/swagger-ui.html/**", "/swagger-resources/**",
+                        "/members/nickname", "/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

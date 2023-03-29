@@ -10,6 +10,8 @@ import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubUpdateRequest;
+import com.ssafy.healingdiary.domain.club.dto.ClubUpdateResponse;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterResponse;
 import com.ssafy.healingdiary.domain.club.repository.ClubMemberRepository;
@@ -70,13 +72,12 @@ public class ClubService {
         return clubInvitationResponseList;
     }
 
-    public ClubRegisterResponse registClub(ClubRegisterRequest registerRequest,
+    public ClubRegisterResponse registClub(ClubRegisterRequest request,
         MultipartFile file) throws IOException {
         Member member = memberRepository.findById(1L).get();
         String imageUrl = s3Service.uploadFile(file);
-        List<ClubTag> clubTags = new ArrayList<>();
-        Club club = ClubRegisterRequest.toEntity(registerRequest, member, imageUrl);
-        List<ClubTag> tags = registerRequest.getTags()
+        Club club = ClubRegisterRequest.toEntity(request, member, imageUrl);
+        List<ClubTag> tags = request.getTags()
             .stream()
             .map((tagId) -> {
                 Tag tag = tagRepository.findById(tagId)
@@ -90,11 +91,39 @@ public class ClubService {
         return ClubRegisterResponse.of(savedClub.getId());
     }
 
+    public ClubUpdateResponse updateClub(Long clubId, ClubUpdateRequest request, MultipartFile file) throws IOException {
+        Club club = clubRepository.findById(clubId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
+        List<ClubTag> tags = request.getTags()
+            .stream()
+            .map((tagId) -> {
+                Tag tag = tagRepository.findById(tagId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.ENTITY_NOT_FOUND));
+                ClubTag clubTag = ClubUpdateRequest.toEntity(club, tag);
+                return clubTag;
+            })
+            .collect(Collectors.toList());
+        String preImg = request.getImageUrl();
+        String imageUrl = null;
+        if (file != null) {
+            s3Service.deleteFile(preImg);
+            imageUrl = s3Service.uploadFile(file);
+        } else if (request.getImageUrl() == null) {
+            s3Service.deleteFile(preImg);
+        } else {
+            imageUrl = request.getImageUrl();
+        }
+        club.updateClub(tags, imageUrl);
+        Club savedClub = clubRepository.save(club);
+        return ClubUpdateResponse.of(savedClub.getId());
+    }
+
     public InvitationRegisterResponse registInvitation(Long clubId,
         InvitationRegisterRequest request) {
         Member member = memberRepository.findById(request.getMemberId())
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-        Club club = clubRepository.findById(clubId).get();
+        Club club = clubRepository.findById(clubId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
 
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         if (clubMember == null) {
