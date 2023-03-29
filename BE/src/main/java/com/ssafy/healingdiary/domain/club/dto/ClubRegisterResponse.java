@@ -8,7 +8,7 @@ import lombok.Getter;
 public class ClubRegisterResponse {
     Long clubId;
 
-    public ClubRegisterResponse of(Long clubId) {
+    public static ClubRegisterResponse of(Long clubId) {
         return ClubRegisterResponse.builder()
             .clubId(clubId)
             .build();

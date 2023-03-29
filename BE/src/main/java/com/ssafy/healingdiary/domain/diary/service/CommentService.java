@@ -5,7 +5,6 @@ import com.ssafy.healingdiary.domain.diary.dto.CommentCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import com.ssafy.healingdiary.domain.diary.dto.CommentUpdateRequest;
 import com.ssafy.healingdiary.domain.diary.repository.CommentRepository;
-import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
