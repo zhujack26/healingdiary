@@ -3,6 +3,9 @@ package com.ssafy.healingdiary.domain.member.domain;
 import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.member.dto.MemberUpdateRequest;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.GoogleOauthTokenResDto;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.KakaoOauthTokenResDto;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.SignupReqDto;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
@@ -73,6 +76,39 @@ public class Member extends BaseEntity {
 
         if (memberInfo.getDisease() != null) {
             this.disease = memberInfo.getDisease();
+        }else{
+            this.disease = this.getDisease();
+
         }
+
     }
+
+    public static Member googleSignupMember(String providerEmail,
+                       SignupReqDto signupReqDto,
+                       GoogleOauthTokenResDto googleOauthTokenResDto,
+                       String userRole) {
+        return Member.builder()
+                .providerEmail(providerEmail)
+                .nickname(signupReqDto.getNickname())
+                .region(signupReqDto.getRegion())
+                .disease(signupReqDto.getDisease())
+                .memberImageUrl(googleOauthTokenResDto.getPicture())
+                .roles(userRole)
+                .build();
+    }
+    public static Member kakaoSignupMember(String providerEmail,
+                                            SignupReqDto signupReqDto,
+                                            KakaoOauthTokenResDto kakaoOauthTokenResDto,
+                                            String userRole) {
+        return Member.builder()
+                .providerEmail(providerEmail)
+                .nickname(signupReqDto.getNickname())
+                .region(signupReqDto.getRegion())
+                .disease(signupReqDto.getDisease())
+                .memberImageUrl(kakaoOauthTokenResDto.getKakaoOauthTokenResProperties().getProfileImage())
+                .roles(userRole)
+                .build();
+    }
+
+
 }
