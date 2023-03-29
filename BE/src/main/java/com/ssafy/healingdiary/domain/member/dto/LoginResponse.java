@@ -1,20 +1,16 @@
-package com.ssafy.healingdiary.global.auth.OAuth.dto;
+package com.ssafy.healingdiary.domain.member.dto;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import com.ssafy.healingdiary.domain.club.domain.Club;
-import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.member.domain.Member;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 
 
 @Getter
 @Builder
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
-public class LoginResDto {
+public class LoginResponse {
 
     private Long id;
 
@@ -29,8 +25,8 @@ public class LoginResDto {
 
     private String jwtToken;
 
-    public static LoginResDto toEntity(Member member, String jwtToken) {
-        return LoginResDto.builder()
+    public static LoginResponse toEntity(Member member, String jwtToken) {
+        return LoginResponse.builder()
                 .id(member.getId())
                 .email(member.getProviderEmail())
                 .region(member.getRegion())

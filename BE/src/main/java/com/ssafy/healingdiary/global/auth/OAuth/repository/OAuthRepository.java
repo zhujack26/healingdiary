@@ -5,6 +5,6 @@ import com.ssafy.healingdiary.domain.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface OAuthRepository extends JpaRepository<Member, String> {
-    Member findByProviderEmail(String providerEmail);
+    Member findById(Long id);
 }
 
