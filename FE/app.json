@@ -8,15 +8,15 @@
     "userInterfaceStyle": "light",
     "backgroundColor": "#f3f3f3",
     "scheme": "com.ssafy.healingdiary",
+    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "jsEngine": "jsc",
       "supportsTablet": true,
       "bundleIdentifier": "com.ssafy.healingdiary"
     },
@@ -31,13 +31,7 @@
       "favicon": "./assets/favicon.png"
     },
     "packagerOpts": {
-      "sourceExts": [
-        "js",
-        "json",
-        "ts",
-        "tsx",
-        "jsx"
-      ]
+      "sourceExts": ["js", "json", "ts", "tsx", "jsx"]
     },
     "extra": {
       "eas": {

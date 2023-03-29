@@ -1,12 +1,16 @@
-import axios from "./interceptor";
-import { kakakoConfig, getConfig } from "./config";
+import axiosInstance from "./interceptor";
+import axios from "axios";
 
-export const getToken = async (code) => {
-  const response = await axios(kakakoConfig(code));
-  return response;
+import { kakakoConfig, kakaoGetConfig } from "./config";
+
+export const getToken = async (code, token) => {
+  const response = await axios(kakakoConfig(code, token));
+  return response.data;
 };
 
-export const kakaoLogin = async () => {
-  const response = await axios(getConfig("/auth/account/kakao/login"));
-  return response;
+export const kakaoLogin = async (token) => {
+  const response = await axios(
+    kakaoGetConfig("/auth/account/kakao/login", token)
+  );
+  return response.data;
 };

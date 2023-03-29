@@ -18,18 +18,28 @@ export const postConfig = (url, data) => {
   };
 };
 
-export const kakakoConfig = (code) => {
+export const kakakoConfig = (code, token) => {
   return {
     method: "POST",
     url: KAKAO_LOGIN,
     headers: {
-      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     params: {
       grant_type: "authorization_code",
       client_id: REST_API_KEY,
       redirect_uri: API_END_POINT,
       code: code,
+    },
+  };
+};
+
+export const kakaoGetConfig = (url, token) => {
+  return {
+    method: "GET",
+    url: API_END_POINT + url,
+    headers: {
+      Authorization: `Bearer ${token}`,
     },
   };
 };
