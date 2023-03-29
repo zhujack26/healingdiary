@@ -1,4 +1,10 @@
-import { SafeAreaView, StyleSheet, FlatList, Text, View } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  FlatList,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { Audio } from "expo-av";
 import Hashtag from "./Hashtag";
 import DiaryDetailThumbAndPlayer from "./DiaryDetailThumbAndPlayer";
@@ -151,6 +157,9 @@ const DiaryDetail = ({ route }) => {
   const handleDeleteComment = (commentId) => {
     console.log(`댓글 ID ${commentId}가 삭제되었습니다.`);
   };
+  const navigateToMakingInput = () => {
+    navigation.navigate("MakingInput");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -168,7 +177,9 @@ const DiaryDetail = ({ route }) => {
               isPlaying={isPlaying}
             />
             <Hashtag tags={DATA.tags} />
-            <Text style={styles.reply}>댓글 달기</Text>
+            <TouchableOpacity onPress={navigateToMakingInput}>
+              <Text style={styles.reply}>댓글 달기</Text>
+            </TouchableOpacity>
           </>
         }
       />

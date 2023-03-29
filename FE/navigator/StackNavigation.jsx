@@ -3,7 +3,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GlobalColors } from "../constants/color";
 import BottomTabs from "./BottomTabs";
 import LoginScreen from "./../screens/LoginScreen";
-
 import Date from "../ui/Date";
 import MakingScreen from "../screens/MakingScreen";
 import { Text, TouchableOpacity } from "react-native";
@@ -20,6 +19,7 @@ import NextButton from "../components/making/NextButton";
 import DiaryDetailScreen from "../screens/DiaryDetailScreen";
 import CalendarDiaryListScreen from "../screens/CalendarDiaryListScreen";
 import InviteScreen from "../screens/InviteScreen";
+import MakingInput from "../components/diaryDetail/MakingInput";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -182,6 +182,14 @@ const StackNavigation = () => {
           name="Invite"
           component={InviteScreen}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MakingInput"
+          component={MakingInput}
+          options={{
+            headerTitle: "댓글 달기",
+            headerShown: true,
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
