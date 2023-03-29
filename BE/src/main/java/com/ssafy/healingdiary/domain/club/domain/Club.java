@@ -4,17 +4,21 @@ import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.AttributeOverride;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.BatchSize;
 
 @Entity
 @Getter
@@ -51,5 +55,7 @@ public class Club extends BaseEntity {
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     private List<Diary> diary = new ArrayList<>();
 
-
+    public void setClubTag(List<ClubTag> clubTag) {
+        this.clubTag = clubTag;
+    }
 }
