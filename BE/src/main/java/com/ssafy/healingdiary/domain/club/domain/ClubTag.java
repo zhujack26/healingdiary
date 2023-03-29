@@ -19,7 +19,6 @@ import lombok.Getter;
 @AttributeOverride(name = "updatedDate", column = @Column(name = "club_tag_updated_date"))
 public class ClubTag extends BaseEntity {
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     private Club club;
@@ -27,6 +26,4 @@ public class ClubTag extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
     private Tag tag;
-
-
 }

@@ -19,14 +19,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name="member")
+@Table(name = "member")
 @AttributeOverride(name = "id", column = @Column(name = "member_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "member_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "member_updated_date"))
@@ -34,7 +33,7 @@ public class Member extends BaseEntity {
 
 
     @NotNull
-    @Column(name="provider_email")
+    @Column(name = "provider_email")
     private String providerEmail;
 
     private String nickname;
@@ -49,11 +48,11 @@ public class Member extends BaseEntity {
     private String roles; // USER, MANAGER, ADMIN
 
     @Builder.Default
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Diary> diary = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "club",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<ClubMember> clubMember = new ArrayList<>();
 
     public List<String> getRoleList() {
@@ -62,23 +61,22 @@ public class Member extends BaseEntity {
         }
         return new ArrayList<>();
     }
-    public void updateMember(MemberUpdate memberInfo){
-        if(memberInfo.getNickname() != null){
+
+    public void updateMember(MemberUpdate memberInfo) {
+        if (memberInfo.getNickname() != null) {
             this.nickname = memberInfo.getNickname();
-        }
-        else{
+        } else {
             this.nickname = this.getNickname();
         }
-        if(memberInfo.getRegion() != null){
+        if (memberInfo.getRegion() != null) {
             this.region = memberInfo.getRegion();
-        }
-        else{
+        } else {
             this.region = this.getRegion();
             System.out.println("region : null");
         }
-        if(memberInfo.getDisease() != null){
+        if (memberInfo.getDisease() != null) {
             this.disease = memberInfo.getDisease();
-        }else{
+        } else {
             this.disease = this.getDisease();
 
         }
