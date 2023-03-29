@@ -34,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/swagger-ui.html",
-                        "/auth/account/**");
+                        "/auth/account/**",
+                        "/members/nickname");
     }
 
     @Override
@@ -48,7 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(
                         "/auth/account/**",
-                        "/v2/api-docs/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                        "/v2/api-docs/**", "/swagger-ui/**", "/swagger-resources/**",
+                        "/members/nickname").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
