@@ -96,7 +96,9 @@ public class OauthService {
         Member newMember = Member.kakaoSignupMember(providerEmail, signupReqDto, kakaoOauthTokenResDto, userRole);
         Member saveUser = memberRepository.save(newMember);
 
-        String jwt = jwtTokenizer.createAccessToken(saveUser.getProviderEmail(), saveUser.getRoleList());
+        String accessToken = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
+
+        String refreshToken = jwtTokenizer.createRefreshToken(newMember.getProviderEmail(), newMember.getRoleList());
 
         return LoginResDto.toEntity(saveUser, jwt);
     }

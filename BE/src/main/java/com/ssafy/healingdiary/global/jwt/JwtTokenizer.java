@@ -70,12 +70,16 @@ public class JwtTokenizer {
     }
 
     // 리프레쉬 토큰 생성 메서드
-    public String createRefreshToken(String subject, Date expiration, String encodedSecretkey) {
-        Key key = getKeyFromEncodedKey(encodedSecretkey);
+    public String createRefreshToken(String providerEmail, List<String> roleList) {
+        Key key = getKeyFromEncodedKey(encodeBase64SecretKey(this.secretKey));
+        Claims claims = Jwts.claims().setSubject(providerEmail);
+        claims.put("roles", roleList);
 
+        Date currenttime = new Date();
+        Date expiration = this.getTokenExpiration(this.refreshtokenExpiration);
         return Jwts.builder()
-                .setSubject(subject)
-                .setIssuedAt(Calendar.getInstance().getTime())
+                .setClaims(claims)
+                .setIssuedAt(currenttime)
                 .setExpiration(expiration)
                 .signWith(key)
                 .compact();
