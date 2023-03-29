@@ -3,7 +3,7 @@ import { Audio } from "expo-av";
 
 import Hashtag from "./Hashtag";
 import DiaryDetailThumbAndPlayer from "./DiaryDetailThumbAndPlayer";
-import CommnetListItem from "./CommentListItem";
+import CommentListItem from "./CommentListItem";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 
@@ -155,7 +155,7 @@ const DiaryDetail = ({ route }) => {
       <FlatList
         style={styles.container}
         data={comments}
-        renderItem={({ item }) => <CommnetListItem comment={item} />}
+        renderItem={({ item }) => <CommentListItem comment={item} />}
         ListHeaderComponent={
           <>
             <DiaryDetailThumbAndPlayer

@@ -1,17 +1,11 @@
 import { View, StyleSheet, Text, Image, FlatList } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import ReplyListItem from "./ReplyListItem";
-import { SwipeListView } from "react-native-swipe-list-view";
 
 const CommentListItem = ({ comment }) => {
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
-        {/* <SwipeListView
-          rightOpenValue={-75}
-          disableRightSwipe
-          stopLeftSwipe={75}
-        /> */}
         <View style={styles.imageContainer}>
           <Image
             style={styles.image}
@@ -45,10 +39,20 @@ const CommentListItem = ({ comment }) => {
 export default CommentListItem;
 
 const styles = StyleSheet.create({
-  regular: {
-    fontFamily: "KoddiUDOnGothic-Regular",
+  deleteButton: {
+    position: "absolute",
+    right: 0,
+    width: 70,
+    justifyContent: "center",
+    backgroundColor: "red",
   },
-
+  deleteButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  // regular: {
+  //   fontFamily: "KoddiUDOnGothic-Regular",
+  // },
   bold: {
     fontFamily: "KoddiUDOnGothic-ExtraBold",
   },

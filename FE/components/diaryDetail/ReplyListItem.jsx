@@ -27,6 +27,17 @@ const ReplyListItem = ({ item }) => {
 export default ReplyListItem;
 
 const styles = StyleSheet.create({
+  deleteButton: {
+    position: "absolute",
+    right: 0,
+    width: 70,
+    justifyContent: "center",
+    backgroundColor: "red",
+  },
+  deleteButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
   regular: {
     fontFamily: "KoddiUDOnGothic-Regular",
   },
@@ -34,7 +45,17 @@ const styles = StyleSheet.create({
   bold: {
     fontFamily: "KoddiUDOnGothic-ExtraBold",
   },
-
+  rowBack: {
+    backgroundColor: "red",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    flexDirection: "row",
+  },
+  deleteText: {
+    color: "#FFF",
+    fontSize: 16,
+    padding: 15,
+  },
   container: {
     paddingTop: 10,
   },
