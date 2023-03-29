@@ -7,13 +7,13 @@ import lombok.Getter;
 @Getter
 @Builder
 public class EmotionStatisticResponse {
-    private int code;
+    private int emotionCode;
     private String value;
     private Long count;
 
     @QueryProjection
-    public EmotionStatisticResponse(int code, String value, Long count) {
-        this.code = code;
+    public EmotionStatisticResponse(int emotionCode, String value, Long count) {
+        this.emotionCode = emotionCode;
         this.value = value;
         this.count = count;
     }
