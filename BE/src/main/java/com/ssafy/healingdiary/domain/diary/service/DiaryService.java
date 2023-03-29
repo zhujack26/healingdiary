@@ -1,13 +1,18 @@
 package com.ssafy.healingdiary.domain.diary.service;
 
+import static com.ssafy.healingdiary.global.error.ErrorCode.ENTITY_NOT_FOUND;
+
 import com.google.gson.Gson;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
+import com.ssafy.healingdiary.domain.diary.domain.Emotion;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
+import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
+import com.ssafy.healingdiary.domain.diary.repository.EmotionRepository;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
 import com.ssafy.healingdiary.infra.speech.ClovaClient;
@@ -22,6 +27,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
+    private final EmotionRepository emotionRepository;
     private final ClovaSpeechClient clovaSpeechClient;
     private final ClovaClient clovaClient;
     private final Gson gson;
@@ -104,8 +111,8 @@ public class DiaryService {
         rec.transferTo(file);
 
         NestRequestEntity requestEntity = new NestRequestEntity();
-        String result = clovaSpeechClient.upload(file, requestEntity);
-        Map<String, Object> sttMap = gson.fromJson(result, Map.class);
+        String speech = clovaSpeechClient.upload(file, requestEntity);
+        Map<String, Object> sttMap = gson.fromJson(speech, Map.class);
 
 //        String summary = clovaClient.summerize(sttMap.get("text").toString());
 //        Map<String, Object> summaryMap = gson.fromJson(summary, Map.class);
@@ -114,8 +121,33 @@ public class DiaryService {
 
         String analysis = clovaClient.analyze(sttMap.get("text").toString());
         Map<String, Object> analysisMap = gson.fromJson(analysis, Map.class);
-        analysisMap.put("content", sttMap.get("text").toString());
+        Map<String, Object> documentMap = gson.fromJson(analysisMap.get("document").toString(), Map.class);
+        Map<String, Double> confidence = gson.fromJson(documentMap.get("confidence").toString(), Map.class);
 
-        return analysisMap;
+        double negative = confidence.get("negative");
+        double positive = confidence.get("positive");
+        double neutral = confidence.get("neutral");
+
+        int emotionCode = 0;
+        if(negative >= 80) {
+            emotionCode = 1;
+        } else if(positive >= 80){
+            emotionCode = 5;
+        } else if (neutral >= 60 || Math.abs(negative-positive) < 10) {
+            emotionCode = 3;
+        } else if (negative > positive) {
+            emotionCode = 2;
+        } else if (negative < positive) {
+            emotionCode = 4;
+        }
+        Emotion emotion = emotionRepository.findById(emotionCode)
+            .orElseThrow(() -> new CustomException(ENTITY_NOT_FOUND));
+        EmotionResponse emotionResponse = EmotionResponse.of(emotion);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("emotion", emotionResponse);
+        result.put("content", sttMap.get("text"));
+
+        return result;
     }
 }
