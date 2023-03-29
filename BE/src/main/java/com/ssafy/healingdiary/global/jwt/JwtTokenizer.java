@@ -44,9 +44,9 @@ public class JwtTokenizer {
     }
 
     //jwt 엑세스토큰 생성 메서드
-    public String createAccessToken(String providerEmail, List<String> roleList) {
+    public String createAccessToken(String id, List<String> roleList) {
         Key key = getKeyFromEncodedKey(encodeBase64SecretKey(this.secretKey));
-        Claims claims = Jwts.claims().setSubject(providerEmail);
+        Claims claims = Jwts.claims().setSubject(id);
         claims.put("roles", roleList);
         System.out.println(claims);
         Date currenttime = new Date();
@@ -70,9 +70,9 @@ public class JwtTokenizer {
     }
 
     // 리프레쉬 토큰 생성 메서드
-    public String createRefreshToken(String providerEmail, List<String> roleList) {
+    public String createRefreshToken(String id, List<String> roleList) {
         Key key = getKeyFromEncodedKey(encodeBase64SecretKey(this.secretKey));
-        Claims claims = Jwts.claims().setSubject(providerEmail);
+        Claims claims = Jwts.claims().setSubject(id);
         claims.put("roles", roleList);
 
         Date currenttime = new Date();
@@ -116,17 +116,17 @@ public class JwtTokenizer {
         return expirationTime;
     }
 
-    public String getEmail(String token) {
-        String email = Jwts.parserBuilder().setSigningKey(encodeBase64SecretKey(secretKey)).build().parseClaimsJws(token).getBody().getSubject();
-        System.out.println(email);
-        return email;
+    public String getId(String token) {
+        String id = Jwts.parserBuilder().setSigningKey(encodeBase64SecretKey(secretKey)).build().parseClaimsJws(token).getBody().getSubject();
+        System.out.println(id);
+        return id;
     }
     public String getUsernameFromToken(String token) {
         Jws<Claims>  claims = getClaims(token);
         Claims claim = claims.getBody();
-        String providerEmail = claim.get("sub", String.class);
+        String id = claim.get("sub", String.class);
 
-        return providerEmail;
+        return id;
     }
 
 
