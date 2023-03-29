@@ -29,7 +29,6 @@ const MakingScreen = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.inform}>
         <AddFile />
-        {/* <Timer onToggleNextButtonVisibility={toggleNextButtonVisibility} /> */}
         <TimerRecord
           onToggleNextButtonVisibility={toggleNextButtonVisibility}
         />

@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   input: {
-    minHeight: 100,
-    borderColor: "#ccc",
+    minHeight: 150,
+    borderColor: GlobalColors.colors.gray400,
     borderWidth: 1,
     borderRadius: 5,
     padding: 10,
@@ -70,11 +70,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    alignSelf: "flex-end",
+    alignSelf: "center",
   },
   submitButtonText: {
     color: "white",
-    fontSize: 18,
+    fontSize: 16,
   },
 });
 export default MakingInput;
