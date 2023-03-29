@@ -42,8 +42,8 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleRestClientException(final Exception e) {
         log.error("handleRestClientException: {}", e.getMessage());
         return ResponseEntity
-                .status(ErrorCode.NOT_VALID_TOKEN.getStatus().value())
-                .body(new ErrorResponse(ErrorCode.NOT_VALID_TOKEN));
+                .status(ErrorCode.TOKEN_NOT_VALID.getStatus().value())
+                .body(new ErrorResponse(ErrorCode.TOKEN_NOT_VALID));
     }
     //500 error
     @ExceptionHandler(Exception.class)

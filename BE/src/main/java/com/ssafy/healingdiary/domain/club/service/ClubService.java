@@ -75,7 +75,7 @@ public class ClubService {
     public InvitationRegisterResponse registInvitation(Long clubId,
         InvitationRegisterRequest request) {
         Member member = memberRepository.findById(request.getMemberId())
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Club club = clubRepository.findById(clubId).get();
 
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
@@ -91,9 +91,9 @@ public class ClubService {
 
     public void leaveClub(Long clubId, Long memberId) {
         Club club = clubRepository.findById(clubId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         clubMemberRepository.delete(clubMember);
     }
@@ -126,7 +126,7 @@ public class ClubService {
 
     public Slice<ClubMemberResponse> getClubMemberList(Long clubId, Pageable pageable) {
         Club club = clubRepository.findById(clubId)
-            .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         Slice<ClubMember> list = clubMemberRepository.findByClubAndIsApproved(club, true, pageable);
         List<ClubMemberResponse> clubMemberResponses = list.stream()
             .map((clubMember ->
@@ -138,7 +138,7 @@ public class ClubService {
 
     public void deleteClub(Long clubId) {
         Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_CLUB));
+                .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         club.getClubMember().stream().forEach((clubMember -> {
             clubMemberRepository.delete(clubMember);
         }));
