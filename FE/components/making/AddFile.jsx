@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Image,
   StyleSheet,
@@ -9,14 +10,18 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
-import { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import DefalutImagePicker from "./DefalutImagePicker";
+import ColorImagePicker from "./ColorImagePicker";
+import NatureImagePicker from "./NatureImagePicker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+
 const AddFile = () => {
   const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [showNatureImagePicker, setShowNatureImagePicker] = useState(false);
+  const [showColorImagePicker, setShowColorImagePicker] = useState(false);
 
   const pickImage = () => {
     setModalVisible(true);
@@ -43,12 +48,33 @@ const AddFile = () => {
       </TouchableOpacity>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.modalView}>
-          <DefalutImagePicker
-            onSelect={(selectedImage) => {
-              setImage(selectedImage);
-              setModalVisible(false);
-            }}
-          />
+          {!showNatureImagePicker && !showColorImagePicker && (
+            <DefalutImagePicker
+              onSelect={(selectedImage) => {
+                setImage(selectedImage);
+                setModalVisible(false);
+              }}
+            />
+          )}
+
+          {showNatureImagePicker && !showColorImagePicker && (
+            <NatureImagePicker
+              onSelect={(selectedImage) => {
+                setImage(selectedImage);
+                setShowNatureImagePicker(false);
+              }}
+            />
+          )}
+
+          {!showNatureImagePicker && showColorImagePicker && (
+            <ColorImagePicker
+              onSelect={(selectedImage) => {
+                setImage(selectedImage);
+                setShowColorImagePicker(false);
+              }}
+            />
+          )}
+
           <View style={styles.pictureContainer}>
             <View style={styles.pictureContainer1}>
               <Pressable
@@ -64,6 +90,7 @@ const AddFile = () => {
             </View>
             <View style={styles.pictureContainer1}>
               <Pressable
+                onPress={() => setShowNatureImagePicker(true)}
                 style={[
                   styles.picture,
                   { backgroundColor: GlobalColors.colors.gray400 },
@@ -79,6 +106,7 @@ const AddFile = () => {
             </View>
             <View style={styles.pictureContainer1}>
               <Pressable
+                onPress={() => setShowColorImagePicker(true)}
                 style={[
                   styles.picture,
                   { backgroundColor: GlobalColors.colors.secondary500 },

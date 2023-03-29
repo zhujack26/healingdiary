@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { GlobalColors } from "../../constants/color";
 
 const DefalutImagePicker = ({ onSelect }) => {
   const [selectedImage, setSelectedImage] = useState(null);
-
   const handleImagePress = (image) => {
     setSelectedImage(image);
     onSelect(image);

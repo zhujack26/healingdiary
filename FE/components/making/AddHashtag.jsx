@@ -43,7 +43,7 @@ const AddHashtag = () => {
     }
   };
   const handleSelectedTagPress = (tag) => {
-    // 선택한 태그를 삭제합니다.
+    // 선택한 태그를 삭제
     setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
   };
   const renderTextInput = () => (
