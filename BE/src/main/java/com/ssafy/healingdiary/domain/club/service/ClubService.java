@@ -19,8 +19,13 @@ import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.domain.Notice;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.domain.member.repository.NoticeRepository;
+import com.ssafy.healingdiary.domain.tag.domain.Tag;
+import com.ssafy.healingdiary.domain.tag.repository.TagRepository;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
+import com.ssafy.healingdiary.infra.storage.S3StorageClient;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -39,6 +44,8 @@ public class ClubService {
     private final ClubTagRepository clubTagRepository;
     private final MemberRepository memberRepository;
     private final NoticeRepository noticeRepository;
+    private final TagRepository tagRepository;
+    private final S3StorageClient s3Service;
 
     public Slice<ClubSimpleResponse> getClubListByTag(
 //        UserDetails principal,
@@ -64,12 +71,23 @@ public class ClubService {
     }
 
     public ClubRegisterResponse registClub(ClubRegisterRequest registerRequest,
-        MultipartFile file) {
+        MultipartFile file) throws IOException {
         Member member = memberRepository.findById(1L).get();
-        // image 저장
-        String imageUrl = "";
-        clubRepository.save(ClubRegisterRequest.toEntity(registerRequest, member, imageUrl));
-        return ClubRegisterResponse.builder().build();
+        String imageUrl = s3Service.uploadFile(file);
+        List<ClubTag> clubTags = new ArrayList<>();
+        Club club = ClubRegisterRequest.toEntity(registerRequest, member, imageUrl);
+        registerRequest.getTags().stream()
+            .forEach((tagId) -> {
+                Tag tag = tagRepository.findById(tagId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.ENTITY_NOT_FOUND));
+                ClubTag clubTag = ClubRegisterRequest.toEntity(club, tag);
+                clubTags.add(clubTag);
+                clubTagRepository.save(clubTag);
+            });
+        club.addTags(clubTags);
+        clubRepository.save(club);
+        Long clubId = club.getId();
+        return ClubRegisterResponse.of(clubId);
     }
 
     public InvitationRegisterResponse registInvitation(Long clubId,

@@ -2,6 +2,7 @@ package com.ssafy.healingdiary.domain.club.domain;
 
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.member.domain.Member;
+import com.ssafy.healingdiary.domain.tag.domain.Tag;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
@@ -54,4 +55,8 @@ public class Club extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     private List<Diary> diary = new ArrayList<>();
+
+    public void addTags(List<ClubTag> clubTags) {
+        this.clubTag = clubTags;
+    }
 }
