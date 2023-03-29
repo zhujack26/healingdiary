@@ -35,15 +35,16 @@ public class OauthService {
             throw new CustomException(ErrorCode.NOT_FOUND_USER);
         }
 
-        String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
-        return LoginResDto.builder()
+        String accessToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
+
+        String refreshToken = jwtTokenizer.createRefreshToken(foundMember.getProviderEmail(), foundMember.getRoleList());        return LoginResDto.builder()
                 .id(foundMember.getId())
                 .email(googleOAuthResponse.getEmail())
                 .region(foundMember.getRegion())
                 .disease(foundMember.getDisease())
                 .nickname(foundMember.getNickname())
                 .memberImageUrl(foundMember.getMemberImageUrl())
-                .jwtToken(jwtToken)
+                .jwtToken(accessToken)
                 .build();
 
     }
@@ -56,7 +57,9 @@ public class OauthService {
             throw new CustomException(ErrorCode.NOT_FOUND_USER);
         }
 
-        String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
+        String accessToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
+
+        String refreshToken = jwtTokenizer.createRefreshToken(foundMember.getProviderEmail(), foundMember.getRoleList());
         return LoginResDto.builder()
                 .id(foundMember.getId())
                 .email(memberEmail)
@@ -64,7 +67,7 @@ public class OauthService {
                 .disease(foundMember.getDisease())
                 .nickname(foundMember.getNickname())
                 .memberImageUrl(foundMember.getMemberImageUrl())
-                .jwtToken(jwtToken)
+                .jwtToken(accessToken)
                 .build();
 
     }
@@ -96,8 +99,9 @@ public class OauthService {
                 .build();
         Member saveUser = memberRepository.save(newMember);
 
-        String jwt = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
+        String accessToken = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
 
+        String refreshToken = jwtTokenizer.createRefreshToken(newMember.getProviderEmail(), newMember.getRoleList());
         return LoginResDto.builder()
                 .id(saveUser.getId())
                 .nickname(saveUser.getNickname())
@@ -105,7 +109,7 @@ public class OauthService {
                 .region(saveUser.getRegion())
                 .disease(saveUser.getDisease())
                 .email(saveUser.getProviderEmail())
-                .jwtToken(jwt)
+                .jwtToken(accessToken)
                 .build();
     }
     public LoginResDto kakaoSignup(String accesstoken, SignupReqDto signupReqDto)
@@ -127,7 +131,9 @@ public class OauthService {
                 .build();
         Member saveUser = memberRepository.save(newMember);
 
-        String jwt = jwtTokenizer.createAccessToken(saveUser.getProviderEmail(), saveUser.getRoleList());
+        String accessToken = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
+
+        String refreshToken = jwtTokenizer.createRefreshToken(newMember.getProviderEmail(), newMember.getRoleList());
 
         return LoginResDto.builder()
                 .id(saveUser.getId())
@@ -136,7 +142,7 @@ public class OauthService {
                 .region(saveUser.getRegion())
                 .disease(saveUser.getDisease())
                 .email(saveUser.getProviderEmail())
-                .jwtToken(jwt)
+                .jwtToken(accessToken)
                 .build();
     }
 
