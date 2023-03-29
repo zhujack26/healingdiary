@@ -32,20 +32,11 @@ public class OauthService {
         String memberEmail = "GOOGLE_" + googleOAuthResponse.getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_USER);
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
-        String accessToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
-
-        String refreshToken = jwtTokenizer.createRefreshToken(foundMember.getProviderEmail(), foundMember.getRoleList());        return LoginResDto.builder()
-                .id(foundMember.getId())
-                .email(googleOAuthResponse.getEmail())
-                .region(foundMember.getRegion())
-                .disease(foundMember.getDisease())
-                .nickname(foundMember.getNickname())
-                .memberImageUrl(foundMember.getMemberImageUrl())
-                .jwtToken(accessToken)
-                .build();
+        String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
+        return LoginResDto.toEntity(foundMember, jwtToken);
 
     }
     public LoginResDto kakaoOauthLogin(String accesstoken) throws JsonProcessingException {
@@ -54,21 +45,11 @@ public class OauthService {
         String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResAccount().getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
-            throw new CustomException(ErrorCode.NOT_FOUND_USER);
+            throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
-        String accessToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
-
-        String refreshToken = jwtTokenizer.createRefreshToken(foundMember.getProviderEmail(), foundMember.getRoleList());
-        return LoginResDto.builder()
-                .id(foundMember.getId())
-                .email(memberEmail)
-                .region(foundMember.getRegion())
-                .disease(foundMember.getDisease())
-                .nickname(foundMember.getNickname())
-                .memberImageUrl(foundMember.getMemberImageUrl())
-                .jwtToken(accessToken)
-                .build();
+        String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
+        return LoginResDto.toEntity(foundMember, jwtToken);
 
     }
     public LoginResDto signUp(String accesstoken, SignupReqDto signupReqDto) throws JsonProcessingException {
@@ -89,28 +70,17 @@ public class OauthService {
         if (duplicatedMember != null) {
             throw new CustomException(ErrorCode.CONFLICT);
         }
-        Member newMember = Member.builder()
-                .providerEmail(providerEmail)
-                .nickname(signupReqDto.getNickname())
-                .region(signupReqDto.getRegion())
-                .disease(signupReqDto.getDisease())
-                .memberImageUrl(googleOauthTokenResDto.getPicture())
-                .roles("USER")
-                .build();
+        String userRole = "USER";
+        Member newMember = Member.googleSignupMember(providerEmail,
+                signupReqDto,
+                googleOauthTokenResDto,
+                userRole);
+
         Member saveUser = memberRepository.save(newMember);
 
-        String accessToken = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
+        String jwtToken = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
 
-        String refreshToken = jwtTokenizer.createRefreshToken(newMember.getProviderEmail(), newMember.getRoleList());
-        return LoginResDto.builder()
-                .id(saveUser.getId())
-                .nickname(saveUser.getNickname())
-                .memberImageUrl(saveUser.getMemberImageUrl())
-                .region(saveUser.getRegion())
-                .disease(saveUser.getDisease())
-                .email(saveUser.getProviderEmail())
-                .jwtToken(accessToken)
-                .build();
+        return LoginResDto.toEntity(saveUser, jwtToken);
     }
     public LoginResDto kakaoSignup(String accesstoken, SignupReqDto signupReqDto)
             throws JsonProcessingException {
@@ -121,29 +91,16 @@ public class OauthService {
         if (duplicatedMember != null) {
             throw new CustomException(ErrorCode.CONFLICT);
         }
-        Member newMember = Member.builder()
-                .providerEmail(providerEmail)
-                .nickname(signupReqDto.getNickname())
-                .region(signupReqDto.getRegion())
-                .disease(signupReqDto.getDisease())
-                .memberImageUrl(kakaoOauthTokenResDto.getKakaoOauthTokenResProperties().getProfileImage())
-                .roles("USER")
-                .build();
+        String userRole = "USER";
+
+        Member newMember = Member.kakaoSignupMember(providerEmail, signupReqDto, kakaoOauthTokenResDto, userRole);
         Member saveUser = memberRepository.save(newMember);
 
         String accessToken = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
 
         String refreshToken = jwtTokenizer.createRefreshToken(newMember.getProviderEmail(), newMember.getRoleList());
 
-        return LoginResDto.builder()
-                .id(saveUser.getId())
-                .nickname(saveUser.getNickname())
-                .memberImageUrl(saveUser.getMemberImageUrl())
-                .region(saveUser.getRegion())
-                .disease(saveUser.getDisease())
-                .email(saveUser.getProviderEmail())
-                .jwtToken(accessToken)
-                .build();
+        return LoginResDto.toEntity(saveUser, jwt);
     }
 
     public GoogleOauthTokenResDto googleOauthCheckToken(String accesstoken)
