@@ -1,8 +1,13 @@
 package com.ssafy.healingdiary.global.common.domain;
 
+import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -10,11 +15,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-
 @Getter
-@SuperBuilder
 @MappedSuperclass
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -25,14 +26,12 @@ public abstract class BaseEntity {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "created_date",updatable = false)
+    @Column(name = "created_date", updatable = false)
     @CreatedDate
     private LocalDateTime createdDate;
     @Column(name = "updated_date")
     @LastModifiedDate
     private LocalDateTime updatedDate;
-
-
 
 
 }
