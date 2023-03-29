@@ -3,6 +3,8 @@ package com.ssafy.healingdiary.global.auth.OAuth.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.healingdiary.domain.member.domain.Member;
+import com.ssafy.healingdiary.domain.member.dto.LoginResponse;
+import com.ssafy.healingdiary.domain.member.dto.SignupReqDto;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.*;
 import com.ssafy.healingdiary.global.error.CustomException;
@@ -26,8 +28,8 @@ public class OauthService {
     private final JwtTokenizer jwtTokenizer;
     private final MemberRepository memberRepository;
 
-    public LoginResDto googleOauthLogin(String accesstoken) throws JsonProcessingException {
-        GoogleOauthTokenResDto googleOAuthResponse = this.googleOauthCheckToken(accesstoken);
+    public LoginResponse googleOauthLogin(String accesstoken) throws JsonProcessingException {
+        GoogleOauthTokenResponse googleOAuthResponse = this.googleOauthCheckToken(accesstoken);
         System.out.println("GoogleOAuthResponse: " + googleOAuthResponse);
         String memberEmail = "GOOGLE_" + googleOAuthResponse.getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
@@ -35,24 +37,24 @@ public class OauthService {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
-        String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
-        return LoginResDto.toEntity(foundMember, jwtToken);
+        String jwtToken = jwtTokenizer.createAccessToken(foundMember.getId().toString(), foundMember.getRoleList());
+        return LoginResponse.toEntity(foundMember, jwtToken);
 
     }
-    public LoginResDto kakaoOauthLogin(String accesstoken) throws JsonProcessingException {
+    public LoginResponse kakaoOauthLogin(String accesstoken) throws JsonProcessingException {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
         System.out.println("KakaoOauthtoken: " + kakaoOauthTokenResDto);
-        String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResAccount().getEmail();
+        String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResponse().getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
             throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
         }
 
-        String jwtToken = jwtTokenizer.createAccessToken(foundMember.getProviderEmail(), foundMember.getRoleList());
-        return LoginResDto.toEntity(foundMember, jwtToken);
+        String jwtToken = jwtTokenizer.createAccessToken(foundMember.getId().toString(), foundMember.getRoleList());
+        return LoginResponse.toEntity(foundMember, jwtToken);
 
     }
-    public LoginResDto signUp(String accesstoken, SignupReqDto signupReqDto) throws JsonProcessingException {
+    public LoginResponse signUp(String accesstoken, SignupReqDto signupReqDto) throws JsonProcessingException {
         if (signupReqDto.getProvider().equals("GOOGLE")) {
             return this.googleSignUp(accesstoken, signupReqDto);
         } else if (signupReqDto.getProvider().equals("KAKAO")) {
@@ -62,10 +64,10 @@ public class OauthService {
         }
     }
 
-    public LoginResDto googleSignUp(String accesstoken, SignupReqDto signupReqDto)
+    public LoginResponse googleSignUp(String accesstoken, SignupReqDto signupReqDto)
             throws JsonProcessingException {
-        GoogleOauthTokenResDto googleOauthTokenResDto = this.googleOauthCheckToken(accesstoken);
-        String providerEmail = "GOOGLE_" + googleOauthTokenResDto.getEmail();
+        GoogleOauthTokenResponse googleOauthTokenResponse = this.googleOauthCheckToken(accesstoken);
+        String providerEmail = "GOOGLE_" + googleOauthTokenResponse.getEmail();
         Member duplicatedMember = memberRepository.findMemberByProviderEmail(providerEmail);
         if (duplicatedMember != null) {
             throw new CustomException(ErrorCode.CONFLICT);
@@ -73,19 +75,19 @@ public class OauthService {
         String userRole = "USER";
         Member newMember = Member.googleSignupMember(providerEmail,
                 signupReqDto,
-                googleOauthTokenResDto,
+                googleOauthTokenResponse,
                 userRole);
 
         Member saveUser = memberRepository.save(newMember);
 
-        String jwtToken = jwtTokenizer.createAccessToken(newMember.getProviderEmail(), newMember.getRoleList());
+        String jwtToken = jwtTokenizer.createAccessToken(newMember.getId().toString(), newMember.getRoleList());
 
-        return LoginResDto.toEntity(saveUser, jwtToken);
+        return LoginResponse.toEntity(saveUser, jwtToken);
     }
-    public LoginResDto kakaoSignup(String accesstoken, SignupReqDto signupReqDto)
+    public LoginResponse kakaoSignup(String accesstoken, SignupReqDto signupReqDto)
             throws JsonProcessingException {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
-        String providerEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResAccount().getEmail();
+        String providerEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResponse().getEmail();
 
         Member duplicatedMember = memberRepository.findMemberByProviderEmail(providerEmail);
         if (duplicatedMember != null) {
@@ -96,12 +98,14 @@ public class OauthService {
         Member newMember = Member.kakaoSignupMember(providerEmail, signupReqDto, kakaoOauthTokenResDto, userRole);
         Member saveUser = memberRepository.save(newMember);
 
-        String jwt = jwtTokenizer.createAccessToken(saveUser.getProviderEmail(), saveUser.getRoleList());
+        String jwtToken = jwtTokenizer.createAccessToken(saveUser.getId().toString(), newMember.getRoleList());
 
-        return LoginResDto.toEntity(saveUser, jwt);
+        String refreshToken = jwtTokenizer.createRefreshToken(saveUser.getId().toString(), saveUser.getRoleList());
+
+        return LoginResponse.toEntity(saveUser, jwtToken);
     }
 
-    public GoogleOauthTokenResDto googleOauthCheckToken(String accesstoken)
+    public GoogleOauthTokenResponse googleOauthCheckToken(String accesstoken)
             throws JsonProcessingException {
         String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/userinfo/v2/me";
         HttpHeaders headers = new HttpHeaders();
@@ -114,7 +118,7 @@ public class OauthService {
                 String.class
         );
 
-        return objectMapper.readValue(response.getBody(), GoogleOauthTokenResDto.class);
+        return objectMapper.readValue(response.getBody(), GoogleOauthTokenResponse.class);
     }
     public KakaoOauthTokenResDto kakaoOauthCheckToken(String accessToken)
             throws JsonProcessingException {

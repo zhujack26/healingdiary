@@ -27,22 +27,23 @@ public class PrincipalDetailsService implements UserDetailsService {
 
 
     @Override
-    public PrincipalDetails loadUserByUsername(String provider_email) throws EntityNotFoundException {
-
-        Member member = oAuthRepository.findByProviderEmail(provider_email);
+    public PrincipalDetails loadUserByUsername(String id) throws EntityNotFoundException {
+        Long Pid = Long.parseLong(id);
+        Member member = oAuthRepository.findById(Pid);
 
         return new PrincipalDetails(member);
     }
 
     public PrincipalDetails loadMemberByAccessToken(String accessToken) throws EntityNotFoundException {
         System.out.println("PrincipalDetailsService : 진입");
-        String provider_email = jwtTokenizer.getUsernameFromToken(accessToken);
-        Member member = oAuthRepository.findByProviderEmail(provider_email);
+        String id = jwtTokenizer.getUsernameFromToken(accessToken);
+        Long Pid = Long.parseLong(id);
+        Member member = oAuthRepository.findById(Pid);
         System.out.println(member);
         return new PrincipalDetails(member);
     }
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = this.loadUserByUsername(jwtTokenizer.getEmail(token));
+        UserDetails userDetails = this.loadUserByUsername(jwtTokenizer.getId(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 }

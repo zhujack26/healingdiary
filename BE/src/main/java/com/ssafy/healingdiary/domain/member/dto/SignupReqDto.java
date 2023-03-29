@@ -1,4 +1,4 @@
-package com.ssafy.healingdiary.global.auth.OAuth.dto;
+package com.ssafy.healingdiary.domain.member.dto;
 
 
 import lombok.AllArgsConstructor;
