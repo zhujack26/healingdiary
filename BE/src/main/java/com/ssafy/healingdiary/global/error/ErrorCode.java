@@ -17,8 +17,9 @@ public enum ErrorCode {
     ENTITY_NOT_FOUND(HttpStatus.OK, -5,"엔티티를 찾을 수 없습니다."),
     COMMENT_NOT_FOUND(HttpStatus.OK, -6,"댓글을 찾을 수 없습니다."),
     NOT_FOUND_USER(HttpStatus.OK, -7,"사용자를 찾을 수 없습니다."),
-    NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, -8,"토큰이 유효하지 않습니다."),
-    NOT_FOUND_DATA(HttpStatus.OK, -9,"요청하신 데이터가 없습니다."),
+    NOT_FOUND_CLUB(HttpStatus.OK, -8,"소모임 정보를 찾을 수 없습니다."),
+    NOT_VALID_TOKEN(HttpStatus.UNAUTHORIZED, -9,"토큰이 유효하지 않습니다."),
+    NOT_FOUND_DATA(HttpStatus.OK, -10,"요청하신 데이터가 없습니다."),
 
 
     CONFLICT(HttpStatus.CONFLICT, -409, "이미 가입된 회원입니다.");

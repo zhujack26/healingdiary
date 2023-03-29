@@ -5,15 +5,15 @@ import lombok.Builder;
 import lombok.Getter;
 @Getter
 @Builder
-public class MemberUpdate {
+public class MemberUpdateResponse {
     private String nickname;
 
     private String disease;
 
     private String region;
 
-    public static MemberUpdate of(Member member){
-        return MemberUpdate.builder()
+    public static MemberUpdateResponse of(Member member){
+        return MemberUpdateResponse.builder()
                 .nickname(member.getNickname())
                 .disease(member.getDisease())
                 .region(member.getRegion())

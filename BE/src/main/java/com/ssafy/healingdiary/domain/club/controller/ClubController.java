@@ -1,11 +1,15 @@
 package com.ssafy.healingdiary.domain.club.controller;
 
 
+import com.ssafy.healingdiary.domain.club.dto.ClubApprovalResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubJoinResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
+import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterResponse;
 import com.ssafy.healingdiary.domain.club.service.ClubService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -37,32 +41,51 @@ public class ClubController {
         @RequestParam(required = false) Long tag,
         Pageable pageable
     ) {
-       return clubService.getClubListByTag(all,tag,keyword,pageable);
+        return clubService.getClubListByTag(all, tag, keyword, pageable);
     }
 
-    @GetMapping("/invitation/{clubId}")
-    public Slice<ClubInvitationResponse> getInvitationList(@PathVariable Long clubId, Pageable pageable) {
+    @DeleteMapping("/{clubId}")
+    public void deleteClub(@PathVariable Long clubId) {
+        clubService.deleteClub(clubId);
+    }
+
+    @GetMapping("/{clubId}/members")
+    public Slice<ClubMemberResponse> getClubMemberList(@PathVariable Long clubId,
+        Pageable pageable) {
+        return clubService.getClubMemberList(clubId, pageable);
+    }
+
+    @GetMapping("/{clubId}/invitation")
+    public Slice<ClubInvitationResponse> getInvitationList(@PathVariable Long clubId,
+        Pageable pageable) {
         return clubService.getInvitationList(clubId, pageable);
     }
 
-    @PostMapping("/invitation/{clubId}")
-    public void registInvitationList(@PathVariable Long clubId, @RequestBody InvitationRegisterRequest request) {
-        clubService.registInvitationList(clubId, request);
+    @PostMapping("/{clubId}/invitation")
+    public InvitationRegisterResponse registInvitation(@PathVariable Long clubId,
+        @RequestBody InvitationRegisterRequest request) {
+        return clubService.registInvitation(clubId, request);
     }
 
     @PostMapping
-    public ClubRegisterResponse registClub(@RequestPart(value = "ClubRegister") ClubRegisterRequest request,
-        @RequestPart(value = "file", required = false) MultipartFile file){
+    public ClubRegisterResponse registClub(
+        @RequestPart(value = "ClubRegister") ClubRegisterRequest request,
+        @RequestPart(value = "file", required = false) MultipartFile file) {
         return clubService.registClub(request, file);
     }
 
+    @PostMapping("/{clubId}/join")
+    public ClubJoinResponse joinClub(@PathVariable Long clubId) {
+        return clubService.joinClub(clubId);
+    }
+
     @DeleteMapping("/{clubId}/{clubMemberId}")
-    public void leaveClub (@PathVariable Long clubId, @PathVariable Long clubMemberId){
+    public void leaveClub(@PathVariable Long clubId, @PathVariable Long clubMemberId) {
         clubService.leaveClub(clubId, clubMemberId);
     }
 
     @PatchMapping("/{clubMemberId}/approval")
-    public void approveClub (@PathVariable Long clubMemberId){
-        clubService.approveClub(clubMemberId);
+    public ClubApprovalResponse approveClub(@PathVariable Long clubMemberId) {
+        return clubService.approveClub(clubMemberId);
     }
 }
