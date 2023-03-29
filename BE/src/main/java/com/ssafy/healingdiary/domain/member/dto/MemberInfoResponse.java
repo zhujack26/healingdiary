@@ -1,6 +1,5 @@
 package com.ssafy.healingdiary.domain.member.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -8,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberInfo {
+public class MemberInfoResponse {
 
     private String nickname;
 
@@ -18,8 +17,8 @@ public class MemberInfo {
 
     private String region;
 
-    public static MemberInfo of(Member member){
-        return MemberInfo.builder()
+    public static MemberInfoResponse of(Member member){
+        return MemberInfoResponse.builder()
                 .nickname(member.getNickname())
                 .disease(member.getDisease())
                 .imageSrc(member.getMemberImageUrl())

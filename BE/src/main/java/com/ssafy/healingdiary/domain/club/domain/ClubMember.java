@@ -19,7 +19,7 @@ import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
-@Table(name="club_member")
+@Table(name = "club_member")
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,7 +29,7 @@ import lombok.experimental.SuperBuilder;
 public class ClubMember extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="club_id")
+    @JoinColumn(name = "club_id")
     private Club club;
 
     @ManyToOne(fetch = FetchType.LAZY)

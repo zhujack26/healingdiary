@@ -6,7 +6,6 @@ import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -18,7 +17,7 @@ import org.hibernate.annotations.BatchSize;
 
 @Entity
 @Getter
-@Table(name="club")
+@Table(name = "club")
 @Builder
 @AttributeOverride(name = "id", column = @Column(name = "club_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "club_created_date"))
@@ -36,16 +35,19 @@ public class Club extends BaseEntity {
     @NotNull
     private String description;
 
-    @Column(name="club_image_url")
+    @Column(name = "club_image_url")
     private String clubImageUrl;
 
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL)
+    @Builder.Default
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     private List<ClubMember> clubMember = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club",cascade = CascadeType.ALL)
+    @Builder.Default
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     private List<ClubTag> clubTag = new ArrayList<>();
 
-    @OneToMany(mappedBy = "club",cascade = CascadeType.ALL)
+    @Builder.Default
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     private List<Diary> diary = new ArrayList<>();
 
 

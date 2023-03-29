@@ -1,10 +1,7 @@
 package com.ssafy.healingdiary.domain.member.service;
 
 import com.ssafy.healingdiary.domain.member.domain.Member;
-import com.ssafy.healingdiary.domain.member.dto.MemberInfo;
-import com.ssafy.healingdiary.domain.member.dto.MemberUpdate;
-import com.ssafy.healingdiary.domain.member.dto.NicknameCheck;
-import com.ssafy.healingdiary.domain.member.dto.NicknameCheckReqDto;
+import com.ssafy.healingdiary.domain.member.dto.*;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
@@ -12,8 +9,6 @@ import com.ssafy.healingdiary.global.error.CustomException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
@@ -26,7 +21,7 @@ public class MemberService {
     private final PrincipalDetailsService principalDetailsService;
 
 
-    public MemberInfo memberInfoFind(String accessToken) {
+    public MemberInfoResponse memberInfoFind(String accessToken) {
         PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
         Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
 //        Member member = memberRepository.findMemberByProviderEmail("asdfaasdf");
@@ -34,12 +29,12 @@ public class MemberService {
             throw new CustomException(MEMBER_NOT_FOUND);
         }
 
-        MemberInfo foundMember =  MemberInfo.of(member);
+        MemberInfoResponse foundMember =  MemberInfoResponse.of(member);
 
         return foundMember;
     }
 
-    public MemberUpdate memberUpdate(String accessToken, MemberUpdate memberUpdate) {
+    public MemberUpdateResponse memberUpdate(String accessToken, MemberUpdateRequest memberUpdateRequest) {
         PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
         Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
 //        Member member = memberRepository.findById(1L)
@@ -51,20 +46,20 @@ public class MemberService {
         if(member == null){
             throw new CustomException(MEMBER_NOT_FOUND);
         }
-        member.updateMember(memberUpdate);
-        MemberUpdate foundMember =  MemberUpdate.of(member);
+        member.updateMember(memberUpdateRequest);
+        MemberUpdateResponse foundMember =  MemberUpdateResponse.of(member);
 
         return foundMember;
     }
 
-    public NicknameCheck nicknameCheck(NicknameCheckReqDto nickname) {
+    public NicknameCheckResponse nicknameCheck(NicknameCheckRequest nickname) {
         Member member = memberRepository.findMemberByNickname(nickname.getNickname());
         if(member == null){
-            NicknameCheck foundMember =  NicknameCheck.of(false);
+            NicknameCheckResponse foundMember =  NicknameCheckResponse.of(false);
             return foundMember;
         }
         else{
-            NicknameCheck foundMember =  NicknameCheck.of(true);
+            NicknameCheckResponse foundMember =  NicknameCheckResponse.of(true);
             System.out.println(foundMember);
             return foundMember;
         }

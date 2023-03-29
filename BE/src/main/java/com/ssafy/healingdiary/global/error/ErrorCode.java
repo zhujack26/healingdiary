@@ -3,6 +3,7 @@ package com.ssafy.healingdiary.global.error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Getter
 @AllArgsConstructor
