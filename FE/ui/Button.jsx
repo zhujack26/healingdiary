@@ -1,12 +1,13 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
 
-const Button = ({ children, onPress, selected }) => {
+const Button = ({ children, onPress, selected, disabled }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, disabled && styles.disabled]}>
       <Pressable
         onPress={onPress}
         style={({ pressed }) => pressed && styles.pressed}
+        disabled={disabled}
       >
         <View style={[styles.button, selected]}>
           <Text style={[styles.buttonText, selected]}>{children}</Text>
@@ -25,6 +26,11 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.75,
   },
+
+  disabled: {
+    opacity: 0.3,
+  },
+
   button: {
     width: 85,
     height: 30,
@@ -36,8 +42,8 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontFamily: "KoddiUDOnGothic-Regular",
-    color: GlobalColors.colors.gray500,
+    fontFamily: "KoddiUDOnGothic-ExtraBold",
+    color: GlobalColors.colors.black500,
     fontSize: 13,
     textAlign: "center",
   },

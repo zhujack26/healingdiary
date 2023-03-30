@@ -9,7 +9,6 @@ import {
 import { useState, useEffect, useCallback } from "react";
 import { GlobalColors } from "../../constants/color";
 import { duplicationNickname, kakaoSignup } from "../../api/user";
-import { API_END_POINT } from "../../constants";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 import * as ImagePicker from "expo-image-picker";
@@ -18,8 +17,6 @@ import Nickname from "./Nickname";
 import Location from "./Location";
 import Disease from "./Disease";
 import Button from "../../ui/Button";
-import axios from "axios";
-import { kakaoPostConfig } from "./../../api/config";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
@@ -36,6 +33,8 @@ const UserInform = () => {
   const [image, setImage] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDisease, setSelectedDisease] = useState(null);
+  const isValid =
+    selectedLocation && selectedDisease && message === "사용 가능합니다";
 
   const pickImage = useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -87,7 +86,7 @@ const UserInform = () => {
       provider: provider,
     };
     const res = await kakaoSignup(accessToken, body);
-
+    console.log(res);
     // 회원가입에 성공하면 데이터가 넘어오니 storage에 저장한다.
     if (res.id) {
       await AsyncStorage.setItem("jwtToken", res.jwt_token);
@@ -121,9 +120,11 @@ const UserInform = () => {
           <Location title={"지역"} onChangeLocation={onChangeLocation} />
           <Disease title={"병명"} onChangeDisease={onChangeDisease} />
         </View>
-        <Pressable style={styles.button}>
-          <Button onPress={updateUserInfo}>저장</Button>
-        </Pressable>
+        <View style={styles.button}>
+          <Button onPress={updateUserInfo} disabled={!isValid}>
+            저장
+          </Button>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
