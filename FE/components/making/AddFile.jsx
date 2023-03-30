@@ -16,6 +16,7 @@ import ColorImagePicker from "./ColorImagePicker";
 import NatureImagePicker from "./NatureImagePicker";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 const AddFile = () => {
   const [image, setImage] = useState(null);
@@ -48,6 +49,13 @@ const AddFile = () => {
       </TouchableOpacity>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.modalView}>
+          <Feather
+            name="x"
+            size={24}
+            color="black"
+            onPress={() => setModalVisible(false)}
+            style={styles.closeIcon}
+          />
           {!showNatureImagePicker && !showColorImagePicker && (
             <DefalutImagePicker
               onSelect={(selectedImage) => {
@@ -57,20 +65,22 @@ const AddFile = () => {
             />
           )}
 
-          {showNatureImagePicker && !showColorImagePicker && (
+          {showNatureImagePicker && (
             <NatureImagePicker
               onSelect={(selectedImage) => {
                 setImage(selectedImage);
                 setShowNatureImagePicker(false);
+                setModalVisible(false);
               }}
             />
           )}
 
-          {!showNatureImagePicker && showColorImagePicker && (
+          {showColorImagePicker && (
             <ColorImagePicker
               onSelect={(selectedImage) => {
                 setImage(selectedImage);
                 setShowColorImagePicker(false);
+                setModalVisible(false);
               }}
             />
           )}
@@ -169,6 +179,12 @@ const styles = StyleSheet.create({
   pictureContainer1: {
     alignItems: "center",
     padding: 10,
+  },
+  closeIcon: {
+    position: "absolute",
+    top: 150,
+    right: 20,
+    zIndex: 999,
   },
 });
 
