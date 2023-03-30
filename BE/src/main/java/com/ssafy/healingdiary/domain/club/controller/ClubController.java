@@ -42,10 +42,10 @@ public class ClubController {
 //        Authentication authentication,
         boolean all,
         @RequestParam(required = false) String keyword,
-        @RequestParam(required = false) String tagContent,
+        @RequestParam(required = false) String tag,
         Pageable pageable
     ) {
-        return clubService.getClubListByTag(all, keyword, tagContent, pageable);
+        return clubService.getClubListByTag(all, keyword, tag, pageable);
     }
 
     @GetMapping("/{clubId}")
