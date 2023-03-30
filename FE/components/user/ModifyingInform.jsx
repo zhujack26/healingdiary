@@ -120,23 +120,27 @@ const ModifyingInform = () => {
 
   // 회원정보 수정
   const updateUserInfo = async () => {
-    const filename = `${new Date().getTime()}-${Math.random()
-      .toString(36)
-      .substring(2, 15)}.jpg`;
+    const filename = image.split("/").pop();
+    const match = /\.(\w+)$/.exec(filename ?? "");
+    const type = match ? `image/${match[1]}` : `image`;
 
     const data = new FormData();
-    data.append("nickname", nickname);
-    data.append("disease", selectedDisease);
-    data.append("region", selectedLocation);
     data.append("image_file", {
-      uri: await AsyncStorage.getItem("userImage"),
-      type: "image/jpeg",
+      uri: image,
       name: filename,
+      type,
     });
+    console.log("image", image);
+    const update = {
+      nickname: nickname,
+      disease: selectedDisease,
+      region: selectedLocation,
+      image_url: await AsyncStorage.getItem("userImage"),
+    };
 
-    const res = await userInfoUpdate(data);
-    console.log(data);
-    console.log(res);
+    console.log({ update, data });
+    const res = await userInfoUpdate({ update, data });
+    console.log("res", res);
     // 회원수정 성공하면 데이터가 넘어오니 다시 storage에 저장한다.
     // if (res.status === 200) {
     //   await AsyncStorage.setItem("userImage", res.data.member_image_url);
