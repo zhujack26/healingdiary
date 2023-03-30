@@ -17,7 +17,6 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
       <Logo />
     </View>
   );

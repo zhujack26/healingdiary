@@ -1,10 +1,10 @@
 import {
-  TouchableWithoutFeedback,
   View,
   StyleSheet,
   Dimensions,
   Keyboard,
   Text,
+  Pressable,
 } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 import { GlobalColors } from "../../constants/color";
@@ -27,7 +27,7 @@ const UserInform = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const { accessToken, provider, isEdit } = route.params;
+  const { accessToken, provider } = route.params;
   const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
@@ -104,15 +104,16 @@ const UserInform = () => {
   }, [nickname]);
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <Pressable
+      style={styles.container}
+      onPress={Keyboard.dismiss}
+      android_ripple={false}
+    >
       <View style={styles.container}>
         <View style={styles.profile}>
-          {isEdit && <Profile image={image} pickImage={pickImage} />}
-          {!isEdit && (
-            <View style={styles.container}>
-              <Text style={styles.text}>회원정보 등록</Text>
-            </View>
-          )}
+          <View style={styles.container}>
+            <Text style={styles.text}>회원정보 등록</Text>
+          </View>
         </View>
         <View style={styles.inform}>
           <Nickname
@@ -131,7 +132,7 @@ const UserInform = () => {
           </Button>
         </View>
       </View>
-    </TouchableWithoutFeedback>
+    </Pressable>
   );
 };
 
