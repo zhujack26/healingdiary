@@ -3,6 +3,8 @@ import { useFonts } from "expo-font";
 import { Text } from "react-native";
 
 import StackNavigation from "./navigator/StackNavigation";
+import { useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 Text.defaultProps = Text.defaultProps || {};
 Text.defaultProps.allowFontScaling = false;

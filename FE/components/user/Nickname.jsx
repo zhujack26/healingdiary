@@ -25,7 +25,7 @@ const Nickname = ({
           placeholder={placeholder ?? title}
           placeholderTextColor={GlobalColors.colors.white500}
           allowFontScaling={false}
-          onChangeText={(text) => onChangeNickname(text)}
+          onChangeText={onChangeNickname}
           value={nickname}
         />
         <Text style={styles.message}>{message}</Text>

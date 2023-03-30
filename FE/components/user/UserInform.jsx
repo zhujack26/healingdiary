@@ -8,7 +8,9 @@ import {
 } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 import { GlobalColors } from "../../constants/color";
-import { duplicationNickname } from "../../api/user";
+import { duplicationNickname, kakaoSignup } from "../../api/user";
+import { API_END_POINT } from "../../constants";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 import * as ImagePicker from "expo-image-picker";
 import Profile from "./Profile";
@@ -17,13 +19,18 @@ import Location from "./Location";
 import Disease from "./Disease";
 import Button from "../../ui/Button";
 import axios from "axios";
-import { API_END_POINT } from "../../constants";
+import { kakaoPostConfig } from "./../../api/config";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const { width, height } = Dimensions.get("window");
 const regex = /^[a-zA-Z0-9가-힣]{2,8}$/;
 const specialChars = /[ !@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
 
 const UserInform = () => {
+  const route = useRoute();
+  const navigation = useNavigation();
+
+  const { accessToken, provider } = route.params;
   const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
@@ -71,15 +78,26 @@ const UserInform = () => {
     [regex, specialChars]
   );
 
+  // 회원정보 등록
   const updateUserInfo = async () => {
     const body = {
       disease: selectedDisease,
       nickname: nickname,
       region: selectedLocation,
+      provider: provider,
     };
-    console.log(body);
-    const res = await axios.post(`${API_END_POINT}/members/info`, body);
-    console.log(res);
+    const res = await kakaoSignup(accessToken, body);
+
+    // 회원가입에 성공하면 데이터가 넘어오니 storage에 저장한다.
+    if (res.id) {
+      await AsyncStorage.setItem("jwtToken", res.jwt_token);
+      await AsyncStorage.setItem("nickname", res.nickname);
+      await AsyncStorage.setItem("region", res.region);
+      await AsyncStorage.setItem("userImage", res.member_image_url);
+      navigation.navigate("diaryBottomTab");
+    } else {
+      // 나중에 에러처리 필요함
+    }
   };
 
   useEffect(() => {

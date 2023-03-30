@@ -11,19 +11,26 @@ const KakaoWebView = () => {
 
   const requestToken = async (code) => {
     try {
-      // 카카오에 access_token 받아오기
       const response = await getToken(code);
-      // access_token을 가지고 backend 서버에 유저 정보 요청하기
       const res = await kakaoLogin(response.access_token);
-      console.log(res);
       if (res.message === "사용자를 찾을 수 없습니다.") {
-        navigation.navigate("userinform");
+        navigation.navigate("userinform", {
+          provider: "KAKAO",
+          accessToken: response.access_token,
+        });
       } else {
         // AsyncStorage에 저장하기
-        await AsyncStorage.setItem("jwtToken", res.jwtToken);
-        navigation.navigate("diaryBottomTab");
+        const { jwt_token, nickname, region, member_image_url } = res;
+        if (jwt_token && nickname && region && member_image_url) {
+          await AsyncStorage.setItem("jwtToken", jwt_token);
+          await AsyncStorage.setItem("nickname", nickname);
+          await AsyncStorage.setItem("region", region);
+          await AsyncStorage.setItem("userImage", member_image_url);
+          navigation.navigate("diaryBottomTab");
+        }
       }
     } catch (error) {
+      // 에러 처리 따로 필요할듯
       console.log("error", error);
     }
   };
