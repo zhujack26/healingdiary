@@ -1,6 +1,7 @@
 package com.ssafy.healingdiary.domain.diary.service;
 
 import static com.ssafy.healingdiary.global.error.ErrorCode.CLUB_NOT_FOUND;
+import static com.ssafy.healingdiary.global.error.ErrorCode.DIARY_NOT_FOUND;
 import static com.ssafy.healingdiary.global.error.ErrorCode.ENTITY_NOT_FOUND;
 import static com.ssafy.healingdiary.global.error.ErrorCode.RECORD_NOT_FOUND;
 import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
@@ -43,7 +44,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -80,7 +80,7 @@ public class DiaryService {
 
 //    public DiaryDetailResponse getDiaryDetail(UserDetails principal, Long diaryId) {
     public DiaryDetailResponse getDiaryDetail(Long diaryId) {
-        Diary diary = diaryRepository.findById(diaryId).orElseThrow();
+        Diary diary = diaryRepository.findById(diaryId).orElseThrow(()->new CustomException(DIARY_NOT_FOUND));
         DiaryDetailResponse diaryDetailResponse = DiaryDetailResponse.of(diary);
         return diaryDetailResponse;
     }
@@ -125,14 +125,17 @@ public class DiaryService {
 
         List<DiaryTag> tags = diaryCreateRequest.getTags()
             .stream()
-            .map(tagId -> {
-                Tag tag = tagRepository.getReferenceById(tagId);
-                if(tag==null) {throw new CustomException(TAG_NOT_FOUND);}
+            .map(tagContent -> {
+                Tag tag = tagRepository.findByContentLike(tagContent);
+                if(tag==null) {
+                    tag = Tag.builder()
+                        .content(tagContent)
+                        .build();
+                }
                 DiaryTag diaryTag = DiaryTag.builder()
                     .diary(diary)
                     .tag(tag)
                     .build();
-
                 return diaryTag;
             })
             .collect(Collectors.toList());
