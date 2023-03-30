@@ -12,5 +12,5 @@ public class DiaryCreateRequest {
     String fileKey;
     Integer emotionCode;
     Long clubId;
-    List<Long> tags;
+    List<String> tags;
 }

@@ -72,6 +72,7 @@ public class DiaryController {
         @RequestPart MultipartFile image
     ) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
+        System.out.println(principal.getUsername());
         Long memberId = Long.parseLong(principal.getUsername());
         return diaryService.createDiary(memberId, diaryCreateRequest, image);
     }
