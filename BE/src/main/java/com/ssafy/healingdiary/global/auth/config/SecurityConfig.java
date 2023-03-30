@@ -36,8 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**",
                         "/swagger-ui.html",
                         "/auth/account/**",
-                        "/members/nickname",
-                        "/**"
+                        "/"
                 );
     }
 
@@ -54,7 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/auth/account/**",
                         "/v2/api-docs/**", "/swagger-ui.html/**", "/swagger-resources/**",
-                        "/members/nickname", "/**").permitAll()
+                        "/"
+                        ).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

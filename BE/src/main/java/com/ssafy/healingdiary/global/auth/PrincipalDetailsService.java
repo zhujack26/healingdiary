@@ -37,6 +37,7 @@ public class PrincipalDetailsService implements UserDetailsService {
     public PrincipalDetails loadMemberByAccessToken(String accessToken) throws EntityNotFoundException {
         System.out.println("PrincipalDetailsService : 진입");
         String id = jwtTokenizer.getUsernameFromToken(accessToken);
+        System.out.println("사용자정보는 가져오니?");
         Long Pid = Long.parseLong(id);
         Member member = oAuthRepository.findById(Pid);
         System.out.println(member);
