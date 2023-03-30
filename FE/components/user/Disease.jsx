@@ -1,23 +1,20 @@
-import React, { useState } from "react";
-import RNPickerSelect from "react-native-picker-select";
 import { StyleSheet, Text, View } from "react-native";
 import { GlobalColors } from "../../constants/color";
+import RNPickerSelect from "react-native-picker-select";
 
-const Disease = ({ title }) => {
-  const [selectedValue, setSelectedValue] = useState(null);
+const items = [
+  { id: 1, label: "암", value: "암" },
+  { id: 2, label: "심장질환", value: "심장질환" },
+  { id: 3, label: "뇌질환", value: "뇌질환" },
+];
 
-  const items = [
-    { label: "위암", value: "1" },
-    { label: "심장질환", value: "2" },
-    { label: "뇌질환", value: "3" },
-  ];
-
+const Disease = ({ title, onChangeDisease }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <RNPickerSelect
         style={pickerSelectStyles}
-        onValueChange={(value) => setSelectedValue(value)}
+        onValueChange={onChangeDisease}
         items={items}
         placeholder={{
           label: "선택하세요",
@@ -63,7 +60,7 @@ const pickerSelectStyles = StyleSheet.create({
   viewContainer: {
     borderBottomWidth: 1,
     borderBottomColor: GlobalColors.colors.white500,
-  }
+  },
 });
 
 export default Disease;

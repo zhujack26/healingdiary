@@ -33,7 +33,7 @@ const StackNavigation = () => {
         component= {UserInformScreen}
         > */}
         <Stack.Navigator
-          initialRouteName="diaryBottomTab"
+          initialRouteName="Login"
           screenOptions={{
             headerStyle: {
               backgroundColor: GlobalColors.colors.background500,

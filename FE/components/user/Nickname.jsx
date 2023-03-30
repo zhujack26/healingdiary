@@ -1,43 +1,36 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { GlobalColors } from "../../constants/color";
+import PropTypes from "prop-types";
 
-const Nickname = ({ title, placeholder }) => {
-  const [nickname, setNickname] = useState("");
-  const [message, setMessage] = useState("");
-  const users = ["user1", "user2", "user3"]; //더미
-
-  useEffect(() => {
-    if (!nickname) {
-      setMessage("")
-    }
-    else if (
-      0 < nickname.length <= 2 ||
-      nickname.length >= 8 ||
-      !/^[a-zA-Z0-9]*$/.test(nickname)
-    ) {
-      setMessage("유효한 닉네임이 아닙니다");
-    } else if (users.includes(nickname)) {
-      setMessage("중복입니다");
-    } else {
-      setMessage("사용 가능합니다");
-    }
-  }, [nickname]);
-
+const Nickname = ({
+  title,
+  placeholder,
+  message,
+  nickname,
+  onChangeNickname,
+}) => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <TextInput
-        style={styles.input}
-        placeholder={placeholder ?? title}
-        placeholderTextColor={GlobalColors.colors.white500}
-        allowFontScaling={false}
-        onChangeText={(text) => setNickname(text)}
-        value={nickname}
-      />
-      <Text style={styles.message}>{message}</Text>
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.container}>
+        <Text style={styles.title}>{title}</Text>
+        <TextInput
+          style={styles.input}
+          placeholder={placeholder ?? title}
+          placeholderTextColor={GlobalColors.colors.white500}
+          allowFontScaling={false}
+          onChangeText={onChangeNickname}
+          value={nickname}
+        />
+        <Text style={styles.message}>{message}</Text>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
