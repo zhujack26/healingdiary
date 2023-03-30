@@ -17,6 +17,7 @@ const KakaoWebView = () => {
         navigation.navigate("userinform", {
           provider: "KAKAO",
           accessToken: response.access_token,
+          isEdit: false,
         });
       } else {
         // AsyncStorage에 저장하기

@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Dimensions,
   Keyboard,
-  Pressable,
+  Text,
 } from "react-native";
 import { useState, useEffect, useCallback } from "react";
 import { GlobalColors } from "../../constants/color";
@@ -27,7 +27,7 @@ const UserInform = () => {
   const route = useRoute();
   const navigation = useNavigation();
 
-  const { accessToken, provider } = route.params;
+  const { accessToken, provider, isEdit } = route.params;
   const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
   const [image, setImage] = useState(null);
@@ -107,7 +107,12 @@ const UserInform = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View style={styles.profile}>
-          <Profile image={image} pickImage={pickImage} />
+          {isEdit && <Profile image={image} pickImage={pickImage} />}
+          {!isEdit && (
+            <View style={styles.container}>
+              <Text style={styles.text}>회원정보 등록</Text>
+            </View>
+          )}
         </View>
         <View style={styles.inform}>
           <Nickname
@@ -134,17 +139,21 @@ export default UserInform;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     width: width,
+    height: height,
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   profile: {
-    top: 100,
-    height: "10%",
+    flex: 1,
   },
 
   inform: {
-    height: height / 1.4,
-    top: 190,
+    flex: 2,
+    width: width,
+    height: height,
     padding: 30,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -152,7 +161,12 @@ const styles = StyleSheet.create({
   },
 
   button: {
+    position: "absolute",
+    bottom: 50,
     alignItems: "center",
-    top: 50,
+  },
+
+  text: {
+    fontSize: 30,
   },
 });
