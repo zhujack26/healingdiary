@@ -52,7 +52,7 @@ public class MemberController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(@Validated @RequestHeader TokenRegenerateRequest tokenRegenerateRequest,
+    public ResponseEntity<?> reissue(@RequestHeader TokenRegenerateRequest tokenRegenerateRequest,
                                      HttpServletRequest request) {
 
         return memberService.reissue(tokenRegenerateRequest,request);

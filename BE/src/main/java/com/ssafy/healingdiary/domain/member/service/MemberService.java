@@ -115,7 +115,11 @@ public class MemberService {
                     break;
                 }
             }
+
             if(refreshTokenCookie == null){
+                throw new CustomException(BAD_REQUEST);
+            }
+            if(!jwtTokenizer.validateToken(refreshTokenCookie)){
                 throw new CustomException(BAD_REQUEST);
             }
         }
