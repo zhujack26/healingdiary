@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: 85,
-    height: 30,
+    width: 65,
+    height: 25,
     borderRadius: 16,
-    backgroundColor: GlobalColors.colors.white500,
+    backgroundColor: GlobalColors.colors.primary500,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 18,
@@ -43,11 +43,12 @@ const styles = StyleSheet.create({
 
   buttonText: {
     fontFamily: "KoddiUDOnGothic-ExtraBold",
-    color: GlobalColors.colors.black500,
+    color: GlobalColors.colors.white500,
     fontSize: 13,
     textAlign: "center",
   },
+
   selectedText: {
-    color: GlobalColors.colors.white500,
+    color: GlobalColors.colors.primary500,
   },
 });

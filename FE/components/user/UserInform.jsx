@@ -163,8 +163,10 @@ const styles = StyleSheet.create({
 
   button: {
     position: "absolute",
-    bottom: 50,
+    top: 50,
+    right: 10,
     alignItems: "center",
+    justifyContent: "center",
   },
 
   text: {

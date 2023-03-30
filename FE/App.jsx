@@ -16,13 +16,13 @@ export default function App() {
     "KoddiUDOnGothic-Regular": require("./assets/fonts/KoddiUDOnGothic-Regular.ttf"),
   });
 
-  useEffect(() => {
-    removeData = async () => {
-      await AsyncStorage.removeItem("jwtToken");
-    };
+  // useEffect(() => {
+  //   removeData = async () => {
+  //     await AsyncStorage.removeItem("jwtToken");
+  //   };
 
-    removeData();
-  }, []);
+  //   removeData();
+  // }, []);
   if (!fontsLoaded) return <StatusBar style="dark" />;
 
   return (
