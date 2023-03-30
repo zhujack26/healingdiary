@@ -6,6 +6,7 @@ import {
   kakaoGetConfig,
   kakaoPostConfig,
   postConfig,
+  postFormConfig,
 } from "./config";
 
 export const getToken = async (code, token) => {
@@ -42,7 +43,7 @@ export const duplicationNickname = async (token, data) => {
 
 export const userInfoUpdate = async (data) => {
   try {
-    const response = await axiosInstance(postConfig("/members/info", data));
+    const response = await axiosInstance(postFormConfig("/members/info", data));
     return response;
   } catch (error) {
     console.log("e", error);

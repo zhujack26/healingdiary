@@ -19,6 +19,7 @@ import Disease from "./Disease";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ConfirmButton from "./../../ui/ConfirmButton";
 import { userInfoUpdate } from "./../../api/user";
+import { API_END_POINT } from "../../constants";
 
 const { width, height } = Dimensions.get("window");
 const regex = /^[a-zA-Z0-9가-힣]{2,8}$/;
@@ -123,26 +124,18 @@ const ModifyingInform = () => {
       .toString(36)
       .substring(2, 15)}.jpg`;
 
-    const update = {
-      nickname,
-      disease: selectedDisease,
-      region: selectedLocation,
-      image_url: {
-        uri: await AsyncStorage.getItem("userImage"),
-        type: "image/jpeg",
-        name: filename,
-      },
-    };
     const data = new FormData();
-    data.append("update", JSON.stringify(update));
+    data.append("nickname", nickname);
+    data.append("disease", selectedDisease);
+    data.append("region", selectedLocation);
     data.append("image_file", {
       uri: await AsyncStorage.getItem("userImage"),
       type: "image/jpeg",
       name: filename,
     });
 
-    console.log(data);
     const res = await userInfoUpdate(data);
+    console.log(data);
     console.log(res);
     // 회원수정 성공하면 데이터가 넘어오니 다시 storage에 저장한다.
     // if (res.status === 200) {
