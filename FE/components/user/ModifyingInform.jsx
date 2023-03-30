@@ -6,7 +6,7 @@ import {
   Keyboard,
   Pressable,
 } from "react-native";
-import { useReducer, useState, useEffect, useCallback } from "react";
+import { useReducer, useEffect, useCallback } from "react";
 import { GlobalColors } from "../../constants/color";
 import { duplicationNickname } from "../../api/user";
 import { useNavigation } from "@react-navigation/native";
@@ -18,9 +18,9 @@ import Profile from "./Profile";
 import Nickname from "./Nickname";
 import Location from "./Location";
 import Disease from "./Disease";
-import Button from "../../ui/Button";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axiosInstance from "./../../api/interceptor";
+import ConfirmButton from "./../../ui/ConfirmButton";
 
 const { width, height } = Dimensions.get("window");
 const regex = /^[a-zA-Z0-9가-힣]{2,8}$/;
@@ -187,13 +187,16 @@ const ModifyingInform = () => {
       android_ripple={false}
     >
       <View style={styles.container}>
-        <View style={styles.iconContainer} onPress={() => navigation.goBack()}>
+        <Pressable
+          style={styles.iconContainer}
+          onPress={() => navigation.goBack()}
+        >
           <Ionicons
             name="chevron-back"
             size={32}
             color={GlobalColors.colors.black500}
           />
-        </View>
+        </Pressable>
         <View style={styles.profile}>
           <Profile pickImage={pickImage} image={image} />
         </View>
@@ -209,9 +212,9 @@ const ModifyingInform = () => {
           <Disease title={"병명"} onChangeDisease={onChangeDisease} />
         </View>
         <View style={styles.button}>
-          <Button onPress={updateUserInfo} disabled={!isValid}>
+          <ConfirmButton onPress={updateUserInfo} disabled={!isValid}>
             저장
-          </Button>
+          </ConfirmButton>
         </View>
       </View>
     </Pressable>
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
   },
 
   inform: {
-    flex: 2,
+    flex: 1.5,
     width: width,
     height: height,
     padding: 30,
@@ -247,7 +250,7 @@ const styles = StyleSheet.create({
   button: {
     position: "absolute",
     top: 5,
-    right: 10,
+    right: 0,
     alignItems: "center",
     justifyContent: "center",
   },

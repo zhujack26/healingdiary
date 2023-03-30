@@ -1,12 +1,13 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
 
-const Button = ({ children, onPress, selected }) => {
+const ConfirmButton = ({ children, onPress, selected, disabled }) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, disabled && styles.disabled]}>
       <Pressable
         onPress={onPress}
         style={({ pressed }) => pressed && styles.pressed}
+        disabled={disabled}
       >
         <View style={[styles.button, selected]}>
           <Text style={[styles.buttonText, selected]}>{children}</Text>
@@ -16,7 +17,7 @@ const Button = ({ children, onPress, selected }) => {
   );
 };
 
-export default Button;
+export default ConfirmButton;
 
 const styles = StyleSheet.create({
   container: {
@@ -31,8 +32,8 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    width: 85,
-    height: 30,
+    width: 65,
+    height: 25,
     borderRadius: 16,
     backgroundColor: GlobalColors.colors.primary500,
     alignItems: "center",
@@ -48,6 +49,6 @@ const styles = StyleSheet.create({
   },
 
   selectedText: {
-    color: GlobalColors.colors.black500,
+    color: GlobalColors.colors.primary500,
   },
 });

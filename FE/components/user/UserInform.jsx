@@ -11,13 +11,13 @@ import { GlobalColors } from "../../constants/color";
 import { duplicationNickname, kakaoSignup } from "../../api/user";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import * as ImagePicker from "expo-image-picker";
 import Profile from "./Profile";
 import Nickname from "./Nickname";
 import Location from "./Location";
 import Disease from "./Disease";
-import Button from "../../ui/Button";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ConfirmButton from "./../../ui/ConfirmButton";
 
 const { width, height } = Dimensions.get("window");
 const regex = /^[a-zA-Z0-9가-힣]{2,8}$/;
@@ -30,23 +30,10 @@ const UserInform = () => {
   const { accessToken, provider } = route.params;
   const [nickname, setNickname] = useState("");
   const [message, setMessage] = useState("");
-  const [image, setImage] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedDisease, setSelectedDisease] = useState(null);
   const isValid =
     selectedLocation && selectedDisease && message === "사용 가능합니다";
-
-  const pickImage = useCallback(async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [3, 3],
-      quality: 1,
-    });
-    if (!result.canceled) {
-      setImage(result.assets[0].uri);
-    }
-  }, []);
 
   const onChangeNickname = useCallback((text) => {
     setNickname(text);
@@ -127,9 +114,9 @@ const UserInform = () => {
           <Disease title={"병명"} onChangeDisease={onChangeDisease} />
         </View>
         <View style={styles.button}>
-          <Button onPress={updateUserInfo} disabled={!isValid}>
+          <ConfirmButton onPress={updateUserInfo} disabled={!isValid}>
             저장
-          </Button>
+          </ConfirmButton>
         </View>
       </View>
     </Pressable>
