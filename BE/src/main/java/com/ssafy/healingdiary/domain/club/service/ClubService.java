@@ -7,6 +7,7 @@ import com.ssafy.healingdiary.domain.club.dto.ClubApprovalResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubDetailResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubJoinResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubListResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
@@ -208,5 +209,20 @@ public class ClubService {
             .collect(Collectors.toList());
         ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, tags);
         return clubDetailResponse;
+    }
+
+    public Slice<ClubListResponse> recommendClubList(String nickname, Pageable pageable) {
+        Member member = memberRepository.findMemberByNickname(nickname);
+        Slice<ClubListResponse> list = clubRepository.findUnionList(member, pageable);
+        list.stream().forEach((response -> {
+            Club club = clubRepository.findById(response.getClubId()).get();
+            List<String> tags = clubTagRepository.findByClub(club).stream()
+                .map((clubTag -> {
+                    return clubTag.getTag().getContent();
+                }))
+                .collect(Collectors.toList());
+            response.setTags(tags);
+        }));
+        return list;
     }
 }
