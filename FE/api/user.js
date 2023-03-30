@@ -39,3 +39,12 @@ export const duplicationNickname = async (token, data) => {
   const response = await axios(postConfig("/members/nickname", token, data));
   return response.data.result;
 };
+
+export const userInfoUpdate = async (data) => {
+  try {
+    const response = await axiosInstance(postConfig("/members/info", data));
+    return response;
+  } catch (error) {
+    console.log("e", error);
+  }
+};

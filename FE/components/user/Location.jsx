@@ -17,7 +17,7 @@ const items = [
   { id: 12, label: "제주도", value: "제주도" },
 ];
 
-const Location = ({ title, onChangeLocation }) => {
+const Location = ({ title, onChangeLocation, selectedLocation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -25,6 +25,7 @@ const Location = ({ title, onChangeLocation }) => {
         style={pickerSelectStyles}
         onValueChange={onChangeLocation}
         items={items}
+        value={selectedLocation}
         placeholder={{
           label: "선택하세요",
           value: null,

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   StyleSheet,
@@ -11,7 +10,6 @@ import { GlobalColors } from "../../constants/color";
 import { duplicationNickname } from "../../api/user";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
-import { API_END_POINT } from "./../../constants/index";
 
 import * as ImagePicker from "expo-image-picker";
 import Profile from "./Profile";
@@ -19,8 +17,8 @@ import Nickname from "./Nickname";
 import Location from "./Location";
 import Disease from "./Disease";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import axiosInstance from "./../../api/interceptor";
 import ConfirmButton from "./../../ui/ConfirmButton";
+import { userInfoUpdate } from "./../../api/user";
 
 const { width, height } = Dimensions.get("window");
 const regex = /^[a-zA-Z0-9가-힣]{2,8}$/;
@@ -38,7 +36,7 @@ const initialState = {
 const reducer = (state, action) => {
   switch (action.type) {
     case "SET_NICKNAME":
-      return { ...state, nickname: action.payload.nickanme };
+      return { ...state, nickname: action.payload.nickname };
     case "SET_MESSAGE":
       return { ...state, message: action.payload.message };
     case "SET_IMAGE":
@@ -47,8 +45,7 @@ const reducer = (state, action) => {
       return { ...state, selectedLocation: action.payload.selectedLocation };
     case "SET_SELECTED_DISEASE":
       return { ...state, selectedDisease: action.payload.selectedDisease };
-    case "SET_IS_VALID":
-      return { ...state, isValid: action.payload.isValid };
+
     default:
       return state;
   }
@@ -58,9 +55,11 @@ const ModifyingInform = () => {
   console.log("렌더링");
   const navigation = useNavigation();
   const [
-    { nickname, message, image, selectedLocation, selectedDisease, isValid },
+    { nickname, message, image, selectedLocation, selectedDisease },
     dispatch,
   ] = useReducer(reducer, initialState);
+  const isValid =
+    selectedLocation && selectedDisease && message === "사용 가능합니다";
 
   const pickImage = useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -100,8 +99,6 @@ const ModifyingInform = () => {
           type: "SET_MESSAGE",
           payload: { message: "중복입니다" },
         });
-        dispatch({ type: "SET_IS_VALID", payload: { isValid: false } });
-        return;
       }
       // 닉네임이 2글자 이상 8글자 이하가 아님
       if (!regex.test(nickname) || specialChars.test(nickname)) {
@@ -109,12 +106,12 @@ const ModifyingInform = () => {
           type: "SET_MESSAGE",
           payload: { message: "유효한 닉네임이 아닙니다." },
         });
-        dispatch({ type: "SET_IS_VALID", payload: { isValid: false } });
+
         return;
       }
       dispatch({
         type: "SET_MESSAGE",
-        payload: { message: "사용 가능합니다." },
+        payload: { message: "사용 가능합니다" },
       });
     },
     [regex, specialChars]
@@ -125,28 +122,39 @@ const ModifyingInform = () => {
     const filename = `${new Date().getTime()}-${Math.random()
       .toString(36)
       .substring(2, 15)}.jpg`;
+
+    const update = {
+      nickname,
+      disease: selectedDisease,
+      region: selectedLocation,
+      image_url: {
+        uri: await AsyncStorage.getItem("userImage"),
+        type: "image/jpeg",
+        name: filename,
+      },
+    };
     const data = new FormData();
-    data.append("disease", selectedDisease);
-    data.append("nickname", nickname);
-    data.append("region", selectedLocation);
-    data.append("image", {
-      uri: image,
+    data.append("update", JSON.stringify(update));
+    data.append("image_file", {
+      uri: await AsyncStorage.getItem("userImage"),
       type: "image/jpeg",
       name: filename,
     });
+
     console.log(data);
-    const res = await axiosInstance.post(`${API_END_POINT}/members/info`, body);
+    const res = await userInfoUpdate({ update, image_file: image });
+    console.log(res);
     // 회원수정 성공하면 데이터가 넘어오니 다시 storage에 저장한다.
-    if (res.status === 200) {
-      await AsyncStorage.setItem("userImage", res.data.member_image_url);
-      await AsyncStorage.setItem("nickname", res.data.nickname);
-      await AsyncStorage.setItem("region", res.data.region);
-      await AsyncStorage.setItem("disease", res.data.disease);
-      navigation.navigate("diaryBottomTab");
-    } else {
-      console.log("에러처리 해야함");
-      //
-    }
+    // if (res.status === 200) {
+    //   await AsyncStorage.setItem("userImage", res.data.member_image_url);
+    //   await AsyncStorage.setItem("nickname", res.data.nickname);
+    //   await AsyncStorage.setItem("region", res.data.region);
+    //   await AsyncStorage.setItem("disease", res.data.disease);
+    //   navigation.navigate("diaryBottomTab");
+    // } else {
+    //   console.log("에러처리 해야함");
+    //   //
+    // }
   };
 
   const getUserInfo = useCallback(async () => {
@@ -157,6 +165,8 @@ const ModifyingInform = () => {
         "region",
         "disease",
       ]);
+
+      console.log(image, nickname, region, disease);
       dispatch({ type: "SET_IMAGE", payload: { image: image[1] } });
       dispatch({ type: "SET_NICKNAME", payload: { nickname: nickname[1] } });
       dispatch({
@@ -208,8 +218,16 @@ const ModifyingInform = () => {
             nickname={nickname}
             onChangeNickname={onChangeNickname}
           />
-          <Location title={"지역"} onChangeLocation={onChangeLocation} />
-          <Disease title={"병명"} onChangeDisease={onChangeDisease} />
+          <Location
+            title={"지역"}
+            selectedLocation={selectedLocation}
+            onChangeLocation={onChangeLocation}
+          />
+          <Disease
+            title={"병명"}
+            selectedDisease={selectedDisease}
+            onChangeDisease={onChangeDisease}
+          />
         </View>
         <View style={styles.button}>
           <ConfirmButton onPress={updateUserInfo} disabled={!isValid}>
@@ -221,7 +239,7 @@ const ModifyingInform = () => {
   );
 };
 
-export default React.memo(ModifyingInform);
+export default ModifyingInform;
 
 const styles = StyleSheet.create({
   container: {

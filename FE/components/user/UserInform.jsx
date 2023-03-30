@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
 
   inform: {
-    flex: 2,
+    flex: 1.5,
     width: width,
     height: height,
     padding: 30,
