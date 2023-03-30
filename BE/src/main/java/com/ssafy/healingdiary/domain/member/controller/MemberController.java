@@ -10,7 +10,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,13 +36,10 @@ public class MemberController {
 
     @PostMapping("/info")
     public MemberUpdateResponse memberInfoUpdate(Authentication authentication,
-                                                 @RequestBody MemberUpdateRequest memberUpdateRequest
-    ){
+                                                 @RequestPart(value = "update") MemberUpdateRequest memberUpdateRequest,
+                                                 @RequestPart(value = "image_file")MultipartFile file) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
-
-        // 사용자 정보 수정
-
-        return memberService.memberUpdate(principal.getPassword(), memberUpdateRequest);
+        return memberService.memberUpdate(principal.getPassword(),memberUpdateRequest, file);
 
 
     }

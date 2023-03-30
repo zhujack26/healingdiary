@@ -6,6 +6,7 @@ import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
 import com.ssafy.healingdiary.global.error.CustomException;
+import com.ssafy.healingdiary.infra.storage.S3StorageClient;
 import com.ssafy.healingdiary.global.error.ErrorCode;
 import com.ssafy.healingdiary.global.error.ErrorResponse;
 import com.ssafy.healingdiary.global.jwt.CookieUtil;
@@ -26,12 +27,18 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
 import static com.ssafy.healingdiary.global.error.ErrorCode.BAD_REQUEST;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+
 import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class MemberService {
+
+    private final S3StorageClient s3Service;
 
     private final MemberRepository memberRepository;
 
@@ -58,18 +65,26 @@ public class MemberService {
         return foundMember;
     }
 
-    public MemberUpdateResponse memberUpdate(String providerEmail, MemberUpdateRequest memberUpdateRequest) {
+
+    public MemberUpdateResponse memberUpdate(String providerEmail, MemberUpdateRequest memberUpdateRequest,
+                                             MultipartFile file) throws IOException {
         Member member = memberRepository.findMemberByProviderEmail(providerEmail);
-//        Member member = memberRepository.findById(1L)
-//                .orElseThrow(() -> {
-//                    throw new CustomException(NOT_FOUND_USER);
-//                });
-        System.out.println("컴온");
-        System.out.println(member.getProviderEmail());
+
         if(member == null){
             throw new CustomException(MEMBER_NOT_FOUND);
         }
-        member.updateMember(memberUpdateRequest);
+        String preImg = memberUpdateRequest.getImageUrl();
+        String imageUrl = null;
+        if (file != null) {
+            s3Service.deleteFile(preImg);
+            imageUrl = s3Service.uploadFile(file);
+        } else if (memberUpdateRequest.getImageUrl() == null) {
+            s3Service.deleteFile(preImg);
+        } else {
+            imageUrl = memberUpdateRequest.getImageUrl();
+        }
+
+        member.updateMember(memberUpdateRequest, imageUrl);
         MemberUpdateResponse foundMember =  MemberUpdateResponse.of(member);
 
         return foundMember;

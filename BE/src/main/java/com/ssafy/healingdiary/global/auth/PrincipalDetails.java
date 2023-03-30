@@ -3,6 +3,7 @@ package com.ssafy.healingdiary.global.auth;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,10 +20,13 @@ public class PrincipalDetails implements UserDetails {
         this.member = member;
     }
 
+    public Long getId() {
+        return member.getId();
+    }
 
     @Override
     public String getUsername() {
-        return member.getNickname();
+        return member.getId().toString();
     }
 
     @Override
