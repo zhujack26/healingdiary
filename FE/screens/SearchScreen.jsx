@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
     fontFamily: "KoddiUDOnGothic-Regular",
     textAlign: "center",
     fontSize: 16,
+    padding: 3,
   },
 
   activeText: {
