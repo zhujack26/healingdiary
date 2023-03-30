@@ -1,6 +1,7 @@
 package com.ssafy.healingdiary.global.jwt;
 
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
+import com.ssafy.healingdiary.global.error.CustomException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
@@ -24,6 +25,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static com.ssafy.healingdiary.global.error.ErrorCode.TOKEN_NOT_VALID;
 
 
 @Getter
@@ -133,7 +136,7 @@ public class JwtTokenizer {
     }
     public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            Jws<Claims> claims = Jwts.parser().setSigningKey(encodeBase64SecretKey(secretKey)).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         }catch (SignatureException e) {
             //쿠키에 있는 리프레시토큰 가져오기
@@ -142,6 +145,7 @@ public class JwtTokenizer {
             return false;
         }
         catch (Exception e) {
+            System.out.println("만료된 토큰들");
             return false;
         }
     }
