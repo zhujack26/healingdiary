@@ -130,7 +130,7 @@ public class MemberService {
             throw new CustomException(BAD_REQUEST);
 
         }
-        String memberId = jwtTokenizer.getId(token);
+        String memberId = jwtTokenizer.getId(refreshTokenCookie);
         String refreshTokenInRedis = redisUtil.getToken(memberId);
 
         if (ObjectUtils.isEmpty(refreshTokenInRedis)) {
