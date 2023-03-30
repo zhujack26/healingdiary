@@ -5,6 +5,9 @@ import com.ssafy.healingdiary.domain.member.dto.*;
 import com.ssafy.healingdiary.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
@@ -25,12 +28,10 @@ public class MemberController {
 
     @PostMapping("/info")
     public MemberUpdateResponse memberInfoUpdate(@RequestHeader(value="Authorization") String authorization,
-                                                 @RequestBody MemberUpdateRequest memberUpdateRequest){
+                                                 @RequestPart(value = "update") MemberUpdateRequest memberUpdateRequest,
+                                                 @RequestPart(value = "image_file")MultipartFile file) throws IOException {
         String accessToken = authorization.replace("Bearer ", "");
-
-        // 사용자 정보 수정
-
-        return memberService.memberUpdate(accessToken, memberUpdateRequest);
+        return memberService.memberUpdate(accessToken, memberUpdateRequest, file);
 
 
     }
