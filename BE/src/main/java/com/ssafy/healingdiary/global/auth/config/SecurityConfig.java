@@ -36,31 +36,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/swagger-resources/**",
                         "/swagger-ui.html",
                         "/auth/account/**",
-                        "/members/nickname",
-                        "/**"
+                        "/members/nickname","/"
                 );
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .httpBasic().disable()
-            .cors()
+                .httpBasic().disable()
+                .cors()
                 .and()
                 .formLogin().disable()
                 .csrf().disable()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(
-                        "/auth/account/**",
+                        "/auth/account/**", "/",
                         "/v2/api-docs/**", "/swagger-ui.html/**", "/swagger-resources/**",
-                        "/members/nickname", "/**").permitAll()
+                        "/members/nickname").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(principalDetailsService, jwtTokenizer), UsernamePasswordAuthenticationFilter.class);
-
     }
 }

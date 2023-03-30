@@ -22,6 +22,7 @@ public class MemberService {
 
 
     public MemberInfoResponse memberInfoFind(String accessToken) {
+        System.out.println("asdf");
         PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
         Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
 //        Member member = memberRepository.findMemberByProviderEmail("asdfaasdf");

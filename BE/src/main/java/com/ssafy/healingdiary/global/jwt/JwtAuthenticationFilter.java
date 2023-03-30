@@ -26,11 +26,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = request.getHeader("Authorization").replace("Bearer ", "");
+        System.out.println("asdfasdf나왓어");
 
-        if (token != null && !jwtTokenizer.getClaims(token).getBody().getExpiration().before(new Date())) {
+        if (token != null && jwtTokenizer.validateToken(token)) {
+            System.out.println("asdf토큰 검정끝");
             Authentication authentication = principalDetailsService.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
+        else if(!jwtTokenizer.validateToken(token)){
+
+        }
+
 
         filterChain.doFilter(request, response);
     }

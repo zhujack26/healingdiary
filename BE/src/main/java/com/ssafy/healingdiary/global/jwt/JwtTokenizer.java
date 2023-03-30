@@ -2,11 +2,13 @@ package com.ssafy.healingdiary.global.jwt;
 
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 
 @Getter
 @Component
@@ -127,6 +130,20 @@ public class JwtTokenizer {
         String id = claim.get("sub", String.class);
 
         return id;
+    }
+    public boolean validateToken(String jwtToken) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
+        }catch (SignatureException e) {
+            //쿠키에 있는 리프레시토큰 가져오기
+            System.out.println("이상한 jwt");
+            e.printStackTrace();
+            return false;
+        }
+        catch (Exception e) {
+            return false;
+        }
     }
 
 
