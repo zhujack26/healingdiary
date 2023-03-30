@@ -6,6 +6,6 @@ import org.springframework.data.domain.Slice;
 
 public interface ClubRepositoryCustom {
 
-    Slice<ClubSimpleResponse> findByIdAndTagId(Long id, Long tag, String keyword, Pageable pageable);
-
+    Slice<ClubSimpleResponse> findByIdAndTagId(Long id, Long tag, String keyword,
+        Pageable pageable);
 }
