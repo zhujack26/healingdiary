@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,38 +9,56 @@ import {
 import { GlobalColors } from "../../constants/color";
 import { DATA } from "../../model/DataHashtag";
 
-const AddHashtag = () => {
-  const [tagsState, setTagsState] = useState(DATA);
+const AddHashtag = ({ onToggleCompleteButtonVisibility }) => {
+  useEffect(() => {
+    if (selectedTags.some((tag) => DATA.includes(tag))) {
+      onToggleCompleteButtonVisibility(true);
+    } else {
+      onToggleCompleteButtonVisibility(false);
+    }
+  }, [selectedTags, onToggleCompleteButtonVisibility]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [inputText, setInputText] = useState("");
+  const [dataTags, setDataTags] = useState(0); // DATA에서 선택한 해시태그 개수를 저장하는 상태 변수 추가
+  const maxDataTags = 1; // 최대 선택 가능한 DATA 해시태그 개수를 1개로 설정
 
   const handleTagSelection = (tag) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(
         selectedTags.filter((selectedTag) => selectedTag !== tag)
       );
+      setDataTags(dataTags - 1); // DATA에서 선택한 해시태그 개수를 줄입니다.
+      onToggleCompleteButtonVisibility(false);
     } else {
-      if (selectedTags.length < 1) {
+      if (dataTags < maxDataTags) {
         setSelectedTags([...selectedTags, tag]);
+        setDataTags(dataTags + 1); // DATA에서 선택한 해시태그 개수를 늘립니다.
+        onToggleCompleteButtonVisibility(true);
       }
     }
   };
   const handleInputTextChange = (text) => {
     setInputText(text);
   };
-
+  const isTagAlreadySelected = (tag) => {
+    return selectedTags.some(
+      (selectedTag) => selectedTag.keyword === tag.keyword
+    );
+  };
   const handleInputSubmit = () => {
     if (inputText.trim() !== "" && selectedTags.length < 3) {
       const newTag = {
         id: `custom-${Date.now()}`,
-        keyword: `#${inputText.trim()}`,
+        keyword: `${inputText.trim()}`,
       };
-      setSelectedTags([...selectedTags, newTag]);
-      setInputText("");
+      if (!isTagAlreadySelected(newTag)) {
+        // 중복되지 않은 경우에만 추가
+        setSelectedTags([...selectedTags, newTag]);
+        setInputText("");
+      }
     }
   };
   const handleSelectedTagPress = (tag) => {
-    // 선택한 태그를 삭제
     setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
   };
   const renderTextInput = () => (
@@ -49,12 +67,33 @@ const AddHashtag = () => {
         value={inputText}
         onChangeText={handleInputTextChange}
         onSubmitEditing={handleInputSubmit}
-        placeholder="해시태그를 입력하세요"
+        placeholder="원하시는 해시태그를 입력하세요"
         style={styles.input}
-        textAlign="center"
       />
     </View>
   );
+  const warningTextHash = () => {
+    if (selectedTags.length === 3) {
+      return (
+        <Text style={styles.warningText}>
+          * 해시태그는 최대 3개까지 가능합니다 *
+        </Text>
+      );
+    } else {
+      null;
+    }
+  };
+  const warningTextEmotion = () => {
+    if (!selectedTags.some((tag) => DATA.includes(tag))) {
+      return (
+        <Text style={styles.warningText}>
+          * 감정은 최소 1개를 선택해야 합니다. *
+        </Text>
+      );
+    } else {
+      return null;
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -89,9 +128,8 @@ const AddHashtag = () => {
           </TouchableOpacity>
         ))}
       </View>
-      <Text style={styles.warningText}>
-        * 해시태그는 최대 3개까지 선택 가능합니다 *
-      </Text>
+      {warningTextEmotion()}
+      {warningTextHash()}
     </View>
   );
 };
