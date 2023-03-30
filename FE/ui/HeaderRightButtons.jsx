@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HeaderRightButtons = ({ navigation }) => {
-  const [userImage, setUserImage] = useState("");
+  const [userImage, setUserImage] = useState(null);
+  const getUserImage = useCallback(async () => {
+    const data = await AsyncStorage.getItem("userImage");
+    setUserImage(data);
+  }, []);
 
   useEffect(() => {
-    const getData = async () => {
-      setUserImage(await AsyncStorage.getItem("userImage"));
-    };
-    getData();
-  }, []);
-  console.log(userImage);
+    getUserImage();
+  }, [getUserImage]);
+
   return (
     <View style={{ flexDirection: "row" }}>
       <TouchableOpacity onPress={() => navigation.navigate("Notification")}>
@@ -25,7 +26,7 @@ const HeaderRightButtons = ({ navigation }) => {
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("ModifyingInform")}>
         <View>
-          <Image style={styles.img} source={{ uri: userImage }} />
+          <Image style={styles.img} source={userImage && { uri: userImage }} />
         </View>
       </TouchableOpacity>
     </View>
@@ -41,4 +42,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HeaderRightButtons;
+export default React.memo(HeaderRightButtons);

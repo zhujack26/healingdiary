@@ -7,6 +7,7 @@ import { GlobalColors } from "../constants/color";
 import Button from "../ui/Button";
 
 const deviceWidth = Dimensions.get("window").width - 50;
+
 const ModifyingInformScreen = () => {
   return (
     <View style={styles.container}>
