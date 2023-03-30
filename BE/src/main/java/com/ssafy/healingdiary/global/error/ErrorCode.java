@@ -23,7 +23,7 @@ public enum ErrorCode {
     RECORD_NOT_FOUND(HttpStatus.OK, -11,"음성 파일이 없거나 유효기간이 지났습니다."),
     TAG_NOT_FOUND(HttpStatus.OK, -12,"태그를 찾을 수 없습니다."),
 
-
+    ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, -13,"만료된 Access Token 입니다."),
     CONFLICT(HttpStatus.CONFLICT, -409, "이미 가입된 회원입니다.");
 
     private final HttpStatus status;

@@ -3,8 +3,16 @@ package com.ssafy.healingdiary.domain.member.controller;
 
 import com.ssafy.healingdiary.domain.member.dto.*;
 import com.ssafy.healingdiary.domain.member.service.MemberService;
+import com.ssafy.healingdiary.global.jwt.TokenRegenerateRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RestController
@@ -13,24 +21,23 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping
-    public MemberInfoResponse memberDetailInfo(@RequestHeader(value="Authorization") String authorization){
-
-        String accessToken = authorization.replace("Bearer ", "");
+    public MemberInfoResponse memberDetailInfo(Authentication authentication){
 
         // 사용자 조회
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
 
-
-        return memberService.memberInfoFind(accessToken);
+        return memberService.memberInfoFind(principal.getPassword());
     }
 
     @PostMapping("/info")
-    public MemberUpdateResponse memberInfoUpdate(@RequestHeader(value="Authorization") String authorization,
-                                                 @RequestBody MemberUpdateRequest memberUpdateRequest){
-        String accessToken = authorization.replace("Bearer ", "");
+    public MemberUpdateResponse memberInfoUpdate(Authentication authentication,
+                                                 @RequestBody MemberUpdateRequest memberUpdateRequest
+    ){
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
 
         // 사용자 정보 수정
 
-        return memberService.memberUpdate(accessToken, memberUpdateRequest);
+        return memberService.memberUpdate(principal.getPassword(), memberUpdateRequest);
 
 
     }
@@ -40,6 +47,13 @@ public class MemberController {
         // 닉네임 조회
 
         return memberService.nicknameCheck(memberNickname);
+    }
+
+    @PostMapping("/reissue")
+    public ResponseEntity<?> reissue(@Validated @RequestHeader TokenRegenerateRequest tokenRegenerateRequest,
+                                     HttpServletRequest request,Authentication authentication) {
+
+        return memberService.reissue(tokenRegenerateRequest,request,authentication);
     }
 
 

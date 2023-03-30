@@ -1,34 +1,24 @@
 package com.ssafy.healingdiary.global.jwt;
 
-import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
-import com.ssafy.healingdiary.global.error.CustomException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
+import com.ssafy.healingdiary.global.auth.PrincipalDetails;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import static com.ssafy.healingdiary.global.error.ErrorCode.TOKEN_NOT_VALID;
+import java.util.*;
 
 
+@Slf4j
 @Getter
 @Component
 @Service
@@ -37,12 +27,15 @@ public class JwtTokenizer {
 
     @Value("${jwt.secret}")
     private String secretKey;
+    private static final String AUTHORITIES_KEY = "sub";
 
     @Value("${jwt.expiration-accesstoken-minutes}")
     private int accesstokenExpiration;
 
     @Value("${jwt.expiration-refreshtoken-minutes}")
     private int refreshtokenExpiration;
+
+    private final PrincipalDetails principalDetails;
 
 
     public String encodeBase64SecretKey(String secretKey) {
@@ -127,6 +120,13 @@ public class JwtTokenizer {
         System.out.println(id);
         return id;
     }
+    public List getRoleListFromToken(String token) {
+        Jws<Claims>  claims = getClaims(token);
+        Claims claim = claims.getBody();
+        List roleList = claim.get("role", List.class);
+        return roleList;
+    }
+
     public String getUsernameFromToken(String token) {
         Jws<Claims>  claims = getClaims(token);
         Claims claim = claims.getBody();
@@ -136,19 +136,29 @@ public class JwtTokenizer {
     }
     public boolean validateToken(String jwtToken) {
         try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(encodeBase64SecretKey(secretKey)).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        }catch (SignatureException e) {
-            //쿠키에 있는 리프레시토큰 가져오기
-            System.out.println("이상한 jwt");
-            e.printStackTrace();
+            Jwts.parser().setSigningKey(encodeBase64SecretKey(secretKey)).parseClaimsJws(jwtToken);
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            log.error("Invalid JWT signature");
             return false;
-        }
-        catch (Exception e) {
-            System.out.println("만료된 토큰들");
+        } catch (UnsupportedJwtException e) {
+            log.error("Unsupported JWT token");
+            return false;
+        } catch (IllegalArgumentException e) {
+            log.error("JWT token is invalid");
             return false;
         }
     }
+    public Claims parseClaims(String accessToken) {
+        try {
+            Key key = getKeyFromEncodedKey(encodeBase64SecretKey(secretKey));
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
+    }
+
 
 
 

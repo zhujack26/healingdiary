@@ -1,14 +1,20 @@
 package com.ssafy.healingdiary.global.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
+import com.ssafy.healingdiary.global.redis.RedisUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,41 +28,39 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
 
 
+    private final RedisTemplate redisTemplate;
+
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String token = request.getHeader("Authorization").replace("Bearer ", "");
-        System.out.println("asdfasdf나왓어");
-
-        if (token != null && jwtTokenizer.validateToken(token)) {
-            System.out.println("asdf토큰 검정끝");
-            Authentication authentication = principalDetailsService.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
-        else if(!jwtTokenizer.validateToken(token)){
-            //리프레시토큰을 조회
-            logger.error("만료난 토큰");
-            Cookie[] cookies = request.getCookies();
-            String refreshToken = null;
-
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if ("refreshToken".equals(cookie.getName())) {
-                        break;
+        try{
+            String path = request.getServletPath();
+            if (path.endsWith("reissue")) {
+                filterChain.doFilter(request, response);
+            }
+            else{
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                boolean isTokenValid = jwtTokenizer.validateToken(token);
+                if (StringUtils.hasText(token) && isTokenValid) {
+                    String memberId = jwtTokenizer.getUsernameFromToken(token);
+                    String isLogout = (String) redisTemplate.opsForValue().get(memberId);
+                    if (ObjectUtils.isEmpty(isLogout)) {
+                        Authentication authentication = principalDetailsService.getAuthentication(token);
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 }
-                if(refreshToken != null){
-                    response.setStatus(ErrorCode.NOT_FOUND_REFRESHTOKEN.getStatus().value());
-                    ResponseEntity nullRefreshToken = ResponseEntity
-                            .status(ErrorCode.NOT_FOUND_REFRESHTOKEN.getStatus().value())
-                            .body(new ErrorResponse(ErrorCode.NOT_FOUND_REFRESHTOKEN));
-                    ObjectMapper om = new ObjectMapper();
-                    String result = om.writeValueAsString(nullRefreshToken);
-                    response.getWriter().write(result);
+                filterChain.doFilter(request, response);
+            }
+        }
+        catch(ExpiredJwtException e){
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setContentType("application/json;charset=UTF-8");
+            response.getWriter().write(new ObjectMapper().writeValueAsString(TokenResponse.reissue()));
+            response.getWriter().flush();
+            response.getWriter().close();
 
-                }
         }
 
-
-        filterChain.doFilter(request, response);
     }
 }
