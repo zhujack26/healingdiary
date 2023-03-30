@@ -52,16 +52,16 @@ public class ClubService {
     public Slice<ClubSimpleResponse> getClubListByTag(
 //        UserDetails principal,
         boolean all,
-        Long tag,
         String keyword,
+        String tagContent,
         Pageable pageable) {
 
         Long id = null;
         if (!all) {
             id = 1L;
         }
-        Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByIdAndTagId(id, tag,
-            keyword, pageable);
+        Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByOption(all, id,
+            keyword, tagContent, pageable);
         return clubSimpleResponseList;
     }
 
