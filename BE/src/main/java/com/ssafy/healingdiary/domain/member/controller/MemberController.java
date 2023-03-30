@@ -53,10 +53,9 @@ public class MemberController {
 
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(@Validated @RequestHeader TokenRegenerateRequest tokenRegenerateRequest,
-                                     HttpServletRequest request,Authentication authentication) {
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
+                                     HttpServletRequest request) {
 
-        return memberService.reissue(tokenRegenerateRequest,request,principal.getPassword());
+        return memberService.reissue(tokenRegenerateRequest,request);
     }
 
 

@@ -103,7 +103,7 @@ public class MemberService {
     }
 
     public ResponseEntity<?> reissue(TokenRegenerateRequest tokenRegenerateRequest, HttpServletRequest request
-                                     ,String providerEmail
+
     ) {
         //refreshToken얻어오는 방법
         Cookie[] cookies = request.getCookies();
@@ -124,10 +124,11 @@ public class MemberService {
             throw new CustomException(BAD_REQUEST);
 
         }
-
-        String refreshTokenInRedis = redisUtil.getToken(providerEmail);
+        String memberId = jwtTokenizer.getId(tokenRegenerateRequest.getAccessToken());
+        String refreshTokenInRedis = redisUtil.getToken(memberId);
 
         if (ObjectUtils.isEmpty(refreshTokenInRedis)) {
+            redisUtil.deleteData(memberId);
             throw new CustomException(BAD_REQUEST);
         }
 
@@ -141,7 +142,6 @@ public class MemberService {
         //리프레시토큰 재발급
         String newRefreshToken = jwtTokenizer.createRefreshToken(jwtTokenizer.getUsernameFromToken(refreshTokenInRedis),
                 jwtTokenizer.getRoleListFromToken(refreshTokenInRedis));
-        String memberId = jwtTokenizer.getUsernameFromToken(newRefreshToken);
 
         redisUtil.dataExpirationsInput(memberId,newRefreshToken,7);
         TokenRegenerateResponse tokenRegenerateResponse = TokenRegenerateResponse.of(newAccessToken);

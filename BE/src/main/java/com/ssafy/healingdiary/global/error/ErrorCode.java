@@ -24,6 +24,8 @@ public enum ErrorCode {
     TAG_NOT_FOUND(HttpStatus.OK, -12,"태그를 찾을 수 없습니다."),
     DIARY_NOT_FOUND(HttpStatus.OK, -13,"일기를 찾을 수 없습니다."),
 
+    LOG_OUT(HttpStatus.OK, -14,"로그아웃을 해주세요."),
+
     ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, -13,"만료된 Access Token 입니다."),
     CONFLICT(HttpStatus.CONFLICT, -409, "이미 가입된 회원입니다.");
 
