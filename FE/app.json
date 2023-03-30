@@ -8,14 +8,15 @@
     "userInterfaceStyle": "light",
     "backgroundColor": "#f3f3f3",
     "scheme": "com.ssafy.healingdiary",
+    "jsEngine": "hermes",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
-    "platforms": ["ios", "android"],
     "ios": {
+      "jsEngine": "jsc",
       "supportsTablet": true,
       "bundleIdentifier": "com.ssafy.healingdiary"
     },

@@ -1,37 +1,39 @@
 import { View, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
-import axios from "axios";
-
-const REST_API_KEY = "ea24aef24b022accc550da42d6c80097";
-const REDIRECT_URI = "http://j8b203.p.ssafy.io:8080";
+import { getToken, kakaoLogin } from "../../api/user";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { API_END_POINT, REST_API_KEY } from "../../constants/index";
+import { useNavigation } from "@react-navigation/native";
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage("message from webView");`;
 
 const KakaoWebView = () => {
-  const requestToken = async (code) => {
-    const requestTokenUrl = "https://kauth.kakao.com/oauth/token";
+  const navigation = useNavigation();
 
-    axios({
-      method: "post",
-      url: requestTokenUrl,
-      params: {
-        grant_type: "authorization_code",
-        client_id: REST_API_KEY,
-        redirect_uri: REDIRECT_URI,
-        code: code,
-      },
-    })
-      .then((response) => {
-        const {
-          access_token,
-          expires_in,
-          refresh_token,
-          refresh_token_expires_in,
-          token_type,
-          id_token,
-          scope,
-        } = response.data;
-      })
-      .catch((error) => console.log("error", error));
+  const requestToken = async (code) => {
+    try {
+      const response = await getToken(code);
+      const res = await kakaoLogin(response.access_token);
+      if (res.message === "사용자를 찾을 수 없습니다.") {
+        navigation.navigate("userinform", {
+          provider: "KAKAO",
+          accessToken: response.access_token,
+        });
+      } else {
+        // AsyncStorage에 저장하기
+        const { jwt_token, nickname, region, member_image_url, disease } = res;
+        if (jwt_token && nickname && region && member_image_url) {
+          await AsyncStorage.setItem("jwtToken", jwt_token);
+          await AsyncStorage.setItem("nickname", nickname);
+          await AsyncStorage.setItem("region", region);
+          await AsyncStorage.setItem("disease", disease);
+          await AsyncStorage.setItem("userImage", member_image_url);
+          navigation.navigate("diaryBottomTab");
+        }
+      }
+    } catch (error) {
+      // 에러 처리 따로 필요할듯
+      console.log("error", error);
+    }
   };
 
   const getCode = (target) => {
@@ -39,7 +41,6 @@ const KakaoWebView = () => {
     const condition = target.indexOf(exp);
     if (condition !== -1) {
       const requestCode = target.substring(condition + exp.length);
-      console.log("access code", requestCode);
       requestToken(requestCode);
     }
   };
@@ -49,12 +50,11 @@ const KakaoWebView = () => {
       <WebView
         style={styles.webView}
         source={{
-          uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`,
+          uri: `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${API_END_POINT}`,
         }}
         injectedJavaScript={INJECTED_JAVASCRIPT}
         onMessage={(event) => {
           const data = event.nativeEvent.url;
-          console.log("data", data);
           getCode(data);
         }}
       />

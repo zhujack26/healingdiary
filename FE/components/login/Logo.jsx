@@ -126,6 +126,7 @@ const Square = ({ scrollX }) => {
     />
   );
 };
+
 const Logo = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   return (
