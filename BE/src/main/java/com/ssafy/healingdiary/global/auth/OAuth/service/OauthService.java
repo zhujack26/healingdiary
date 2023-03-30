@@ -11,6 +11,7 @@ import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
 import com.ssafy.healingdiary.global.jwt.CookieUtil;
 import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
+import com.ssafy.healingdiary.global.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,8 @@ public class OauthService {
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
     private final JwtTokenizer jwtTokenizer;
+    private final RedisUtil redisUtil;
+
     private final MemberRepository memberRepository;
 
     public ResponseEntity<LoginResponse> googleOauthLogin(String accesstoken) throws JsonProcessingException {
@@ -41,6 +44,10 @@ public class OauthService {
 
         String jwtToken = jwtTokenizer.createAccessToken(foundMember.getId().toString(), foundMember.getRoleList());
         String refreshToken = jwtTokenizer.createRefreshToken(foundMember.getId().toString(), foundMember.getRoleList());
+
+        String memberId = jwtTokenizer.getId(jwtToken);
+
+        redisUtil.dataExpirationsInput(memberId,refreshToken,7);
         return cookieUtil.HandlerMethod(refreshToken, LoginResponse.toEntity(foundMember, jwtToken));
 
     }
@@ -55,6 +62,10 @@ public class OauthService {
 
         String jwtToken = jwtTokenizer.createAccessToken(foundMember.getId().toString(), foundMember.getRoleList());
         String refreshToken = jwtTokenizer.createRefreshToken(foundMember.getId().toString(), foundMember.getRoleList());
+
+        String memberId = jwtTokenizer.getId(jwtToken);
+
+        redisUtil.dataExpirationsInput(memberId,refreshToken,7);
         return cookieUtil.HandlerMethod(refreshToken, LoginResponse.toEntity(foundMember, jwtToken));
 
 
@@ -85,9 +96,12 @@ public class OauthService {
 
         Member saveUser = memberRepository.save(newMember);
 
-        String jwtToken = jwtTokenizer.createAccessToken(newMember.getId().toString(), newMember.getRoleList());
-        String refreshToken = jwtTokenizer.createRefreshToken(newMember.getId().toString(), newMember.getRoleList());
+        String jwtToken = jwtTokenizer.createAccessToken(saveUser.getId().toString(), saveUser.getRoleList());
+        String refreshToken = jwtTokenizer.createRefreshToken(saveUser.getId().toString(), saveUser.getRoleList());
 
+        String memberId = jwtTokenizer.getId(jwtToken);
+
+        redisUtil.dataExpirationsInput(memberId,refreshToken,7);
 
         return LoginResponse.toEntity(saveUser, jwtToken);
     }
@@ -105,9 +119,12 @@ public class OauthService {
         Member newMember = Member.kakaoSignupMember(providerEmail, signupReqDto, kakaoOauthTokenResDto, userRole);
         Member saveUser = memberRepository.save(newMember);
 
-        String jwtToken = jwtTokenizer.createAccessToken(saveUser.getId().toString(), newMember.getRoleList());
-
+        String jwtToken = jwtTokenizer.createAccessToken(saveUser.getId().toString(), saveUser.getRoleList());
         String refreshToken = jwtTokenizer.createRefreshToken(saveUser.getId().toString(), saveUser.getRoleList());
+
+        String memberId = jwtTokenizer.getId(jwtToken);
+
+        redisUtil.dataExpirationsInput(memberId,refreshToken,7);
 
         return LoginResponse.toEntity(saveUser, jwtToken);
     }
