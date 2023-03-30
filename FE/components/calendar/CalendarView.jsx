@@ -1,8 +1,9 @@
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 
 const DateCheck = (date1, date2) => {
   return (
@@ -15,12 +16,43 @@ const DateCheck = (date1, date2) => {
 const DateList = (date, dateList) => {
   return dateList.some((d) => DateCheck(date, d));
 };
-
-const CustomDayComponent = ({ date, state }) => {
-  const targetDates = [
-    { year: 2023, month: 3, day: 7 },
-    { year: 2023, month: 3, day: 10 },
-    { year: 2023, month: 3, day: 15 },
+const getIconNameFromEmotionCode = (emotionCode) => {
+  switch (emotionCode) {
+    case 1:
+      return "emoji-happy";
+    case 2:
+      return "emoji-sad";
+    // 여기에 더 추가
+  }
+};
+const getEmotionForDate = (date, dateList) => {
+  const targetDate = dateList.find((d) => DateCheck(date, d));
+  if (targetDate) {
+    const iconName = getIconNameFromEmotionCode(targetDate.emotion.code);
+    return { ...targetDate.emotion, iconName };
+  }
+  return null;
+};
+const CustomDayComponent = ({ date, state, onPress }) => {
+  const dummyData = [
+    {
+      day: 12,
+      emotion: {
+        code: 1,
+        value: "기쁨",
+      },
+      month: 3,
+      year: 2023,
+    },
+    {
+      day: 13,
+      emotion: {
+        code: 2,
+        value: "슬픔",
+      },
+      month: 3,
+      year: 2023,
+    },
   ];
 
   const today = new Date();
@@ -31,10 +63,17 @@ const CustomDayComponent = ({ date, state }) => {
   };
 
   const isToday = DateCheck(date, currentDate);
+  const handlePress = () => {
+    if (state !== "disabled") {
+      onPress(date);
+    }
+  };
+
+  const emotion = getEmotionForDate(date, dummyData);
 
   return (
     <View>
-      <View style={styles.box}>
+      <TouchableOpacity onPress={handlePress} style={styles.box}>
         <Text
           style={{
             backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
@@ -42,17 +81,24 @@ const CustomDayComponent = ({ date, state }) => {
               state === "disabled"
                 ? GlobalColors.colors.gray500
                 : GlobalColors.colors.black500,
+            paddingVertical: 3,
+            paddingHorizontal: 3,
+            borderRadius: isToday ? 16 : null,
           }}
         >
           {date.day}
         </Text>
-        {DateList(date, targetDates) && (
+        {emotion && (
           <View style={styles.empty}>
-            <Entypo name="emoji-flirt" size={16} color={"blue"} />
+            <Entypo
+              name={emotion.iconName}
+              size={16}
+              color={GlobalColors.colors.primary500}
+            />
           </View>
         )}
-        {DateList(date, targetDates) || <View style={styles.empty}></View>}
-      </View>
+        {!emotion && <View style={styles.empty}></View>}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -86,19 +132,25 @@ LocaleConfig.defaultLocale = "ko";
 
 const CalendarView = () => {
   const navigation = useNavigation();
-
+  const [selected, setSelected] = useState("");
   return (
     <Calendar
       theme={{
         arrowColor: GlobalColors.colors.gray500,
       }}
       style={styles.container}
-      // dayComponent={({ date, state }) => (
-      //   <CustomDayComponent
-      //     date={date}
-      //     state={state}
-      //   />
-      // )}
+      dayComponent={({ date, state }) => (
+        <CustomDayComponent
+          date={date}
+          state={state}
+          onPress={(day) => {
+            console.log("selected day");
+            navigation.navigate("calendarDiaryList", {
+              date: { year: day.year, month: day.month, day: day.day },
+            });
+          }}
+        />
+      )}
       locale={"ko"}
       firstDay={0}
       monthFormat={"yyyy년 MM월"}
@@ -110,12 +162,6 @@ const CalendarView = () => {
             {year}년 {LocaleConfig.locales["ko"].monthNames[monthIndex]}
           </Text>
         );
-      }}
-      onDayPress={(day) => {
-        console.log("selected day", day.year);
-        navigation.navigate("calendarDiaryList", {
-          date: { year: day.year, month: day.month, day: day.day },
-        });
       }}
     />
   );

@@ -6,8 +6,6 @@ export const tags1 = [
   { id: 5, name: "해시태그1-5" },
   { id: 6, name: "해시태그1-6" },
   { id: 7, name: "해시태그1-7" },
-  { id: 8, name: "해시태그1-7" },
-  { id: 9, name: "해시태그1-7" },
 ];
 
 export const tags2 = [
@@ -20,10 +18,4 @@ export const tags2 = [
   { id: 17, name: "해시태그2-7" },
   { id: 18, name: "해시태그2-7" },
   { id: 19, name: "해시태그2-7" },
-  { id: 20, name: "해시태그2-7" },
-  { id: 21, name: "해시태그2-7" },
-  { id: 22, name: "해시태그2-7" },
-  { id: 23, name: "해시태그2-7" },
-  { id: 24, name: "해시태그2-7" },
-  { id: 25, name: "해시태그2-7" },
 ];

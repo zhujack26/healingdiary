@@ -1,13 +1,21 @@
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { GlobalColors } from "../../constants/color";
-import { useNavigation } from "@react-navigation/native";
 import { tags1, tags2 } from "../../model/DataHashtag";
 
 const AddHashtag = () => {
   const [tags1State, setTags1State] = useState(tags1);
   const [tags2State, setTags2State] = useState(tags2);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [inputText, setInputText] = useState("");
 
   const handleTagSelection = (tag) => {
     if (selectedTags.includes(tag)) {
@@ -20,14 +28,51 @@ const AddHashtag = () => {
       }
     }
   };
-  const navigation = useNavigation();
+  const handleInputTextChange = (text) => {
+    setInputText(text);
+  };
+
+  const handleInputSubmit = () => {
+    if (inputText.trim() !== "" && selectedTags.length < 3) {
+      const newTag = {
+        id: `custom-${Date.now()}`,
+        name: `#${inputText.trim()}`,
+      };
+      setSelectedTags([...selectedTags, newTag]);
+      setInputText("");
+    }
+  };
+  const handleSelectedTagPress = (tag) => {
+    // 선택한 태그를 삭제합니다.
+    setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
+  };
+  const renderTextInput = () => (
+    <View>
+      <TextInput
+        value={inputText}
+        onChangeText={handleInputTextChange}
+        onSubmitEditing={handleInputSubmit}
+        placeholder="해시태그를 입력하세요"
+        style={styles.input}
+        textAlign="center"
+      />
+    </View>
+  );
 
   return (
     <View style={styles.container}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        {renderTextInput()}
+      </TouchableWithoutFeedback>
+
       <Text>선택된 해시태그</Text>
       <View style={styles.selectedTagsContainer}>
         {selectedTags.map((tag) => (
-          <TouchableOpacity key={tag.id} style={styles.selectedTag}>
+          <TouchableOpacity
+            key={tag.id}
+            onPress={() => handleSelectedTagPress(tag)}
+            style={styles.selectedTag}
+          >
             <Text style={styles.selectedTagText}>{tag.name}</Text>
           </TouchableOpacity>
         ))}
@@ -122,6 +167,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 5,
     marginTop: 5,
+    alignItems: "center",
   },
   selectedTagText: {
     fontFamily: "KoddiUDOnGothic-Regular",
@@ -134,6 +180,13 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 12,
     fontWeight: "bold",
+  },
+  input: {
+    borderColor: GlobalColors.colors.primary400,
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 10,
+    marginBottom: 20,
   },
 });
 
