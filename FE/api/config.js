@@ -45,7 +45,6 @@ export const kakaoGetConfig = (url, token) => {
 };
 
 export const kakaoPostConfig = (url, token, data) => {
-  console.log(url, token, data);
   return {
     method: "POST",
     url: API_END_POINT + url,

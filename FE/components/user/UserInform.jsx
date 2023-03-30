@@ -86,15 +86,15 @@ const UserInform = () => {
       provider: provider,
     };
     const res = await kakaoSignup(accessToken, body);
-    console.log(res);
     // 회원가입에 성공하면 데이터가 넘어오니 storage에 저장한다.
-    if (res.id) {
-      await AsyncStorage.setItem("jwtToken", res.jwt_token);
-      await AsyncStorage.setItem("nickname", res.nickname);
-      await AsyncStorage.setItem("region", res.region);
-      await AsyncStorage.setItem("userImage", res.member_image_url);
+    if (res.status === 200) {
+      await AsyncStorage.setItem("jwtToken", res.data.jwt_token);
+      await AsyncStorage.setItem("nickname", res.data.nickname);
+      await AsyncStorage.setItem("region", res.data.region);
+      await AsyncStorage.setItem("userImage", res.data.member_image_url);
       navigation.navigate("diaryBottomTab");
-    } else {
+    } else if (res.status === 409) {
+      console.log("이미 가입된 회원");
       // 나중에 에러처리 필요함
     }
   };

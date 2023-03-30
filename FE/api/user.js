@@ -21,10 +21,18 @@ export const kakaoLogin = async (token) => {
 };
 
 export const kakaoSignup = async (token, data) => {
-  const response = await axios(
-    kakaoPostConfig("/auth/account/signup", token, data)
-  );
-  return response.data;
+  try {
+    const response = await axios(
+      kakaoPostConfig("/auth/account/signup", token, data)
+    );
+    return response;
+  } catch (error) {
+    if (error.response && error.response.status === 409) {
+      return error.response;
+    } else {
+      console.log("other error occurred:", error);
+    }
+  }
 };
 
 export const duplicationNickname = async (token, data) => {
