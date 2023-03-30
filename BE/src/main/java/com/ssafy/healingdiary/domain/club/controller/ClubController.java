@@ -5,6 +5,7 @@ import com.ssafy.healingdiary.domain.club.dto.ClubApprovalResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubDetailResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubJoinResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubListResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -42,15 +45,22 @@ public class ClubController {
 //        Authentication authentication,
         boolean all,
         @RequestParam(required = false) String keyword,
-        @RequestParam(required = false) String tag,
+        @RequestParam(required = false) String tagContent,
         Pageable pageable
     ) {
-        return clubService.getClubListByTag(all, keyword, tag, pageable);
+        return clubService.getClubListByTag(all, keyword, tagContent, pageable);
     }
 
     @GetMapping("/{clubId}")
     public ClubDetailResponse getDetailClub(@PathVariable Long clubId) {
         return clubService.getDetailClub(clubId);
+    }
+
+    @GetMapping("/recommendation")
+    public Slice<ClubListResponse> recommendClubList(Authentication authentication,
+        Pageable pageable) {
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.recommendClubList(principal.getUsername(), pageable);
     }
 
     @DeleteMapping("/{clubId}")
