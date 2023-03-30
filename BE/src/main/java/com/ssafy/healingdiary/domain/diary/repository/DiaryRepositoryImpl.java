@@ -39,7 +39,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<DiarySimpleResponse> findByOption(Long memberId, Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable) {
+    public Slice<DiarySimpleResponse> findByOption(Boolean all, Long memberId, Long clubId, String keyword, String tagContent, Integer year, Integer month, Integer day, Pageable pageable) {
         Set<Long> idSet = queryFactory
             .select(diary.id)
             .from(diary)
@@ -47,7 +47,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             .leftJoin(diary.diaryTag, diaryTag)
             .leftJoin(diaryTag.tag, tag)
             .where(
-                memberIdEq(memberId),
+                all ? null : memberIdEq(memberId),
                 clubIdEq(clubId),
                 keywordMatch(keyword),
                 tagEq(tagContent),

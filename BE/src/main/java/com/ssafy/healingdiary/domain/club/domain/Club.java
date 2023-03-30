@@ -58,4 +58,9 @@ public class Club extends BaseEntity {
     public void setClubTag(List<ClubTag> clubTag) {
         this.clubTag = clubTag;
     }
+
+    public void updateClub(List<ClubTag> clubTag, String clubImageUrl) {
+        this.clubTag = clubTag;
+        this.clubImageUrl = clubImageUrl;
+    }
 }
