@@ -142,7 +142,7 @@ const ModifyingInform = () => {
     });
 
     console.log(data);
-    const res = await userInfoUpdate({ update, image_file: image });
+    const res = await userInfoUpdate(data);
     console.log(res);
     // 회원수정 성공하면 데이터가 넘어오니 다시 storage에 저장한다.
     // if (res.status === 200) {
