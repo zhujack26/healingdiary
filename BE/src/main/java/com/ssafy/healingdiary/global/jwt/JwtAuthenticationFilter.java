@@ -37,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try{
             String path = request.getServletPath();
             if (path.endsWith("reissue")) {
+                logger.info("여기는 리이슈");
                 filterChain.doFilter(request, response);
             }
             else{

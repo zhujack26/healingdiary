@@ -26,12 +26,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
 
-import static com.ssafy.healingdiary.global.error.ErrorCode.BAD_REQUEST;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
+import static com.ssafy.healingdiary.global.error.ErrorCode.*;
 
 @Service
 @Transactional
@@ -128,11 +127,11 @@ public class MemberService {
         String refreshTokenInRedis = redisUtil.getToken(memberId);
 
         if (ObjectUtils.isEmpty(refreshTokenInRedis)) {
-            redisUtil.deleteData(memberId);
-            throw new CustomException(BAD_REQUEST);
+            throw new CustomException(LOG_OUT);
         }
 
         if (!refreshTokenInRedis.equals(refreshTokenCookie)) {
+            redisUtil.deleteData(memberId);
             throw new CustomException(BAD_REQUEST);
         }
 
