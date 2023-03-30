@@ -4,6 +4,7 @@ import com.ssafy.healingdiary.domain.club.domain.Club;
 import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.club.domain.ClubTag;
 import com.ssafy.healingdiary.domain.club.dto.ClubApprovalResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubDetailResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubJoinResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
@@ -27,7 +28,6 @@ import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
 import com.ssafy.healingdiary.infra.storage.S3StorageClient;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -91,7 +91,8 @@ public class ClubService {
         return ClubRegisterResponse.of(savedClub.getId());
     }
 
-    public ClubUpdateResponse updateClub(Long clubId, ClubUpdateRequest request, MultipartFile file) throws IOException {
+    public ClubUpdateResponse updateClub(Long clubId, ClubUpdateRequest request, MultipartFile file)
+        throws IOException {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         List<ClubTag> tags = request.getTags()
@@ -195,5 +196,17 @@ public class ClubService {
             clubTagRepository.delete(clubTag);
         });
         clubRepository.delete(club);
+    }
+
+    public ClubDetailResponse getDetailClub(Long clubId) {
+        Club club = clubRepository.findById(clubId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
+        List<String> tags = club.getClubTag().stream()
+            .map((clubTag -> {
+                return clubTag.getTag().getContent();
+            }))
+            .collect(Collectors.toList());
+        ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, tags);
+        return clubDetailResponse;
     }
 }

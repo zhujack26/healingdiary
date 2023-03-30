@@ -2,6 +2,7 @@ package com.ssafy.healingdiary.domain.club.controller;
 
 
 import com.ssafy.healingdiary.domain.club.dto.ClubApprovalResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubDetailResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubJoinResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
@@ -45,6 +46,11 @@ public class ClubController {
         Pageable pageable
     ) {
         return clubService.getClubListByTag(all, tag, keyword, pageable);
+    }
+
+    @GetMapping("/{clubId}")
+    public ClubDetailResponse getDetailClub(@PathVariable Long clubId) {
+        return clubService.getDetailClub(clubId);
     }
 
     @DeleteMapping("/{clubId}")
