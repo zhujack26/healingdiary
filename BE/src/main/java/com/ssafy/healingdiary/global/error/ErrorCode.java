@@ -22,6 +22,7 @@ public enum ErrorCode {
     NOT_FOUND_DATA(HttpStatus.OK, -10,"요청하신 데이터가 없습니다."),
     RECORD_NOT_FOUND(HttpStatus.OK, -11,"음성 파일이 없거나 유효기간이 지났습니다."),
     TAG_NOT_FOUND(HttpStatus.OK, -12,"태그를 찾을 수 없습니다."),
+    DIARY_NOT_FOUND(HttpStatus.OK, -13,"일기를 찾을 수 없습니다."),
 
 
     CONFLICT(HttpStatus.CONFLICT, -409, "이미 가입된 회원입니다.");

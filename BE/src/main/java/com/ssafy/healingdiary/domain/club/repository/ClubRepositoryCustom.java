@@ -8,8 +8,7 @@ import org.springframework.data.domain.Slice;
 
 public interface ClubRepositoryCustom {
 
-    Slice<ClubSimpleResponse> findByIdAndTagId(Long id, Long tag, String keyword,
-        Pageable pageable);
+    Slice<ClubSimpleResponse> findByOption(Boolean all, Long memberId, String keyword, String tagContent, Pageable pageable);
 
     Slice<ClubListResponse> findUnionList(Member member, Pageable pageable);
 }

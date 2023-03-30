@@ -10,6 +10,8 @@ import com.ssafy.healingdiary.domain.diary.service.DiaryService;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -45,8 +47,8 @@ public class DiaryController {
         @RequestParam(required = false) Integer day,
         Pageable pageable
     ){
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        Long memberId = Long.parseLong(principal.getUsername());
+        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
+        Long memberId = principal.getId();
         return diaryService.getDiaryList(all, memberId, clubId, keyword, tag, year, month, day, pageable);
     }
 
@@ -70,6 +72,7 @@ public class DiaryController {
         @RequestPart MultipartFile image
     ) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
+        System.out.println(principal.getUsername());
         Long memberId = Long.parseLong(principal.getUsername());
         return diaryService.createDiary(memberId, diaryCreateRequest, image);
     }

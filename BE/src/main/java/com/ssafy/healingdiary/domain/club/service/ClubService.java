@@ -53,18 +53,19 @@ public class ClubService {
     public Slice<ClubSimpleResponse> getClubListByTag(
 //        UserDetails principal,
         boolean all,
-        Long tag,
         String keyword,
+        String tagContent,
         Pageable pageable) {
 
         Long id = null;
         if (!all) {
             id = 1L;
         }
-        Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByIdAndTagId(id, tag,
-            keyword, pageable);
+        Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByOption(all, id,
+            keyword, tagContent, pageable);
         return clubSimpleResponseList;
     }
+
 
     public Slice<ClubInvitationResponse> getInvitationList(Long clubId, Pageable pageable) {
         Long hostId = 1L; // 방장 ID
@@ -211,8 +212,8 @@ public class ClubService {
         return clubDetailResponse;
     }
 
-    public Slice<ClubListResponse> recommendClubList(String nickname, Pageable pageable) {
-        Member member = memberRepository.findMemberByNickname(nickname);
+    public Slice<ClubListResponse> recommendClubList(String memberId, Pageable pageable) {
+        Member member = memberRepository.getReferenceById(Long.parseLong(memberId));
         Slice<ClubListResponse> list = clubRepository.findUnionList(member, pageable);
         list.stream().forEach((response -> {
             Club club = clubRepository.findById(response.getClubId()).get();

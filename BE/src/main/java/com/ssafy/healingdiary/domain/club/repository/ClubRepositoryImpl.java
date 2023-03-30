@@ -15,6 +15,7 @@ import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
 import com.ssafy.healingdiary.domain.club.dto.QClubListResponse;
 import com.ssafy.healingdiary.domain.club.dto.QClubSimpleResponse;
 import com.ssafy.healingdiary.domain.member.domain.Member;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,46 +32,50 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<ClubSimpleResponse> findByIdAndTagId(Long memberId, Long tagId, String keyword,
-        Pageable pageable) {
-        List<ClubSimpleResponse> result = null;
-        if (memberId != null) {
-            result = queryFactory
-                .selectFrom(club)
-                .leftJoin(club.clubMember, clubMember)
-                .leftJoin(club.clubTag, clubTag)
-                .leftJoin(clubTag.tag, tag)
-                .where(
-                    idEq(memberId),
-                    tagEq(tagId),
-                    keywordMatch(keyword)
-                )
-                .orderBy(club.createdDate.desc())
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize() + 1)
-                .transform(
-                    groupBy(club.id).list(
-                        new QClubSimpleResponse(club.id, club.name, club.clubImageUrl,
-                            list(tag.content))
-                    )
-                );
-        } else {
-            result = queryFactory
-                .selectFrom(club)
-                .leftJoin(club.clubTag, clubTag)
-                .leftJoin(clubTag.tag, tag)
-                .where(
-                    tagEq(tagId),
-                    keywordMatch(keyword)
-                )
-                .orderBy(club.createdDate.desc())
-                .transform(
-                    groupBy(club.id).list(
-                        new QClubSimpleResponse(club.id, club.name, club.clubImageUrl,
-                            list(tag.content))
-                    )
-                );
+    public Slice<ClubSimpleResponse> findByOption(Boolean all, Long memberId, String keyword,
+        String tagContent, Pageable pageable) {
+        Set<Long> idSet = queryFactory
+            .select(club.id)
+            .from(club)
+            .leftJoin(club.clubMember, clubMember)
+            .leftJoin(club.clubTag, clubTag)
+            .leftJoin(clubTag.tag, tag)
+            .where(
+                all ? null : memberIdEq(memberId),
+                keywordMatch(keyword),
+                tagEq(tagContent)
+            )
+            .groupBy(club.id)
+            .orderBy(club.createdDate.desc())
+            .offset(pageable.getOffset())
+            .limit(pageable.getPageSize() + 1)
+            .fetch()
+            .stream()
+            .collect(Collectors.toUnmodifiableSet());
+
+        if (idSet.isEmpty()) {
+            return new SliceImpl<>(Collections.emptyList(), pageable, false);
         }
+
+        List<ClubSimpleResponse> result = queryFactory
+            .selectFrom(club)
+            .leftJoin(club.clubMember, clubMember)
+            .leftJoin(club.clubTag, clubTag)
+            .leftJoin(clubTag.tag, tag)
+            .where(
+                club.id.in(idSet)
+            )
+            .orderBy(club.createdDate.desc())
+            .transform(
+                groupBy(club.id).list(
+                    new QClubSimpleResponse(
+                        club.id,
+                        club.name,
+                        club.clubImageUrl,
+                        list(tag.content)
+                    )
+                )
+            );
 
         boolean hasNext = false;
         if (result.size() > pageable.getPageSize()) {
@@ -79,6 +84,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
         }
         return new SliceImpl<>(result, pageable, hasNext);
     }
+
 
     @Override
     public Slice<ClubListResponse> findUnionList(Member memberInfo, Pageable pageable) {
@@ -135,12 +141,12 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
         return new SliceImpl<>(result, pageable, hasNext);
     }
 
-    private BooleanExpression idEq(Long memberId) {
+    private BooleanExpression memberIdEq(Long memberId) {
         return memberId != null ? clubMember.member.id.eq(memberId) : null;
     }
 
-    private BooleanExpression tagEq(Long tagId) {
-        return tagId != null ? clubTag.tag.id.eq(tagId) : null;
+    private BooleanExpression tagEq(String tagContent) {
+        return hasText(tagContent) ? tag.content.eq(tagContent) : null;
     }
 
     private BooleanExpression keywordMatch(String keyword) {

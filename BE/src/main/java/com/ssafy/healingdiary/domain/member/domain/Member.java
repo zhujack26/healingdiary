@@ -65,7 +65,7 @@ public class Member extends BaseEntity {
         return new ArrayList<>();
     }
 
-    public void updateMember(MemberUpdateRequest memberInfo) {
+    public void updateMember(MemberUpdateRequest memberInfo, String imageUrl) {
         if (memberInfo.getNickname() != null) {
             this.nickname = memberInfo.getNickname();
         }
@@ -79,6 +79,11 @@ public class Member extends BaseEntity {
         }else{
             this.disease = this.getDisease();
 
+        }
+        if (memberInfo.getImageUrl() != null) {
+            this.memberImageUrl = imageUrl;
+        } else {
+            this.memberImageUrl = this.getMemberImageUrl();
         }
 
     }
