@@ -1,6 +1,5 @@
 package com.ssafy.healingdiary.global.jwt;
 
-import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
@@ -35,7 +34,6 @@ public class JwtTokenizer {
     @Value("${jwt.expiration-refreshtoken-minutes}")
     private int refreshtokenExpiration;
 
-    private final PrincipalDetails principalDetails;
 
 
     public String encodeBase64SecretKey(String secretKey) {

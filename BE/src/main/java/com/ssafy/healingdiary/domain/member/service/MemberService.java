@@ -44,9 +44,7 @@ public class MemberService {
 
     private final JwtTokenizer jwtTokenizer;
 
-    private final PrincipalDetailsService principalDetailsService;
 
-    private final PrincipalDetails principalDetails;
 
     private final RedisUtil redisUtil;
 
@@ -105,7 +103,7 @@ public class MemberService {
     }
 
     public ResponseEntity<?> reissue(TokenRegenerateRequest tokenRegenerateRequest, HttpServletRequest request
-                                     ,Authentication authentication
+                                     ,String providerEmail
     ) {
         //refreshToken얻어오는 방법
         Cookie[] cookies = request.getCookies();
@@ -127,7 +125,7 @@ public class MemberService {
 
         }
 
-        String refreshTokenInRedis = redisUtil.getToken(principalDetails.getUsername());
+        String refreshTokenInRedis = redisUtil.getToken(providerEmail);
 
         if (ObjectUtils.isEmpty(refreshTokenInRedis)) {
             throw new CustomException(BAD_REQUEST);
