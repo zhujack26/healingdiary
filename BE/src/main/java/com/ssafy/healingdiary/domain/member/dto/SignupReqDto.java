@@ -12,7 +12,6 @@ public class SignupReqDto {
 
     private String provider;
     private String nickname;
-    private String email;
     private String region;
     private String disease;
 
