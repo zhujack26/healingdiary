@@ -5,7 +5,7 @@ import {
   Keyboard,
   Pressable,
 } from "react-native";
-import { useReducer, useEffect, useCallback } from "react";
+import React, { useReducer, useEffect, useCallback } from "react";
 import { GlobalColors } from "../../constants/color";
 import { duplicationNickname } from "../../api/user";
 import { useNavigation } from "@react-navigation/native";
@@ -19,7 +19,6 @@ import Disease from "./Disease";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ConfirmButton from "./../../ui/ConfirmButton";
 import { userInfoUpdate } from "./../../api/user";
-import { API_END_POINT } from "../../constants";
 
 const { width, height } = Dimensions.get("window");
 const regex = /^[a-zA-Z0-9가-힣]{2,8}$/;
@@ -46,7 +45,14 @@ const reducer = (state, action) => {
       return { ...state, selectedLocation: action.payload.selectedLocation };
     case "SET_SELECTED_DISEASE":
       return { ...state, selectedDisease: action.payload.selectedDisease };
-
+    case "SET_ALL":
+      return {
+        ...state,
+        image: action.payload.image,
+        nickname: action.payload.nickname,
+        selectedLocation: action.payload.selectedLocation,
+        selectedDisease: action.payload.selectedDisease,
+      };
     default:
       return state;
   }
@@ -100,6 +106,7 @@ const ModifyingInform = () => {
           type: "SET_MESSAGE",
           payload: { message: "중복입니다" },
         });
+        return;
       }
       // 닉네임이 2글자 이상 8글자 이하가 아님
       if (!regex.test(nickname) || specialChars.test(nickname)) {
@@ -163,21 +170,20 @@ const ModifyingInform = () => {
         "disease",
       ]);
 
-      console.log(image, nickname, region, disease);
-      dispatch({ type: "SET_IMAGE", payload: { image: image[1] } });
-      dispatch({ type: "SET_NICKNAME", payload: { nickname: nickname[1] } });
+      console.log("렌더링", image, nickname, region, disease);
       dispatch({
-        type: "SET_SELECTED_LOCATION",
-        payload: { selectedLocation: region[1] },
-      });
-      dispatch({
-        type: "SET_SELECTED_DISEASE",
-        payload: { selectedDisease: disease[1] },
+        type: "SET_ALL",
+        payload: {
+          image: image[1],
+          nickname: nickname[1],
+          selectedLocation: region[1],
+          selectedDisease: disease[1],
+        },
       });
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     isValidNickName(nickname);
