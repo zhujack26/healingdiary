@@ -1,4 +1,4 @@
-import { View, StyleSheet} from "react-native";
+import { View, StyleSheet } from "react-native";
 import AddHashtag from "../components/making/AddHashtag";
 import { GlobalColors } from "../constants/color";
 

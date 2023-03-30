@@ -5,15 +5,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
-import { tags1, tags2 } from "../../model/DataHashtag";
+import { DATA } from "../../model/DataHashtag";
 
 const AddHashtag = () => {
-  const [tags1State, setTags1State] = useState(tags1);
-  const [tags2State, setTags2State] = useState(tags2);
+  const [tagsState, setTagsState] = useState(DATA);
   const [selectedTags, setSelectedTags] = useState([]);
   const [inputText, setInputText] = useState("");
 
@@ -23,7 +20,7 @@ const AddHashtag = () => {
         selectedTags.filter((selectedTag) => selectedTag !== tag)
       );
     } else {
-      if (selectedTags.length < 3) {
+      if (selectedTags.length < 1) {
         setSelectedTags([...selectedTags, tag]);
       }
     }
@@ -36,7 +33,7 @@ const AddHashtag = () => {
     if (inputText.trim() !== "" && selectedTags.length < 3) {
       const newTag = {
         id: `custom-${Date.now()}`,
-        name: `#${inputText.trim()}`,
+        keyword: `#${inputText.trim()}`,
       };
       setSelectedTags([...selectedTags, newTag]);
       setInputText("");
@@ -61,9 +58,7 @@ const AddHashtag = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        {renderTextInput()}
-      </TouchableWithoutFeedback>
+      {renderTextInput()}
 
       <Text>선택된 해시태그</Text>
       <View style={styles.selectedTagsContainer}>
@@ -73,7 +68,7 @@ const AddHashtag = () => {
             onPress={() => handleSelectedTagPress(tag)}
             style={styles.selectedTag}
           >
-            <Text style={styles.selectedTagText}>{tag.name}</Text>
+            <Text style={styles.selectedTagText}>#{tag.keyword}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -81,7 +76,7 @@ const AddHashtag = () => {
         <Text>감정</Text>
       </View>
       <View style={styles.box}>
-        {tags1.map((tag) => (
+        {DATA.map((tag) => (
           <TouchableOpacity
             key={tag.id}
             onPress={() => handleTagSelection(tag)}
@@ -90,24 +85,7 @@ const AddHashtag = () => {
               selectedTags.includes(tag) && styles.selectedTagButton,
             ]}
           >
-            <Text style={styles.tagButtonText}>{tag.name}</Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <View style={styles.sub}>
-        <Text>키워드</Text>
-      </View>
-      <View style={styles.box}>
-        {tags2.map((tag) => (
-          <TouchableOpacity
-            key={tag.id}
-            onPress={() => handleTagSelection(tag)}
-            style={[
-              styles.tagButton,
-              selectedTags.includes(tag) && styles.selectedTagButton,
-            ]}
-          >
-            <Text style={styles.tagButtonText}>{tag.name}</Text>
+            <Text style={styles.tagButtonText}>#{tag.keyword}</Text>
           </TouchableOpacity>
         ))}
       </View>
@@ -143,6 +121,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginBottom: 5,
     marginTop: 5,
+    alignItems: "center",
   },
   selectedTagButton: {
     backgroundColor: GlobalColors.colors.primary500,

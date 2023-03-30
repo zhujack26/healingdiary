@@ -114,7 +114,7 @@ const StackNavigation = () => {
               title: "",
               headerRight: () => (
                 <TouchableOpacity
-                  onPress={() => navigation.navigate("MakingDetail")}
+                  onPress={() => navigation.navigate("diaryBottomTab")}
                 >
                   <Text style={{ fontSize: 16, fontWeight: "bold" }}>완료</Text>
                 </TouchableOpacity>
