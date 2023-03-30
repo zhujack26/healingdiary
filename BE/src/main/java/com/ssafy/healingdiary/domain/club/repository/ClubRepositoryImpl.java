@@ -22,12 +22,14 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class ClubRepositoryImpl implements ClubRepositoryCustom {
+
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Slice<ClubSimpleResponse> findByIdAndTagId(Long memberId, Long tagId, String keyword, Pageable pageable) {
+    public Slice<ClubSimpleResponse> findByIdAndTagId(Long memberId, Long tagId, String keyword,
+        Pageable pageable) {
         List<ClubSimpleResponse> result = null;
-        if(memberId!=null){
+        if (memberId != null) {
             result = queryFactory
                 .selectFrom(club)
                 .leftJoin(club.clubMember, clubMember)
@@ -40,14 +42,14 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
                 )
                 .orderBy(club.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize()+1)
+                .limit(pageable.getPageSize() + 1)
                 .transform(
                     groupBy(club.id).list(
-                        new QClubSimpleResponse(club.id, club.name, club.clubImageUrl, list(tag.content))
+                        new QClubSimpleResponse(club.id, club.name, club.clubImageUrl,
+                            list(tag.content))
                     )
                 );
-        }
-        else {
+        } else {
             result = queryFactory
                 .selectFrom(club)
                 .leftJoin(club.clubTag, clubTag)
@@ -59,7 +61,8 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
                 .orderBy(club.createdDate.desc())
                 .transform(
                     groupBy(club.id).list(
-                        new QClubSimpleResponse(club.id, club.name, club.clubImageUrl, list(tag.content))
+                        new QClubSimpleResponse(club.id, club.name, club.clubImageUrl,
+                            list(tag.content))
                     )
                 );
         }
