@@ -5,6 +5,7 @@ import com.ssafy.healingdiary.domain.club.dto.ClubApprovalResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubDetailResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubJoinResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubListResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
@@ -18,6 +19,8 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -39,18 +42,26 @@ public class ClubController {
 
     @GetMapping
     public Slice<ClubSimpleResponse> getClubList(
-//        Authentication authentication,
+        Authentication authentication,
         boolean all,
         @RequestParam(required = false) String keyword,
-        @RequestParam(required = false) String tag,
+        @RequestParam(required = false) String tagContent,
         Pageable pageable
     ) {
-        return clubService.getClubListByTag(all, keyword, tag, pageable);
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.getClubListByTag(principal.getUsername(), all, keyword, tagContent, pageable);
     }
 
     @GetMapping("/{clubId}")
     public ClubDetailResponse getDetailClub(@PathVariable Long clubId) {
         return clubService.getDetailClub(clubId);
+    }
+
+    @GetMapping("/recommendation")
+    public Slice<ClubListResponse> recommendClubList(Authentication authentication,
+        Pageable pageable) {
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.recommendClubList(principal.getUsername(), pageable);
     }
 
     @DeleteMapping("/{clubId}")
@@ -65,9 +76,10 @@ public class ClubController {
     }
 
     @GetMapping("/{clubId}/invitation")
-    public Slice<ClubInvitationResponse> getInvitationList(@PathVariable Long clubId,
+    public Slice<ClubInvitationResponse> getInvitationList(Authentication authentication, @PathVariable Long clubId,
         Pageable pageable) {
-        return clubService.getInvitationList(clubId, pageable);
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.getInvitationList(principal.getUsername(), clubId, pageable);
     }
 
     @PostMapping("/{clubId}/invitation")
@@ -78,9 +90,11 @@ public class ClubController {
 
     @PostMapping
     public ClubRegisterResponse registClub(
+        Authentication authentication,
         @RequestPart(value = "ClubRegister") ClubRegisterRequest request,
         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
-        return clubService.registClub(request, file);
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.registClub(principal.getUsername(), request, file);
     }
 
     @PostMapping("/{clubId}")
@@ -92,8 +106,9 @@ public class ClubController {
     }
 
     @PostMapping("/{clubId}/join")
-    public ClubJoinResponse joinClub(@PathVariable Long clubId) {
-        return clubService.joinClub(clubId);
+    public ClubJoinResponse joinClub(Authentication authentication, @PathVariable Long clubId) {
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.joinClub(principal.getUsername(), clubId);
     }
 
     @DeleteMapping("/{clubId}/{clubMemberId}")

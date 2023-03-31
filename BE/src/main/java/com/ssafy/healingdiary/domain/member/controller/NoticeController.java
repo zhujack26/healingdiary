@@ -5,6 +5,8 @@ import com.ssafy.healingdiary.domain.member.dto.NoticeListResponse;
 import com.ssafy.healingdiary.domain.member.service.NoticeService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,8 +22,9 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @GetMapping
-    public List<NoticeListResponse> searchNoticeAll() {
-        return noticeService.searchNoticeAll();
+    public List<NoticeListResponse> searchNoticeAll(Authentication authentication) {
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return noticeService.searchNoticeAll(principal.getUsername());
     }
 
     @PatchMapping("/{noticeId}")
