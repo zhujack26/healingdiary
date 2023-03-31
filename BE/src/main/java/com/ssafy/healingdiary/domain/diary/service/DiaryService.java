@@ -4,8 +4,6 @@ import static com.ssafy.healingdiary.global.error.ErrorCode.CLUB_NOT_FOUND;
 import static com.ssafy.healingdiary.global.error.ErrorCode.DIARY_NOT_FOUND;
 import static com.ssafy.healingdiary.global.error.ErrorCode.ENTITY_NOT_FOUND;
 import static com.ssafy.healingdiary.global.error.ErrorCode.RECORD_NOT_FOUND;
-import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
-import static com.ssafy.healingdiary.global.error.ErrorCode.TAG_NOT_FOUND;
 
 import com.google.gson.Gson;
 import com.ssafy.healingdiary.domain.club.domain.Club;
@@ -98,12 +96,9 @@ public class DiaryService {
         File file = new File(filePath);
         if(!file.exists()) {throw new CustomException(RECORD_NOT_FOUND);}
 
-
         String content = hashOperations.get(fileKey, "content");
         String imageUrl = storageClient.uploadFile(image);
-
         Member member = memberRepository.getReferenceById(memberId);
-        if(member == null) {throw new CustomException(MEMBER_NOT_FOUND);}
 
         Club club = null;
         if(diaryCreateRequest.getClubId()!=null) {
@@ -149,13 +144,15 @@ public class DiaryService {
     }
 
 //    public void deleteDiary(UserDetails principal, Long diaryId) {
-    public void deleteDiary(Long memberId, Long diaryId) {
+    public void deleteDiary(Long memberId, Long diaryId) throws IOException {
         Diary diary = diaryRepository.findById(diaryId)
-            .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
         if(memberId != diary.getMember().getId()){
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
+        String imageUrl = diary.getDiaryImageUrl();
         diaryRepository.deleteById(diaryId);
+        storageClient.deleteFile(imageUrl);
     }
 
 //    public List<CalendarResponse> getCalendar(UserDetails principal, int year, int month) {
@@ -231,5 +228,10 @@ public class DiaryService {
         result.put("emotion", emotionResponse);
         result.put("key", saveFileName);
         return result;
+    }
+
+    public List<DiarySimpleResponse> getRecommendedDiaryList(Long memberId, Integer num) {
+        Member member = memberRepository.findById(memberId).get();
+        return diaryRepository.findByDiseaseAndRegion(member, num);
     }
 }

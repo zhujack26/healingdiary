@@ -52,6 +52,16 @@ public class DiaryController {
         return diaryService.getDiaryList(all, memberId, clubId, keyword, tag, year, month, day, pageable);
     }
 
+    @GetMapping("/recommendation")
+    public List<DiarySimpleResponse> getRecommendedDiaryList(
+        Authentication authentication,
+        @RequestParam(required = false, defaultValue = "5") int num
+    ){
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        Long memberId = Long.parseLong(principal.getUsername());
+        return diaryService.getRecommendedDiaryList(memberId, num);
+    }
+
     @GetMapping("/{diaryId}")
     public DiaryDetailResponse getDiaryDetail(
         @PathVariable Long diaryId){
@@ -80,8 +90,7 @@ public class DiaryController {
     @DeleteMapping("/{diaryId}")
     public void deleteDiary(
         Authentication authentication,
-        @PathVariable Long diaryId)
-    {
+        @PathVariable Long diaryId) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         Long memberId = Long.parseLong(principal.getUsername());
         diaryService.deleteDiary(memberId, diaryId);
