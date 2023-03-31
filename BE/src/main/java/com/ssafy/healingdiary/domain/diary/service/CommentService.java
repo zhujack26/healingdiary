@@ -1,10 +1,15 @@
 package com.ssafy.healingdiary.domain.diary.service;
 
+import static com.ssafy.healingdiary.global.error.ErrorCode.DIARY_NOT_FOUND;
+
 import com.ssafy.healingdiary.domain.diary.domain.Comment;
+import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.dto.CommentCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import com.ssafy.healingdiary.domain.diary.dto.CommentUpdateRequest;
 import com.ssafy.healingdiary.domain.diary.repository.CommentRepository;
+import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
+import com.ssafy.healingdiary.domain.diary.repository.DiaryRepositoryCustom;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
@@ -24,6 +29,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
+    private final DiaryRepository diaryRepository;
 
     public Slice<CommentResponse> getCommentList(Long diaryId, Pageable pageable) {
         Slice<Comment> comments = commentRepository.findByDiaryIdAndParentIdIsNull(diaryId, pageable);
@@ -62,10 +68,13 @@ public class CommentService {
     }
 
     public Map<String, Object> createComment(Long memberId, CommentCreateRequest request) {
+        Diary diary = diaryRepository.getReferenceById(request.getDiaryId());
+        if(diary==null) throw new CustomException(DIARY_NOT_FOUND);
 
         Comment comment = Comment.builder()
+            .diary(diary)
             .member(memberRepository.getReferenceById(memberId))
-            .parent((commentRepository.getReferenceById(request.getParentId())))
+            .parent(request.getParentId() != null ? commentRepository.getReferenceById(request.getParentId()) : null)
             .content(request.getContent())
             .build();
 
