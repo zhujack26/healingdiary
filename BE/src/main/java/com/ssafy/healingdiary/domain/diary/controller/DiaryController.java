@@ -70,7 +70,7 @@ public class DiaryController {
 
     @PostMapping("/analyze")
     public Map<String, Object> analyzeDiary(
-        @RequestPart MultipartFile[] record
+        @RequestPart MultipartFile record
     ) throws IOException{
         return diaryService.analyzeDiary(record);
     }
