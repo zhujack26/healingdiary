@@ -57,9 +57,12 @@ const styles = StyleSheet.create({
     fontFamily: "KoddiUDOnGothic-Regular",
     fontSize: 18,
     color: GlobalColors.colors.black500,
-
+    marginRight: 20,
+    padding: 10,
     width: "auto",
     paddingTop: 12,
+    backgroundColor: GlobalColors.colors.primary400,
+    borderRadius: 20,
   },
   input: {
     width: "auto",
