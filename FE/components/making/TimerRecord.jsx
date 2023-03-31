@@ -24,23 +24,44 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
     }
   }, [time, timerRunning]);
 
-  const startRecording = async () => {
-    try {
-      console.log("Requesting permissions..");
-      await Audio.requestPermissionsAsync();
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
+  const toggleRecording = async () => {
+    if (recording) {
+      if (timerRunning) {
+        await recording.pauseAsync();
+        clearInterval(intervalId);
+        setTimerRunning(false);
+      } else {
+        await recording.startAsync();
+        const id = setInterval(() => {
+          setTime((prevTime) => prevTime - 1);
+        }, 1000);
+        setIntervalId(id);
+        setTimerRunning(true);
+      }
+    } else {
+      try {
+        console.log("Requesting permissions..");
+        await Audio.requestPermissionsAsync();
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          playsInSilentModeIOS: true,
+        });
 
-      console.log("Starting recording..");
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
-      setRecording(recording);
-      console.log("Recording started");
-    } catch (err) {
-      console.error("Failed to start recording", err);
+        console.log("Starting recording..");
+        const { recording } = await Audio.Recording.createAsync(
+          Audio.RecordingOptionsPresets.HIGH_QUALITY
+        );
+        setRecording(recording);
+        console.log("Recording started");
+
+        const id = setInterval(() => {
+          setTime((prevTime) => prevTime - 1);
+        }, 1000);
+        setIntervalId(id);
+        setTimerRunning(true);
+      } catch (err) {
+        console.error("Failed to start recording", err);
+      }
     }
   };
 
@@ -56,20 +77,11 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
   };
 
   const startTimer = () => {
-    startRecording();
-    const id = setInterval(() => {
-      setTime((prevTime) => prevTime - 1);
-    }, 1000);
-    setIntervalId(id);
-    setTimerRunning(true);
+    toggleRecording();
   };
 
   const pauseTimer = () => {
-    if (recording) {
-      stopRecording();
-    }
-    clearInterval(intervalId);
-    setTimerRunning(false);
+    toggleRecording();
   };
 
   const complete = () => {

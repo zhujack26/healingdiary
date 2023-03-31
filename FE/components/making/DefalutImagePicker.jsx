@@ -143,15 +143,6 @@ const DefalutImagePicker = ({ onSelect }) => {
 };
 
 const styles = StyleSheet.create({
-  view: {
-    width: 120,
-    height: 120,
-    borderRadius: 10,
-    backgroundColor: GlobalColors.colors.gray400,
-    margin: 3,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   image: {
     width: 120,
     height: 120,
