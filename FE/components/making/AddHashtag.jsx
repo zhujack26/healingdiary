@@ -98,7 +98,6 @@ const AddHashtag = ({ onToggleCompleteButtonVisibility }) => {
   return (
     <View style={styles.container}>
       {renderTextInput()}
-
       <Text>선택된 해시태그</Text>
       <View style={styles.selectedTagsContainer}>
         {selectedTags.map((tag) => (
