@@ -33,7 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
 
 
-    private final RedisTemplate redisTemplate;
 
 
 
@@ -42,43 +41,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try{
             String path = request.getServletPath();
             if (path.endsWith("reissue")) {
-                logger.info("여기는 리이슈");
                 filterChain.doFilter(request, response);
             }
             else{
                 String token = request.getHeader("Authorization").replace("Bearer ", "");
                 boolean isTokenValid = jwtTokenizer.validateToken(token);
                 if (StringUtils.hasText(token) && isTokenValid) {
-                    String memberId = jwtTokenizer.getUsernameFromToken(token);
-                    String isLogout = (String) redisTemplate.opsForValue().get(memberId); //레디스 리프레시토큰 확인
-                    Cookie[] cookies = request.getCookies();
 
-                    String refreshTokenCookie = null;
+                    Authentication authentication = principalDetailsService.getAuthentication(token);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
 
-                    if (cookies != null) {
-                        for (Cookie cookie : cookies) {
-                            if ("refreshToken".equals(cookie.getName())) {
-                                refreshTokenCookie = cookie.getValue();
-                                break;
-                            }
-                        }
-                        if(refreshTokenCookie == null){
-                            throw new CustomException(LOG_OUT);
-                        }
-                        if(!jwtTokenizer.validateToken(refreshTokenCookie)){
-                            throw new CustomException(BAD_REQUEST);
-                        }
-                    }
-                    else{
-                        throw new CustomException(LOG_OUT);
-
-                    }
-
-
-                    if (!StringUtils.hasText(refreshTokenCookie)||ObjectUtils.isEmpty(isLogout)) {
-                        Authentication authentication = principalDetailsService.getAuthentication(token);
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    }
                 }
                 filterChain.doFilter(request, response);
             }
