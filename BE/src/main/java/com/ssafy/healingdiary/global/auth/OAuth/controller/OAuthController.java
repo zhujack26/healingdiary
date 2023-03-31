@@ -25,8 +25,8 @@ public class OAuthController {
     public ResponseEntity<LoginResponse> googleAuthRequest(@RequestHeader("Authorization") String accessToken) {
 
         try {
-            LoginResponse loginResponse = oauthService.googleOauthLogin(accessToken);
-            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+            ResponseEntity<LoginResponse> loginResponse = oauthService.googleOauthLogin(accessToken);
+            return loginResponse;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -38,8 +38,8 @@ public class OAuthController {
     public ResponseEntity<LoginResponse> kakaoAuthRequest(@RequestHeader("Authorization") String accessToken) {
 
         try {
-            LoginResponse loginResponse = oauthService.kakaoOauthLogin(accessToken);
-            return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+            ResponseEntity<LoginResponse> loginResponse = oauthService.kakaoOauthLogin(accessToken);
+            return loginResponse;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

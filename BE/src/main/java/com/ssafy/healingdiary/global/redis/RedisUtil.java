@@ -2,15 +2,17 @@ package com.ssafy.healingdiary.global.redis;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 
-@Service
-@AllArgsConstructor
+@Component
+@RequiredArgsConstructor
 public class RedisUtil {
     private final StringRedisTemplate stringRedisTemplate;
 
@@ -25,7 +27,7 @@ public class RedisUtil {
 
     public void dataExpirationsInput(String key,String value,long duration){
         ValueOperations<String,String> valueOperations = stringRedisTemplate.opsForValue();
-        Duration expireDuration = Duration.ofSeconds(duration);
+        Duration expireDuration = Duration.ofDays(duration);
         valueOperations.set(key,value,expireDuration);
     }
 
