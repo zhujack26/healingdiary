@@ -2,6 +2,7 @@ package com.ssafy.healingdiary.global.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
+import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.redis.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static com.ssafy.healingdiary.global.error.ErrorCode.BAD_REQUEST;
+import static com.ssafy.healingdiary.global.error.ErrorCode.LOG_OUT;
 
 
 @RequiredArgsConstructor
@@ -45,8 +50,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 boolean isTokenValid = jwtTokenizer.validateToken(token);
                 if (StringUtils.hasText(token) && isTokenValid) {
                     String memberId = jwtTokenizer.getUsernameFromToken(token);
-                    String isLogout = (String) redisTemplate.opsForValue().get(memberId);
-                    if (ObjectUtils.isEmpty(isLogout)) {
+                    String isLogout = (String) redisTemplate.opsForValue().get(memberId); //레디스 리프레시토큰 확인
+                    Cookie[] cookies = request.getCookies();
+
+                    String refreshTokenCookie = null;
+
+                    if (cookies != null) {
+                        for (Cookie cookie : cookies) {
+                            if ("refreshToken".equals(cookie.getName())) {
+                                refreshTokenCookie = cookie.getValue();
+                                break;
+                            }
+                        }
+                        if(refreshTokenCookie == null){
+                            throw new CustomException(LOG_OUT);
+                        }
+                        if(!jwtTokenizer.validateToken(refreshTokenCookie)){
+                            throw new CustomException(BAD_REQUEST);
+                        }
+                    }
+                    else{
+                        throw new CustomException(LOG_OUT);
+
+                    }
+
+
+                    if (!StringUtils.hasText(refreshTokenCookie)||ObjectUtils.isEmpty(isLogout)) {
                         Authentication authentication = principalDetailsService.getAuthentication(token);
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
