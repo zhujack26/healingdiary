@@ -174,7 +174,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
 
     @Override
     public List<DiarySimpleResponse> findByDiseaseAndRegion(Member m, Integer num) {
-        Set<Long> idSet = queryFactory
+        List<Long> idList = queryFactory
             .select(diary.id)
             .from(diary)
             .innerJoin(diary.member, member)
@@ -184,12 +184,10 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             )
             .orderBy(diary.createdDate.desc())
             .limit(num)
-            .fetch()
-            .stream()
-            .collect(Collectors.toUnmodifiableSet());
+            .fetch();
 
         List<DiarySimpleResponse> result = new ArrayList<>();
-        if (!idSet.isEmpty()) {
+        if (!idList.isEmpty()) {
             result = queryFactory
                 .select(diary)
                 .from(diary)
@@ -197,7 +195,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
                 .leftJoin(diary.diaryTag, diaryTag)
                 .leftJoin(diaryTag.tag, tag)
                 .where(
-                    diary.id.in(idSet)
+                    diary.id.in(idList)
                 )
                 .orderBy(diary.createdDate.desc())
                 .transform(
@@ -218,15 +216,22 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
 
         if (result.size() < num) {
             int limit = num - result.size();
+            List<Long> idList2 = queryFactory
+                .select(diary.id)
+                .from(diary)
+                .where(diary.id.notIn(idList))
+                .orderBy(diary.createdDate.desc())
+                .limit(limit)
+                .fetch();
+
             List<DiarySimpleResponse> result2 = queryFactory
                 .select(diary)
                 .from(diary)
                 .innerJoin(diary.emotion, emotion)
                 .leftJoin(diary.diaryTag, diaryTag)
                 .leftJoin(diaryTag.tag, tag)
-                .where(diary.id.notIn(idSet))
+                .where(diary.id.in(idList2))
                 .orderBy(diary.createdDate.desc())
-                .limit(limit)
                 .transform(
                     groupBy(diary.id).list(
                         new QDiarySimpleResponse(
