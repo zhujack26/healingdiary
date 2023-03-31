@@ -4,8 +4,6 @@ package com.ssafy.healingdiary.global.auth.config;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
 import com.ssafy.healingdiary.global.jwt.JwtAuthenticationFilter;
 import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -22,24 +20,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final PrincipalDetailsService principalDetailsService;
 
     @Autowired
-    public SecurityConfig(JwtTokenizer jwtTokenizer, PrincipalDetailsService principalDetailsService) {
+    public SecurityConfig(JwtTokenizer jwtTokenizer,
+        PrincipalDetailsService principalDetailsService) {
         this.jwtTokenizer = jwtTokenizer;
         this.principalDetailsService = principalDetailsService;
     }
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-                .ignoring()
-                .antMatchers(
-                        "/v2/api-docs/**",
-                        "/*",
-                        "/swagger-ui/**",
-                        "/swagger-resources/**",
-                        "/swagger-ui.html",
-                        "/auth/account/**",
-                        "/members/nickname"
+            .ignoring()
+            .antMatchers(
+                "/v2/api-docs/**",
+                "/*",
+                "/webjars/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html/**",
+                "/swagger-resources/**",
+                "/swagger-ui.html",
+                "/auth/account/**",
+                "/members/nickname"
 
-                );
+            );
     }
 
     @Override
@@ -47,22 +49,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .httpBasic().disable()
             .cors()
-                .and()
-                .formLogin().disable()
-                .csrf().disable()
-                .authorizeRequests()
-                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers(
-                        "/*",
-                        "/auth/account/**",
-                        "/v2/api-docs/**", "/swagger-ui.html/**", "/swagger-resources/**",
-                        "/members/nickname").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(principalDetailsService, jwtTokenizer), UsernamePasswordAuthenticationFilter.class);
+            .and()
+            .formLogin().disable()
+            .csrf().disable()
+            .authorizeRequests()
+            .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+            .antMatchers(
+                "/*",
+                "/webjars/**",
+                "/auth/account/**",
+                "/swagger-ui.html/**", "/swagger-ui/**",
+                "/v2/api-docs/**", "/swagger-resources/**",
+                "/members/nickname").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .addFilterBefore(new JwtAuthenticationFilter(principalDetailsService, jwtTokenizer),
+                UsernamePasswordAuthenticationFilter.class);
 
     }
 }
