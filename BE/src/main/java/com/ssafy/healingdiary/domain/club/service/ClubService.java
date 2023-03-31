@@ -51,32 +51,33 @@ public class ClubService {
     private final S3StorageClient s3Service;
 
     public Slice<ClubSimpleResponse> getClubListByTag(
-//        UserDetails principal,
+        String id,
         boolean all,
         String keyword,
         String tagContent,
         Pageable pageable) {
 
-        Long id = null;
+        Long memberId = null;
         if (!all) {
-            id = 1L;
+            memberId = Long.parseLong(id);
         }
-        Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByOption(all, id,
+        Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByOption(all, memberId,
             keyword, tagContent, pageable);
         return clubSimpleResponseList;
     }
 
 
-    public Slice<ClubInvitationResponse> getInvitationList(Long clubId, Pageable pageable) {
-        Long hostId = 1L; // 방장 ID
+    public Slice<ClubInvitationResponse> getInvitationList(
+        String id, Long clubId, Pageable pageable) {
+        Long hostId = Long.parseLong(id); // 방장 ID
         Slice<ClubInvitationResponse> clubInvitationResponseList = clubMemberRepository.findDistinctByClubIdNot(
             clubId, hostId, pageable);
         return clubInvitationResponseList;
     }
 
-    public ClubRegisterResponse registClub(ClubRegisterRequest request,
+    public ClubRegisterResponse registClub(String id, ClubRegisterRequest request,
         MultipartFile file) throws IOException {
-        Member member = memberRepository.findById(1L).get();
+        Member member = memberRepository.findById(Long.parseLong(id)).get();
         String imageUrl = s3Service.uploadFile(file);
         Club club = ClubRegisterRequest.toEntity(request, member, imageUrl);
         List<ClubTag> tags = request.getTags()
@@ -159,8 +160,8 @@ public class ClubService {
         return ClubApprovalResponse.of(clubId, clubMemberId);
     }
 
-    public ClubJoinResponse joinClub(Long clubId) {
-        Member member = memberRepository.findById(1L)
+    public ClubJoinResponse joinClub(String id, Long clubId) {
+        Member member = memberRepository.findById(Long.parseLong(id))
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
