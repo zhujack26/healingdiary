@@ -7,14 +7,30 @@ import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.infra.storage.S3StorageClient;
+import com.ssafy.healingdiary.global.error.ErrorCode;
+import com.ssafy.healingdiary.global.error.ErrorResponse;
+import com.ssafy.healingdiary.global.jwt.CookieUtil;
+import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
+import com.ssafy.healingdiary.global.jwt.TokenRegenerateRequest;
+import com.ssafy.healingdiary.global.jwt.TokenRegenerateResponse;
+import com.ssafy.healingdiary.global.redis.RedisUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.TimeUnit;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
+import static com.ssafy.healingdiary.global.error.ErrorCode.*;
 
 @Service
 @Transactional
@@ -25,13 +41,18 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    private final PrincipalDetailsService principalDetailsService;
+    private final JwtTokenizer jwtTokenizer;
 
 
-    public MemberInfoResponse memberInfoFind(String accessToken) {
-        PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
-        Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
-//        Member member = memberRepository.findMemberByProviderEmail("asdfaasdf");
+
+    private final RedisUtil redisUtil;
+
+    private final CookieUtil cookieUtil;
+
+
+
+    public MemberInfoResponse memberInfoFind(String providerEmail) {
+        Member member = memberRepository.findMemberByProviderEmail(providerEmail);
         if(member == null){
             throw new CustomException(MEMBER_NOT_FOUND);
         }
@@ -41,11 +62,10 @@ public class MemberService {
         return foundMember;
     }
 
-    public MemberUpdateResponse memberUpdate(String accessToken,
-                                             MemberUpdateRequest memberUpdateRequest,
+
+    public MemberUpdateResponse memberUpdate(String providerEmail, MemberUpdateRequest memberUpdateRequest,
                                              MultipartFile file) throws IOException {
-        PrincipalDetails principalDetails = principalDetailsService.loadMemberByAccessToken(accessToken);
-        Member member = memberRepository.findMemberByProviderEmail(principalDetails.getPassword());
+        Member member = memberRepository.findMemberByProviderEmail(providerEmail);
 
         if(member == null){
             throw new CustomException(MEMBER_NOT_FOUND);
@@ -79,6 +99,63 @@ public class MemberService {
             return foundMember;
         }
 
+    }
+
+    public ResponseEntity<?> reissue(String tokenRegenerateRequest, HttpServletRequest request
+
+    ) {
+        String token = tokenRegenerateRequest.replace("Bearer ", "");
+
+        //refreshToken얻어오는 방법
+        Cookie[] cookies = request.getCookies();
+
+        String refreshTokenCookie = null;
+
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("refreshToken".equals(cookie.getName())) {
+                    refreshTokenCookie = cookie.getValue();
+                    break;
+                }
+            }
+
+            if(refreshTokenCookie == null){
+                throw new CustomException(BAD_REQUEST);
+            }
+            if(!jwtTokenizer.validateToken(refreshTokenCookie)){
+                throw new CustomException(BAD_REQUEST);
+            }
+        }
+        else{
+            throw new CustomException(BAD_REQUEST);
+
+        }
+        String memberId = jwtTokenizer.getId(refreshTokenCookie);
+        String refreshTokenInRedis = redisUtil.getToken(memberId);
+
+        if (ObjectUtils.isEmpty(refreshTokenInRedis)) {
+            throw new CustomException(LOG_OUT);
+        }
+
+        if (!refreshTokenInRedis.equals(refreshTokenCookie)) {
+            redisUtil.deleteData(memberId);
+            throw new CustomException(BAD_REQUEST);
+        }
+        redisUtil.deleteData(memberId);
+        //엑세스토큰 재발급
+        String newAccessToken = jwtTokenizer.createAccessToken(jwtTokenizer.getUsernameFromToken(refreshTokenInRedis),
+                jwtTokenizer.getRoleListFromToken(refreshTokenInRedis));
+        //리프레시토큰 재발급
+        String newRefreshToken = jwtTokenizer.createRefreshToken(jwtTokenizer.getUsernameFromToken(refreshTokenInRedis),
+                jwtTokenizer.getRoleListFromToken(refreshTokenInRedis));
+
+        redisUtil.dataExpirationsInput(memberId,newRefreshToken,7);
+        TokenRegenerateResponse tokenRegenerateResponse = TokenRegenerateResponse.of(newAccessToken);
+
+
+
+
+        return cookieUtil.TokenCookie(newRefreshToken, tokenRegenerateResponse);
     }
 
 }
