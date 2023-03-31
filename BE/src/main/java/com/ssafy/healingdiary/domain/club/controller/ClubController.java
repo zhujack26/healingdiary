@@ -42,13 +42,14 @@ public class ClubController {
 
     @GetMapping
     public Slice<ClubSimpleResponse> getClubList(
-//        Authentication authentication,
+        Authentication authentication,
         boolean all,
         @RequestParam(required = false) String keyword,
         @RequestParam(required = false) String tagContent,
         Pageable pageable
     ) {
-        return clubService.getClubListByTag(all, keyword, tagContent, pageable);
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.getClubListByTag(principal.getUsername(), all, keyword, tagContent, pageable);
     }
 
     @GetMapping("/{clubId}")
@@ -75,9 +76,10 @@ public class ClubController {
     }
 
     @GetMapping("/{clubId}/invitation")
-    public Slice<ClubInvitationResponse> getInvitationList(@PathVariable Long clubId,
+    public Slice<ClubInvitationResponse> getInvitationList(Authentication authentication, @PathVariable Long clubId,
         Pageable pageable) {
-        return clubService.getInvitationList(clubId, pageable);
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.getInvitationList(principal.getUsername(), clubId, pageable);
     }
 
     @PostMapping("/{clubId}/invitation")
@@ -88,9 +90,11 @@ public class ClubController {
 
     @PostMapping
     public ClubRegisterResponse registClub(
+        Authentication authentication,
         @RequestPart(value = "ClubRegister") ClubRegisterRequest request,
         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
-        return clubService.registClub(request, file);
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.registClub(principal.getUsername(), request, file);
     }
 
     @PostMapping("/{clubId}")
@@ -102,8 +106,9 @@ public class ClubController {
     }
 
     @PostMapping("/{clubId}/join")
-    public ClubJoinResponse joinClub(@PathVariable Long clubId) {
-        return clubService.joinClub(clubId);
+    public ClubJoinResponse joinClub(Authentication authentication, @PathVariable Long clubId) {
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.joinClub(principal.getUsername(), clubId);
     }
 
     @DeleteMapping("/{clubId}/{clubMemberId}")
