@@ -47,8 +47,9 @@ public class DiaryController {
         @RequestParam(required = false) Integer day,
         Pageable pageable
     ){
-        PrincipalDetails principal = (PrincipalDetails) authentication.getPrincipal();
-        Long memberId = principal.getId();
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        Long memberId = Long.parseLong(principal.getUsername());
+        System.out.println("목록조회 멤버아이디:"+memberId);
         return diaryService.getDiaryList(all, memberId, clubId, keyword, tag, year, month, day, pageable);
     }
 
@@ -59,6 +60,7 @@ public class DiaryController {
     ){
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         Long memberId = Long.parseLong(principal.getUsername());
+        System.out.println("추천 멤버아이디:"+memberId);
         return diaryService.getRecommendedDiaryList(memberId, num);
     }
 
