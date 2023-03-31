@@ -224,6 +224,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
                 .innerJoin(diary.emotion, emotion)
                 .leftJoin(diary.diaryTag, diaryTag)
                 .leftJoin(diaryTag.tag, tag)
+                .where(diary.id.notIn(idSet))
                 .orderBy(diary.createdDate.desc())
                 .limit(limit)
                 .transform(
