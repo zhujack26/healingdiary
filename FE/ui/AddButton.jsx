@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Pressable, View, StyleSheet, Animated } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "./../constants/color";
+import { AntDesign } from "@expo/vector-icons";
 
 const AddButton = ({ opened, toggleOpened }) => {
   const navigation = useNavigation();
@@ -89,8 +90,8 @@ const AddButton = ({ opened, toggleOpened }) => {
               },
             ]}
           >
-            <Ionicons
-              name="people-outline"
+            <AntDesign
+              name="addusergroup"
               size={24}
               color={GlobalColors.colors.white500}
               style={styles.itemIcon}

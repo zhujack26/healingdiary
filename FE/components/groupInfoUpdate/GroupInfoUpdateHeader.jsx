@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "./../../constants/color";
+import AddFile from "./AddFile";
 
 const { width, height } = Dimensions.get("window");
 
@@ -28,7 +29,7 @@ const GroupInfoUpdateHeader = ({ isEdit, navigation }) => {
         />
       ) : (
         <Pressable style={styles.defaultImage}>
-          <Ionicons name="add" size={48} color={GlobalColors.colors.black500} />
+          <AddFile />
         </Pressable>
       )}
 
@@ -83,8 +84,6 @@ const styles = StyleSheet.create({
   defaultImage: {
     width: "100%",
     height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: GlobalColors.colors.gray500,
   },
 

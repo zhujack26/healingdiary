@@ -22,6 +22,7 @@ import InviteScreen from "../screens/InviteScreen";
 import MakingInput from "../components/diaryDetail/MakingInput";
 import { BottomTabContextProvider } from "../context/BottomTabContext";
 import SearchScreen from "./../screens/SearchScreen";
+import CompleteButton from "../components/making/CompleteButton";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -94,8 +95,6 @@ const StackNavigation = () => {
             name="Making"
             component={MakingScreen}
             options={({ navigation }) => ({
-              headerTitle: "",
-              headerBackTitleVisible: false,
               headerRight: (props) => (
                 <NextButton {...props} navigation={navigation} />
               ),
@@ -111,13 +110,8 @@ const StackNavigation = () => {
             name="MakingDetail"
             component={MakingDetailScreen}
             options={({ navigation }) => ({
-              title: "",
-              headerRight: () => (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate("MakingDetail")}
-                >
-                  <Text style={{ fontSize: 16, fontWeight: "bold" }}>완료</Text>
-                </TouchableOpacity>
+              headerRight: (props) => (
+                <CompleteButton {...props} navigation={navigation} />
               ),
               headerTitle: () => <Date />,
               headerTitleAlign: "center",

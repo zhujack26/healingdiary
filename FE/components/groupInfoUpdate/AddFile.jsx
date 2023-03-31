@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
-import DefalutImagePicker from "./DefalutImagePicker";
+import DefalutImagePicker from "../making/DefalutImagePicker";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
@@ -73,15 +73,8 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 50,
-    marginBottom: 10,
-    width: "80%",
-    height: "60%",
-    borderWidth: 1,
-    shadowOpacity: 0.5,
-    borderColor: GlobalColors.colors.white500,
-    elevation: 4,
-    backgroundColor: GlobalColors.colors.white500,
+    width: "100%",
+    height: "100%",
   },
   container1: {
     borderTopLeftRadius: 30,
