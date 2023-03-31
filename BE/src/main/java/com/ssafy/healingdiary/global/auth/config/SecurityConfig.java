@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .ignoring()
             .antMatchers(
                 "/v2/api-docs/**",
-                "/*",
+                "/",
                 "/webjars/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html/**",
@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
             .antMatchers(
-                "/*",
+                "/",
                 "/webjars/**",
                 "/auth/account/**",
                 "/swagger-ui.html/**", "/swagger-ui/**",
