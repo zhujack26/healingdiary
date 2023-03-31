@@ -61,10 +61,10 @@ public class CommentService {
         return new SliceImpl<>(commentResponses, pageable, comments.hasNext());
     }
 
-    public Map<String, Object> createComment(CommentCreateRequest request) {
+    public Map<String, Object> createComment(Long memberId, CommentCreateRequest request) {
 
         Comment comment = Comment.builder()
-            .member(memberRepository.getReferenceById(request.getMemberId()))
+            .member(memberRepository.getReferenceById(memberId))
             .parent((commentRepository.getReferenceById(request.getParentId())))
             .content(request.getContent())
             .build();
@@ -76,11 +76,11 @@ public class CommentService {
         return map;
     }
 
-    public Map<String, Object> updateComment(CommentUpdateRequest request) {
+    public Map<String, Object> updateComment(Long memberId, CommentUpdateRequest request) {
         Comment comment = commentRepository.findById(request.getCommentId())
             .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
-        if(request.getMemberId() != comment.getMember().getId()){
+        if(memberId != comment.getMember().getId()){
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
 
