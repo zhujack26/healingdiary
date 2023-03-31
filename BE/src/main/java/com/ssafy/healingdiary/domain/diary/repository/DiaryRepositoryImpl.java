@@ -5,20 +5,20 @@ import static com.querydsl.core.group.GroupBy.list;
 import static com.ssafy.healingdiary.domain.diary.domain.QDiary.diary;
 import static com.ssafy.healingdiary.domain.diary.domain.QDiaryTag.diaryTag;
 import static com.ssafy.healingdiary.domain.diary.domain.QEmotion.emotion;
+import static com.ssafy.healingdiary.domain.member.domain.QMember.member;
 import static com.ssafy.healingdiary.domain.tag.domain.QTag.tag;
 import static org.springframework.util.StringUtils.hasText;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
-import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.dto.QCalendarResponse;
 import com.ssafy.healingdiary.domain.diary.dto.QDiarySimpleResponse;
 import com.ssafy.healingdiary.domain.diary.dto.QEmotionResponse;
 import com.ssafy.healingdiary.domain.diary.dto.QEmotionStatisticResponse;
+import com.ssafy.healingdiary.domain.member.domain.Member;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -170,6 +170,87 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
         }
 
         return new ArrayList<CalendarResponse>(calendar.values());
+    }
+
+    @Override
+    public List<DiarySimpleResponse> findByDiseaseAndRegion(Member m, Integer num) {
+        List<Long> idList = queryFactory
+            .select(diary.id)
+            .from(diary)
+            .innerJoin(diary.member, member)
+            .where(
+                member.disease.eq(m.getDisease())
+                        .or(member.region.eq(m.getRegion()))
+            )
+            .orderBy(diary.createdDate.desc())
+            .limit(num)
+            .fetch();
+
+        List<DiarySimpleResponse> result = new ArrayList<>();
+        if (!idList.isEmpty()) {
+            result = queryFactory
+                .select(diary)
+                .from(diary)
+                .innerJoin(diary.emotion, emotion)
+                .leftJoin(diary.diaryTag, diaryTag)
+                .leftJoin(diaryTag.tag, tag)
+                .where(
+                    diary.id.in(idList)
+                )
+                .orderBy(diary.createdDate.desc())
+                .transform(
+                    groupBy(diary.id).list(
+                        new QDiarySimpleResponse(
+                            diary.id,
+                            diary.diaryImageUrl,
+                            diary.createdDate,
+                            new QEmotionResponse(
+                                diary.emotion.emotionCode,
+                                diary.emotion.value
+                            ),
+                            list(tag.content)
+                        )
+                    )
+                );
+        }
+
+        if (result.size() < num) {
+            int limit = num - result.size();
+            List<Long> idList2 = queryFactory
+                .select(diary.id)
+                .from(diary)
+                .where(diary.id.notIn(idList))
+                .orderBy(diary.createdDate.desc())
+                .limit(limit)
+                .fetch();
+
+            List<DiarySimpleResponse> result2 = queryFactory
+                .select(diary)
+                .from(diary)
+                .innerJoin(diary.emotion, emotion)
+                .leftJoin(diary.diaryTag, diaryTag)
+                .leftJoin(diaryTag.tag, tag)
+                .where(diary.id.in(idList2))
+                .orderBy(diary.createdDate.desc())
+                .transform(
+                    groupBy(diary.id).list(
+                        new QDiarySimpleResponse(
+                            diary.id,
+                            diary.diaryImageUrl,
+                            diary.createdDate,
+                            new QEmotionResponse(
+                                diary.emotion.emotionCode,
+                                diary.emotion.value
+                            ),
+                            list(tag.content)
+                        )
+                    )
+                );
+
+            result.addAll(result2);
+        }
+
+        return result;
     }
 
     private BooleanExpression memberIdEq(Long memberId) {
