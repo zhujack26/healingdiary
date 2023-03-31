@@ -49,7 +49,6 @@ public class DiaryController {
     ){
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         Long memberId = Long.parseLong(principal.getUsername());
-        System.out.println("목록조회 멤버아이디:"+memberId);
         return diaryService.getDiaryList(all, memberId, clubId, keyword, tag, year, month, day, pageable);
     }
 
@@ -60,7 +59,6 @@ public class DiaryController {
     ){
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         Long memberId = Long.parseLong(principal.getUsername());
-        System.out.println("추천 멤버아이디:"+memberId);
         return diaryService.getRecommendedDiaryList(memberId, num);
     }
 
@@ -72,7 +70,7 @@ public class DiaryController {
 
     @PostMapping("/analyze")
     public Map<String, Object> analyzeDiary(
-        @RequestPart MultipartFile record
+        @RequestPart MultipartFile[] record
     ) throws IOException{
         return diaryService.analyzeDiary(record);
     }
@@ -84,7 +82,6 @@ public class DiaryController {
         @RequestPart MultipartFile image
     ) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
-        System.out.println(principal.getUsername());
         Long memberId = Long.parseLong(principal.getUsername());
         return diaryService.createDiary(memberId, diaryCreateRequest, image);
     }
