@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, Alert } from "react-native";
+import React, { useRef, useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+  Button,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import { Audio } from "expo-av";
+import axios from "axios";
 
 const TimerRecord = ({ onToggleNextButtonVisibility }) => {
   const [time, setTime] = useState(180);
@@ -11,6 +19,7 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
   const [timerRunning, setTimerRunning] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [recording, setRecording] = useState(null);
+  // const [isRecordingCompleted, setIsRecordingCompleted] = useState(false); 녹음 확인용
 
   useEffect(() => {
     if (time === 0) {
@@ -24,52 +33,64 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
     }
   }, [time, timerRunning]);
 
-  const startRecording = async () => {
-    try {
-      console.log("Requesting permissions..");
-      await Audio.requestPermissionsAsync();
-      await Audio.setAudioModeAsync({
-        allowsRecordingIOS: true,
-        playsInSilentModeIOS: true,
-      });
+  const toggleRecording = async () => {
+    if (recording) {
+      if (timerRunning) {
+        await recording.pauseAsync();
+        clearInterval(intervalId);
+        setTimerRunning(false);
+      } else {
+        await recording.startAsync();
+        const id = setInterval(() => {
+          setTime((prevTime) => prevTime - 1);
+        }, 1000);
+        setIntervalId(id);
+        setTimerRunning(true);
+      }
+    } else {
+      try {
+        console.log("Requesting permissions..");
+        await Audio.requestPermissionsAsync();
+        await Audio.setAudioModeAsync({
+          allowsRecordingIOS: true,
+          playsInSilentModeIOS: true,
+        });
 
-      console.log("Starting recording..");
-      const { recording } = await Audio.Recording.createAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
-      );
-      setRecording(recording);
-      console.log("Recording started");
-    } catch (err) {
-      console.error("Failed to start recording", err);
+        console.log("Starting recording..");
+        const { recording } = await Audio.Recording.createAsync(
+          Audio.RecordingOptionsPresets.HIGH_QUALITY
+        );
+        setRecording(recording);
+        console.log("Recording started");
+
+        const id = setInterval(() => {
+          setTime((prevTime) => prevTime - 1);
+        }, 1000);
+        setIntervalId(id);
+        setTimerRunning(true);
+      } catch (err) {
+        console.error("Failed to start recording", err);
+      }
     }
   };
 
   const stopRecording = async () => {
     console.log("Stopping recording..");
-    setRecording(null);
     await recording.stopAndUnloadAsync();
     await Audio.setAudioModeAsync({
       allowsRecordingIOS: false,
     });
     const uri = recording.getURI();
     console.log("Recording stopped and stored at", uri);
+    // setIsRecordingCompleted(true);  녹음 확인용
   };
 
   const startTimer = () => {
-    startRecording();
-    const id = setInterval(() => {
-      setTime((prevTime) => prevTime - 1);
-    }, 1000);
-    setIntervalId(id);
-    setTimerRunning(true);
+    toggleRecording();
   };
 
   const pauseTimer = () => {
-    if (recording) {
-      stopRecording();
-    }
-    clearInterval(intervalId);
-    setTimerRunning(false);
+    toggleRecording();
   };
 
   const complete = () => {
@@ -94,6 +115,21 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
     const seconds = time % 60;
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
+  const audioPlayer = useRef(new Audio.Sound());
+
+  // const playAudio = async () => {
+  //   if (!recording) {
+  //     console.error("No recording available to play");
+  //     return;
+  //   }
+  //   try {
+  //     await audioPlayer.current.unloadAsync();
+  //     await audioPlayer.current.loadAsync({ uri: recording.getURI() });
+  //     await audioPlayer.current.playAsync();
+  //   } catch (error) {
+  //     console.error("Error playing audio:", error);
+  //   }
+  // }; 녹음 확인용
 
   return (
     <View style={styles.container}>
@@ -144,6 +180,9 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
       {showAlert && (
         <View style={styles.alertContainer}>
           <Text style={styles.alertText}>녹음이 완료되었습니다</Text>
+          {/* {isRecordingCompleted && (
+            <Button title="Play Audio" onPress={playAudio} />
+          )} 녹음 확인용*/}
         </View>
       )}
     </View>

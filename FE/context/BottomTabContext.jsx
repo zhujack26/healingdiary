@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 
-const BottomTabContexxt = createContext({ opened: false, setOpened: () => {} });
+const BottomTabContext = createContext({ opened: false, setOpened: () => {} });
 
 export const BottomTabContextProvider = ({ children }) => {
   const [opened, setOpened] = useState(false);
@@ -10,10 +10,10 @@ export const BottomTabContextProvider = ({ children }) => {
   };
 
   return (
-    <BottomTabContexxt.Provider value={{ opened, toggleOpened }}>
+    <BottomTabContext.Provider value={{ opened, toggleOpened }}>
       {children}
-    </BottomTabContexxt.Provider>
+    </BottomTabContext.Provider>
   );
 };
 
-export const useTabMenu = () => useContext(BottomTabContexxt);
+export const useTabMenu = () => useContext(BottomTabContext);
