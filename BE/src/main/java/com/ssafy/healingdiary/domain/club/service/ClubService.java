@@ -31,7 +31,8 @@ import com.ssafy.healingdiary.infra.storage.S3StorageClient;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -39,7 +40,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ClubService {
 
     private final ClubRepository clubRepository;
@@ -49,6 +50,9 @@ public class ClubService {
     private final NoticeRepository noticeRepository;
     private final TagRepository tagRepository;
     private final S3StorageClient s3Service;
+
+    @Value("${default-image-s3}")
+    private String DEFAULT_IMAGE_S3;
 
     public Slice<ClubSimpleResponse> getClubListByTag(
         String id,
@@ -61,7 +65,8 @@ public class ClubService {
         if (!all) {
             memberId = Long.parseLong(id);
         }
-        Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByOption(all, memberId,
+        Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByOption(all,
+            memberId,
             keyword, tagContent, pageable);
         return clubSimpleResponseList;
     }
@@ -110,10 +115,14 @@ public class ClubService {
         String preImg = request.getImageUrl();
         String imageUrl = null;
         if (file != null) {
-            s3Service.deleteFile(preImg);
+            if (preImg != null && !preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
+                s3Service.deleteFile(preImg);
+            }
             imageUrl = s3Service.uploadFile(file);
         } else if (request.getImageUrl() == null) {
-            s3Service.deleteFile(preImg);
+            if (preImg != null && !preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
+                s3Service.deleteFile(preImg);
+            }
         } else {
             imageUrl = request.getImageUrl();
         }
