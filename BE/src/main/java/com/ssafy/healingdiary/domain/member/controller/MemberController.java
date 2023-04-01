@@ -36,7 +36,7 @@ public class MemberController {
 
     @PostMapping("/info")
     public MemberUpdateResponse memberInfoUpdate(Authentication authentication,
-                                                 @RequestParam(value = "update", required = false) MemberUpdateRequest memberUpdateRequest,
+                                                 @RequestPart(value = "update", required = false) MemberUpdateRequest memberUpdateRequest,
                                                  @RequestPart(value = "image_file", required = false)MultipartFile file) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         return memberService.memberUpdate(principal.getPassword(),memberUpdateRequest, file);
