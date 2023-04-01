@@ -5,6 +5,8 @@ import {
   View,
   TouchableWithoutFeedback,
   Keyboard,
+  Pressable,
+  Dimensions,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import PropTypes from "prop-types";
@@ -15,7 +17,9 @@ const Nickname = ({
   message,
   nickname,
   onChangeNickname,
+  isValidNickname,
 }) => {
+  console.log("nickn", nickname);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -28,6 +32,9 @@ const Nickname = ({
           onChangeText={onChangeNickname}
           value={nickname}
         />
+        <Pressable style={styles.duplicationButton} onPress={isValidNickname}>
+          <Text style={styles.duplicationText}>중복확인</Text>
+        </Pressable>
         <Text style={styles.message}>{message}</Text>
       </View>
     </TouchableWithoutFeedback>
@@ -56,8 +63,26 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     height: 42,
   },
+
   message: {
     color: "red",
+  },
+
+  duplicationButton: {
+    width: 65,
+    height: 35,
+    backgroundColor: GlobalColors.colors.white500,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 16,
+    position: "absolute",
+    top: 30,
+    right: 15,
+  },
+
+  duplicationText: {
+    fontSize: 12,
+    color: GlobalColors.colors.black500,
   },
 });
 export default Nickname;

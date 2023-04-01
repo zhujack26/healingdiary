@@ -18,6 +18,16 @@ export const postConfig = (url, data) => {
   };
 };
 
+export const postFormConfig = (url, data) => {
+  return {
+    method: "POST",
+    url: API_END_POINT + url,
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+    data: data,
+  };
+};
 export const kakakoConfig = (code, token) => {
   return {
     method: "POST",

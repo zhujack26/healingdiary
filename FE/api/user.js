@@ -2,10 +2,12 @@ import axiosInstance from "./interceptor";
 import axios from "axios";
 
 import {
+  getConfig,
   kakakoConfig,
   kakaoGetConfig,
   kakaoPostConfig,
   postConfig,
+  postFormConfig,
 } from "./config";
 
 export const getToken = async (code, token) => {
@@ -35,7 +37,25 @@ export const kakaoSignup = async (token, data) => {
   }
 };
 
-export const duplicationNickname = async (token, data) => {
-  const response = await axios(postConfig("/members/nickname", token, data));
+export const duplicationNickname = async (data) => {
+  const response = await axios(postConfig("/members/nickname", data));
   return response.data.result;
+};
+
+export const getUserInfoDetail = async () => {
+  try {
+    const response = await axiosInstance(getConfig("/members"));
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const userInfoUpdate = async (data) => {
+  try {
+    const response = await axiosInstance(postFormConfig("/members/info", data));
+    return response;
+  } catch (error) {
+    console.log("e", error);
+  }
 };
