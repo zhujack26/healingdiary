@@ -94,6 +94,7 @@ public class ClubService {
                         .content(tagContent)
                         .build();
                 }
+                tagRepository.save(tag);
                 ClubTag clubTag = ClubRegisterRequest.toEntity(club, tag);
                 return clubTag;
             })
