@@ -87,9 +87,13 @@ public class ClubService {
         Club club = ClubRegisterRequest.toEntity(request, member, imageUrl);
         List<ClubTag> tags = request.getTags()
             .stream()
-            .map((tagId) -> {
-                Tag tag = tagRepository.findById(tagId)
-                    .orElseThrow(() -> new CustomException(ErrorCode.ENTITY_NOT_FOUND));
+            .map((tagContent) -> {
+                Tag tag = tagRepository.findByContentLike(tagContent);
+                if(tag==null) {
+                    tag = Tag.builder()
+                        .content(tagContent)
+                        .build();
+                }
                 ClubTag clubTag = ClubRegisterRequest.toEntity(club, tag);
                 return clubTag;
             })
