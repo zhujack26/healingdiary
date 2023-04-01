@@ -1,5 +1,7 @@
 import { ScrollView, StyleSheet, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { useState, useEffect } from "react";
+import { getRecommendDiary } from "../../api/diary";
 
 import RecommendDiary from "./RecommendDiary";
 import RecommendGroup from "./RecommendGroup";
@@ -61,18 +63,26 @@ const DIARYIES = [
 ];
 const Home = () => {
   const navigation = useNavigation();
+  const [diaries, setDiaries] = useState([]);
+
   const navigateToScreen = (screen, id) => {
     navigation.navigate(screen, { id: id });
   };
+
+  const getRecoDiary = async () => {
+    const res = await getRecommendDiary();
+    setDiaries(res);
+  };
+
+  useEffect(() => {
+    getRecoDiary();
+  }, []);
 
   return (
     <BottomTabContainer>
       <ScrollView style={styles.container}>
         <RecommendGroup groups={GROUP} navigateToScreen={navigateToScreen} />
-        <RecommendDiary
-          diaries={DIARYIES}
-          navigateToScreen={navigateToScreen}
-        />
+        <RecommendDiary diaries={diaries} navigateToScreen={navigateToScreen} />
         <RecentDiary diaries={DIARYIES} navigateToScreen={navigateToScreen} />
       </ScrollView>
     </BottomTabContainer>
