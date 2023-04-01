@@ -2,6 +2,7 @@ import axiosInstance from "./interceptor";
 import axios from "axios";
 
 import {
+  getConfig,
   kakakoConfig,
   kakaoGetConfig,
   kakaoPostConfig,
@@ -36,9 +37,18 @@ export const kakaoSignup = async (token, data) => {
   }
 };
 
-export const duplicationNickname = async (token, data) => {
-  const response = await axios(postConfig("/members/nickname", token, data));
+export const duplicationNickname = async (data) => {
+  const response = await axios(postConfig("/members/nickname", data));
   return response.data.result;
+};
+
+export const getUserInfoDetail = async () => {
+  try {
+    const response = await axiosInstance(getConfig("/members"));
+    return response.data;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const userInfoUpdate = async (data) => {

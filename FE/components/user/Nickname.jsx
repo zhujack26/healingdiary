@@ -17,7 +17,9 @@ const Nickname = ({
   message,
   nickname,
   onChangeNickname,
+  isValidNickname,
 }) => {
+  console.log("nickn", nickname);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
@@ -30,7 +32,7 @@ const Nickname = ({
           onChangeText={onChangeNickname}
           value={nickname}
         />
-        <Pressable style={styles.duplicationButton}>
+        <Pressable style={styles.duplicationButton} onPress={isValidNickname}>
           <Text style={styles.duplicationText}>중복확인</Text>
         </Pressable>
         <Text style={styles.message}>{message}</Text>

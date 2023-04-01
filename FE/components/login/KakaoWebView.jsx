@@ -21,6 +21,7 @@ const KakaoWebView = () => {
       } else {
         // AsyncStorage에 저장하기
         const { jwt_token, nickname, region, member_image_url, disease } = res;
+        console.log(jwt_token);
         if (jwt_token && nickname && region && member_image_url) {
           await AsyncStorage.setItem("jwtToken", jwt_token);
           await AsyncStorage.setItem("nickname", nickname);
