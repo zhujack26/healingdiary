@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class DiaryCreateRequest {
-    String fileKey;
+    String recordUrl;
     Integer emotionCode;
     Long clubId;
     List<String> tags;

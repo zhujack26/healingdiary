@@ -42,6 +42,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -86,17 +87,13 @@ public class DiaryService {
 //    public Map<String, Object> createDiary(UserDetails principal, DiaryCreateRequest diaryCreateRequest) {
     public Map<String, Object> createDiary(Long memberId, DiaryCreateRequest diaryCreateRequest, MultipartFile image)
         throws IOException {
-        String fileKey = diaryCreateRequest.getFileKey();
-        if(!redisTemplate.hasKey(fileKey)){
+        String recordUrl = diaryCreateRequest.getRecordUrl();
+        if(!redisTemplate.hasKey(recordUrl)){
             throw new CustomException(RECORD_NOT_FOUND);
         }
 
-        HashOperations<String, Object, String> hashOperations = redisTemplate.opsForHash();
-        String filePath = hashOperations.get(fileKey, "path");
-        File file = new File(filePath);
-        if(!file.exists()) {throw new CustomException(RECORD_NOT_FOUND);}
-
-        String content = hashOperations.get(fileKey, "content");
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        String content = valueOperations.get(recordUrl);
         String imageUrl = storageClient.uploadFile(image);
         Member member = memberRepository.getReferenceById(memberId);
 
@@ -114,7 +111,7 @@ public class DiaryService {
             .club(club)
             .emotion(emotion)
             .diaryImageUrl(imageUrl)
-            .recordUrl(filePath)
+            .recordUrl(recordUrl)
             .content(content)
             .build();
 
@@ -169,22 +166,10 @@ public class DiaryService {
 
     public Map<String, Object> analyzeDiary(MultipartFile rec) throws IOException{
 
-        String originalFileName = rec.getOriginalFilename();
-
-        int pos = originalFileName.lastIndexOf(".");
-        String type = originalFileName.substring(pos + 1);
-
-//        String saveFolder = "/healing/records/";
-        String saveFolder = "C:\\Users\\SSAFY\\Desktop\\SSAFY\\특화프로젝트\\record\\";
-        String saveFileName = String.valueOf(UUID.randomUUID());
-        String path = saveFolder + saveFileName + "." + type;
-
-        File file = new File(path);
-        file.getParentFile().mkdirs();
-        rec.transferTo(file);
+        String recordUrl = storageClient.uploadFile(rec);
 
         NestRequestEntity requestEntity = new NestRequestEntity();
-        String speech = clovaSpeechClient.upload(file, requestEntity);
+        String speech = clovaSpeechClient.url(recordUrl, requestEntity);
         Map<String, Object> sttMap = gson.fromJson(speech, Map.class);
 
 //        String summary = clovaClient.summerize(sttMap.get("text").toString());
@@ -219,14 +204,13 @@ public class DiaryService {
         EmotionResponse emotionResponse = EmotionResponse.of(emotion);
 
         //redis
-        HashOperations<String, Object, String> hashOperations = redisTemplate.opsForHash();
-        hashOperations.put(saveFileName, "path", path);
-        hashOperations.put(saveFileName, "content", content);
-        redisTemplate.expire(saveFileName, 7, TimeUnit.DAYS);
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(recordUrl, content);
+        redisTemplate.expire(recordUrl, 7, TimeUnit.DAYS);
 
         Map<String, Object> result = new HashMap<>();
         result.put("emotion", emotionResponse);
-        result.put("key", saveFileName);
+        result.put("recordUrl", recordUrl);
         return result;
     }
 
