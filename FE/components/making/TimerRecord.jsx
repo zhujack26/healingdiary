@@ -1,17 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Alert,
-  Button,
-} from "react-native";
+import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import { Audio } from "expo-av";
 import axios from "axios";
+import * as FileSystem from "expo-file-system";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TimerRecord = ({ onToggleNextButtonVisibility }) => {
   const [time, setTime] = useState(180);
@@ -32,6 +27,50 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
       }
     }
   }, [time, timerRunning]);
+
+  const stopRecording = async () => {
+    console.log("Stopping recording..");
+    await recording.stopAndUnloadAsync();
+    await Audio.setAudioModeAsync({
+      allowsRecordingIOS: false,
+    });
+    const uri = recording.getURI();
+    console.log("Recording stopped and stored at", uri);
+    await uploadRecording(uri);
+    // setIsRecordingCompleted(true);  녹음 확인용
+  };
+
+  const startTimer = () => {
+    toggleRecording();
+  };
+
+  const pauseTimer = () => {
+    toggleRecording();
+  };
+
+  const complete = () => {
+    clearInterval(intervalId);
+    setTime(180);
+    setTimerRunning(false);
+    onToggleNextButtonVisibility(true);
+    if (recording) {
+      stopRecording();
+    }
+  };
+
+  const showCompletionAlert = () => {
+    setShowAlert(true);
+    setTimeout(() => {
+      setShowAlert(false);
+    }, 1000);
+  };
+  // 시간을 mm:ss 형태로 포맷팅하는 함수
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+  const audioPlayer = useRef(new Audio.Sound());
 
   const toggleRecording = async () => {
     if (recording) {
@@ -74,48 +113,47 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
     }
   };
 
-  const stopRecording = async () => {
-    console.log("Stopping recording..");
-    await recording.stopAndUnloadAsync();
-    await Audio.setAudioModeAsync({
-      allowsRecordingIOS: false,
-    });
-    const uri = recording.getURI();
-    console.log("Recording stopped and stored at", uri);
-    // setIsRecordingCompleted(true);  녹음 확인용
-  };
-
-  const startTimer = () => {
-    toggleRecording();
-  };
-
-  const pauseTimer = () => {
-    toggleRecording();
-  };
-
-  const complete = () => {
-    clearInterval(intervalId);
-    setTime(180);
-    setTimerRunning(false);
-    onToggleNextButtonVisibility(true);
-    if (recording) {
-      stopRecording();
+  const getToken = async () => {
+    try {
+      const token = await AsyncStorage.getItem("jwtToken");
+      console.log("확인1");
+      return token;
+    } catch (error) {
+      console.error("Error getting token:", error);
     }
   };
+  const uploadRecording = async (uri) => {
+    try {
+      const token = await getToken();
+      console.log(token);
+      const apiUrl = `http://j8b203.p.ssafy.io:8080/diaries/analyze`;
+      const formData = new FormData();
 
-  const showCompletionAlert = () => {
-    setShowAlert(true);
-    setTimeout(() => {
-      setShowAlert(false);
-    }, 1000);
+      const fileUri = uri;
+      const fileTypeMatch = /\.(\w+)$/.exec(fileUri);
+      const mimeType = fileTypeMatch ? `audio/${fileTypeMatch[1]}` : "audio";
+      console.log("fileUri:", fileUri);
+      console.log("mimeType:", mimeType);
+
+      formData.append("record", {
+        uri: fileUri,
+        name: "record.m4a",
+        type: mimeType,
+      });
+      console.log(formData, apiUrl);
+
+      const response = await axios.post(apiUrl, formData, {
+        headers: {
+          // "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("성공:", response.data);
+    } catch (error) {
+      console.error("실패:", error);
+    }
   };
-  // 시간을 mm:ss 형태로 포맷팅하는 함수
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  };
-  const audioPlayer = useRef(new Audio.Sound());
 
   // const playAudio = async () => {
   //   if (!recording) {
