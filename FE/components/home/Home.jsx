@@ -7,6 +7,7 @@ import RecommendDiary from "./RecommendDiary";
 import RecommendGroup from "./RecommendGroup";
 import RecentDiary from "./RecentDiary";
 import BottomTabContainer from "../BottomTabContainer/BottomTabContainer";
+import { getRecommendGroup } from "../../api/group";
 
 const { width, height } = Dimensions.get("window");
 
@@ -64,7 +65,7 @@ const DIARYIES = [
 const Home = () => {
   const navigation = useNavigation();
   const [diaries, setDiaries] = useState([]);
-
+  const [groups, setGroups] = useState([]);
   const navigateToScreen = (screen, id) => {
     navigation.navigate(screen, { id: id });
   };
@@ -74,14 +75,19 @@ const Home = () => {
     setDiaries(res);
   };
 
+  const getRecoGroup = async () => {
+    const res = await getRecommendGroup();
+    setGroups(res);
+  };
   useEffect(() => {
     getRecoDiary();
+    getRecoGroup();
   }, []);
 
   return (
     <BottomTabContainer>
       <ScrollView style={styles.container}>
-        <RecommendGroup groups={GROUP} navigateToScreen={navigateToScreen} />
+        <RecommendGroup groups={groups} navigateToScreen={navigateToScreen} />
         <RecommendDiary diaries={diaries} navigateToScreen={navigateToScreen} />
         <RecentDiary diaries={DIARYIES} navigateToScreen={navigateToScreen} />
       </ScrollView>
