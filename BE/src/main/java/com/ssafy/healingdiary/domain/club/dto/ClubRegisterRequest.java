@@ -11,7 +11,7 @@ import lombok.Getter;
 public class ClubRegisterRequest {
     String name;
     String description;
-    List<Long> tags;
+    List<String> tags;
 
     public static Club toEntity(ClubRegisterRequest request, Member member, String imageUrl) {
         return Club.builder()
