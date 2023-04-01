@@ -8,7 +8,7 @@ const items = [
   { id: 3, label: "뇌질환", value: "뇌질환" },
 ];
 
-const Disease = ({ title, onChangeDisease }) => {
+const Disease = ({ title, onChangeDisease, selectedDisease }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -16,6 +16,7 @@ const Disease = ({ title, onChangeDisease }) => {
         style={pickerSelectStyles}
         onValueChange={onChangeDisease}
         items={items}
+        value={selectedDisease}
         placeholder={{
           label: "선택하세요",
           value: null,
