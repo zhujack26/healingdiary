@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import { Audio } from "expo-av";
 import axios from "axios";
+import * as Permissions from "expo-permissions";
 import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -15,8 +16,12 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [recording, setRecording] = useState(null);
   // const [isRecordingCompleted, setIsRecordingCompleted] = useState(false); 녹음 확인용
+  async function requestPermissions() {
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
+  }
 
   useEffect(() => {
+    requestPermissions();
     if (time === 0) {
       clearInterval(intervalId);
       setTimerRunning(false);
@@ -135,21 +140,32 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
       console.log("fileUri:", fileUri);
       console.log("mimeType:", mimeType);
 
-      formData.append("record", {
-        uri: fileUri,
-        name: "record.m4a",
-        type: mimeType,
-      });
-      console.log(formData, apiUrl);
+      const { status, permissions } = await Permissions.askAsync(
+        Permissions.CAMERA_ROLL
+      );
+      if (status === "granted") {
+        const fileData = await FileSystem.readAsStringAsync(fileUri, {
+          encoding: FileSystem.EncodingType.Base64,
+        });
 
-      const response = await axios.post(apiUrl, formData, {
-        headers: {
-          // "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        formData.append("record", {
+          uri: `data:${mimeType};base64,${fileData}`,
+          name: "record.m4a",
+          type: mimeType,
+        });
+        console.log(formData, apiUrl);
 
-      console.log("성공:", response.data);
+        const response = await axios.post(apiUrl, formData, {
+          headers: {
+            // "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        console.log("성공:", response.data);
+      } else {
+        console.log("Permission not granted");
+      }
     } catch (error) {
       console.error("실패:", error);
     }
