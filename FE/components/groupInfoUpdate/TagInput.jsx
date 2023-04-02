@@ -2,33 +2,15 @@ import React, { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { GlobalColors } from "./../../constants/color";
 
-const TagInput = ({ tags, setTags }) => {
-  const [inputText, setInputText] = useState("");
-
-  const handleInputTextChange = (text) => {
-    setInputText(text);
-  };
-
-  const isTagAlreadySelected = (tag) => {
-    return tags.some((selectedTag) => selectedTag.keyword === tag.keyword);
-  };
-
-  const handleInputSubmit = () => {
-    if (inputText.trim() !== "" && tags.length < 3) {
-      const newTag = {
-        id: `custom-${Date.now()}`,
-        keyword: `${inputText.trim()}`,
-      };
-      if (!isTagAlreadySelected(newTag)) {
-        setTags([...tags, newTag]);
-        setInputText("");
-      }
-    }
-  };
-
+const TagInput = ({
+  inputText,
+  selectedTags,
+  handleInputTextChange,
+  handleInputSubmit,
+}) => {
   return (
     <View style={styles.tagInputContainer}>
-      {tags.map((tag) => (
+      {selectedTags.map((tag) => (
         <Text key={tag.id} style={styles.tag}>
           #{tag.keyword}
         </Text>

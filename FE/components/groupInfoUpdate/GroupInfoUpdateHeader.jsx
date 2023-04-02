@@ -13,7 +13,17 @@ import AddFile from "./AddFile";
 
 const { width, height } = Dimensions.get("window");
 
-const GroupInfoUpdateHeader = ({ isEdit, navigation }) => {
+const GroupInfoUpdateHeader = ({
+  isEdit,
+  navigation,
+  image,
+  setImage,
+  pickImage,
+  pickImageFromGallery,
+  modalVisible,
+  setModalVisible,
+  registGroup,
+}) => {
   return (
     <SafeAreaView style={styles.header}>
       {/*
@@ -29,7 +39,14 @@ const GroupInfoUpdateHeader = ({ isEdit, navigation }) => {
         />
       ) : (
         <Pressable style={styles.defaultImage}>
-          <AddFile />
+          <AddFile
+            image={image}
+            setImage={setImage}
+            pickImage={pickImage}
+            pickImageFromGallery={pickImageFromGallery}
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
         </Pressable>
       )}
 
@@ -45,7 +62,7 @@ const GroupInfoUpdateHeader = ({ isEdit, navigation }) => {
           onPress={() => navigation.goBack()}
         />
 
-        <Pressable onPress={() => {}}>
+        <Pressable onPress={registGroup}>
           <Text style={styles.text}>{isEdit ? "수정" : "등록"}</Text>
         </Pressable>
       </View>

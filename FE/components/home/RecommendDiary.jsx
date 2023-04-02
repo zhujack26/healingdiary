@@ -16,13 +16,14 @@ const NotRecommendDiary = () => {
 };
 const RecommendDiary = ({ diaries }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
+
   return (
     <>
       <Title>요즘 뜨는 일기</Title>
       {diaries.length === 0 && <NotRecommendDiary />}
       <Animated.FlatList
         data={diaries}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.diaryId.toString()}
         renderItem={RecommendDiaryListItem}
         horizontal
         showsHorizontalScrollIndicator={false}
