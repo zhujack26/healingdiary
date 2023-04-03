@@ -5,7 +5,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import { Audio } from "expo-av";
 import axios from "axios";
-import * as FileSystem from "expo-file-system";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const TimerRecord = ({ onToggleNextButtonVisibility }) => {
@@ -14,7 +13,6 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
   const [timerRunning, setTimerRunning] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [recording, setRecording] = useState(null);
-  // const [isRecordingCompleted, setIsRecordingCompleted] = useState(false); 녹음 확인용
 
   useEffect(() => {
     if (time === 0) {
@@ -37,7 +35,6 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
     const uri = recording.getURI();
     console.log("Recording stopped and stored at", uri);
     await uploadRecording(uri);
-    // setIsRecordingCompleted(true);  녹음 확인용
   };
 
   const startTimer = () => {
@@ -144,7 +141,7 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
 
       const response = await axios.post(apiUrl, formData, {
         headers: {
-          // "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -154,20 +151,6 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
       console.error("실패:", error);
     }
   };
-
-  // const playAudio = async () => {
-  //   if (!recording) {
-  //     console.error("No recording available to play");
-  //     return;
-  //   }
-  //   try {
-  //     await audioPlayer.current.unloadAsync();
-  //     await audioPlayer.current.loadAsync({ uri: recording.getURI() });
-  //     await audioPlayer.current.playAsync();
-  //   } catch (error) {
-  //     console.error("Error playing audio:", error);
-  //   }
-  // }; 녹음 확인용
 
   return (
     <View style={styles.container}>
@@ -218,9 +201,6 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
       {showAlert && (
         <View style={styles.alertContainer}>
           <Text style={styles.alertText}>녹음이 완료되었습니다</Text>
-          {/* {isRecordingCompleted && (
-            <Button title="Play Audio" onPress={playAudio} />
-          )} 녹음 확인용*/}
         </View>
       )}
     </View>
