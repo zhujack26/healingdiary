@@ -58,6 +58,7 @@ public class S3StorageClient implements StorageClient {
     @Override
     public void deleteFile(String fileUrl) throws IOException {
         String key = fileUrl;
+        System.out.println(key+"!!!!!!!!!!!!");
         try {
             if (fileUrl == null) {
                 return;
