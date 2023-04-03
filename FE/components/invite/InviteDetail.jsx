@@ -29,7 +29,6 @@ const Item = ({ item }) => {
 const InviteDetail = ({ groupId }) => {
   const [data, setData] = useState([]);
 
-  console.log(data);
   const getInviteMemebr = async () => {
     const res = await getInviteGroupMemberList(groupId);
     setData(res);
