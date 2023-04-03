@@ -16,6 +16,7 @@ import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterResponse;
 import com.ssafy.healingdiary.domain.club.service.ClubService;
 import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -92,10 +93,12 @@ public class ClubController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ClubRegisterResponse registClub(
         Authentication authentication,
-        @RequestPart ClubRegisterRequest request,
+        @RequestPart String name,
+        @RequestPart String description,
+        @RequestPart List<String> tags,
         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return clubService.registClub(principal.getUsername(), request, file);
+        return clubService.registClub(principal.getUsername(), name, description, tags, file);
     }
 
     @PostMapping("/{clubId}")
