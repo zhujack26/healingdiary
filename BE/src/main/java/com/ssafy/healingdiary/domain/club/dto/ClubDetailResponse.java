@@ -9,18 +9,20 @@ import lombok.Getter;
 @Builder
 public class ClubDetailResponse {
 
-    Long clubId;
-    String name;
-    String description;
-    String clubImageUrl;
-    List<String> tags;
+    private Long clubId;
+    private String name;
+    private String description;
+    private String clubImageUrl;
+    private boolean isHost;
+    private List<String> tags;
 
-    public static ClubDetailResponse of(Club club, List<String> tags) {
+    public static ClubDetailResponse of(Club club, boolean isHost, List<String> tags) {
         return ClubDetailResponse.builder()
             .clubId(club.getId())
             .name(club.getName())
             .description(club.getDescription())
             .clubImageUrl(club.getClubImageUrl())
+            .isHost(isHost)
             .tags(tags)
             .build();
     }

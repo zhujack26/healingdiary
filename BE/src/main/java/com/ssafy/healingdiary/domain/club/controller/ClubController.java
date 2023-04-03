@@ -55,8 +55,9 @@ public class ClubController {
     }
 
     @GetMapping("/{clubId}")
-    public ClubDetailResponse getDetailClub(@PathVariable Long clubId) {
-        return clubService.getDetailClub(clubId);
+    public ClubDetailResponse getDetailClub(Authentication authentication, @PathVariable Long clubId) {
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.getDetailClub(principal.getUsername(), clubId);
     }
 
     @GetMapping("/recommendation")
