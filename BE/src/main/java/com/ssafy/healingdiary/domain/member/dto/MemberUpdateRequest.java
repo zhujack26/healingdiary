@@ -13,8 +13,4 @@ public class MemberUpdateRequest {
     private String disease;
 
     private String region;
-
-    @JsonProperty("image_url")
-    private String imageUrl;
-
 }

@@ -12,7 +12,6 @@ import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
-import com.ssafy.healingdiary.domain.club.dto.ClubUpdateRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubUpdateResponse;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterResponse;
@@ -50,7 +49,6 @@ public class ClubService {
     private final NoticeRepository noticeRepository;
     private final TagRepository tagRepository;
     private final S3StorageClient s3Service;
-
     @Value("${default-image-s3}")
     private String DEFAULT_IMAGE_S3;
 
@@ -70,7 +68,6 @@ public class ClubService {
             keyword, tagContent, pageable);
         return clubSimpleResponseList;
     }
-
 
     public Slice<ClubInvitationResponse> getInvitationList(
         String id, Long clubId, Pageable pageable) {
@@ -92,7 +89,7 @@ public class ClubService {
             .stream()
             .map((tagContent) -> {
                 Tag tag = tagRepository.findByContentLike(tagContent);
-                if(tag==null) {
+                if (tag == null) {
                     tag = Tag.builder()
                         .content(tagContent)
                         .build();
@@ -110,7 +107,6 @@ public class ClubService {
     public ClubUpdateResponse updateClub(Long clubId,
         String name,
         String description,
-        String requestImageUrl,
         List<String> tagList, MultipartFile file)
         throws IOException {
         Club club = clubRepository.findById(clubId)
@@ -119,7 +115,7 @@ public class ClubService {
             .stream()
             .map((tagContent) -> {
                 Tag tag = tagRepository.findByContentLike(tagContent);
-                if(tag==null) {
+                if (tag == null) {
                     tag = Tag.builder()
                         .content(tagContent)
                         .build();
@@ -129,19 +125,15 @@ public class ClubService {
                 return clubTag;
             })
             .collect(Collectors.toList());
-        String preImg = requestImageUrl;
         String imageUrl = null;
-        if (file != null) { // 사진 변경
-            if (preImg.length()>0 && !preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
+        if (!file.isEmpty()) {
+            String preImg = club.getClubImageUrl();
+            if (preImg != null && !preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
                 s3Service.deleteFile(preImg);
             }
             imageUrl = s3Service.uploadFile(file);
-        } else if (preImg.length()<0) { // 사진 삭제
-            if (!preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
-                s3Service.deleteFile(preImg);
-            }
-        } else { // 그대로
-            imageUrl = requestImageUrl;
+        } else {
+            imageUrl = club.getClubImageUrl();
         }
         club.updateClub(name, description, tags, imageUrl);
         Club savedClub = clubRepository.save(club);
