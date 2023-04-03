@@ -1,9 +1,9 @@
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import { DATA } from "../../model/DataInvite";
 import { useState, useEffect } from "react";
 import { getInviteGroupMemberList } from "../../api/group";
+import { GlobalColors } from "./../../constants/color";
 
-const Item = ({ name }) => {
+const Item = ({ item }) => {
   const [backgroundColor, setBackgroundColor] = useState("blue");
 
   const toggleBackgroundColor = () => {
@@ -12,12 +12,9 @@ const Item = ({ name }) => {
 
   return (
     <View style={styles.item}>
-      <Image
-        style={styles.image}
-        source={require("../../assets/images/SAMPLE1.png")}
-      />
+      <Image style={styles.image} source={{ uri: item.memberImageUrl }} />
       <View style={styles.textContainer}>
-        <Text style={styles.text}>{name}</Text>
+        <Text style={styles.text}>{item.nickname}</Text>
       </View>
       <TouchableOpacity
         style={[styles.inviteButton, { backgroundColor: backgroundColor }]}
@@ -34,7 +31,7 @@ const InviteDetail = ({ groupId }) => {
 
   console.log(data);
   const getInviteMemebr = async () => {
-    const res = getInviteGroupMemberList(groupId);
+    const res = await getInviteGroupMemberList(groupId);
     setData(res);
   };
 
@@ -43,8 +40,8 @@ const InviteDetail = ({ groupId }) => {
   }, []);
   return (
     <View style={styles.container}>
-      {data.map((item) => (
-        <Item key={item.id} name={item.name} time={item.time} />
+      {data?.map((item) => (
+        <Item key={item.memberId} item={item} />
       ))}
     </View>
   );
@@ -59,8 +56,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingTop: 20,
-    backgroundColor: "white",
+    backgroundColor: GlobalColors.colors.background500,
+    marginBottom: 10,
   },
+
   image: {
     width: 50,
     height: 50,
