@@ -24,7 +24,7 @@ const RecommendGroup = ({ groups, navigateToScreen }) => {
       <Title>요즘 뜨는 소모임</Title>
       {groups.length === 0 && <NotRecommendDiary />}
       <Animated.FlatList
-        data={groups}
+        data={groups.content}
         keyExtractor={(item) => item.clubId}
         renderItem={({ item }) => (
           <RecommentGroupListItem
@@ -42,7 +42,7 @@ const RecommendGroup = ({ groups, navigateToScreen }) => {
           { useNativeDriver: true }
         )}
       />
-      <RecommentGroupIndicator scrollX={scrollX} data={groups} />
+      <RecommentGroupIndicator scrollX={scrollX} data={groups.content} />
     </>
   );
 };

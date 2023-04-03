@@ -4,7 +4,7 @@ import axiosInstance from "./interceptor";
 export const getRecommendGroup = async () => {
   try {
     const res = await axiosInstance(getConfig("/clubs/recommendation"));
-    return res.data.content;
+    return res.data;
   } catch (e) {
     console.log("getRecommendGroup", e);
   }
