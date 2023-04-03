@@ -27,3 +27,12 @@ export const getGroupDetail = async (data) => {
     console.log("getGroupDetail", e);
   }
 };
+
+export const getGroupMemebrList = async (data) => {
+  try {
+    const res = await axiosInstance(getDataConfig(`/clubs/${data}/members`));
+    return res.data;
+  } catch (e) {
+    console.log("getGroupMemberList", e);
+  }
+};

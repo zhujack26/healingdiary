@@ -9,10 +9,8 @@ import BottomModal from "./BottomModal";
 
 const GroupDetail = ({ groupId }) => {
   const [groupData, setGroupData] = useState({});
-
-  console.log(groupData);
-  const bottomSheetModalRef = useRef(null);
   const [exitModalVisible, setExitModalVisible] = useState(false);
+  const bottomSheetModalRef = useRef(null);
 
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
@@ -55,6 +53,7 @@ const GroupDetail = ({ groupId }) => {
         bottomSheetModalRef={bottomSheetModalRef}
         handleCloseModalPress={handleCloseModalPress}
         openExitModalAndCloseModal={openExitModalAndCloseModal}
+        groupId={groupId}
       />
     </View>
   );

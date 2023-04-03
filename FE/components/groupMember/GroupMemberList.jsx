@@ -1,19 +1,20 @@
-import React from "react";
-import { FlatList } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import GroupMemberListItem from "./GroupMemberListItem";
 
-const DATA = [
-  { id: 1, uri: "https://picsum.photos/id/1/200/300", nickname: "닉네임1" },
-  { id: 2, uri: "https://picsum.photos/id/2/200/300", nickname: "닉네임2" },
-  { id: 3, uri: "https://picsum.photos/id/3/200/300", nickname: "닉네임3" },
-  { id: 4, uri: "https://picsum.photos/id/4/200/300", nickname: "닉네임4" },
-  { id: 5, uri: "https://picsum.photos/id/5/200/300", nickname: "닉네임5" },
-];
+const NotGroupMember = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>현재 모임에 참여한 인원이 없습니다!</Text>
+    </View>
+  );
+};
 
-const GroupMemberList = () => {
+const GroupMemberList = ({ groupMember }) => {
+  const { content } = groupMember;
+  if (content && content.length === 0) return <NotGroupMember />;
   return (
     <FlatList
-      data={DATA}
+      data={content}
       renderItem={({ item }) => <GroupMemberListItem data={item} />}
       keyExtractor={(item) => item.id}
       contentContainerStyle={{ marginBottom: 48 }}
@@ -22,3 +23,15 @@ const GroupMemberList = () => {
 };
 
 export default GroupMemberList;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  text: {
+    fontSize: 18,
+  },
+});

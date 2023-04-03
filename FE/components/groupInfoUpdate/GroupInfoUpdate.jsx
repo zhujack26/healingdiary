@@ -64,7 +64,7 @@ const GroupInfoUpdate = ({ isEdit }) => {
         keyword: `${inputText.trim()}`,
       };
       if (!isTagAlreadySelected(newTag)) {
-        setSelectedTags([...selectedTags, newTag.keyword]);
+        setSelectedTags([...selectedTags, newTag]);
         setInputText("");
       }
     }
@@ -81,14 +81,13 @@ const GroupInfoUpdate = ({ isEdit }) => {
       type: mimeType,
       name: fileName,
     };
+    const tags = selectedTags.map((tag) => tag.keyword);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("name", name);
     formData.append("description", description);
-    formData.append("tags", selectedTags);
-
+    formData.append("tags", tags);
     const res = await createGroup(formData);
-    console.log(res);
     if (res.status === 200)
       navigation.navigate("groupDetail", { groupId: res.data.clubId });
     else console.log("생성 실패");

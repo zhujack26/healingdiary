@@ -7,6 +7,7 @@ const GroupSetting = ({
   handleCloseModalPress,
   openExitModalAndCloseModal,
   navigateAndCloseModal,
+  groupId,
 }) => {
   return (
     <View style={styles.container}>
@@ -31,7 +32,9 @@ const GroupSetting = ({
       </Pressable>
       <Pressable
         style={styles.settingList}
-        onPress={() => navigateAndCloseModal("groupMember")}
+        onPress={() =>
+          navigateAndCloseModal("groupMember", { groupId: groupId })
+        }
       >
         <Text style={styles.settingListText}>소모임 멤버</Text>
         <Ionicons

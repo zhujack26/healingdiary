@@ -33,7 +33,7 @@ const GroupIntroduction = ({ navigation, groupData }) => {
       </View>
       <View style={styles.hashtags}>
         {groupData.tags?.map((tag) => (
-          <View style={styles.hashtag}>
+          <View key={tag.id} style={styles.hashtag}>
             <Text style={styles.hashtagText}>#{tag}</Text>
           </View>
         ))}
