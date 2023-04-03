@@ -21,19 +21,19 @@ const GroupItem = ({ content, navigation }) => {
       <View style={styles.container}>
         <View>
           <Image
-            source={{ uri: content.clubImageUrl }}
+            source={{ uri: content?.clubImageUrl }}
             style={styles.image}
             resizeMode="cover"
           />
           <View style={styles.hashtags}>
-            {content.tags.map((hashtag, index) => (
+            {content?.tags.map((hashtag, index) => (
               <View style={styles.hashtag} key={index}>
                 <Text style={styles.tagText}>#{hashtag}</Text>
               </View>
             ))}
           </View>
           <View style={styles.infoContainer}>
-            <Text style={styles.title}>{content.name}</Text>
+            <Text style={styles.title}>{content?.name}</Text>
           </View>
         </View>
       </View>
