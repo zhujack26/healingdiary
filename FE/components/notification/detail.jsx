@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { DATA } from "../../model/DataNotification";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
+import { getNotification } from "../../api/notification";
 
 const formatTime = (minutes) => {
   const hours = Math.floor(minutes / 60);
