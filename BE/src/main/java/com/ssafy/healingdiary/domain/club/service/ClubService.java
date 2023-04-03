@@ -69,9 +69,8 @@ public class ClubService {
         return clubSimpleResponseList;
     }
 
-    public Slice<ClubInvitationResponse> getInvitationList(
-        String id, Long clubId, Pageable pageable) {
-        Long hostId = Long.parseLong(id); // 방장 ID
+    public Slice<ClubInvitationResponse> getInvitationList(Long clubId, Pageable pageable) {
+        Long hostId = clubRepository.findById(clubId).get().getHost().getId(); // 방장 ID
         Slice<ClubInvitationResponse> clubInvitationResponseList = clubMemberRepository.findDistinctByClubIdNot(
             clubId, hostId, pageable);
         return clubInvitationResponseList;
@@ -219,17 +218,15 @@ public class ClubService {
         clubRepository.delete(club);
     }
 
-    public ClubDetailResponse getDetailClub(String id, Long clubId) {
-        Long memberId = Long.parseLong(id);
+    public ClubDetailResponse getDetailClub(Long clubId) {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
-        boolean isHost = club.getHost().getId() == memberId;
         List<String> tags = club.getClubTag().stream()
             .map((clubTag -> {
                 return clubTag.getTag().getContent();
             }))
             .collect(Collectors.toList());
-        ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, isHost, tags);
+        ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, tags);
         return clubDetailResponse;
     }
 
