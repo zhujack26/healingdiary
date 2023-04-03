@@ -1,20 +1,16 @@
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { Platform } from "react-native";
+import { createGroup } from "../../api/group";
+import * as ImagePicker from "expo-image-picker";
 import GroupInfoUpdateHeader from "./GroupInfoUpdateHeader";
 import GroupInfoUpdateIntro from "./GroupInfoUpdateIntro";
-import axiosInstance from "../../api/interceptor";
-import { postFormConfig } from "../../api/config";
-import axios from "axios";
-import { API_END_POINT } from "../../constants";
-import { Platform } from "react-native";
-import * as ImagePicker from "expo-image-picker";
 
 const extensionToMimeType = {
   jpg: "image/jpeg",
   jpeg: "image/jpeg",
   png: "image/png",
   gif: "image/gif",
-  // add more mappings as needed
 };
 
 const GroupInfoUpdate = ({ isEdit }) => {
@@ -74,42 +70,30 @@ const GroupInfoUpdate = ({ isEdit }) => {
     }
   };
   const registGroup = async () => {
-    try {
-      const extension = image.uri.split(".").pop();
-      const fileName = image.uri.split("/").pop();
-      const mimeType = extensionToMimeType[extension];
-      const file = {
-        uri:
-          Platform.OS === "android"
-            ? image.uri
-            : image.uri.replace("file://", ""),
-        type: mimeType,
-        name: fileName,
-      };
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("tags", selectedTags);
+    const extension = image.uri.split(".").pop();
+    const fileName = image.uri.split("/").pop();
+    const mimeType = extensionToMimeType[extension];
+    const file = {
+      uri:
+        Platform.OS === "android"
+          ? image.uri
+          : image.uri.replace("file://", ""),
+      type: mimeType,
+      name: fileName,
+    };
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("tags", selectedTags);
 
-      const res = await axiosInstance(postFormConfig("/clubs", formData));
-      // Show success message to the user
-    } catch (error) {
-      if (error.response) {
-        // The server returned an error response
-        const errorMessage = error.response.data.message;
-        console.log("error", errorMessage);
-        // Show error message to the user
-      } else if (error.request) {
-        console.log("error.request", error.request);
-        // The request was made but no response rwas received, or the network error occurred
-        // Show network error message to the user
-      } else {
-        // Something else happened, e.g. the request was cancelled
-        console.log("error.message", error.message);
-      }
-    }
+    const res = await createGroup(formData);
+    console.log(res);
+    if (res.status === 200)
+      navigation.navigate("groupDetail", { groupId: res.data.clubId });
+    else console.log("생성 실패");
   };
+
   return (
     <>
       <GroupInfoUpdateHeader
