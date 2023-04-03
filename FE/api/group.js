@@ -1,4 +1,4 @@
-import { getConfig, getDataConfig, postFormConfig } from "./config";
+import { getConfig, getDataConfig, postConfig, postFormConfig } from "./config";
 import axiosInstance from "./interceptor";
 
 export const getRecommendGroup = async () => {
@@ -52,5 +52,17 @@ export const getClubList = async () => {
     return res.data;
   } catch (e) {
     console.log("getClubList", e);
+  }
+};
+
+export const inviteGroupMember = async (groupId, memberId) => {
+  try {
+    const res = await axiosInstance(
+      postConfig(`/clubs/${groupId}/invitation`, { memberId })
+    );
+
+    return res.data;
+  } catch (e) {
+    console.log("inviteGroup", e);
   }
 };
