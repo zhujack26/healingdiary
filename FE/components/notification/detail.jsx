@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { DATA } from "../../model/DataNotification";
@@ -35,10 +35,19 @@ const Item = ({ name, location, action, time }) => (
 );
 const Detail = () => {
   const [data, setData] = React.useState(DATA);
-
+  const [notice, setNotice] = useState([]);
   const handleDelete = (id) => {
     setData((prevData) => prevData.filter((item) => item.id !== id));
   };
+
+  const getNotice = useCallback(async () => {
+    const res = await getNotification();
+    setNotice(res ? res : []);
+  }, []);
+
+  useEffect(() => {
+    getNotice();
+  }, []);
 
   const renderItem = ({ item }) => (
     <Item
