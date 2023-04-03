@@ -8,6 +8,7 @@ import axios from "axios";
 import { API_END_POINT } from "../../constants";
 import { Platform } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+
 const extensionToMimeType = {
   jpg: "image/jpeg",
   jpeg: "image/jpeg",
@@ -73,13 +74,6 @@ const GroupInfoUpdate = ({ isEdit }) => {
     }
   };
   const registGroup = async () => {
-    let xhr = new XMLHttpRequest();
-    xhr.open("POST", `${API_END_POINT}/clubs`);
-    xhr.setRequestHeader("Content-type", "multipart/form-data");
-    xhr.setRequestHeader(
-      "Authorization",
-      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDIiLCJyb2xlcyI6WyJVU0VSIl0sImlhdCI6MTY4MDQwMjI0NiwiZXhwIjoxNjgwNDA0MDQ2fQ.pBwmXIJIUkT59pF3tiP5No_fLDyDXIZAhEqsXfItnQg"
-    );
     try {
       const extension = image.uri.split(".").pop();
       const fileName = image.uri.split("/").pop();
@@ -93,17 +87,12 @@ const GroupInfoUpdate = ({ isEdit }) => {
         name: fileName,
       };
       const formData = new FormData();
-      const clubRegister = {
-        name: name,
-        description: description,
-        tags: selectedTags,
-      };
-
       formData.append("file", file);
-      formData.append("ClubRegister", clubRegister);
-      // formData.append("ClubRegister", JSON.stringify(clubRegister));
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("tags", selectedTags);
+
       const res = await axiosInstance(postFormConfig("/clubs", formData));
-      console.log(res);
       // Show success message to the user
     } catch (error) {
       if (error.response) {
