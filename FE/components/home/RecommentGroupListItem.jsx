@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import {
   Pressable,
   View,
@@ -11,8 +12,14 @@ import { GlobalColors } from "../../constants/color";
 const { width } = Dimensions.get("window");
 
 const RecommentGroupListItem = ({ item }) => {
+  const navigation = useNavigation();
+
   return (
-    <Pressable>
+    <Pressable
+      onPress={() => {
+        navigation.navigate("groupDetail", { groupId: item.clubId });
+      }}
+    >
       <View style={styles.container}>
         <View>
           <Image
