@@ -175,7 +175,9 @@ const StackNavigation = () => {
           <Stack.Screen
             name="Invite"
             component={InviteScreen}
-            options={{ headerShown: false }}
+            options={{
+              headerTitle: "",
+            }}
           />
           <Stack.Screen
             name="MakingInput"

@@ -48,6 +48,7 @@ const GroupDetail = ({ groupId }) => {
         exitModalVisible={exitModalVisible}
         exitCloseModalPress={exitCloseModalPress}
         groupData={groupData}
+        groupId={groupId}
       />
       <BottomModal
         bottomSheetModalRef={bottomSheetModalRef}

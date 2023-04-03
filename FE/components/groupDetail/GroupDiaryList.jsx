@@ -36,6 +36,7 @@ const GroupDiaryList = ({
   exitModalVisible,
   exitCloseModalPress,
   groupData,
+  groupId,
 }) => {
   const navigation = useNavigation();
   return (
@@ -45,7 +46,11 @@ const GroupDiaryList = ({
       renderItem={({ item }) => <GroupDiaryListItem data={item} />}
       keyExtractor={(item) => item.id}
       ListHeaderComponent={
-        <GroupIntroduction navigation={navigation} groupData={groupData} />
+        <GroupIntroduction
+          navigation={navigation}
+          groupData={groupData}
+          groupId={groupId}
+        />
       }
       ListFooterComponent={
         <ExitModal

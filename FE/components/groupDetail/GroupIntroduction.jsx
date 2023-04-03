@@ -3,7 +3,7 @@ import { GlobalColors } from "./../../constants/color";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
-const GroupIntroduction = ({ navigation, groupData }) => {
+const GroupIntroduction = ({ navigation, groupData, groupId }) => {
   return (
     <>
       <View style={styles.groupInfo}>
@@ -13,7 +13,9 @@ const GroupIntroduction = ({ navigation, groupData }) => {
             <Text style={styles.groupMemberCount}>멤버 12</Text>
             <Pressable
               style={styles.circle}
-              onPress={() => navigation.navigate("Invite")}
+              onPress={() =>
+                navigation.navigate("Invite", { groupId: groupId })
+              }
             >
               <Ionicons
                 name="add"

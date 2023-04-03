@@ -36,3 +36,15 @@ export const getGroupMemebrList = async (data) => {
     console.log("getGroupMemberList", e);
   }
 };
+
+export const getInviteGroupMemberList = async (data) => {
+  try {
+    const res = await axiosInstance(
+      getDataConfig(`/clubs/${data}/invitation?`)
+    );
+    console.log(res);
+    return res.data;
+  } catch (e) {
+    console.log("getInviteGroupMemberList", e);
+  }
+};
