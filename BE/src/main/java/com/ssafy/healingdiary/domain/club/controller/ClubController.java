@@ -92,7 +92,7 @@ public class ClubController {
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ClubRegisterResponse registClub(
         Authentication authentication,
-        @RequestPart(value = "ClubRegister") ClubRegisterRequest request,
+        @RequestPart ClubRegisterRequest request,
         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         return clubService.registClub(principal.getUsername(), request, file);
