@@ -14,9 +14,9 @@ const RecommendDiaryListItem = ({ item, navigateToScreen }) => {
   return (
     <Pressable style={styles.diaries} onPress={() => {}}>
       <View style={styles.diary}>
-        <Image source={item?.image} style={styles.image} />
+        <Image source={{ uri: item?.imageUrl }} style={styles.image} />
         <View style={styles.hashtag}>
-          <Text style={styles.hashtagText}>#{item?.hashtags}</Text>
+          <Text style={styles.hashtagText}>#{item?.emotion.value}</Text>
         </View>
       </View>
     </Pressable>

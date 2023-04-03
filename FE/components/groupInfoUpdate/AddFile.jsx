@@ -11,26 +11,15 @@ import { AntDesign } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
 import DefalutImagePicker from "../making/DefalutImagePicker";
 import { Feather } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 
-const AddFile = () => {
-  const [image, setImage] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const pickImage = () => {
-    setModalVisible(true);
-  };
-  const pickImageFromGallery = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [3, 3],
-      quality: 1,
-    });
-    if (!result.canceled && result.assets && result.assets[0]) {
-      setImage({ uri: result.assets[0].uri });
-    }
-    setModalVisible(false);
-  };
+const AddFile = ({
+  image,
+  setImage,
+  pickImage,
+  pickImageFromGallery,
+  modalVisible,
+  setModalVisible,
+}) => {
   return (
     <>
       <TouchableOpacity onPress={pickImage} style={styles.container}>
