@@ -218,4 +218,57 @@ public class DiaryService {
         Member member = memberRepository.findById(memberId).get();
         return diaryRepository.findByDiseaseAndRegion(member, num);
     }
+
+    public Map<String, Object> createDiary(Long memberId, String recordUrl, Integer emotionCode, Long clubId, List<String> tags, MultipartFile image) throws IOException {
+        if(!redisTemplate.hasKey(recordUrl)){
+            throw new CustomException(RECORD_NOT_FOUND);
+        }
+
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        String content = valueOperations.get(recordUrl);
+        String imageUrl = storageClient.uploadFile(image);
+        Member member = memberRepository.getReferenceById(memberId);
+
+        Club club = null;
+        if(clubId!=null) {
+            club = clubRepository.getReferenceById(clubId);
+            if (club == null) {
+                throw new CustomException(CLUB_NOT_FOUND);
+            }
+        }
+        Emotion emotion = emotionRepository.getReferenceById(emotionCode);
+
+        Diary diary = Diary.builder()
+            .member(member)
+            .club(club)
+            .emotion(emotion)
+            .diaryImageUrl(imageUrl)
+            .recordUrl(recordUrl)
+            .content(content)
+            .build();
+
+        List<DiaryTag> tagList = tags
+            .stream()
+            .map(tagContent -> {
+                Tag tag = tagRepository.findByContentLike(tagContent);
+                if(tag==null) {
+                    tag = Tag.builder()
+                        .content(tagContent)
+                        .build();
+                }
+                DiaryTag diaryTag = DiaryTag.builder()
+                    .diary(diary)
+                    .tag(tag)
+                    .build();
+                return diaryTag;
+            })
+            .collect(Collectors.toList());
+
+        diary.setDiaryTag(tagList);
+        Diary savedDiary = diaryRepository.save(diary);
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("diaryId", savedDiary.getId());
+        return map;
+    }
 }

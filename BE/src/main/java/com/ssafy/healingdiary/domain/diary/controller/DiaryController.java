@@ -79,12 +79,15 @@ public class DiaryController {
     @PostMapping
     public Map<String, Object> createDiary(
         Authentication authentication,
-        @RequestPart DiaryCreateRequest diaryCreateRequest,
+        @RequestParam String recordUrl,
+        @RequestParam Integer emotionCode,
+        @RequestParam(required = false) Long clubId,
+        @RequestParam List<String> tags,
         @RequestPart MultipartFile image
     ) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
         Long memberId = Long.parseLong(principal.getUsername());
-        return diaryService.createDiary(memberId, diaryCreateRequest, image);
+        return diaryService.createDiary(memberId, recordUrl, emotionCode, clubId, tags, image);
     }
 
     @DeleteMapping("/{diaryId}")
