@@ -13,7 +13,7 @@ public class ClubListResponse {
     List<String> tags;
 
     @QueryProjection
-    public ClubListResponse(Long clubId, String clubImageUrl, String name) {
+    public ClubListResponse(Long clubId, String name, String clubImageUrl) {
         this.clubId = clubId;
         this.name = name;
         this.clubImageUrl = clubImageUrl;
