@@ -219,15 +219,17 @@ public class ClubService {
         clubRepository.delete(club);
     }
 
-    public ClubDetailResponse getDetailClub(Long clubId) {
+    public ClubDetailResponse getDetailClub(String id, Long clubId) {
+        Long memberId = Long.parseLong(id);
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
+        boolean isHost = club.getHost().getId() == memberId;
         List<String> tags = club.getClubTag().stream()
             .map((clubTag -> {
                 return clubTag.getTag().getContent();
             }))
             .collect(Collectors.toList());
-        ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, tags);
+        ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, isHost, tags);
         return clubDetailResponse;
     }
 
