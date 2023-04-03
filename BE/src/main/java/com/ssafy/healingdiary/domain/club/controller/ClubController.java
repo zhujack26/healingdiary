@@ -55,9 +55,8 @@ public class ClubController {
     }
 
     @GetMapping("/{clubId}")
-    public ClubDetailResponse getDetailClub(Authentication authentication, @PathVariable Long clubId) {
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return clubService.getDetailClub(principal.getUsername(), clubId);
+    public ClubDetailResponse getDetailClub(@PathVariable Long clubId) {
+        return clubService.getDetailClub(clubId);
     }
 
     @GetMapping("/recommendation")
@@ -79,10 +78,9 @@ public class ClubController {
     }
 
     @GetMapping("/{clubId}/invitation")
-    public Slice<ClubInvitationResponse> getInvitationList(Authentication authentication, @PathVariable Long clubId,
+    public Slice<ClubInvitationResponse> getInvitationList(@PathVariable Long clubId,
         Pageable pageable) {
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return clubService.getInvitationList(principal.getUsername(), clubId, pageable);
+        return clubService.getInvitationList(clubId, pageable);
     }
 
     @PostMapping("/{clubId}/invitation")
