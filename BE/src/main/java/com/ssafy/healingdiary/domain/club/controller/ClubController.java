@@ -19,6 +19,7 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -88,7 +89,7 @@ public class ClubController {
         return clubService.registInvitation(clubId, request);
     }
 
-    @PostMapping
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ClubRegisterResponse registClub(
         Authentication authentication,
         @RequestPart(value = "ClubRegister") ClubRegisterRequest request,
