@@ -104,9 +104,12 @@ public class ClubController {
     @PostMapping("/{clubId}")
     public ClubUpdateResponse updateClub(
         @PathVariable Long clubId,
-        @RequestPart(value = "ClubUpdateRequest") ClubUpdateRequest request,
+        @RequestParam("name") String name,
+        @RequestParam("description") String description,
+        @RequestParam(value = "imageUrl", required = false) String imageUrl,
+        @RequestParam("tags") List<String> tags,
         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
-        return clubService.updateClub(clubId, request, file);
+        return clubService.updateClub(clubId, name, description, imageUrl, tags, file);
     }
 
     @PostMapping("/{clubId}/join")

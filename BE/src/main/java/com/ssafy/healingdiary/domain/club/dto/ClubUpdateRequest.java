@@ -14,20 +14,4 @@ public class ClubUpdateRequest {
     String description;
     private String imageUrl;
     List<Long> tags;
-
-    public static Club toEntity(ClubUpdateRequest request, Member member, String imageUrl) {
-        return Club.builder()
-            .name(request.getName())
-            .description(request.getDescription())
-            .host(member)
-            .clubImageUrl(imageUrl)
-            .build();
-    }
-
-    public static ClubTag toEntity(Club club, Tag tag) {
-        return ClubTag.builder()
-            .club(club)
-            .tag(tag)
-            .build();
-    }
 }

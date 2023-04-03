@@ -107,34 +107,43 @@ public class ClubService {
         return ClubRegisterResponse.of(savedClub.getId());
     }
 
-    public ClubUpdateResponse updateClub(Long clubId, ClubUpdateRequest request, MultipartFile file)
+    public ClubUpdateResponse updateClub(Long clubId,
+        String name,
+        String description,
+        String requestImageUrl,
+        List<String> tagList, MultipartFile file)
         throws IOException {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
-        List<ClubTag> tags = request.getTags()
+        List<ClubTag> tags = tagList
             .stream()
-            .map((tagId) -> {
-                Tag tag = tagRepository.findById(tagId)
-                    .orElseThrow(() -> new CustomException(ErrorCode.ENTITY_NOT_FOUND));
-                ClubTag clubTag = ClubUpdateRequest.toEntity(club, tag);
+            .map((tagContent) -> {
+                Tag tag = tagRepository.findByContentLike(tagContent);
+                if(tag==null) {
+                    tag = Tag.builder()
+                        .content(tagContent)
+                        .build();
+                    tagRepository.save(tag);
+                }
+                ClubTag clubTag = ClubRegisterRequest.toEntity(club, tag);
                 return clubTag;
             })
             .collect(Collectors.toList());
-        String preImg = request.getImageUrl();
+        String preImg = requestImageUrl;
         String imageUrl = null;
-        if (file != null) {
-            if (preImg != null && !preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
+        if (file != null) { // 사진 변경
+            if (preImg.length()>0 && !preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
                 s3Service.deleteFile(preImg);
             }
             imageUrl = s3Service.uploadFile(file);
-        } else if (request.getImageUrl() == null) {
-            if (preImg != null && !preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
+        } else if (preImg.length()<0) { // 사진 삭제
+            if (!preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
                 s3Service.deleteFile(preImg);
             }
-        } else {
-            imageUrl = request.getImageUrl();
+        } else { // 그대로
+            imageUrl = requestImageUrl;
         }
-        club.updateClub(tags, imageUrl);
+        club.updateClub(name, description, tags, imageUrl);
         Club savedClub = clubRepository.save(club);
         return ClubUpdateResponse.of(savedClub.getId());
     }
