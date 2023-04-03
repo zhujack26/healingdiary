@@ -7,8 +7,14 @@ import {
   TextInput,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
-import { DATA } from "../../model/DataHashtag";
 
+const DATA = [
+  { id: 1, keyword: "불행" },
+  { id: 2, keyword: "나쁨" },
+  { id: 3, keyword: "평온" },
+  { id: 4, keyword: "기쁨" },
+  { id: 5, keyword: "행복" },
+];
 const AddHashtag = ({ onToggleCompleteButtonVisibility }) => {
   useEffect(() => {
     if (selectedTags.some((tag) => DATA.includes(tag))) {
@@ -21,7 +27,6 @@ const AddHashtag = ({ onToggleCompleteButtonVisibility }) => {
   const [inputText, setInputText] = useState("");
   const [dataTags, setDataTags] = useState(0); // DATA에서 선택한 해시태그 개수를 저장하는 상태 변수 추가
   const maxDataTags = 1; // 최대 선택 가능한 DATA 해시태그 개수를 1개로 설정
-
   const handleTagSelection = (tag) => {
     if (selectedTags.includes(tag)) {
       setSelectedTags(
