@@ -69,14 +69,14 @@ public class DiaryController {
         return diaryService.getDiaryDetail(diaryId);
     }
 
-    @PostMapping("/analyze")
+    @PostMapping(path = "/analyze", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public Map<String, Object> analyzeDiary(
         @RequestPart MultipartFile record
     ) throws IOException{
         return diaryService.analyzeDiary(record);
     }
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(path = "", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public Map<String, Object> createDiary(
         Authentication authentication,
         @RequestPart DiaryCreateRequest diaryCreateRequest,
