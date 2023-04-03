@@ -12,15 +12,11 @@ import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
-const GroupDetailHeader = ({ handlePresentModalPress }) => {
+const GroupDetailHeader = ({ handlePresentModalPress, image }) => {
   const navigation = useNavigation();
-
   return (
     <SafeAreaView style={styles.header}>
-      <Image
-        style={styles.image}
-        source={require("../../assets/images/SAMPLE2.png")}
-      />
+      <Image style={styles.image} source={{ uri: image }} />
       <View style={styles.iconContainer}>
         <Ionicons
           name="chevron-back"

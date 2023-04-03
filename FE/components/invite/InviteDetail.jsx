@@ -1,24 +1,9 @@
-import React from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import { DATA } from "../../model/DataInvite";
-import { GlobalColors } from "../../constants/color";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getInviteGroupMemberList } from "../../api/group";
+import { GlobalColors } from "./../../constants/color";
 
-const formatTime = (minutes) => {
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-
-  if (hours < 1) {
-    return `${minutes}분 전`;
-  } else if (hours >= 1 && hours < 24) {
-    return `${hours}시간 전`;
-  } else {
-    const days = Math.floor(hours / 24);
-    return `${days}일 전`;
-  }
-};
-
-const Item = ({ name, time }) => {
+const Item = ({ item }) => {
   const [backgroundColor, setBackgroundColor] = useState("blue");
 
   const toggleBackgroundColor = () => {
@@ -27,13 +12,9 @@ const Item = ({ name, time }) => {
 
   return (
     <View style={styles.item}>
-      <Image
-        style={styles.image}
-        source={require("../../assets/images/SAMPLE1.png")}
-      />
+      <Image style={styles.image} source={{ uri: item.memberImageUrl }} />
       <View style={styles.textContainer}>
-        <Text style={styles.text}>{name}</Text>
-        <Text style={styles.time}>{formatTime(time)}</Text>
+        <Text style={styles.text}>{item.nickname}</Text>
       </View>
       <TouchableOpacity
         style={[styles.inviteButton, { backgroundColor: backgroundColor }]}
@@ -45,12 +26,21 @@ const Item = ({ name, time }) => {
   );
 };
 
-const InviteDetail = () => {
-  const [data, setData] = React.useState(DATA);
+const InviteDetail = ({ groupId }) => {
+  const [data, setData] = useState([]);
+
+  const getInviteMemebr = async () => {
+    const res = await getInviteGroupMemberList(groupId);
+    setData(res);
+  };
+
+  useEffect(() => {
+    getInviteMemebr();
+  }, []);
   return (
     <View style={styles.container}>
-      {data.map((item) => (
-        <Item key={item.id} name={item.name} time={item.time} />
+      {data?.map((item) => (
+        <Item key={item.memberId} item={item} />
       ))}
     </View>
   );
@@ -60,12 +50,15 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20,
   },
+
   item: {
     flexDirection: "row",
     alignItems: "center",
     paddingTop: 20,
-    backgroundColor: "white",
+    backgroundColor: GlobalColors.colors.background500,
+    marginBottom: 10,
   },
+
   image: {
     width: 50,
     height: 50,

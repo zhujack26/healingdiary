@@ -13,11 +13,15 @@ const { width, height } = Dimensions.get("window");
 
 const GroupItem = ({ content, navigation }) => {
   return (
-    <Pressable>
+    <Pressable
+      onPress={() =>
+        navigation.navigate("groupDetail", { groupId: content.clubId })
+      }
+    >
       <View style={styles.container}>
         <View>
           <Image
-            source={content.clubImageUrl}
+            source={{ uri: content.clubImageUrl }}
             style={styles.image}
             resizeMode="cover"
           />
@@ -30,7 +34,6 @@ const GroupItem = ({ content, navigation }) => {
           </View>
           <View style={styles.infoContainer}>
             <Text style={styles.title}>{content.name}</Text>
-            {/* <Text style={styles.description}>{description}</Text> */}
           </View>
         </View>
       </View>

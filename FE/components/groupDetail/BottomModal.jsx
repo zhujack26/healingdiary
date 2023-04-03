@@ -11,6 +11,7 @@ const BottomModal = ({
   bottomSheetModalRef,
   handleCloseModalPress,
   openExitModalAndCloseModal,
+  groupId,
 }) => {
   const snapPoints = useMemo(() => ["70%"], []);
   const navigation = useNavigation();
@@ -46,6 +47,7 @@ const BottomModal = ({
           handleCloseModalPress={handleCloseModalPress}
           openExitModalAndCloseModal={openExitModalAndCloseModal}
           navigateAndCloseModal={navigateAndCloseModal}
+          groupId={groupId}
         />
       </BottomSheetModal>
     </BottomSheetModalProvider>
