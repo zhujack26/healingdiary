@@ -32,7 +32,11 @@ const DATA = [
   },
 ];
 
-const GroupDiaryList = ({ exitModalVisible, exitCloseModalPress }) => {
+const GroupDiaryList = ({
+  exitModalVisible,
+  exitCloseModalPress,
+  groupData,
+}) => {
   const navigation = useNavigation();
   return (
     <FlatList
@@ -40,7 +44,9 @@ const GroupDiaryList = ({ exitModalVisible, exitCloseModalPress }) => {
       data={DATA}
       renderItem={({ item }) => <GroupDiaryListItem data={item} />}
       keyExtractor={(item) => item.id}
-      ListHeaderComponent={<GroupIntroduction navigation={navigation} />}
+      ListHeaderComponent={
+        <GroupIntroduction navigation={navigation} groupData={groupData} />
+      }
       ListFooterComponent={
         <ExitModal
           exitModalVisible={exitModalVisible}

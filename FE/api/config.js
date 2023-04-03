@@ -7,6 +7,14 @@ export const getConfig = (url) => {
   };
 };
 
+export const getDataConfig = (url, data) => {
+  return {
+    method: "GET",
+    url: API_END_POINT + url,
+    data: data,
+  };
+};
+
 export const postConfig = (url, data) => {
   return {
     method: "POST",
