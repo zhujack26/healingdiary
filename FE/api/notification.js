@@ -3,7 +3,7 @@ import axiosInstance from "./interceptor";
 export const getNotification = async () => {
   try {
     const res = axiosInstance.get("/notices");
-    return res;
+    return res.data;
   } catch (e) {
     console.log("getNotification", e);
   }

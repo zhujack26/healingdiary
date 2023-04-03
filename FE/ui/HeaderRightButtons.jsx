@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { getNotification } from "../api/notification";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const HeaderRightButtons = ({ navigation }) => {
   const [userImage, setUserImage] = useState(null);
+  const [notice, setNotice] = useState([]);
   const getUserImage = useCallback(async () => {
     const data = await AsyncStorage.getItem("userImage");
     setUserImage(data);
@@ -12,7 +14,7 @@ const HeaderRightButtons = ({ navigation }) => {
 
   const getNotice = useCallback(async () => {
     const res = await getNotification();
-    console.log(res);
+    setNotice(res);
   });
 
   useEffect(() => {
