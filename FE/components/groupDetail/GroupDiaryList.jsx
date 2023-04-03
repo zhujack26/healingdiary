@@ -25,7 +25,9 @@ const GroupDiaryList = ({
     <FlatList
       style={styles.scrollContainer}
       data={diaries.content}
-      renderItem={({ item }) => <GroupDiaryListItem data={item} />}
+      renderItem={({ item }) => (
+        <GroupItem data={item} navigation={navigation} />
+      )}
       keyExtractor={(item) => item.id}
       ListHeaderComponent={
         <GroupIntroduction
