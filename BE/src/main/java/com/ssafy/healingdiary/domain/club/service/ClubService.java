@@ -20,6 +20,7 @@ import com.ssafy.healingdiary.domain.club.repository.ClubRepository;
 import com.ssafy.healingdiary.domain.club.repository.ClubTagRepository;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.domain.Notice;
+import com.ssafy.healingdiary.domain.member.domain.NoticeType;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.domain.member.repository.NoticeRepository;
 import com.ssafy.healingdiary.domain.tag.domain.Tag;
@@ -149,8 +150,7 @@ public class ClubService {
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         if (clubMember == null) {
             clubMemberRepository.save(InvitationRegisterRequest.toEntity(club, member));
-            noticeRepository.save(Notice.toEntity(member, club.getName() + " 소모임에 초대되었습니다.",
-                "/invitation/club/" + clubId));
+            noticeRepository.save(Notice.toEntity(member, clubId, NoticeType.CLUB_INVITATION));
         } else {
             return InvitationRegisterResponse.of("이미 초대된 사용자입니다.");
         }
@@ -185,9 +185,8 @@ public class ClubService {
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         if (clubMember == null) {
             clubMemberRepository.save(InvitationRegisterRequest.toEntity(club, member));
-            noticeRepository.save(Notice.toEntity(club.getHost(),
-                member.getNickname() + "님께서 " + club.getName() + " 소모임에 가입신청을 하였습니다.",
-                "/invitation/club/" + clubId));
+            noticeRepository.save(Notice.toEntity(club.getHost(), club.getHost().getId(),
+                NoticeType.CLUB_REGISTRATION));
         } else {
             return ClubJoinResponse.of("이미 신청한 소모임입니다.");
         }

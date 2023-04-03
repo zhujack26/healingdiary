@@ -32,10 +32,13 @@ public class Notice extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Enumerated(EnumType.ORDINAL)
     @NotNull
-    private String content;
+    @Column(name = "notice_type")
+    private NoticeType noticeType;
 
-    private String link;
+    @Column(name = "article_id")
+    private Long articleId;
 
     @Enumerated(EnumType.STRING)
     @NotNull
@@ -46,11 +49,11 @@ public class Notice extends BaseEntity {
         this.checkStatus = checkStatus;
     }
 
-    public static Notice toEntity(Member member, String content, String link) {
+    public static Notice toEntity(Member member, Long clubId, NoticeType noticeType) {
         return Notice.builder()
             .member(member)
-            .content(content)
-            .link(link)
+            .noticeType(noticeType)
+            .articleId(clubId)
             .checkStatus(CheckStatus.UNCHECKED)
             .build();
     }
