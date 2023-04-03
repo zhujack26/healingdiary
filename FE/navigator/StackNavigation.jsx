@@ -176,6 +176,7 @@ const StackNavigation = () => {
             name="Invite"
             component={InviteScreen}
             options={{
+              headerShadowVisible: false,
               headerTitle: "",
             }}
           />
