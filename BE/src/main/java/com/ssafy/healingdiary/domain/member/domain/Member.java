@@ -62,27 +62,12 @@ public class Member extends BaseEntity {
         return new ArrayList<>();
     }
 
-    public void updateMember(MemberUpdateRequest memberInfo, String imageUrl) {
-        if (memberInfo.getNickname() != null) {
-            this.nickname = memberInfo.getNickname();
-        }
-
-        if (memberInfo.getRegion() != null) {
-            this.region = memberInfo.getRegion();
-        }
-
-        if (memberInfo.getDisease() != null) {
-            this.disease = memberInfo.getDisease();
-        }else{
-            this.disease = this.getDisease();
-
-        }
-        if (memberInfo.getImageUrl() != null) {
-            this.memberImageUrl = imageUrl;
-        } else {
-            this.memberImageUrl = this.getMemberImageUrl();
-        }
-
+    public void updateMember(String nickname, String disease,
+        String region, String imageUrl) {
+        this.nickname = nickname;
+        this.region = region;
+        this.disease = this.getDisease();
+        this.memberImageUrl = imageUrl;
     }
 
     public static Member googleSignupMember(String providerEmail,

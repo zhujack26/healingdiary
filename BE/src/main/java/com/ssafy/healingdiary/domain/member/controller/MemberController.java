@@ -4,6 +4,7 @@ package com.ssafy.healingdiary.domain.member.controller;
 import com.ssafy.healingdiary.domain.member.dto.*;
 import com.ssafy.healingdiary.domain.member.service.MemberService;
 import com.ssafy.healingdiary.global.jwt.TokenRegenerateRequest;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -36,12 +37,12 @@ public class MemberController {
 
     @PostMapping("/info")
     public MemberUpdateResponse memberInfoUpdate(Authentication authentication,
-                                                 @RequestPart(value = "update", required = false) MemberUpdateRequest memberUpdateRequest,
-                                                 @RequestPart(value = "image_file", required = false)MultipartFile file) throws IOException {
+        @RequestParam("nickname") String nickname,
+        @RequestParam("disease") String disease,
+        @RequestParam("region") String region,
+        @RequestPart(value = "image_file", required = false)MultipartFile file) throws IOException {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return memberService.memberUpdate(principal.getPassword(),memberUpdateRequest, file);
-
-
+        return memberService.memberUpdate(principal.getPassword(), nickname, disease, region, file);
     }
 
     @PostMapping("/nickname")
