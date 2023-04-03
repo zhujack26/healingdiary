@@ -80,12 +80,15 @@ public class ClubService {
         return clubInvitationResponseList;
     }
 
-    public ClubRegisterResponse registClub(String id, ClubRegisterRequest request,
+    public ClubRegisterResponse registClub(String id,
+        String name,
+        String description,
+        List<String> tagList,
         MultipartFile file) throws IOException {
         Member member = memberRepository.findById(Long.parseLong(id)).get();
         String imageUrl = s3Service.uploadFile(file);
-        Club club = ClubRegisterRequest.toEntity(request, member, imageUrl);
-        List<ClubTag> tags = request.getTags()
+        Club club = ClubRegisterRequest.toEntity(name, description, member, imageUrl);
+        List<ClubTag> tags = tagList
             .stream()
             .map((tagContent) -> {
                 Tag tag = tagRepository.findByContentLike(tagContent);

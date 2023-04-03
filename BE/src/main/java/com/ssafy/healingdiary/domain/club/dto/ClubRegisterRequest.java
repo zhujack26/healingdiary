@@ -13,10 +13,10 @@ public class ClubRegisterRequest {
     String description;
     List<String> tags;
 
-    public static Club toEntity(ClubRegisterRequest request, Member member, String imageUrl) {
+    public static Club toEntity(String name, String description, Member member, String imageUrl) {
         return Club.builder()
-            .name(request.getName())
-            .description(request.getDescription())
+            .name(name)
+            .description(description)
             .host(member)
             .clubImageUrl(imageUrl)
             .build();
