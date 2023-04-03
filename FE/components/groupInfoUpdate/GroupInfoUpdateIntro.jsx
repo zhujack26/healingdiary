@@ -10,12 +10,18 @@ import {
   Keyboard,
 } from "react-native";
 import { GlobalColors } from "./../../constants/color";
-import { useState } from "react";
 import TagInput from "./TagInput";
 
 const { width } = Dimensions.get("window");
-const GroupInfoUpdateIntro = ({ isEdit }) => {
-  const [selectedTags, setSelectedTags] = useState([]);
+const GroupInfoUpdateIntro = ({
+  isEdit,
+  inputText,
+  selectedTags,
+  handleInputTextChange,
+  handleInputSubmit,
+  handleNameTextChange,
+  handleDescriptionTextChange,
+}) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : null}
@@ -29,6 +35,7 @@ const GroupInfoUpdateIntro = ({ isEdit }) => {
             style={styles.input}
             defaultValue={isEdit ? "소모임이름" : ""}
             returnKeyType="done"
+            onChangeText={handleNameTextChange}
           />
         </View>
 
@@ -43,11 +50,17 @@ const GroupInfoUpdateIntro = ({ isEdit }) => {
             onSubmitEditing={() => {
               Keyboard.dismiss();
             }}
+            onChangeText={handleDescriptionTextChange}
           />
         </View>
         <View style={styles.wrapper}>
           <Text style={styles.label}>해시태그</Text>
-          <TagInput tags={selectedTags} setTags={setSelectedTags} />
+          <TagInput
+            inputText={inputText}
+            selectedTags={selectedTags}
+            handleInputTextChange={handleInputTextChange}
+            handleInputSubmit={handleInputSubmit}
+          />
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
