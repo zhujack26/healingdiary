@@ -6,12 +6,13 @@ import { getGroupDetail } from "../../api/group";
 import GroupDiaryList from "./GroupDiaryList";
 import GroupDetailHeader from "./GroupDetailHeader";
 import BottomModal from "./BottomModal";
+import { getGroupDiary } from "../../api/diary";
 
 const GroupDetail = ({ groupId }) => {
   const [groupData, setGroupData] = useState({});
+  const [diaries, setDiaries] = useState([]);
   const [exitModalVisible, setExitModalVisible] = useState(false);
   const bottomSheetModalRef = useRef(null);
-
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
@@ -34,8 +35,14 @@ const GroupDetail = ({ groupId }) => {
     setGroupData(res);
   };
 
+  const getGroupDiaries = async () => {
+    const res = await getGroupDiary(groupId);
+    setDiaries(res);
+  };
+
   useEffect(() => {
     getGroupDetails();
+    getGroupDiaries();
   }, [groupId]);
 
   return (
@@ -49,6 +56,7 @@ const GroupDetail = ({ groupId }) => {
         exitCloseModalPress={exitCloseModalPress}
         groupData={groupData}
         groupId={groupId}
+        diaries={diaries}
       />
       <BottomModal
         bottomSheetModalRef={bottomSheetModalRef}

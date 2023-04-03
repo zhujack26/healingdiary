@@ -4,7 +4,7 @@ import { GlobalColors } from "./../../constants/color";
 const { width } = Dimensions.get("window");
 
 const GroupDiaryListItem = ({ data }) => {
-  const { title, hashtags } = data;
+  console.log("data", data);
   return (
     <View style={styles.container}>
       <Image
@@ -13,14 +13,14 @@ const GroupDiaryListItem = ({ data }) => {
       />
       <View>
         <View style={styles.groupDiaryInfo}>
-          <Text>{title}</Text>
+          <Text>{}</Text>
         </View>
         <View style={styles.hashtags}>
-          {hashtags.map((hashtag, index) => (
+          {/* {hashtags.map((hashtag, index) => (
             <Text key={index} style={styles.hashtag}>
               {hashtag}
             </Text>
-          ))}
+          ))} */}
         </View>
       </View>
     </View>
@@ -68,6 +68,12 @@ const styles = StyleSheet.create({
   hashtag: {
     fontFamily: "KoddiUDOnGothic-ExtraBold",
     fontSize: 12,
+    color: GlobalColors.colors.primary500,
+  },
+
+  text: {
+    fontSize: 24,
+    fontFamily: "KoddiUDOnGothic-ExtraBold",
     color: GlobalColors.colors.primary500,
   },
 });
