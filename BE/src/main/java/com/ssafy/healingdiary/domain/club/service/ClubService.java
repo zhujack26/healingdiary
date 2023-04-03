@@ -1,5 +1,7 @@
 package com.ssafy.healingdiary.domain.club.service;
 
+import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
+
 import com.ssafy.healingdiary.domain.club.domain.Club;
 import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.club.domain.ClubTag;
@@ -85,7 +87,7 @@ public class ClubService {
         String description,
         List<String> tagList,
         MultipartFile file) throws IOException {
-        Member member = memberRepository.findById(Long.parseLong(id)).get();
+        Member member = memberRepository.findById(Long.parseLong(id)).orElseThrow(()-> new CustomException(MEMBER_NOT_FOUND));
         String imageUrl = s3Service.uploadFile(file);
         Club club = ClubRegisterRequest.toEntity(name, description, member, imageUrl);
         List<ClubTag> tags = tagList
@@ -142,7 +144,7 @@ public class ClubService {
     public InvitationRegisterResponse registInvitation(Long clubId,
         InvitationRegisterRequest request) {
         Member member = memberRepository.findById(request.getMemberId())
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
 
@@ -161,7 +163,7 @@ public class ClubService {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         Member member = memberRepository.findById(memberId)
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         clubMemberRepository.delete(clubMember);
     }
@@ -179,7 +181,7 @@ public class ClubService {
 
     public ClubJoinResponse joinClub(String id, Long clubId) {
         Member member = memberRepository.findById(Long.parseLong(id))
-            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);

@@ -1,20 +1,25 @@
 package com.ssafy.healingdiary.global.jwt;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.util.*;
 
 
 @Slf4j
@@ -45,11 +50,8 @@ public class JwtTokenizer {
         Key key = getKeyFromEncodedKey(encodeBase64SecretKey(this.secretKey));
         Claims claims = Jwts.claims().setSubject(id);
         claims.put("roles", roleList);
-        System.out.println(claims);
         Date currenttime = new Date();
         Date expiration = this.getTokenExpiration(this.accesstokenExpiration);
-        System.out.println("currenttime:" + currenttime);
-        System.out.println("expiration:" + expiration);
         return Jwts.builder()
                 .setClaims(claims) // claims는 사용자와 관련된 정보가 들어가있는 Map
                 .setIssuedAt(currenttime) // 발행일자
@@ -115,13 +117,12 @@ public class JwtTokenizer {
 
     public String getId(String token) {
         String id = Jwts.parserBuilder().setSigningKey(encodeBase64SecretKey(secretKey)).build().parseClaimsJws(token).getBody().getSubject();
-        System.out.println(id);
         return id;
     }
-    public List getRoleListFromToken(String token) {
+    public List<String> getRoleListFromToken(String token) {
         Jws<Claims>  claims = getClaims(token);
         Claims claim = claims.getBody();
-        List roleList = claim.get("role", List.class);
+        List<String> roleList = claim.get("role", List.class);
         return roleList;
     }
 

@@ -1,23 +1,26 @@
 package com.ssafy.healingdiary.domain.member.controller;
 
 
-import com.ssafy.healingdiary.domain.member.dto.*;
+import com.ssafy.healingdiary.domain.member.dto.MemberInfoResponse;
+import com.ssafy.healingdiary.domain.member.dto.MemberUpdateRequest;
+import com.ssafy.healingdiary.domain.member.dto.MemberUpdateResponse;
+import com.ssafy.healingdiary.domain.member.dto.NicknameCheckRequest;
+import com.ssafy.healingdiary.domain.member.dto.NicknameCheckResponse;
 import com.ssafy.healingdiary.domain.member.service.MemberService;
-import com.ssafy.healingdiary.global.jwt.TokenRegenerateRequest;
+import com.ssafy.healingdiary.global.jwt.TokenRegenerateResponse;
+import java.io.IOException;
+import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.Errors;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RestController
@@ -52,10 +55,8 @@ public class MemberController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(@RequestHeader("Authorization") String tokenRegenerateRequest,
-                                     HttpServletRequest request) {
-
-        return memberService.reissue(tokenRegenerateRequest,request);
+    public ResponseEntity<TokenRegenerateResponse> reissue(HttpServletRequest request) {
+        return memberService.reissue(request);
     }
 
 

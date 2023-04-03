@@ -10,7 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RequiredArgsConstructor
 @Controller
@@ -58,36 +62,5 @@ public class OAuthController {
         }
         return null;
     }
-
-//    @PostMapping("/kakao/signup")
-//    public ResponseEntity<LoginResDto> kakaoSignUp(@RequestHeader("Authorization") String accessToken,
-//                                                   @RequestBody SignupReqDto signupReqDto) {
-//        try {
-//            //소셜로그인에 따라 회원가입을 하자
-//            LoginResDto loginResDto = oauthService.kakaoSignup(accessToken, signupReqDto);
-//
-//            return new ResponseEntity<>(loginResDto, HttpStatus.OK);
-//        }catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
-//        return null;
-//    }
-
-//    @ApiOperation(value = "appToken 갱신", notes = "appToken 갱신")
-//    @GetMapping("/refresh")
-//    public ResponseEntity<OAuthTokenResDto> refreshToken (HttpServletRequest request) {
-//        String jwtToken = JwtHeaderUtil.getAccessToken(request);
-//        AuthToken authToken = JwtTokenizer.convertAuthToken(jwtToken);
-//        if (!authToken.validate()) { // 형식에 맞지 않는 token
-//            return null; // body에 담은 것 없이, 403 HTTP code return
-//        }
-//
-//        OAuthTokenResDto oAuthTokenResDto = OAuthService.updateToken(authToken);
-//        if (oAuthTokenResDto == null) { // token 만료
-//            return null;
-//        }
-//        return oAuthTokenResDto;
-//    }
-
 }
 

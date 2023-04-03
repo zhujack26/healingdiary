@@ -1,36 +1,31 @@
 package com.ssafy.healingdiary.domain.member.service;
 
+import static com.ssafy.healingdiary.global.error.ErrorCode.BAD_REQUEST;
+import static com.ssafy.healingdiary.global.error.ErrorCode.LOG_OUT;
+import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
+
 import com.ssafy.healingdiary.domain.member.domain.Member;
-import com.ssafy.healingdiary.domain.member.dto.*;
+import com.ssafy.healingdiary.domain.member.dto.MemberInfoResponse;
+import com.ssafy.healingdiary.domain.member.dto.MemberUpdateRequest;
+import com.ssafy.healingdiary.domain.member.dto.MemberUpdateResponse;
+import com.ssafy.healingdiary.domain.member.dto.NicknameCheckRequest;
+import com.ssafy.healingdiary.domain.member.dto.NicknameCheckResponse;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
-import com.ssafy.healingdiary.global.auth.PrincipalDetails;
-import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
 import com.ssafy.healingdiary.global.error.CustomException;
-import com.ssafy.healingdiary.infra.storage.S3StorageClient;
-import com.ssafy.healingdiary.global.error.ErrorCode;
-import com.ssafy.healingdiary.global.error.ErrorResponse;
 import com.ssafy.healingdiary.global.jwt.CookieUtil;
 import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
-import com.ssafy.healingdiary.global.jwt.TokenRegenerateRequest;
 import com.ssafy.healingdiary.global.jwt.TokenRegenerateResponse;
 import com.ssafy.healingdiary.global.redis.RedisUtil;
+import com.ssafy.healingdiary.infra.storage.S3StorageClient;
+import java.io.IOException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-
-import static com.ssafy.healingdiary.global.error.ErrorCode.*;
 
 @Service
 @Transactional
@@ -95,16 +90,12 @@ public class MemberService {
         }
         else{
             NicknameCheckResponse foundMember =  NicknameCheckResponse.of(true);
-            System.out.println(foundMember);
             return foundMember;
         }
 
     }
 
-    public ResponseEntity<?> reissue(String tokenRegenerateRequest, HttpServletRequest request
-
-    ) {
-        String token = tokenRegenerateRequest.replace("Bearer ", "");
+    public ResponseEntity<TokenRegenerateResponse> reissue(HttpServletRequest request) {
 
         //refreshToken얻어오는 방법
         Cookie[] cookies = request.getCookies();
@@ -151,9 +142,6 @@ public class MemberService {
 
         redisUtil.dataExpirationsInput(memberId,newRefreshToken,7);
         TokenRegenerateResponse tokenRegenerateResponse = TokenRegenerateResponse.of(newAccessToken);
-
-
-
 
         return cookieUtil.TokenCookie(newRefreshToken, tokenRegenerateResponse);
     }

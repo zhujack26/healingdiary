@@ -3,7 +3,6 @@ package com.ssafy.healingdiary.global.error;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Getter
 @AllArgsConstructor
@@ -26,7 +25,8 @@ public enum ErrorCode {
 
     LOG_OUT(HttpStatus.OK, -14,"로그아웃을 해주세요."),
 
-    ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, -13,"만료된 Access Token 입니다."),
+    ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, -15,"만료된 Access Token 입니다."),
+    NOTICE_NOT_FOUND(HttpStatus.OK, -16, "알림을 찾을 수 없습니다."),
     CONFLICT(HttpStatus.CONFLICT, -409, "이미 가입된 회원입니다.");
 
     private final HttpStatus status;

@@ -1,8 +1,6 @@
 package com.ssafy.healingdiary.domain.member.domain;
 
-import java.util.Arrays;
 import lombok.Getter;
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
 @Getter
 public enum CheckStatus {
@@ -15,6 +13,6 @@ public enum CheckStatus {
         return value ? CHECKED : UNCHECKED;
     }
     public static boolean ofFlag(CheckStatus flag) {
-        return CheckStatus.CHECKED == flag ? true : false;
+        return CheckStatus.CHECKED == flag;
     }
 }

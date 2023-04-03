@@ -1,7 +1,6 @@
 package com.ssafy.healingdiary.domain.diary.domain;
 
 import com.ssafy.healingdiary.domain.club.domain.Club;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
@@ -21,7 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name="diary")

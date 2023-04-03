@@ -2,7 +2,6 @@ package com.ssafy.healingdiary.domain.diary.controller;
 
 
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
@@ -10,12 +9,9 @@ import com.ssafy.healingdiary.domain.diary.service.DiaryService;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
-
-import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -71,9 +67,9 @@ public class DiaryController {
 
     @PostMapping("/analyze")
     public Map<String, Object> analyzeDiary(
-        @RequestPart MultipartFile record
+        @RequestPart MultipartFile rec
     ) throws IOException{
-        return diaryService.analyzeDiary(record);
+        return diaryService.analyzeDiary(rec);
     }
 
     @PostMapping

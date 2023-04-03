@@ -2,27 +2,18 @@ package com.ssafy.healingdiary.global.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
-import com.ssafy.healingdiary.global.error.CustomException;
-import com.ssafy.healingdiary.global.redis.RedisUtil;
 import io.jsonwebtoken.ExpiredJwtException;
+import java.io.IOException;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static com.ssafy.healingdiary.global.error.ErrorCode.BAD_REQUEST;
-import static com.ssafy.healingdiary.global.error.ErrorCode.LOG_OUT;
 
 
 @RequiredArgsConstructor
