@@ -10,9 +10,15 @@ const HeaderRightButtons = ({ navigation }) => {
     setUserImage(data);
   }, []);
 
+  const getNotice = useCallback(async () => {
+    const res = await getNotification();
+    console.log(res);
+  });
+
   useEffect(() => {
     getUserImage();
-  }, [getUserImage]);
+    getNotice();
+  }, [getUserImage, getNotice]);
 
   return (
     <View style={{ flexDirection: "row" }}>

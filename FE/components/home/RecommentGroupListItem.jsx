@@ -11,22 +11,25 @@ import { GlobalColors } from "../../constants/color";
 const { width } = Dimensions.get("window");
 
 const RecommentGroupListItem = ({ item }) => {
-  const { description, image, name, hashtags } = item;
   return (
     <Pressable>
       <View style={styles.container}>
         <View>
-          <Image source={image} style={styles.image} resizeMode="cover" />
+          <Image
+            source={{ uri: item.clubImageUrl }}
+            style={styles.image}
+            resizeMode="cover"
+          />
           <View style={styles.hashtags}>
-            {hashtags.map((hashtag, index) => (
+            {item.tags?.map((tag, index) => (
               <View style={styles.hashtag} key={index}>
-                <Text style={styles.tagText}>#{hashtag}</Text>
+                <Text style={styles.tagText}>#{tag}</Text>
               </View>
             ))}
           </View>
           <View style={styles.infoContainer}>
-            <Text style={styles.title}>{name}</Text>
-            <Text style={styles.description}>{description}</Text>
+            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.description}>{item.description}</Text>
           </View>
         </View>
       </View>

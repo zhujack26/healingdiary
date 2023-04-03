@@ -25,7 +25,7 @@ const RecommendGroup = ({ groups, navigateToScreen }) => {
       {groups.length === 0 && <NotRecommendDiary />}
       <Animated.FlatList
         data={groups}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.clubId}
         renderItem={({ item }) => (
           <RecommentGroupListItem
             item={item}

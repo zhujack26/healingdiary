@@ -77,8 +77,10 @@ const Home = () => {
 
   const getRecoGroup = async () => {
     const res = await getRecommendGroup();
+    console.log(res);
     setGroups(res);
   };
+
   useEffect(() => {
     getRecoDiary();
     getRecoGroup();

@@ -3,6 +3,7 @@ import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { DATA } from "../../model/DataNotification";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { GlobalColors } from "../../constants/color";
 
 const formatTime = (minutes) => {
   const hours = Math.floor(minutes / 60);
@@ -82,8 +83,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingTop: 20,
-    backgroundColor: "white",
+    backgroundColor: GlobalColors.colors.background500,
+    marginBottom: 10,
   },
+
   image: {
     width: 50,
     height: 50,

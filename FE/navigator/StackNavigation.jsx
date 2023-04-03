@@ -170,6 +170,7 @@ const StackNavigation = () => {
               headerTitle: "알림",
               headerTitleAlign: "center",
               headerShown: true,
+              headerShadowVisible: false,
             }}
           />
           <Stack.Screen
