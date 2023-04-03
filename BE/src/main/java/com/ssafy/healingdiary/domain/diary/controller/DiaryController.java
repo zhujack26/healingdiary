@@ -15,6 +15,7 @@ import com.ssafy.healingdiary.global.auth.PrincipalDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -75,7 +76,7 @@ public class DiaryController {
         return diaryService.analyzeDiary(record);
     }
 
-    @PostMapping
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public Map<String, Object> createDiary(
         Authentication authentication,
         @RequestPart DiaryCreateRequest diaryCreateRequest,
