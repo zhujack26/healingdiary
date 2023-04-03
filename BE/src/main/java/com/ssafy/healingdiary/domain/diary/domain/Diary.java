@@ -42,6 +42,7 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @Builder.Default
     @OneToMany(mappedBy = "diary",cascade = CascadeType.ALL)
     private List<DiaryTag> diaryTag = new ArrayList<>();
 
@@ -59,6 +60,7 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "emotion")
     private Emotion emotion;
 
+    @Builder.Default
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
