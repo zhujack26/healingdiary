@@ -42,7 +42,6 @@ export const getInviteGroupMemberList = async (data) => {
     const res = await axiosInstance(
       getDataConfig(`/clubs/${data}/invitation?`)
     );
-    console.log(res);
     return res.data;
   } catch (e) {
     console.log("getInviteGroupMemberList", e);
