@@ -3,17 +3,19 @@ import { GlobalColors } from "./../../constants/color";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
-const GroupIntroduction = ({ navigation }) => {
+const GroupIntroduction = ({ navigation, groupData, groupId }) => {
   return (
     <>
       <View style={styles.groupInfo}>
         <View>
-          <Text style={styles.groupName}>소모임</Text>
+          <Text style={styles.groupName}>{groupData.name}</Text>
           <View style={styles.groupInviteContainer}>
             <Text style={styles.groupMemberCount}>멤버 12</Text>
             <Pressable
               style={styles.circle}
-              onPress={() => navigation.navigate("Invite")}
+              onPress={() =>
+                navigation.navigate("Invite", { groupId: groupId })
+              }
             >
               <Ionicons
                 name="add"
@@ -29,23 +31,14 @@ const GroupIntroduction = ({ navigation }) => {
         </View>
       </View>
       <View style={styles.groupIntrocutionContainer}>
-        <Text style={styles.groupIntrocutionText}>
-          소모임 소개입니다.소모임 소개입니다.소모임 소개입니다.소모임
-          소개입니다.소모임 소개입니다.
-        </Text>
+        <Text style={styles.groupIntrocutionText}>{groupData.description}</Text>
       </View>
       <View style={styles.hashtags}>
-        <View style={styles.hashtag}>
-          <Text style={styles.hashtagText}>#해시태그</Text>
-        </View>
-
-        <View style={styles.hashtag}>
-          <Text style={styles.hashtagText}>#해시태그</Text>
-        </View>
-
-        <View style={styles.hashtag}>
-          <Text style={styles.hashtagText}>#해시태그</Text>
-        </View>
+        {groupData.tags?.map((tag, index) => (
+          <View key={index} style={styles.hashtag}>
+            <Text style={styles.hashtagText}>#{tag}</Text>
+          </View>
+        ))}
       </View>
     </>
   );

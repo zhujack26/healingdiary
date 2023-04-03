@@ -1,10 +1,22 @@
 import { View, StyleSheet } from "react-native";
+import { getGroupMemebrList } from "../../api/group";
+import { useEffect, useState } from "react";
 import GroupMemberList from "./GroupMemberList";
 
-const GroupMember = () => {
+const GroupMember = ({ groupId }) => {
+  const [groupMember, setGroupMember] = useState([]);
+  const getGroupMember = async () => {
+    const res = await getGroupMemebrList(groupId);
+    setGroupMember(res);
+  };
+
+  useEffect(() => {
+    getGroupMember();
+  }, [groupId]);
+
   return (
     <View style={styles.container}>
-      <GroupMemberList />
+      <GroupMemberList groupMember={groupMember} />
     </View>
   );
 };

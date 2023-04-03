@@ -1,14 +1,16 @@
 import { View, StyleSheet } from "react-native";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { GlobalColors } from "../../constants/color";
+import { getGroupDetail } from "../../api/group";
 
 import GroupDiaryList from "./GroupDiaryList";
 import GroupDetailHeader from "./GroupDetailHeader";
 import BottomModal from "./BottomModal";
-import { GlobalColors } from "../../constants/color";
 
-const GroupDetail = () => {
-  const bottomSheetModalRef = useRef(null);
+const GroupDetail = ({ groupId }) => {
+  const [groupData, setGroupData] = useState({});
   const [exitModalVisible, setExitModalVisible] = useState(false);
+  const bottomSheetModalRef = useRef(null);
 
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
@@ -27,17 +29,32 @@ const GroupDetail = () => {
     handleCloseModalPress();
   };
 
+  const getGroupDetails = async () => {
+    const res = await getGroupDetail(groupId);
+    setGroupData(res);
+  };
+
+  useEffect(() => {
+    getGroupDetails();
+  }, [groupId]);
+
   return (
     <View style={[exitModalVisible && styles.blur, styles.container]}>
-      <GroupDetailHeader handlePresentModalPress={handlePresentModalPress} />
+      <GroupDetailHeader
+        handlePresentModalPress={handlePresentModalPress}
+        image={groupData.clubImageUrl}
+      />
       <GroupDiaryList
         exitModalVisible={exitModalVisible}
         exitCloseModalPress={exitCloseModalPress}
+        groupData={groupData}
+        groupId={groupId}
       />
       <BottomModal
         bottomSheetModalRef={bottomSheetModalRef}
         handleCloseModalPress={handleCloseModalPress}
         openExitModalAndCloseModal={openExitModalAndCloseModal}
+        groupId={groupId}
       />
     </View>
   );
