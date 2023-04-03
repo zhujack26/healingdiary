@@ -70,8 +70,8 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
                 groupBy(club.id).list(
                     new QClubSimpleResponse(
                         club.id,
-                        club.name,
                         club.clubImageUrl,
+                        club.name,
                         list(tag.content)
                     )
                 )
