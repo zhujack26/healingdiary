@@ -2,13 +2,15 @@ package com.ssafy.healingdiary.domain.diary.controller;
 
 
 import com.ssafy.healingdiary.domain.diary.dto.CommentCreateRequest;
+import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import com.ssafy.healingdiary.domain.diary.dto.CommentUpdateRequest;
 import com.ssafy.healingdiary.domain.diary.service.CommentService;
-import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,39 +31,39 @@ public class CommentController {
 
     @GetMapping
     public Slice<CommentResponse> getCommentList(
-//        Authentication authentication,
         @RequestParam Long diaryId,
         Pageable pageable
     ){
-//        UserDetails principal = (UserDetails) authentication.getPrincipal();
         return commentService.getCommentList(diaryId, pageable);
     }
 
     @PostMapping
     public Map<String, Object> createComment(
-//        Authentication authentication,
+        Authentication authentication,
         @RequestBody CommentCreateRequest request
     ){
-//        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return commentService.createComment(request);
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        Long memberId = Long.parseLong(principal.getUsername());
+        return commentService.createComment(memberId, request);
     }
 
     @PutMapping("/{commentId}")
     public Map<String, Object> updateComment(
-//        Authentication authentication,
+        Authentication authentication,
         @RequestBody CommentUpdateRequest request
     ){
-//        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return commentService.updateComment(request);
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        Long memberId = Long.parseLong(principal.getUsername());
+        return commentService.updateComment(memberId, request);
     }
 
     @DeleteMapping("/{commentId}")
     public void deleteComment(
-//        Authentication authentication,
-        @RequestParam Long memberId,
+        Authentication authentication,
         @PathVariable Long commentId
     ){
-//        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        Long memberId = Long.parseLong(principal.getUsername());
         commentService.deleteComment(memberId, commentId);
     }
 }

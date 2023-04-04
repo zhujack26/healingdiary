@@ -14,4 +14,5 @@ public class HealingdiaryApiApp {
         SpringApplication.run(HealingdiaryApiApp.class, args);
     }
 
+
 }
