@@ -63,7 +63,6 @@ const GroupDetail = ({ groupId }) => {
 
   const callDeleteGroup = async (groupId) => {
     const res = await deleteGroup(groupId);
-    console.log(res);
     if (res.status === 200) navigation.navigate("Home");
   };
 

@@ -12,11 +12,14 @@ const ExitModal = ({
   callDeleteGroup,
   host,
 }) => {
-  const handleExitGroup = useCallback(() => {
+  const handleExitGroup = () => {
     exitCloseModalPress();
-    if (host) callDeleteGroup(groupId);
-    else callExitMember(groupId, memberId);
-  }, []);
+    if (host) {
+      callDeleteGroup(groupId);
+    } else {
+      callExitMember(groupId, memberId);
+    }
+  };
 
   return (
     <Modal
