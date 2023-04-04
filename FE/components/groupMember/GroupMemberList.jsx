@@ -9,12 +9,18 @@ const NotGroupMember = () => {
   );
 };
 
-const GroupMemberList = ({ groupMember }) => {
+const GroupMemberList = ({ groupMember, groupId, callRejectMember }) => {
   if (groupMember?.length === 0) return <NotGroupMember />;
   return (
     <FlatList
       data={groupMember}
-      renderItem={({ item }) => <GroupMemberListItem data={item} />}
+      renderItem={({ item }) => (
+        <GroupMemberListItem
+          data={item}
+          groupId={groupId}
+          callRejectMember={callRejectMember}
+        />
+      )}
       keyExtractor={(item) => item.memberId}
       contentContainerStyle={{ marginBottom: 48 }}
     />

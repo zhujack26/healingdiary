@@ -3,7 +3,7 @@ import { GlobalColors } from "./../../constants/color";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
-const GroupIntroduction = ({ navigation, groupData, groupId }) => {
+const GroupIntroduction = ({ navigation, groupData, groupId, signupGroup }) => {
   return (
     <>
       <View style={styles.groupInfo}>
@@ -27,9 +27,20 @@ const GroupIntroduction = ({ navigation, groupData, groupId }) => {
             {groupData.host && <Text style={styles.inviteText}>초대</Text>}
           </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <Text style={styles.buttonText}>글쓰기</Text>
-        </View>
+        {groupData.host ? (
+          <Pressable style={styles.buttonContainer} onPress={() => {}}>
+            <Text style={styles.buttonText}>글쓰기</Text>
+          </Pressable>
+        ) : (
+          <Pressable
+            style={styles.buttonContainer}
+            onPress={() => {
+              signupGroup(groupId);
+            }}
+          >
+            <Text style={styles.buttonText}>가입하기</Text>
+          </Pressable>
+        )}
       </View>
       <View style={styles.groupIntrocutionContainer}>
         <Text style={styles.groupIntrocutionText}>{groupData.description}</Text>
