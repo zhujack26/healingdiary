@@ -85,12 +85,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    width: width,
   },
 
   groupName: {
+    width: 200,
     fontFamily: "KoddiUDOnGothic-ExtraBold",
     fontSize: 24,
     marginBottom: 16,
+    flexWrap: "wrap",
   },
 
   groupInviteContainer: {
@@ -126,6 +129,7 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalColors.colors.primary500,
     justifyContent: "center",
     alignItems: "center",
+    marginRight: 36,
   },
 
   disabledButton: {

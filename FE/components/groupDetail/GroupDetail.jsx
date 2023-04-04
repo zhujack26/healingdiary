@@ -23,9 +23,11 @@ const GroupDetail = ({ groupId }) => {
   const [diaries, setDiaries] = useState([]);
   const [exitModalVisible, setExitModalVisible] = useState(false);
   const [memberId, setMemberId] = useState("");
-  const [isMember, setIsMember] = useState(false);
   const bottomSheetModalRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  let isMember = groupMember.some(
+    (member) => member.memberId?.toString() === memberId
+  );
 
   const callGetGroupMember = useCallback(async () => {
     const res = await getGroupMemebrList(groupId);
@@ -89,14 +91,8 @@ const GroupDetail = ({ groupId }) => {
       getMemberId();
     }
     fetchData();
-  }, [groupId]);
-
-  useEffect(() => {
-    setIsMember(
-      groupMember.some((member) => member.memberId?.toString() === memberId)
-    );
     setIsLoading(false);
-  }, [groupMember, memberId]);
+  }, [groupId]);
 
   if (isLoading) {
     return (
@@ -108,6 +104,7 @@ const GroupDetail = ({ groupId }) => {
       </View>
     );
   }
+
   return (
     <View style={[exitModalVisible && styles.blur, styles.container]}>
       <GroupDetailHeader
