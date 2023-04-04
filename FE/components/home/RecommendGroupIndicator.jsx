@@ -6,20 +6,16 @@ const { width } = Dimensions.get("window");
 const RecommentGroupIndicator = ({ data, scrollX }) => {
   return (
     <View style={styles.indicatorContainer}>
-      {data.map((item) => {
+      {data?.map((item, index) => {
         const opacity = scrollX.interpolate({
-          inputRange: [
-            (item.id - 1) * width,
-            item.id * width,
-            (item.id + 1) * width,
-          ],
+          inputRange: [(index - 1) * width, index * width, (index + 1) * width],
           outputRange: [0.3, 1, 0.3],
           extrapolate: "clamp",
         });
 
         return (
           <Animated.View
-            key={item.id}
+            key={item.clubId}
             style={[styles.indicator, { opacity }]}
           />
         );

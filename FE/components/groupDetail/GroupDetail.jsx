@@ -1,15 +1,22 @@
 import { View, StyleSheet } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GlobalColors } from "../../constants/color";
-import { getGroupDetail } from "../../api/group";
+import { exitGroup, deleteGroup, getGroupDetail } from "../../api/group";
+import { useNavigation } from "@react-navigation/native";
+import { getGroupDiary } from "../../api/diary";
 
 import GroupDiaryList from "./GroupDiaryList";
 import GroupDetailHeader from "./GroupDetailHeader";
 import BottomModal from "./BottomModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GroupDetail = ({ groupId }) => {
+  const navigation = useNavigation();
   const [groupData, setGroupData] = useState({});
+  const [diaries, setDiaries] = useState([]);
   const [exitModalVisible, setExitModalVisible] = useState(false);
+  const [memberId, setMemberId] = useState("");
+
   const bottomSheetModalRef = useRef(null);
 
   const handleCloseModalPress = useCallback(() => {
@@ -34,9 +41,34 @@ const GroupDetail = ({ groupId }) => {
     setGroupData(res);
   };
 
+  const getGroupDiaries = async () => {
+    const res = await getGroupDiary(groupId);
+    setDiaries(res);
+  };
+
+  const leaveGroup = async () => {
+    const res = await exitGroup(groupId, memberId);
+    return res;
+  };
+
+  const handleDeleteGroup = async () => {
+    const res = await deleteGroup(groupId);
+    if (res.status === 200) navigation.navigate("Home");
+  };
+
+  const getMemberId = async () => {
+    const id = await AsyncStorage.getItem("id");
+    setMemberId(id);
+  };
+
   useEffect(() => {
     getGroupDetails();
+    getGroupDiaries();
   }, [groupId]);
+
+  useEffect(() => {
+    getMemberId();
+  }, []);
 
   return (
     <View style={[exitModalVisible && styles.blur, styles.container]}>
@@ -49,12 +81,17 @@ const GroupDetail = ({ groupId }) => {
         exitCloseModalPress={exitCloseModalPress}
         groupData={groupData}
         groupId={groupId}
+        diaries={diaries}
+        memberId={memberId}
+        leaveGroup={leaveGroup}
+        handleDeleteGroup={handleDeleteGroup}
       />
       <BottomModal
         bottomSheetModalRef={bottomSheetModalRef}
         handleCloseModalPress={handleCloseModalPress}
         openExitModalAndCloseModal={openExitModalAndCloseModal}
         groupId={groupId}
+        host={groupData.host}
       />
     </View>
   );

@@ -10,13 +10,12 @@ const NotGroupMember = () => {
 };
 
 const GroupMemberList = ({ groupMember }) => {
-  const { content } = groupMember;
-  if (content && content.length === 0) return <NotGroupMember />;
+  if (groupMember?.length === 0) return <NotGroupMember />;
   return (
     <FlatList
-      data={content}
+      data={groupMember}
       renderItem={({ item }) => <GroupMemberListItem data={item} />}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.memberId}
       contentContainerStyle={{ marginBottom: 48 }}
     />
   );
