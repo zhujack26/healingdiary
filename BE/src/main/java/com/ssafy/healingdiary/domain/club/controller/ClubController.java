@@ -5,6 +5,7 @@ import com.ssafy.healingdiary.domain.club.dto.ClubApprovalResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubDetailResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubJoinResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubLeaveResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubListResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
@@ -117,8 +118,8 @@ public class ClubController {
     }
 
     @DeleteMapping("/{clubId}/{clubMemberId}")
-    public void leaveClub(@PathVariable Long clubId, @PathVariable Long clubMemberId) {
-        clubService.leaveClub(clubId, clubMemberId);
+    public ClubLeaveResponse leaveClub(@PathVariable Long clubId, @PathVariable Long clubMemberId) {
+        return clubService.leaveClub(clubId, clubMemberId);
     }
 
     @PatchMapping("/{clubMemberId}/approval")
