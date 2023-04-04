@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ClubApprovalResponse {
+
     private Long clubId;
     private Long memberId;
 

@@ -177,7 +177,7 @@ public class ClubService {
 
         Long clubId = clubMember.getClub().getId();
 
-        return ClubApprovalResponse.of(clubId, clubMemberId);
+        return ClubApprovalResponse.of(clubId, clubMember.getMember().getId());
     }
 
     public ClubJoinResponse joinClub(String id, Long clubId) {
