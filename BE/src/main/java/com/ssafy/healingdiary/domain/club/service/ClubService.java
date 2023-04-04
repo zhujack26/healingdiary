@@ -101,6 +101,7 @@ public class ClubService {
             .collect(Collectors.toList());
         club.setClubTag(tags);
         Club savedClub = clubRepository.save(club);
+        clubMemberRepository.save(ClubMember.toEntityWithHost(club, member));
         return ClubRegisterResponse.of(savedClub.getId());
     }
 

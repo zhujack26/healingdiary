@@ -2,7 +2,6 @@ package com.ssafy.healingdiary.domain.member.dto;
 
 import com.ssafy.healingdiary.domain.member.domain.CheckStatus;
 import com.ssafy.healingdiary.domain.member.domain.Notice;
-import com.ssafy.healingdiary.domain.member.domain.NoticeType;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,6 +15,7 @@ public class NoticeListResponse {
     private LocalDateTime createdTime;
     private int noticeType;
     private boolean checkStatus;
+
     public static NoticeListResponse of(Notice notice) {
         return NoticeListResponse.builder()
             .noticeId(notice.getId())

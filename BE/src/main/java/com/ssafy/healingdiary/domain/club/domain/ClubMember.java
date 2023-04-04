@@ -15,7 +15,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
@@ -42,5 +41,13 @@ public class ClubMember extends BaseEntity {
 
     public void approve() {
         this.isApproved = true;
+    }
+
+    public static ClubMember toEntityWithHost(Club club, Member member) {
+        return ClubMember.builder()
+            .club(club)
+            .member(member)
+            .isApproved(true)
+            .build();
     }
 }
