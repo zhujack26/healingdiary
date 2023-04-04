@@ -1,18 +1,22 @@
 import { View, StyleSheet } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GlobalColors } from "../../constants/color";
-import { getGroupDetail } from "../../api/group";
+import { exitGroup, getGroupDetail } from "../../api/group";
 
 import GroupDiaryList from "./GroupDiaryList";
 import GroupDetailHeader from "./GroupDetailHeader";
 import BottomModal from "./BottomModal";
 import { getGroupDiary } from "../../api/diary";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GroupDetail = ({ groupId }) => {
   const [groupData, setGroupData] = useState({});
   const [diaries, setDiaries] = useState([]);
   const [exitModalVisible, setExitModalVisible] = useState(false);
+  const [memberId, setMemberId] = useState("");
+
   const bottomSheetModalRef = useRef(null);
+
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
   }, []);
@@ -40,10 +44,24 @@ const GroupDetail = ({ groupId }) => {
     setDiaries(res);
   };
 
+  const leaveGroup = async () => {
+    const res = await exitGroup(groupId, memberId);
+    return res;
+  };
+
+  const getMemberId = async () => {
+    const id = await AsyncStorage.getItem("id");
+    setMemberId(id);
+  };
+
   useEffect(() => {
     getGroupDetails();
     getGroupDiaries();
   }, [groupId]);
+
+  useEffect(() => {
+    getMemberId();
+  }, []);
 
   return (
     <View style={[exitModalVisible && styles.blur, styles.container]}>
@@ -57,6 +75,8 @@ const GroupDetail = ({ groupId }) => {
         groupData={groupData}
         groupId={groupId}
         diaries={diaries}
+        memberId={memberId}
+        leaveGroup={leaveGroup}
       />
       <BottomModal
         bottomSheetModalRef={bottomSheetModalRef}

@@ -11,7 +11,9 @@ const GroupDiaryList = ({
   exitCloseModalPress,
   groupData,
   groupId,
+  memberId,
   diaries,
+  leaveGroup,
 }) => {
   const navigation = useNavigation();
   const NotDiary = () => {
@@ -40,6 +42,9 @@ const GroupDiaryList = ({
         <ExitModal
           exitModalVisible={exitModalVisible}
           exitCloseModalPress={exitCloseModalPress}
+          leaveGroup={leaveGroup}
+          groupId={groupId}
+          memberId={memberId}
         />
       }
       ListEmptyComponent={<NotDiary />}

@@ -1,7 +1,13 @@
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import { GlobalColors } from "../../constants/color";
 
-const ExitModal = ({ exitModalVisible, exitCloseModalPress, style }) => {
+const ExitModal = ({
+  exitModalVisible,
+  exitCloseModalPress,
+  leaveGroup,
+  groupId,
+  memberId,
+}) => {
   return (
     <Modal
       animationType="fade"
@@ -18,7 +24,10 @@ const ExitModal = ({ exitModalVisible, exitCloseModalPress, style }) => {
           <View style={styles.buttonContainer}>
             <Pressable
               style={[styles.button, styles.buttonExit]}
-              onPress={exitCloseModalPress}
+              onPress={() => {
+                exitCloseModalPress();
+                leaveGroup(groupId, memberId);
+              }}
             >
               <Text style={styles.buttonText}>나가기</Text>
             </Pressable>

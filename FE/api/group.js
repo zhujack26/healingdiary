@@ -1,4 +1,10 @@
-import { getConfig, getDataConfig, postConfig, postFormConfig } from "./config";
+import {
+  deleteConfig,
+  getConfig,
+  getDataConfig,
+  postConfig,
+  postFormConfig,
+} from "./config";
 import axiosInstance from "./interceptor";
 
 export const getRecommendGroup = async () => {
@@ -64,5 +70,16 @@ export const inviteGroupMember = async (groupId, memberId) => {
     return res.data;
   } catch (e) {
     console.log("inviteGroup", e);
+  }
+};
+
+export const exitGroup = async (groupId, memberId) => {
+  try {
+    const res = await axiosInstance(
+      deleteConfig(`/clubs/${groupId}/${memberId}`)
+    );
+    return res;
+  } catch (e) {
+    console.log("exitGroup", e);
   }
 };
