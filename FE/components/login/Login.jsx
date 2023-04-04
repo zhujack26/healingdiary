@@ -1,10 +1,23 @@
+import { useEffect } from "react";
 import { View, StyleSheet, StatusBar } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import Logo from "./Logo";
 
 const Login = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await AsyncStorage.getItem("jwtToken");
+      console.log(token);
+      if (token) navigation.navigate("diaryBottomTab");
+    };
+    checkToken();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <StatusBar hidden />
       <Logo />
     </View>
   );

@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "diary",
+    "slug": "diary",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#f3f3f3",
+    "scheme": "com.ssafy.healingdiary",
+    "jsEngine": "hermes",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "jsEngine": "jsc",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ssafy.healingdiary"
+    },
+    "android": {
+      "package": "com.ssafy.healingdiary",
+      "versionCode": 2,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "packagerOpts": {
+      "sourceExts": ["js", "json", "ts", "tsx", "jsx"]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ee79468f-4e27-4c3b-938e-b4bb318c851e"
+      }
+    }
+  }
+}
