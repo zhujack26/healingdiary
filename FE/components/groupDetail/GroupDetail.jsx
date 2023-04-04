@@ -2,11 +2,10 @@ import { View, StyleSheet } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GlobalColors } from "../../constants/color";
 import {
-  exitGroup,
+  rejectAndExitMember,
   deleteGroup,
   getGroupDetail,
   joinGroup,
-  callGroupApplyList,
 } from "../../api/group";
 import { useNavigation } from "@react-navigation/native";
 import { getGroupDiary } from "../../api/diary";
@@ -52,8 +51,8 @@ const GroupDetail = ({ groupId }) => {
     setDiaries(res);
   };
 
-  const leaveGroup = async () => {
-    const res = await exitGroup(groupId, memberId);
+  const callExitMember = async (clubId, memberId) => {
+    const res = await rejectAndExitMember({ clubId, memberId });
     return res;
   };
 
@@ -62,8 +61,9 @@ const GroupDetail = ({ groupId }) => {
     return res;
   };
 
-  const handleDeleteGroup = async () => {
+  const callDeleteGroup = async (groupId) => {
     const res = await deleteGroup(groupId);
+    console.log(res);
     if (res.status === 200) navigation.navigate("Home");
   };
 
@@ -94,8 +94,8 @@ const GroupDetail = ({ groupId }) => {
         groupId={groupId}
         diaries={diaries}
         memberId={memberId}
-        leaveGroup={leaveGroup}
-        handleDeleteGroup={handleDeleteGroup}
+        callExitMember={callExitMember}
+        callDeleteGroup={callDeleteGroup}
         signupGroup={signupGroup}
       />
       <BottomModal

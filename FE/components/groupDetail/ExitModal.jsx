@@ -8,27 +8,15 @@ const ExitModal = ({
   exitCloseModalPress,
   groupId,
   memberId,
-  leaveGroup,
-  handleDeleteGroup,
+  callExitMember,
+  callDeleteGroup,
   host,
 }) => {
-  const navigation = useNavigation();
-  const memoizedLeaveGroup = useCallback(() => {
-    leaveGroup(groupId, memberId);
-  }, [groupId, memberId, leaveGroup]);
-
-  const memoizedDeleteGroup = useCallback(() => {
-    handleDeleteGroup(groupId);
-  }, [groupId, handleDeleteGroup]);
-
   const handleExitGroup = useCallback(() => {
     exitCloseModalPress();
-    if (host) {
-      const res = memoizedDeleteGroup();
-    } else {
-      memoizedLeaveGroup();
-    }
-  }, [exitCloseModalPress, host, memoizedDeleteGroup, memoizedLeaveGroup]);
+    if (host) callDeleteGroup(groupId);
+    else callExitMember(groupId, memberId);
+  }, []);
 
   return (
     <Modal

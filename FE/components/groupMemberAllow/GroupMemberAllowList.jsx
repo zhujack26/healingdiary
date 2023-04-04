@@ -1,12 +1,22 @@
 import { FlatList } from "react-native";
 import GroupMemberAllowListItem from "./GroupMemberAllowListItem";
 
-const GroupMemberAllowList = ({ users, memberApproval }) => {
+const GroupMemberAllowList = ({
+  users,
+  groupId,
+  callApprovalMember,
+  callRejectMember,
+}) => {
   return (
     <FlatList
-      data={users.content}
+      data={users}
       renderItem={({ item }) => (
-        <GroupMemberAllowListItem data={item} memberApproval={memberApproval} />
+        <GroupMemberAllowListItem
+          data={item}
+          groupId={groupId}
+          callApprovalMember={callApprovalMember}
+          callRejectMember={callRejectMember}
+        />
       )}
       keyExtractor={(item) => item.clubMemberId}
       contentContainerStyle={{ marginBottom: 48 }}

@@ -74,17 +74,6 @@ export const inviteGroupMember = async (groupId, memberId) => {
   }
 };
 
-export const exitGroup = async (groupId, memberId) => {
-  try {
-    const res = await axiosInstance(
-      deleteConfig(`/clubs/${groupId}/${memberId}`)
-    );
-    return res;
-  } catch (e) {
-    console.log("exitGroup", e);
-  }
-};
-
 export const deleteGroup = async (groupId) => {
   try {
     const res = await axiosInstance(deleteConfig(`/clubs/${groupId}`));
@@ -103,7 +92,7 @@ export const joinGroup = async (data) => {
   }
 };
 
-export const callGroupApplyList = async (data) => {
+export const groupApplyList = async (data) => {
   try {
     const res = await axiosInstance(getConfig(`/clubs/${data}/application`));
     return res;
@@ -112,11 +101,23 @@ export const callGroupApplyList = async (data) => {
   }
 };
 
-export const callMemberApproval = async (data) => {
+export const approvalMember = async (data) => {
   try {
     const res = await axiosInstance(patchConfig(`/clubs/${data}/approval`));
     return res;
   } catch (e) {
-    console.log("callMemberApproval", e);
+    console.log("approvalMember", e);
+  }
+};
+
+export const rejectAndExitMember = async (data) => {
+  try {
+    const res = await axiosInstance(
+      deleteConfig(`/clubs/${data?.clubId}/${data?.memberId}`)
+    );
+
+    return res;
+  } catch (e) {
+    console.log("callMemberReject", e);
   }
 };

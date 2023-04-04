@@ -1,7 +1,12 @@
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "./../../constants/color";
 
-const GroupMemberAllowListItem = ({ data, memberApproval }) => {
+const GroupMemberAllowListItem = ({
+  data,
+  groupId,
+  callApprovalMember,
+  callRejectMember,
+}) => {
   return (
     <View style={styles.userContainer}>
       <View style={styles.userInfo}>
@@ -12,12 +17,17 @@ const GroupMemberAllowListItem = ({ data, memberApproval }) => {
         <Pressable
           style={[styles.allow, styles.button]}
           onPress={() => {
-            memberApproval(data?.clubMemberId);
+            callApprovalMember(data?.clubMemberId);
           }}
         >
           <Text style={styles.buttonText}>승인</Text>
         </Pressable>
-        <Pressable style={[styles.refuse, styles.button]}>
+        <Pressable
+          style={[styles.refuse, styles.button]}
+          onPress={() => {
+            callRejectMember(groupId, data?.memberId);
+          }}
+        >
           <Text style={styles.buttonText}>거절</Text>
         </Pressable>
       </View>

@@ -81,6 +81,15 @@ export const deleteConfig = (url, data) => {
   };
 };
 
+export const deletePathConfig = (url, clubId, memberId) => {
+  return {
+    method: "DELETE",
+    url: API_END_POINT + url,
+    clubId: clubId,
+    memberId: memberId,
+  };
+};
+
 export const patchConfig = (url, data) => {
   return {
     method: "PATCH",
