@@ -2,42 +2,51 @@ import { useState, useEffect } from "react";
 import {
   View,
   Text,
-  TouchableOpacity,
   StyleSheet,
   TextInput,
+  TouchableOpacity,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
 
-const DATA = [
-  { id: 1, keyword: "불행" },
-  { id: 2, keyword: "나쁨" },
-  { id: 3, keyword: "평온" },
-  { id: 4, keyword: "기쁨" },
-  { id: 5, keyword: "행복" },
-];
-const AddHashtag = ({ onToggleCompleteButtonVisibility }) => {
-  useEffect(() => {
-    if (selectedTags.some((tag) => DATA.includes(tag))) {
-      onToggleCompleteButtonVisibility(true);
-    } else {
-      onToggleCompleteButtonVisibility(false);
-    }
-  }, [selectedTags, onToggleCompleteButtonVisibility]);
+const AddHashtag = ({ responseData, onToggleCompleteButtonVisibility }) => {
+  const initialData = [
+    { id: 1, keyword: "불행" },
+    { id: 2, keyword: "나쁨" },
+    { id: 3, keyword: "평온" },
+    { id: 4, keyword: "기쁨" },
+    { id: 5, keyword: "행복" },
+  ];
+  const [DATA, setDATA] = useState(initialData);
   const [selectedTags, setSelectedTags] = useState([]);
+  console.log(responseData);
+  useEffect(() => {
+    if (responseData) {
+      console.log("check", responseData);
+      const selectedEmotionTag = initialData.find(
+        (tag) => tag.id === responseData.emotion.emotionCode
+      );
+      if (selectedEmotionTag) {
+        setSelectedTags([selectedEmotionTag]);
+        onToggleCompleteButtonVisibility(true);
+      } else {
+        onToggleCompleteButtonVisibility(false);
+      }
+    }
+  }, [responseData, onToggleCompleteButtonVisibility]);
   const [inputText, setInputText] = useState("");
-  const [dataTags, setDataTags] = useState(0); // DATA에서 선택한 해시태그 개수를 저장하는 상태 변수 추가
+  const [dataTags, setDataTags] = useState(0);
   const maxDataTags = 1; // 최대 선택 가능한 DATA 해시태그 개수를 1개로 설정
   const handleTagSelection = (tag) => {
-    if (selectedTags.includes(tag)) {
+    if (selectedTags.some((selectedTag) => selectedTag.id === tag.id)) {
       setSelectedTags(
-        selectedTags.filter((selectedTag) => selectedTag !== tag)
+        selectedTags.filter((selectedTag) => selectedTag.id !== tag.id)
       );
-      setDataTags(dataTags - 1); // DATA에서 선택한 해시태그 개수를 줄입니다.
+      setDataTags(dataTags - 1);
       onToggleCompleteButtonVisibility(false);
     } else {
       if (dataTags < maxDataTags) {
         setSelectedTags([...selectedTags, tag]);
-        setDataTags(dataTags + 1); // DATA에서 선택한 해시태그 개수를 늘립니다.
+        setDataTags(dataTags + 1);
         onToggleCompleteButtonVisibility(true);
       }
     }
@@ -125,7 +134,9 @@ const AddHashtag = ({ onToggleCompleteButtonVisibility }) => {
             onPress={() => handleTagSelection(tag)}
             style={[
               styles.tagButton,
-              selectedTags.includes(tag) && styles.selectedTagButton,
+              selectedTags.some((selectedTag) => selectedTag.id === tag.id)
+                ? styles.selectedTagButton
+                : null,
             ]}
           >
             <Text style={styles.tagButtonText}>#{tag.keyword}</Text>

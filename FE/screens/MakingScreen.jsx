@@ -1,6 +1,5 @@
 import { View, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
-// import Timer from "../components/making/Timer";
 import AddFile from "../components/making/AddFile";
 import { useState, useEffect } from "react";
 import NextButton from "../components/making/NextButton";
