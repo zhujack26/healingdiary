@@ -16,4 +16,6 @@ public interface ClubMemberRepository extends JpaRepository<ClubMember, Long> {
     ClubMember findByClubAndMember(Club club, Member member);
 
     Slice<ClubMember> findByClubAndIsApproved(Club club, boolean isApproved, Pageable pageable);
+
+    Slice<ClubMember> findByClubAndIsApprovedNot(Club club, boolean isApproved, Pageable pageable);
 }

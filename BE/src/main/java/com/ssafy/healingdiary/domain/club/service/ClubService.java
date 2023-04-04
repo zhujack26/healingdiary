@@ -9,12 +9,12 @@ import com.ssafy.healingdiary.domain.club.dto.ClubApprovalResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubDetailResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubJoinResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubLeaveResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubListResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
-import com.ssafy.healingdiary.domain.club.dto.ClubUpdateRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubUpdateResponse;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterResponse;
@@ -23,6 +23,7 @@ import com.ssafy.healingdiary.domain.club.repository.ClubRepository;
 import com.ssafy.healingdiary.domain.club.repository.ClubTagRepository;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.domain.Notice;
+import com.ssafy.healingdiary.domain.member.domain.NoticeType;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.domain.member.repository.NoticeRepository;
 import com.ssafy.healingdiary.domain.tag.domain.Tag;
@@ -52,7 +53,6 @@ public class ClubService {
     private final NoticeRepository noticeRepository;
     private final TagRepository tagRepository;
     private final S3StorageClient s3Service;
-
     @Value("${default-image-s3}")
     private String DEFAULT_IMAGE_S3;
 
@@ -73,10 +73,8 @@ public class ClubService {
         return clubSimpleResponseList;
     }
 
-
-    public Slice<ClubInvitationResponse> getInvitationList(
-        String id, Long clubId, Pageable pageable) {
-        Long hostId = Long.parseLong(id); // 방장 ID
+    public Slice<ClubInvitationResponse> getInvitationList(Long clubId, Pageable pageable) {
+        Long hostId = clubRepository.findById(clubId).get().getHost().getId(); // 방장 ID
         Slice<ClubInvitationResponse> clubInvitationResponseList = clubMemberRepository.findDistinctByClubIdNot(
             clubId, hostId, pageable);
         return clubInvitationResponseList;
@@ -94,7 +92,7 @@ public class ClubService {
             .stream()
             .map((tagContent) -> {
                 Tag tag = tagRepository.findByContentLike(tagContent);
-                if(tag==null) {
+                if (tag == null) {
                     tag = Tag.builder()
                         .content(tagContent)
                         .build();
@@ -106,37 +104,42 @@ public class ClubService {
             .collect(Collectors.toList());
         club.setClubTag(tags);
         Club savedClub = clubRepository.save(club);
+        clubMemberRepository.save(ClubMember.toEntityWithHost(club, member));
         return ClubRegisterResponse.of(savedClub.getId());
     }
 
-    public ClubUpdateResponse updateClub(Long clubId, ClubUpdateRequest request, MultipartFile file)
+    public ClubUpdateResponse updateClub(Long clubId,
+        String name,
+        String description,
+        List<String> tagList, MultipartFile file)
         throws IOException {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
-        List<ClubTag> tags = request.getTags()
+        List<ClubTag> tags = tagList
             .stream()
-            .map((tagId) -> {
-                Tag tag = tagRepository.findById(tagId)
-                    .orElseThrow(() -> new CustomException(ErrorCode.ENTITY_NOT_FOUND));
-                ClubTag clubTag = ClubUpdateRequest.toEntity(club, tag);
+            .map((tagContent) -> {
+                Tag tag = tagRepository.findByContentLike(tagContent);
+                if (tag == null) {
+                    tag = Tag.builder()
+                        .content(tagContent)
+                        .build();
+                    tagRepository.save(tag);
+                }
+                ClubTag clubTag = ClubRegisterRequest.toEntity(club, tag);
                 return clubTag;
             })
             .collect(Collectors.toList());
-        String preImg = request.getImageUrl();
         String imageUrl = null;
-        if (file != null) {
+        if (!file.isEmpty()) {
+            String preImg = club.getClubImageUrl();
             if (preImg != null && !preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
                 s3Service.deleteFile(preImg);
             }
             imageUrl = s3Service.uploadFile(file);
-        } else if (request.getImageUrl() == null) {
-            if (preImg != null && !preImg.startsWith(this.DEFAULT_IMAGE_S3)) {
-                s3Service.deleteFile(preImg);
-            }
         } else {
-            imageUrl = request.getImageUrl();
+            imageUrl = club.getClubImageUrl();
         }
-        club.updateClub(tags, imageUrl);
+        club.updateClub(name, description, tags, imageUrl);
         Club savedClub = clubRepository.save(club);
         return ClubUpdateResponse.of(savedClub.getId());
     }
@@ -151,21 +154,21 @@ public class ClubService {
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         if (clubMember == null) {
             clubMemberRepository.save(InvitationRegisterRequest.toEntity(club, member));
-            noticeRepository.save(Notice.toEntity(member, club.getName() + " 소모임에 초대되었습니다.",
-                "/invitation/club/" + clubId));
+            noticeRepository.save(Notice.toEntity(member, clubId, NoticeType.CLUB_INVITATION));
         } else {
             return InvitationRegisterResponse.of("이미 초대된 사용자입니다.");
         }
         return InvitationRegisterResponse.of(clubId);
     }
 
-    public void leaveClub(Long clubId, Long memberId) {
+    public ClubLeaveResponse leaveClub(Long clubId, Long memberId) {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         Member member = memberRepository.findById(memberId)
             .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         clubMemberRepository.delete(clubMember);
+        return ClubLeaveResponse.of(memberId);
     }
 
     public ClubApprovalResponse approveClub(Long clubMemberId) {
@@ -176,7 +179,7 @@ public class ClubService {
 
         Long clubId = clubMember.getClub().getId();
 
-        return ClubApprovalResponse.of(clubId, clubMemberId);
+        return ClubApprovalResponse.of(clubId, clubMember.getMember().getId());
     }
 
     public ClubJoinResponse joinClub(String id, Long clubId) {
@@ -187,9 +190,8 @@ public class ClubService {
         ClubMember clubMember = clubMemberRepository.findByClubAndMember(club, member);
         if (clubMember == null) {
             clubMemberRepository.save(InvitationRegisterRequest.toEntity(club, member));
-            noticeRepository.save(Notice.toEntity(club.getHost(),
-                member.getNickname() + "님께서 " + club.getName() + " 소모임에 가입신청을 하였습니다.",
-                "/invitation/club/" + clubId));
+            noticeRepository.save(Notice.toEntity(club.getHost(), club.getHost().getId(),
+                NoticeType.CLUB_REGISTRATION));
         } else {
             return ClubJoinResponse.of("이미 신청한 소모임입니다.");
         }
@@ -220,7 +222,7 @@ public class ClubService {
         clubRepository.delete(club);
     }
 
-    public ClubDetailResponse getDetailClub(Long clubId) {
+    public ClubDetailResponse getDetailClub(String memberId, Long clubId) {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         List<String> tags = club.getClubTag().stream()
@@ -228,7 +230,8 @@ public class ClubService {
                 return clubTag.getTag().getContent();
             }))
             .collect(Collectors.toList());
-        ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, tags);
+        boolean isHost = club.getHost().getId() == Long.parseLong(memberId);
+        ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, isHost, tags);
         return clubDetailResponse;
     }
 
@@ -245,5 +248,18 @@ public class ClubService {
             response.setTags(tags);
         }));
         return list;
+    }
+
+    public Slice<ClubMemberResponse> applicationList(Long clubId, Pageable pageable) {
+        Club club = clubRepository.findById(clubId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
+        Slice<ClubMember> list = clubMemberRepository.findByClubAndIsApprovedNot(club, true,
+            pageable);
+        List<ClubMemberResponse> clubMemberResponses = list.stream()
+            .map((clubMember ->
+                ClubMemberResponse.of(clubMember.getId(), clubMember.getMember())
+            ))
+            .collect(Collectors.toList());
+        return new SliceImpl<>(clubMemberResponses, pageable, list.hasNext());
     }
 }

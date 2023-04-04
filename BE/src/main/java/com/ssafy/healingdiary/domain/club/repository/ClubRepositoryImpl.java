@@ -5,10 +5,12 @@ import static com.querydsl.core.group.GroupBy.list;
 import static com.ssafy.healingdiary.domain.club.domain.QClub.club;
 import static com.ssafy.healingdiary.domain.club.domain.QClubMember.clubMember;
 import static com.ssafy.healingdiary.domain.club.domain.QClubTag.clubTag;
+import static com.ssafy.healingdiary.domain.member.domain.QMember.member;
 import static com.ssafy.healingdiary.domain.tag.domain.QTag.tag;
 import static org.springframework.util.StringUtils.hasText;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.healingdiary.domain.club.dto.ClubListResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
@@ -70,8 +72,8 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
                 groupBy(club.id).list(
                     new QClubSimpleResponse(
                         club.id,
-                        club.name,
                         club.clubImageUrl,
+                        club.name,
                         list(tag.content)
                     )
                 )
@@ -91,6 +93,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
         Set<Long> idSet = queryFactory
             .select(clubMember.club.id)
             .from(clubMember)
+            .innerJoin(clubMember.member, member)
             .where(
                 diseaseOrRegion(memberInfo.getDisease(), memberInfo.getRegion())
             )
@@ -100,8 +103,6 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
 
         List<ClubListResponse> result = queryFactory
             .selectFrom(club)
-            .leftJoin(club.clubTag, clubTag)
-            .leftJoin(clubTag.tag, tag)
             .leftJoin(club.clubMember, clubMember)
             .where(
                 club.id.in(idSet),
@@ -118,12 +119,9 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
 
         List<ClubListResponse> result2 = queryFactory
             .selectFrom(club)
-            .leftJoin(club.clubTag, clubTag)
-            .leftJoin(clubTag.tag, tag)
             .leftJoin(club.clubMember, clubMember)
             .where(
-                club.id.notIn(idSet),
-                clubMember.member.id.ne(memberInfo.getId())
+                club.id.notIn(idSet)
             )
             .transform(
                 groupBy(club.id).list(
@@ -154,6 +152,6 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
     }
 
     private BooleanExpression diseaseOrRegion(String disease, String region) {
-        return clubMember.member.disease.eq(disease).or(clubMember.member.region.eq(region));
+        return member.disease.eq(disease).or(member.region.eq(region));
     }
 }

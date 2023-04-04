@@ -5,11 +5,11 @@ import com.ssafy.healingdiary.domain.club.dto.ClubApprovalResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubDetailResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubInvitationResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubJoinResponse;
+import com.ssafy.healingdiary.domain.club.dto.ClubLeaveResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubListResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubMemberResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubRegisterResponse;
 import com.ssafy.healingdiary.domain.club.dto.ClubSimpleResponse;
-import com.ssafy.healingdiary.domain.club.dto.ClubUpdateRequest;
 import com.ssafy.healingdiary.domain.club.dto.ClubUpdateResponse;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterRequest;
 import com.ssafy.healingdiary.domain.club.dto.InvitationRegisterResponse;
@@ -49,12 +49,15 @@ public class ClubController {
         Pageable pageable
     ) {
         UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return clubService.getClubListByTag(principal.getUsername(), all, keyword, tagContent, pageable);
+        return clubService.getClubListByTag(principal.getUsername(), all, keyword, tagContent,
+            pageable);
     }
 
     @GetMapping("/{clubId}")
-    public ClubDetailResponse getDetailClub(@PathVariable Long clubId) {
-        return clubService.getDetailClub(clubId);
+    public ClubDetailResponse getDetailClub(Authentication authentication,
+        @PathVariable Long clubId) {
+        UserDetails principal = (UserDetails) authentication.getPrincipal();
+        return clubService.getDetailClub(principal.getUsername(), clubId);
     }
 
     @GetMapping("/recommendation")
@@ -76,10 +79,9 @@ public class ClubController {
     }
 
     @GetMapping("/{clubId}/invitation")
-    public Slice<ClubInvitationResponse> getInvitationList(Authentication authentication, @PathVariable Long clubId,
+    public Slice<ClubInvitationResponse> getInvitationList(@PathVariable Long clubId,
         Pageable pageable) {
-        UserDetails principal = (UserDetails) authentication.getPrincipal();
-        return clubService.getInvitationList(principal.getUsername(), clubId, pageable);
+        return clubService.getInvitationList(clubId, pageable);
     }
 
     @PostMapping("/{clubId}/invitation")
@@ -102,9 +104,11 @@ public class ClubController {
     @PostMapping("/{clubId}")
     public ClubUpdateResponse updateClub(
         @PathVariable Long clubId,
-        @RequestPart(value = "ClubUpdateRequest") ClubUpdateRequest request,
+        @RequestParam("name") String name,
+        @RequestParam("description") String description,
+        @RequestParam("tags") List<String> tags,
         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
-        return clubService.updateClub(clubId, request, file);
+        return clubService.updateClub(clubId, name, description, tags, file);
     }
 
     @PostMapping("/{clubId}/join")
@@ -114,12 +118,18 @@ public class ClubController {
     }
 
     @DeleteMapping("/{clubId}/{clubMemberId}")
-    public void leaveClub(@PathVariable Long clubId, @PathVariable Long clubMemberId) {
-        clubService.leaveClub(clubId, clubMemberId);
+    public ClubLeaveResponse leaveClub(@PathVariable Long clubId, @PathVariable Long clubMemberId) {
+        return clubService.leaveClub(clubId, clubMemberId);
     }
 
     @PatchMapping("/{clubMemberId}/approval")
     public ClubApprovalResponse approveClub(@PathVariable Long clubMemberId) {
         return clubService.approveClub(clubMemberId);
+    }
+
+    @GetMapping("/{clubId}/application")
+    public Slice<ClubMemberResponse> applicationList(@PathVariable Long clubId,
+        Pageable pageable) {
+        return clubService.applicationList(clubId, pageable);
     }
 }

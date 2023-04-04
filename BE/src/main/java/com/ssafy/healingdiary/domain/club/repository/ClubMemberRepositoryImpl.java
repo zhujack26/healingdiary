@@ -29,17 +29,16 @@ public class ClubMemberRepositoryImpl implements ClubMemberRepositoryCustom {
             .select(new QClubInvitationResponse(member.id, member.nickname, member.memberImageUrl))
             .from(member)
             .where(
-                member.id.in(
+                member.id.notIn((
                     JPAExpressions
                         .select(clubMember.member.id)
                         .from(clubMember)
-                        .join(club).on(member.id.eq(clubMember.member.id))
+                        .join(member).on(member.id.eq(clubMember.member.id))
                         .where(
-                            clubMember.club.id.ne(clubId),
-                            member.id.ne(hostId)
+                            clubMember.club.id.eq(clubId).or(member.id.eq(hostId))
                         )
                 )
-            );
+            ));
 
         List<ClubInvitationResponse> result = query
             .limit(pageable.getPageSize() + 1)

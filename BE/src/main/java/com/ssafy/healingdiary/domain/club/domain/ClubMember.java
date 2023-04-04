@@ -42,4 +42,12 @@ public class ClubMember extends BaseEntity {
     public void approve() {
         this.isApproved = true;
     }
+
+    public static ClubMember toEntityWithHost(Club club, Member member) {
+        return ClubMember.builder()
+            .club(club)
+            .member(member)
+            .isApproved(true)
+            .build();
+    }
 }
