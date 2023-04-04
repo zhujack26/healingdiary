@@ -88,8 +88,7 @@ const GroupInfoUpdate = ({ isEdit }) => {
     formData.append("description", description);
     formData.append("tags", tags);
     const res = await createGroup(formData);
-    if (res.status === 200)
-      navigation.navigate("groupDetail", { groupId: res.data.clubId });
+    if (res.status === 200) navigation.navigate("diaryBottomTab");
     else console.log("생성 실패");
   };
 

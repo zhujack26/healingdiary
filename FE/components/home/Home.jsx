@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useState, useEffect } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { getRecommendDiary } from "../../api/diary";
 
 import RecommendDiary from "./RecommendDiary";
@@ -40,26 +40,44 @@ const DIARYIES = [
 ];
 const Home = () => {
   const navigation = useNavigation();
+  const initialDiaries = useRef([]);
+  const initialGroups = useRef([]);
+
   const [diaries, setDiaries] = useState([]);
   const [groups, setGroups] = useState([]);
+
   const navigateToScreen = (screen, id) => {
     navigation.navigate(screen, { id: id });
   };
 
-  const getRecoDiary = async () => {
-    const res = await getRecommendDiary();
-    setDiaries(res);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      const getRecoDiary = async () => {
+        const res = await getRecommendDiary();
+        if (JSON.stringify(res) !== JSON.stringify(initialDiaries.current)) {
+          setDiaries(res);
+        }
+      };
 
-  const getRecoGroup = async () => {
-    const res = await getRecommendGroup();
-    setGroups(res);
-  };
+      const getRecoGroup = async () => {
+        const res = await getRecommendGroup();
+        if (JSON.stringify(res) !== JSON.stringify(initialGroups.current)) {
+          setGroups(res);
+        }
+      };
+
+      getRecoDiary();
+      getRecoGroup();
+
+      return () => {};
+    }, [])
+  );
 
   useEffect(() => {
-    getRecoDiary();
-    getRecoGroup();
-  }, []);
+    console.log("a");
+    initialDiaries.current = diaries;
+    initialGroups.current = groups;
+  }, [diaries, groups]);
 
   return (
     <BottomTabContainer>
