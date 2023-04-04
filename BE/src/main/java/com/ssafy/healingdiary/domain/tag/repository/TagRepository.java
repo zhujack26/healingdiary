@@ -1,7 +1,6 @@
 package com.ssafy.healingdiary.domain.tag.repository;
 
 import com.ssafy.healingdiary.domain.tag.domain.Tag;
-import com.ssafy.healingdiary.domain.tag.dto.TagListResponse;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

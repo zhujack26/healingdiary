@@ -1,9 +1,6 @@
 package com.ssafy.healingdiary.domain.member.dto;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

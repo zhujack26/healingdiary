@@ -1,22 +1,16 @@
 package com.ssafy.healingdiary.global.jwt;
 
+import static com.ssafy.healingdiary.global.error.ErrorCode.BAD_REQUEST;
+
 import com.ssafy.healingdiary.domain.member.dto.LoginResponse;
+import com.ssafy.healingdiary.global.error.CustomException;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpCookie;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +24,9 @@ public class CookieUtil {
                 .sameSite("None") // SameSite 설정
                 .httpOnly(true) // JavaScript에서 쿠키에 접근하지 못하도록 설정
                 .build();
+
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
+        if(response==null) throw new CustomException(BAD_REQUEST);
         response.setHeader("Set-Cookie", cookie.toString());
 
         return ResponseEntity.ok(loginResponse);
@@ -46,6 +42,7 @@ public class CookieUtil {
                 .httpOnly(true) // JavaScript에서 쿠키에 접근하지 못하도록 설정
                 .build();
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
+        if(response==null) throw new CustomException(BAD_REQUEST);
         response.setHeader("Set-Cookie", cookie.toString());
 
         return ResponseEntity.ok(tokenRegenerateResponse);

@@ -2,9 +2,9 @@ package com.ssafy.healingdiary.domain.diary.controller;
 
 
 import com.ssafy.healingdiary.domain.diary.dto.CommentCreateRequest;
+import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import com.ssafy.healingdiary.domain.diary.dto.CommentUpdateRequest;
 import com.ssafy.healingdiary.domain.diary.service.CommentService;
-import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

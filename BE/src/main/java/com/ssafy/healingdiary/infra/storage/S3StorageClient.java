@@ -11,11 +11,13 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import java.io.IOException;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 @Component
+@Slf4j
 public class S3StorageClient implements StorageClient {
 
     private AmazonS3 s3Client;
@@ -65,7 +67,7 @@ public class S3StorageClient implements StorageClient {
             }
             s3Client.deleteObject(bucket, (key).substring(54));
         } catch (AmazonServiceException e) {
-            System.err.println(e.getErrorMessage());
+            log.error(e.getErrorMessage());
             System.exit(1);
         }
     }

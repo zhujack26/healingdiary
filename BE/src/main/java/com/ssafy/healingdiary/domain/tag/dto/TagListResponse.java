@@ -2,11 +2,8 @@ package com.ssafy.healingdiary.domain.tag.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import com.ssafy.healingdiary.domain.tag.domain.Tag;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Builder

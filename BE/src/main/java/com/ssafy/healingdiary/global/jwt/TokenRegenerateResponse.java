@@ -1,7 +1,5 @@
 package com.ssafy.healingdiary.global.jwt;
 
-import com.ssafy.healingdiary.domain.member.domain.Member;
-import com.ssafy.healingdiary.domain.member.dto.MemberUpdateResponse;
 import lombok.Builder;
 import lombok.Getter;
 

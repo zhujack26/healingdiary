@@ -32,9 +32,11 @@ public class Tag extends BaseEntity {
     @NotNull
     private String content;
 
+    @Builder.Default
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<DiaryTag> diaryTag = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<ClubTag> clubTag = new ArrayList<>();
 }

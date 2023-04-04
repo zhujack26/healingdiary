@@ -1,7 +1,6 @@
 package com.ssafy.healingdiary.domain.diary.domain;
 
 import com.ssafy.healingdiary.domain.club.domain.Club;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
@@ -21,7 +20,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
 
 @Entity
 @Table(name="diary")
@@ -42,6 +40,7 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @Builder.Default
     @OneToMany(mappedBy = "diary",cascade = CascadeType.ALL)
     private List<DiaryTag> diaryTag = new ArrayList<>();
 
@@ -59,6 +58,7 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "emotion")
     private Emotion emotion;
 
+    @Builder.Default
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 

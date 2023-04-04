@@ -21,9 +21,9 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ClovaClient {
 
-    private static String CLIENT_ID;
-    private static String SECRET;
-    private static Header[] HEADERS = new Header[] {
+    private String CLIENT_ID;
+    private String SECRET;
+    private final Header[] HEADERS = new Header[] {
         new BasicHeader("Content-Type", "application/json"),
         new BasicHeader("X-NCP-APIGW-API-KEY-ID", null),
         new BasicHeader("X-NCP-APIGW-API-KEY", null),

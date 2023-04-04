@@ -3,9 +3,9 @@ package com.ssafy.healingdiary.domain.member.domain;
 import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.member.dto.MemberUpdateRequest;
+import com.ssafy.healingdiary.domain.member.dto.SignupReqDto;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.GoogleOauthTokenResponse;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.KakaoOauthTokenResDto;
-import com.ssafy.healingdiary.domain.member.dto.SignupReqDto;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
 import java.util.ArrayList;
@@ -17,8 +17,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter

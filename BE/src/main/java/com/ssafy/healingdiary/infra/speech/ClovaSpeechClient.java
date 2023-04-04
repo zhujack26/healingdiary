@@ -25,9 +25,9 @@ import org.springframework.stereotype.Component;
 public class ClovaSpeechClient {
 
     // Clova Speech secret key
-    private static String SECRET;
+    private String SECRET;
     // Clova Speech invoke URL
-    private static String INVOKE_URL;
+    private String INVOKE_URL;
 
     @Value("${clova.speech.secret-key}")
     private void setSECRET(String secret){
@@ -47,7 +47,7 @@ public class ClovaSpeechClient {
     private final CloseableHttpClient httpClient;
     private final Gson gson;
 
-    private static Header[] HEADERS;
+    private Header[] HEADERS;
 
     public static class Boosting {
         private String words;
@@ -237,14 +237,4 @@ public class ClovaSpeechClient {
             throw new RuntimeException(e);
         }
     }
-
-//    public static void main(String[] args) {
-//        final ClovaSpeechClient clovaSpeechClient = new ClovaSpeechClient();
-//        NestRequestEntity requestEntity = new NestRequestEntity();
-//        final String result =
-//            clovaSpeechClient.upload(new File("/data/sample.mp4"), requestEntity);
-//        //final String result = clovaSpeechClient.url("file URL", requestEntity);
-//        //final String result = clovaSpeechClient.objectStorage("Object Storage key", requestEntity);
-//        System.out.println(result);
-//    }
 }
