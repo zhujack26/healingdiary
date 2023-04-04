@@ -1,7 +1,13 @@
 import { View, StyleSheet } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GlobalColors } from "../../constants/color";
-import { exitGroup, deleteGroup, getGroupDetail } from "../../api/group";
+import {
+  exitGroup,
+  deleteGroup,
+  getGroupDetail,
+  joinGroup,
+  callGroupApplyList,
+} from "../../api/group";
 import { useNavigation } from "@react-navigation/native";
 import { getGroupDiary } from "../../api/diary";
 
@@ -51,6 +57,11 @@ const GroupDetail = ({ groupId }) => {
     return res;
   };
 
+  const signupGroup = async () => {
+    const res = await joinGroup(groupId);
+    return res;
+  };
+
   const handleDeleteGroup = async () => {
     const res = await deleteGroup(groupId);
     if (res.status === 200) navigation.navigate("Home");
@@ -85,6 +96,7 @@ const GroupDetail = ({ groupId }) => {
         memberId={memberId}
         leaveGroup={leaveGroup}
         handleDeleteGroup={handleDeleteGroup}
+        signupGroup={signupGroup}
       />
       <BottomModal
         bottomSheetModalRef={bottomSheetModalRef}

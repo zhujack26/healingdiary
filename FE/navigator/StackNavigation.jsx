@@ -23,6 +23,7 @@ import MakingInput from "../components/diaryDetail/MakingInput";
 import { BottomTabContextProvider } from "../context/BottomTabContext";
 import SearchScreen from "./../screens/SearchScreen";
 import CompleteButton from "../components/making/CompleteButton";
+import GroupMemberAllowScreen from "../screens/GroupMemberAllowScreen";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -152,7 +153,7 @@ const StackNavigation = () => {
 
           <Stack.Screen
             name="groupMemberAllow"
-            component={GroupMemberAllow}
+            component={GroupMemberAllowScreen}
             options={{
               title: "",
               headerTitle: () => <Date />,

@@ -92,3 +92,22 @@ export const deleteGroup = async (groupId) => {
     console.log("exitGroup", e);
   }
 };
+
+export const joinGroup = async (data) => {
+  try {
+    const res = await axiosInstance(postConfig(`/clubs/${data}/join`));
+    return res;
+  } catch (e) {
+    console.log("joinGroup", e);
+  }
+};
+
+export const callGroupApplyList = async (data) => {
+  try {
+    const res = await axiosInstance(getConfig(`/clubs/${data}/application`));
+    console.log(res);
+    return res;
+  } catch (e) {
+    console.log("getGroupApplyList", e);
+  }
+};

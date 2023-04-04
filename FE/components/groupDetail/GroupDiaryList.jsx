@@ -14,6 +14,7 @@ const GroupDiaryList = ({
   memberId,
   diaries,
   leaveGroup,
+  signupGroup,
   handleDeleteGroup,
 }) => {
   const navigation = useNavigation();
@@ -37,6 +38,7 @@ const GroupDiaryList = ({
           navigation={navigation}
           groupData={groupData}
           groupId={groupId}
+          signupGroup={signupGroup}
         />
       }
       ListFooterComponent={

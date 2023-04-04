@@ -49,7 +49,9 @@ const GroupSetting = ({
       {host && (
         <Pressable
           style={styles.settingList}
-          onPress={() => navigateAndCloseModal("groupMemberAllow")}
+          onPress={() =>
+            navigateAndCloseModal("groupMemberAllow", { groupId: groupId })
+          }
         >
           <Text style={styles.settingListText}>멤버 승인</Text>
           <Ionicons

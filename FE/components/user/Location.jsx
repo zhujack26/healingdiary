@@ -8,7 +8,7 @@ const items = [
   { id: 3, label: "대구", value: "대구" },
   { id: 4, label: "대전", value: "대전" },
   { id: 5, label: "광주", value: "광주" },
-  { id: 6, label: "울신", value: "울산" },
+  { id: 6, label: "울산", value: "울산" },
   { id: 7, label: "경기도", value: "경기도" },
   { id: 8, label: "강원도", value: "강원도" },
   { id: 9, label: "충청도", value: "충청도" },

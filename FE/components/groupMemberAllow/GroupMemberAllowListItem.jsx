@@ -2,12 +2,11 @@ import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "./../../constants/color";
 
 const GroupMemberAllowListItem = ({ data }) => {
-  const { uri, nickname } = data;
   return (
     <View style={styles.userContainer}>
       <View style={styles.userInfo}>
-        <Image source={{ uri: uri }} style={styles.image} />
-        <Text style={styles.userNickname}>{nickname}</Text>
+        <Image source={{ uri: data?.memberImageUrl }} style={styles.image} />
+        <Text style={styles.userNickname}>{data?.nickname}</Text>
       </View>
       <View style={styles.buttonContainer}>
         <Pressable style={[styles.allow, styles.button]}>
