@@ -16,6 +16,7 @@ const GroupDiaryList = ({
   callExitMember,
   signupGroup,
   callDeleteGroup,
+  isMember,
 }) => {
   const navigation = useNavigation();
   const NotDiary = () => {
@@ -39,6 +40,7 @@ const GroupDiaryList = ({
           groupData={groupData}
           groupId={groupId}
           signupGroup={signupGroup}
+          isMember={isMember}
         />
       }
       ListFooterComponent={

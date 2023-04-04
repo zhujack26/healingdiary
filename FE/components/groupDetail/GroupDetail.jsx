@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ActivityIndicator } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GlobalColors } from "../../constants/color";
 import {
@@ -6,6 +6,7 @@ import {
   deleteGroup,
   getGroupDetail,
   joinGroup,
+  getGroupMemebrList,
 } from "../../api/group";
 import { useNavigation } from "@react-navigation/native";
 import { getGroupDiary } from "../../api/diary";
@@ -18,11 +19,48 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const GroupDetail = ({ groupId }) => {
   const navigation = useNavigation();
   const [groupData, setGroupData] = useState({});
+  const [groupMember, setGroupMember] = useState([]);
   const [diaries, setDiaries] = useState([]);
   const [exitModalVisible, setExitModalVisible] = useState(false);
   const [memberId, setMemberId] = useState("");
-
+  const [isMember, setIsMember] = useState(false);
   const bottomSheetModalRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const callGetGroupMember = useCallback(async () => {
+    const res = await getGroupMemebrList(groupId);
+    setGroupMember(res.content);
+  });
+
+  const getGroupDetails = useCallback(async () => {
+    const res = await getGroupDetail(groupId);
+    setGroupData(res);
+  }, [groupId]);
+
+  const getGroupDiaries = useCallback(async () => {
+    const res = await getGroupDiary(groupId);
+    setDiaries(res);
+  }, [groupId]);
+
+  const getMemberId = useCallback(async () => {
+    const id = await AsyncStorage.getItem("id");
+    setMemberId(id);
+  }, []);
+
+  const callExitMember = useCallback(async (clubId, memberId) => {
+    const res = await rejectAndExitMember({ clubId, memberId });
+    return res;
+  }, []);
+
+  const signupGroup = useCallback(async () => {
+    const res = await joinGroup(groupId);
+    return res;
+  }, [groupId]);
+
+  const callDeleteGroup = useCallback(async () => {
+    const res = await deleteGroup(groupId);
+    if (res.status === 200) navigation.navigate("Home");
+  }, [groupId, navigation]);
 
   const handleCloseModalPress = useCallback(() => {
     bottomSheetModalRef.current?.close();
@@ -32,54 +70,44 @@ const GroupDetail = ({ groupId }) => {
     bottomSheetModalRef.current?.present();
   }, []);
 
-  const exitCloseModalPress = () => {
+  const exitCloseModalPress = useCallback(() => {
     setExitModalVisible(false);
-  };
+  }, []);
 
-  const openExitModalAndCloseModal = () => {
+  const openExitModalAndCloseModal = useCallback(() => {
     setExitModalVisible(true);
     handleCloseModalPress();
-  };
-
-  const getGroupDetails = async () => {
-    const res = await getGroupDetail(groupId);
-    setGroupData(res);
-  };
-
-  const getGroupDiaries = async () => {
-    const res = await getGroupDiary(groupId);
-    setDiaries(res);
-  };
-
-  const callExitMember = async (clubId, memberId) => {
-    const res = await rejectAndExitMember({ clubId, memberId });
-    return res;
-  };
-
-  const signupGroup = async () => {
-    const res = await joinGroup(groupId);
-    return res;
-  };
-
-  const callDeleteGroup = async (groupId) => {
-    const res = await deleteGroup(groupId);
-    if (res.status === 200) navigation.navigate("Home");
-  };
-
-  const getMemberId = async () => {
-    const id = await AsyncStorage.getItem("id");
-    setMemberId(id);
-  };
+  }, [handleCloseModalPress]);
 
   useEffect(() => {
-    getGroupDetails();
-    getGroupDiaries();
+    async function fetchData() {
+      await Promise.all([
+        getGroupDetails(),
+        getGroupDiaries(),
+        callGetGroupMember(),
+      ]);
+      getMemberId();
+    }
+    fetchData();
   }, [groupId]);
 
   useEffect(() => {
-    getMemberId();
-  }, []);
+    setIsMember(
+      groupMember.some((member) => member.memberId?.toString() === memberId)
+    );
+    setIsLoading(false);
+  }, [groupMember, memberId]);
 
+  if (isLoading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator
+          size="large"
+          color={GlobalColors.colors.primary400}
+        />
+      </View>
+    );
+  }
   return (
     <View style={[exitModalVisible && styles.blur, styles.container]}>
       <GroupDetailHeader
@@ -96,6 +124,7 @@ const GroupDetail = ({ groupId }) => {
         callExitMember={callExitMember}
         callDeleteGroup={callDeleteGroup}
         signupGroup={signupGroup}
+        isMember={isMember}
       />
       <BottomModal
         bottomSheetModalRef={bottomSheetModalRef}
@@ -119,5 +148,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: GlobalColors.colors.gray500,
     opacity: 0.6,
+  },
+
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
