@@ -4,7 +4,10 @@ import { GlobalColors } from "../constants/color";
 import CompleteButton from "../components/making/CompleteButton";
 import { useState, useEffect } from "react";
 
-const MakingDetailScreen = ({ navigation }) => {
+const MakingDetailScreen = ({ navigation, route }) => {
+  const { response } = route.params;
+  const [emotionResponse, setEmotionResponse] = useState(response);
+  console.log("check1", emotionResponse);
   const [completeButtonVisible, setCompleteButtonVisible] = useState(false);
   const toggleCompleteButtonVisibility = (visible = true) => {
     setCompleteButtonVisible(visible);
@@ -27,6 +30,7 @@ const MakingDetailScreen = ({ navigation }) => {
       <View style={styles.inform}>
         <AddHashtag
           onToggleCompleteButtonVisibility={toggleCompleteButtonVisibility}
+          emotionResponse={emotionResponse}
         />
       </View>
     </View>

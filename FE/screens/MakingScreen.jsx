@@ -6,12 +6,12 @@ import NextButton from "../components/making/NextButton";
 import TimerRecord from "../components/making/TimerRecord";
 
 const MakingScreen = ({ navigation }) => {
+  const [response, setResponse] = useState(null);
+  console.log("check MakingScren", response);
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
-
   const toggleNextButtonVisibility = (visible = true) => {
     setNextButtonVisible(visible);
   };
-
   useEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
@@ -19,10 +19,11 @@ const MakingScreen = ({ navigation }) => {
           {...props}
           visible={nextButtonVisible}
           navigation={navigation}
+          response={response}
         />
       ),
     });
-  }, [navigation, nextButtonVisible]);
+  }, [navigation, nextButtonVisible, response]);
 
   return (
     <View style={styles.container}>
@@ -30,6 +31,7 @@ const MakingScreen = ({ navigation }) => {
         <AddFile />
         <TimerRecord
           onToggleNextButtonVisibility={toggleNextButtonVisibility}
+          onResponse={setResponse}
         />
       </View>
     </View>
