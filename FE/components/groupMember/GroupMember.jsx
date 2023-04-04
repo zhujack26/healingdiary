@@ -1,22 +1,41 @@
 import { View, StyleSheet } from "react-native";
-import { getGroupMemebrList } from "../../api/group";
+import { rejectAndExitMember, getGroupMemebrList } from "../../api/group";
 import { useEffect, useState } from "react";
 import GroupMemberList from "./GroupMemberList";
 
 const GroupMember = ({ groupId }) => {
   const [groupMember, setGroupMember] = useState([]);
-  const getGroupMember = async () => {
+
+  const refreshUser = (memberId) => {
+    setGroupMember((groupMembers) =>
+      groupMembers.filter((groupMember) => groupMember.memberId !== memberId)
+    );
+  };
+
+  const callGroupMemberList = async () => {
     const res = await getGroupMemebrList(groupId);
-    setGroupMember(res);
+    setGroupMember(res.content);
+  };
+
+  const callRejectMember = async (clubId, memberId) => {
+    const res = await rejectAndExitMember({ clubId, memberId });
+    if (res.status === 200) {
+      refreshUser(res.data.memberId);
+    }
+    return res;
   };
 
   useEffect(() => {
-    getGroupMember();
+    callGroupMemberList();
   }, [groupId]);
 
   return (
     <View style={styles.container}>
-      <GroupMemberList groupMember={groupMember.content} />
+      <GroupMemberList
+        groupMember={groupMember}
+        groupId={groupId}
+        callRejectMember={callRejectMember}
+      />
     </View>
   );
 };
