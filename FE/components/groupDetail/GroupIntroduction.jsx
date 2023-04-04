@@ -10,20 +10,21 @@ const GroupIntroduction = ({ navigation, groupData, groupId }) => {
         <View>
           <Text style={styles.groupName}>{groupData.name}</Text>
           <View style={styles.groupInviteContainer}>
-            <Text style={styles.groupMemberCount}>멤버 12</Text>
-            <Pressable
-              style={styles.circle}
-              onPress={() =>
-                navigation.navigate("Invite", { groupId: groupId })
-              }
-            >
-              <Ionicons
-                name="add"
-                color={GlobalColors.colors.white500}
-                size={16}
-              />
-            </Pressable>
-            <Text style={styles.inviteText}>초대</Text>
+            {groupData.host && (
+              <Pressable
+                style={styles.circle}
+                onPress={() =>
+                  navigation.navigate("Invite", { groupId: groupId })
+                }
+              >
+                <Ionicons
+                  name="add"
+                  color={GlobalColors.colors.white500}
+                  size={16}
+                />
+              </Pressable>
+            )}
+            {groupData.host && <Text style={styles.inviteText}>초대</Text>}
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -78,6 +79,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: GlobalColors.colors.primary500,
     marginRight: 5,
+    flexDirection: "row",
   },
 
   inviteText: {

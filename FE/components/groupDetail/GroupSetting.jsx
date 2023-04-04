@@ -8,6 +8,7 @@ const GroupSetting = ({
   openExitModalAndCloseModal,
   navigateAndCloseModal,
   groupId,
+  host,
 }) => {
   return (
     <View style={styles.container}>
@@ -19,17 +20,19 @@ const GroupSetting = ({
         onPress={handleCloseModalPress}
         style={styles.closeIcon}
       />
-      <Pressable
-        style={[styles.settingList, styles.settingListFirst]}
-        onPress={() => navigateAndCloseModal("groupInfoUpdate", true)}
-      >
-        <Text style={styles.settingListText}>소모임 정보수정</Text>
-        <Ionicons
-          name="chevron-forward-outline"
-          size={24}
-          color={GlobalColors.colors.gray600}
-        />
-      </Pressable>
+      {host && (
+        <Pressable
+          style={[styles.settingList, styles.settingListFirst]}
+          onPress={() => navigateAndCloseModal("groupInfoUpdate", true)}
+        >
+          <Text style={styles.settingListText}>소모임 정보수정</Text>
+          <Ionicons
+            name="chevron-forward-outline"
+            size={24}
+            color={GlobalColors.colors.gray600}
+          />
+        </Pressable>
+      )}
       <Pressable
         style={styles.settingList}
         onPress={() =>
@@ -43,17 +46,19 @@ const GroupSetting = ({
           color={GlobalColors.colors.gray600}
         />
       </Pressable>
-      <Pressable
-        style={styles.settingList}
-        onPress={() => navigateAndCloseModal("groupMemberAllow")}
-      >
-        <Text style={styles.settingListText}>멤버 승인</Text>
-        <Ionicons
-          name="chevron-forward-outline"
-          size={24}
-          color={GlobalColors.colors.gray600}
-        />
-      </Pressable>
+      {host && (
+        <Pressable
+          style={styles.settingList}
+          onPress={() => navigateAndCloseModal("groupMemberAllow")}
+        >
+          <Text style={styles.settingListText}>멤버 승인</Text>
+          <Ionicons
+            name="chevron-forward-outline"
+            size={24}
+            color={GlobalColors.colors.gray600}
+          />
+        </Pressable>
+      )}
       <Pressable
         style={styles.settingList}
         onPress={openExitModalAndCloseModal}

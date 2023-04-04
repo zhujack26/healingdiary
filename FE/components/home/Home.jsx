@@ -1,6 +1,6 @@
 import { ScrollView, StyleSheet, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useState, useEffect } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { getRecommendDiary } from "../../api/diary";
 
 import RecommendDiary from "./RecommendDiary";
@@ -10,30 +10,6 @@ import BottomTabContainer from "../BottomTabContainer/BottomTabContainer";
 import { getRecommendGroup } from "../../api/group";
 
 const { width, height } = Dimensions.get("window");
-
-const GROUP = [
-  {
-    id: 0,
-    name: "소모임 제목",
-    hashtags: ["해시태그", "해해태그"],
-    image: require("../../assets/images/SAMPLE6.png"),
-    description: "소모임 설명 설명 설명",
-  },
-  {
-    id: 1,
-    name: "소모임 제목2",
-    hashtags: ["해시그", "해태그"],
-    image: require("../../assets/images/SAMPLE5.png"),
-    description: "소모임 명명설설",
-  },
-  {
-    id: 2,
-    name: "소모임 제목2",
-    hashtags: ["해시그", "해태그"],
-    image: require("../../assets/images/SAMPLE4.png"),
-    description: "소모임 명명설설",
-  },
-];
 
 const DIARYIES = [
   {
@@ -64,25 +40,43 @@ const DIARYIES = [
 ];
 const Home = () => {
   const navigation = useNavigation();
+  const initialDiaries = useRef([]);
+  const initialGroups = useRef([]);
+
   const [diaries, setDiaries] = useState([]);
   const [groups, setGroups] = useState([]);
+
   const navigateToScreen = (screen, id) => {
     navigation.navigate(screen, { id: id });
   };
 
-  const getRecoDiary = async () => {
-    const res = await getRecommendDiary();
-    setDiaries(res);
-  };
+  useFocusEffect(
+    useCallback(() => {
+      const getRecoDiary = async () => {
+        const res = await getRecommendDiary();
+        if (JSON.stringify(res) !== JSON.stringify(initialDiaries.current)) {
+          setDiaries(res);
+        }
+      };
 
-  const getRecoGroup = async () => {
-    const res = await getRecommendGroup();
-    setGroups(res);
-  };
+      const getRecoGroup = async () => {
+        const res = await getRecommendGroup();
+        if (JSON.stringify(res) !== JSON.stringify(initialGroups.current)) {
+          setGroups(res);
+        }
+      };
+
+      getRecoDiary();
+      getRecoGroup();
+
+      return () => {};
+    }, [])
+  );
+
   useEffect(() => {
-    getRecoDiary();
-    getRecoGroup();
-  }, []);
+    initialDiaries.current = diaries;
+    initialGroups.current = groups;
+  }, [diaries, groups]);
 
   return (
     <BottomTabContainer>

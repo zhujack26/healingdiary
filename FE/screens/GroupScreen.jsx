@@ -68,7 +68,6 @@ const GroupScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     width: width,
-    height: height,
     flex: 1,
     padding: 24,
     marginBottom: 16,
