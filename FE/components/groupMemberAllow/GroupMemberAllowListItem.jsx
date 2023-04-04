@@ -1,7 +1,7 @@
 import { View, Text, Image, Pressable, StyleSheet } from "react-native";
 import { GlobalColors } from "./../../constants/color";
 
-const GroupMemberAllowListItem = ({ data }) => {
+const GroupMemberAllowListItem = ({ data, memberApproval }) => {
   return (
     <View style={styles.userContainer}>
       <View style={styles.userInfo}>
@@ -9,7 +9,12 @@ const GroupMemberAllowListItem = ({ data }) => {
         <Text style={styles.userNickname}>{data?.nickname}</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <Pressable style={[styles.allow, styles.button]}>
+        <Pressable
+          style={[styles.allow, styles.button]}
+          onPress={() => {
+            memberApproval(data?.clubMemberId);
+          }}
+        >
           <Text style={styles.buttonText}>승인</Text>
         </Pressable>
         <Pressable style={[styles.refuse, styles.button]}>

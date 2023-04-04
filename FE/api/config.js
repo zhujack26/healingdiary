@@ -73,10 +73,18 @@ export const kakaoPostConfig = (url, token, data) => {
   };
 };
 
-export const deleteConfig = (url,data) => {
+export const deleteConfig = (url, data) => {
   return {
-    method:"DELETE",
-    url:API_END_POINT + url,
-    data:data,
-  }
-}
+    method: "DELETE",
+    url: API_END_POINT + url,
+    data: data,
+  };
+};
+
+export const patchConfig = (url, data) => {
+  return {
+    method: "PATCH",
+    url: API_END_POINT + url,
+    data: data,
+  };
+};

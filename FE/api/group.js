@@ -2,6 +2,7 @@ import {
   deleteConfig,
   getConfig,
   getDataConfig,
+  patchConfig,
   postConfig,
   postFormConfig,
 } from "./config";
@@ -105,9 +106,17 @@ export const joinGroup = async (data) => {
 export const callGroupApplyList = async (data) => {
   try {
     const res = await axiosInstance(getConfig(`/clubs/${data}/application`));
-    console.log(res);
     return res;
   } catch (e) {
     console.log("getGroupApplyList", e);
+  }
+};
+
+export const callMemberApproval = async (data) => {
+  try {
+    const res = await axiosInstance(patchConfig(`/clubs/${data}/approval`));
+    return res;
+  } catch (e) {
+    console.log("callMemberApproval", e);
   }
 };

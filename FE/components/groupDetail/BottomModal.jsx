@@ -11,7 +11,6 @@ const BottomModal = ({
   bottomSheetModalRef,
   handleCloseModalPress,
   openExitModalAndCloseModal,
-  getGroupApplyLists,
   groupId,
   host,
 }) => {
