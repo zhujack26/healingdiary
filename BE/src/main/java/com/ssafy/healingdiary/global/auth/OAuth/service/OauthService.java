@@ -6,7 +6,8 @@ import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.dto.LoginResponse;
 import com.ssafy.healingdiary.domain.member.dto.SignupReqDto;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
-import com.ssafy.healingdiary.global.auth.OAuth.dto.*;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.GoogleOauthTokenResponse;
+import com.ssafy.healingdiary.global.auth.OAuth.dto.KakaoOauthTokenResDto;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
 import com.ssafy.healingdiary.global.jwt.CookieUtil;
@@ -35,7 +36,6 @@ public class OauthService {
 
     public ResponseEntity<LoginResponse> googleOauthLogin(String accesstoken) throws JsonProcessingException {
         GoogleOauthTokenResponse googleOAuthResponse = this.googleOauthCheckToken(accesstoken);
-        System.out.println("GoogleOAuthResponse: " + googleOAuthResponse);
         String memberEmail = "GOOGLE_" + googleOAuthResponse.getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
@@ -53,7 +53,6 @@ public class OauthService {
     }
     public ResponseEntity<LoginResponse> kakaoOauthLogin(String accesstoken) throws JsonProcessingException {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
-        System.out.println("KakaoOauthtoken: " + kakaoOauthTokenResDto);
         String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResponse().getEmail();
         Member foundMember = memberRepository.findMemberByProviderEmail(memberEmail);
         if (foundMember == null) {
@@ -134,7 +133,7 @@ public class OauthService {
         String GOOGLE_USERINFO_REQUEST_URL = "https://www.googleapis.com/userinfo/v2/me";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", accesstoken);
-        HttpEntity request = new HttpEntity(headers);
+        HttpEntity<GoogleOauthTokenResponse> request = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
                 GOOGLE_USERINFO_REQUEST_URL,
                 HttpMethod.GET,
@@ -149,7 +148,7 @@ public class OauthService {
         String KAKAO_USERINFO_REQUEST_URL = "https://kapi.kakao.com/v2/user/me";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", accessToken);
-        HttpEntity request = new HttpEntity(headers);
+        HttpEntity<GoogleOauthTokenResponse> request = new HttpEntity<>(headers);
         ResponseEntity<String> response = restTemplate.exchange(
                 KAKAO_USERINFO_REQUEST_URL,
                 HttpMethod.GET,

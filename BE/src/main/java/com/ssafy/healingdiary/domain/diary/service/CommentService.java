@@ -9,7 +9,6 @@ import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import com.ssafy.healingdiary.domain.diary.dto.CommentUpdateRequest;
 import com.ssafy.healingdiary.domain.diary.repository.CommentRepository;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
-import com.ssafy.healingdiary.domain.diary.repository.DiaryRepositoryCustom;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
 import com.ssafy.healingdiary.global.error.CustomException;
 import com.ssafy.healingdiary.global.error.ErrorCode;
@@ -17,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -68,28 +68,32 @@ public class CommentService {
     }
 
     public Map<String, Object> createComment(Long memberId, CommentCreateRequest request) {
-        Diary diary = diaryRepository.getReferenceById(request.getDiaryId());
-        if(diary==null) throw new CustomException(DIARY_NOT_FOUND);
+        try {
+            Diary diary = diaryRepository.getReferenceById(request.getDiaryId());
 
-        Comment comment = Comment.builder()
-            .diary(diary)
-            .member(memberRepository.getReferenceById(memberId))
-            .parent(request.getParentId() != null ? commentRepository.getReferenceById(request.getParentId()) : null)
-            .content(request.getContent())
-            .build();
+            Comment comment = Comment.builder()
+                .diary(diary)
+                .member(memberRepository.getReferenceById(memberId))
+                .parent(request.getParentId() != null ? commentRepository.getReferenceById(request.getParentId()) : null)
+                .content(request.getContent())
+                .build();
 
-        Long savedCommentId = commentRepository.save(comment).getId();
+            Long savedCommentId = commentRepository.save(comment).getId();
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("commentId", savedCommentId);
-        return map;
+            Map<String, Object> map = new HashMap<>();
+            map.put("commentId", savedCommentId);
+            return map;
+        }
+        catch (EntityNotFoundException e) {
+            throw new CustomException(DIARY_NOT_FOUND);
+        }
     }
 
     public Map<String, Object> updateComment(Long memberId, CommentUpdateRequest request) {
         Comment comment = commentRepository.findById(request.getCommentId())
             .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
-        if(memberId != comment.getMember().getId()){
+        if(!memberId.equals(comment.getMember().getId())){
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
 
@@ -105,7 +109,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
-        if(memberId != comment.getMember().getId()){
+        if(!memberId.equals(comment.getMember().getId())){
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
 

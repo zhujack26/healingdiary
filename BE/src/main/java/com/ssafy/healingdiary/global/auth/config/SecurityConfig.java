@@ -2,14 +2,9 @@ package com.ssafy.healingdiary.global.auth.config;
 
 
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
-import com.ssafy.healingdiary.global.jwt.CookieUtil;
 import com.ssafy.healingdiary.global.jwt.JwtAuthenticationFilter;
 import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
-import com.ssafy.healingdiary.global.redis.RedisUtil;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

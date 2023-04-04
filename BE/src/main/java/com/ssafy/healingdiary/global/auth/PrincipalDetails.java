@@ -1,16 +1,11 @@
 package com.ssafy.healingdiary.global.auth;
 
 import com.ssafy.healingdiary.domain.member.domain.Member;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
+import java.util.Collection;
+import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
-
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class PrincipalDetails implements UserDetails {
 

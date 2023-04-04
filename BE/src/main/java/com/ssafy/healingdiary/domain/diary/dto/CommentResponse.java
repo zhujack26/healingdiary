@@ -1,12 +1,8 @@
 package com.ssafy.healingdiary.domain.diary.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.querydsl.core.annotations.QueryProjection;
-import com.ssafy.healingdiary.domain.diary.domain.Comment;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
