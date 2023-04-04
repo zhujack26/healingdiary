@@ -217,7 +217,7 @@ public class ClubService {
         clubRepository.delete(club);
     }
 
-    public ClubDetailResponse getDetailClub(Long clubId) {
+    public ClubDetailResponse getDetailClub(String memberId, Long clubId) {
         Club club = clubRepository.findById(clubId)
             .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
         List<String> tags = club.getClubTag().stream()
@@ -225,7 +225,8 @@ public class ClubService {
                 return clubTag.getTag().getContent();
             }))
             .collect(Collectors.toList());
-        ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, tags);
+        boolean isHost = club.getHost().getId() == Long.parseLong(memberId);
+        ClubDetailResponse clubDetailResponse = ClubDetailResponse.of(club, isHost, tags);
         return clubDetailResponse;
     }
 
