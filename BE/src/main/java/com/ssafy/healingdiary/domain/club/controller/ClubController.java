@@ -125,4 +125,10 @@ public class ClubController {
     public ClubApprovalResponse approveClub(@PathVariable Long clubMemberId) {
         return clubService.approveClub(clubMemberId);
     }
+
+    @GetMapping("/{clubId}/application")
+    public Slice<ClubMemberResponse> applicationList(@PathVariable Long clubId,
+        Pageable pageable) {
+        return clubService.applicationList(clubId, pageable);
+    }
 }

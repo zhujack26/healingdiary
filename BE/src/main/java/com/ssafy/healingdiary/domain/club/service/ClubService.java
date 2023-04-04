@@ -245,4 +245,17 @@ public class ClubService {
         }));
         return list;
     }
+
+    public Slice<ClubMemberResponse> applicationList(Long clubId, Pageable pageable) {
+        Club club = clubRepository.findById(clubId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CLUB_NOT_FOUND));
+        Slice<ClubMember> list = clubMemberRepository.findByClubAndIsApprovedNot(club, true,
+            pageable);
+        List<ClubMemberResponse> clubMemberResponses = list.stream()
+            .map((clubMember ->
+                ClubMemberResponse.of(clubMember.getId(), clubMember.getMember())
+            ))
+            .collect(Collectors.toList());
+        return new SliceImpl<>(clubMemberResponses, pageable, list.hasNext());
+    }
 }
