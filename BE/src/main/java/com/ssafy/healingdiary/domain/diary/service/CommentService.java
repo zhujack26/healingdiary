@@ -1,6 +1,9 @@
 package com.ssafy.healingdiary.domain.diary.service;
 
+import static com.ssafy.healingdiary.global.error.ErrorCode.DIARY_NOT_FOUND;
+
 import com.ssafy.healingdiary.domain.diary.domain.Comment;
+import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.dto.CommentCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.CommentResponse;
 import com.ssafy.healingdiary.domain.diary.dto.CommentUpdateRequest;
@@ -13,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -25,6 +29,7 @@ public class CommentService {
 
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
+    private final DiaryRepository diaryRepository;
 
     public Slice<CommentResponse> getCommentList(Long diaryId, Pageable pageable) {
         Slice<Comment> comments = commentRepository.findByDiaryIdAndParentIdIsNull(diaryId, pageable);
@@ -54,7 +59,7 @@ public class CommentService {
                     .nickname(comment.getMember().getNickname())
                     .datetime(comment.getCreatedDate())
                     .content(comment.getContent())
-                    .children(children)
+                    .children(children != null && !children.isEmpty() ? children : null)
                     .build();
             })
             .collect(Collectors.toList());
@@ -62,26 +67,33 @@ public class CommentService {
         return new SliceImpl<>(commentResponses, pageable, comments.hasNext());
     }
 
-    public Map<String, Object> createComment(CommentCreateRequest request) {
+    public Map<String, Object> createComment(Long memberId, CommentCreateRequest request) {
+        try {
+            Diary diary = diaryRepository.getReferenceById(request.getDiaryId());
 
-        Comment comment = Comment.builder()
-            .member(memberRepository.getReferenceById(request.getMemberId()))
-            .parent((commentRepository.getReferenceById(request.getParentId())))
-            .content(request.getContent())
-            .build();
+            Comment comment = Comment.builder()
+                .diary(diary)
+                .member(memberRepository.getReferenceById(memberId))
+                .parent(request.getParentId() != null ? commentRepository.getReferenceById(request.getParentId()) : null)
+                .content(request.getContent())
+                .build();
 
-        Long savedCommentId = commentRepository.save(comment).getId();
+            Long savedCommentId = commentRepository.save(comment).getId();
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("commentId", savedCommentId);
-        return map;
+            Map<String, Object> map = new HashMap<>();
+            map.put("commentId", savedCommentId);
+            return map;
+        }
+        catch (EntityNotFoundException e) {
+            throw new CustomException(DIARY_NOT_FOUND);
+        }
     }
 
-    public Map<String, Object> updateComment(CommentUpdateRequest request) {
+    public Map<String, Object> updateComment(Long memberId, CommentUpdateRequest request) {
         Comment comment = commentRepository.findById(request.getCommentId())
             .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
-        if(request.getMemberId() != comment.getMember().getId()){
+        if(!memberId.equals(comment.getMember().getId())){
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
 
@@ -97,7 +109,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new CustomException(ErrorCode.COMMENT_NOT_FOUND));
 
-        if(memberId != comment.getMember().getId()){
+        if(!memberId.equals(comment.getMember().getId())){
             throw new CustomException(ErrorCode.FORBIDDEN);
         }
 

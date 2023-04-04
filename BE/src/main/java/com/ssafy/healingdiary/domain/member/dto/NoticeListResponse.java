@@ -11,16 +11,17 @@ import lombok.Getter;
 public class NoticeListResponse {
 
     private Long noticeId;
+    private Long articleId;
     private LocalDateTime createdTime;
-    private String content;
-    private String link;
+    private int noticeType;
     private boolean checkStatus;
+
     public static NoticeListResponse of(Notice notice) {
         return NoticeListResponse.builder()
             .noticeId(notice.getId())
+            .articleId(notice.getArticleId())
             .createdTime(notice.getCreatedDate())
-            .content(notice.getContent())
-            .link(notice.getLink())
+            .noticeType(notice.getNoticeType().getStatus())
             .checkStatus(CheckStatus.ofFlag(notice.getCheckStatus()))
             .build();
     }

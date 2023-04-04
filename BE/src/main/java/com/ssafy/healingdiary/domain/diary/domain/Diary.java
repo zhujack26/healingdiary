@@ -15,13 +15,18 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="diary")
 @Getter
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @AttributeOverride(name = "id", column = @Column(name = "diary_id"))
 @AttributeOverride(name = "createdDate", column = @Column(name = "diary_created_date"))
 @AttributeOverride(name = "updatedDate", column = @Column(name = "diary_updated_date"))
@@ -35,6 +40,7 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @Builder.Default
     @OneToMany(mappedBy = "diary",cascade = CascadeType.ALL)
     private List<DiaryTag> diaryTag = new ArrayList<>();
 
@@ -52,7 +58,11 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "emotion")
     private Emotion emotion;
 
+    @Builder.Default
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
+    public void setDiaryTag(List<DiaryTag> diaryTag) {
+        this.diaryTag = diaryTag;
+    }
 }

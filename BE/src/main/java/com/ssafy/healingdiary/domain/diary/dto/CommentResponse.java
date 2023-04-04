@@ -1,11 +1,8 @@
 package com.ssafy.healingdiary.domain.diary.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
-import com.ssafy.healingdiary.domain.diary.domain.Comment;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,6 +14,8 @@ public class CommentResponse {
     private Long parentId;
     private String memberImageUrl;
     private String nickname;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm", timezone = "Asia/Seoul")
     private LocalDateTime datetime;
     private String content;
     private List<CommentResponse> children;

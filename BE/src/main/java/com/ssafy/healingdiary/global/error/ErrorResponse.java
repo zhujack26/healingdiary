@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
+
 public class ErrorResponse {
 
     private final LocalDateTime time = LocalDateTime.now();

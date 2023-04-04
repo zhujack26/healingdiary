@@ -1,10 +1,14 @@
 package com.ssafy.healingdiary.domain.diary.dto;
 
-import lombok.Builder;
+import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor
 public class DiaryCreateRequest {
-
+    String recordUrl;
+    Integer emotionCode;
+    Long clubId;
+    List<String> tags;
 }
