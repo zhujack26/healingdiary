@@ -18,11 +18,10 @@ const NotRecommendDiary = () => {
 
 const RecommendGroup = ({ groups, navigateToScreen }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
-
   return (
     <>
       <Title>요즘 뜨는 소모임</Title>
-      {groups.length === 0 && <NotRecommendDiary />}
+      {groups.content?.length === 0 && <NotRecommendDiary />}
       <Animated.FlatList
         data={groups.content?.slice(0, 3)}
         keyExtractor={(item) => item.clubId}

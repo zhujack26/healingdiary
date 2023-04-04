@@ -16,7 +16,7 @@ const GroupMember = ({ groupId }) => {
 
   return (
     <View style={styles.container}>
-      <GroupMemberList groupMember={groupMember} />
+      <GroupMemberList groupMember={groupMember.content} />
     </View>
   );
 };

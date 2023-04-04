@@ -74,7 +74,6 @@ const Home = () => {
   );
 
   useEffect(() => {
-    console.log("a");
     initialDiaries.current = diaries;
     initialGroups.current = groups;
   }, [diaries, groups]);
