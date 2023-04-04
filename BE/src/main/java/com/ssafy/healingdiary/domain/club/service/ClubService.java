@@ -1,5 +1,6 @@
 package com.ssafy.healingdiary.domain.club.service;
 
+import static com.ssafy.healingdiary.global.error.ErrorCode.CLUB_NOT_FOUND;
 import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
 
 import com.ssafy.healingdiary.domain.club.domain.Club;
@@ -74,7 +75,9 @@ public class ClubService {
     }
 
     public Slice<ClubInvitationResponse> getInvitationList(Long clubId, Pageable pageable) {
-        Long hostId = clubRepository.findById(clubId).get().getHost().getId(); // 방장 ID
+        Long hostId = clubRepository.findById(clubId)
+            .orElseThrow(()->new CustomException(CLUB_NOT_FOUND))
+            .getHost().getId(); // 방장 ID
         Slice<ClubInvitationResponse> clubInvitationResponseList = clubMemberRepository.findDistinctByClubIdNot(
             clubId, hostId, pageable);
         return clubInvitationResponseList;
