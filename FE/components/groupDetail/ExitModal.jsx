@@ -1,13 +1,35 @@
 import { Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import { useCallback } from "react";
 import { GlobalColors } from "../../constants/color";
+import { useNavigation } from "@react-navigation/native";
 
 const ExitModal = ({
   exitModalVisible,
   exitCloseModalPress,
-  leaveGroup,
   groupId,
   memberId,
+  leaveGroup,
+  handleDeleteGroup,
+  host,
 }) => {
+  const navigation = useNavigation();
+  const memoizedLeaveGroup = useCallback(() => {
+    leaveGroup(groupId, memberId);
+  }, [groupId, memberId, leaveGroup]);
+
+  const memoizedDeleteGroup = useCallback(() => {
+    handleDeleteGroup(groupId);
+  }, [groupId, handleDeleteGroup]);
+
+  const handleExitGroup = useCallback(() => {
+    exitCloseModalPress();
+    if (host) {
+      const res = memoizedDeleteGroup();
+    } else {
+      memoizedLeaveGroup();
+    }
+  }, [exitCloseModalPress, host, memoizedDeleteGroup, memoizedLeaveGroup]);
+
   return (
     <Modal
       animationType="fade"
@@ -24,10 +46,7 @@ const ExitModal = ({
           <View style={styles.buttonContainer}>
             <Pressable
               style={[styles.button, styles.buttonExit]}
-              onPress={() => {
-                exitCloseModalPress();
-                leaveGroup(groupId, memberId);
-              }}
+              onPress={handleExitGroup}
             >
               <Text style={styles.buttonText}>나가기</Text>
             </Pressable>

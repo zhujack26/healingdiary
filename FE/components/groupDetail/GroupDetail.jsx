@@ -1,15 +1,17 @@
 import { View, StyleSheet } from "react-native";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GlobalColors } from "../../constants/color";
-import { exitGroup, getGroupDetail } from "../../api/group";
+import { exitGroup, deleteGroup, getGroupDetail } from "../../api/group";
+import { useNavigation } from "@react-navigation/native";
+import { getGroupDiary } from "../../api/diary";
 
 import GroupDiaryList from "./GroupDiaryList";
 import GroupDetailHeader from "./GroupDetailHeader";
 import BottomModal from "./BottomModal";
-import { getGroupDiary } from "../../api/diary";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GroupDetail = ({ groupId }) => {
+  const navigation = useNavigation();
   const [groupData, setGroupData] = useState({});
   const [diaries, setDiaries] = useState([]);
   const [exitModalVisible, setExitModalVisible] = useState(false);
@@ -49,6 +51,11 @@ const GroupDetail = ({ groupId }) => {
     return res;
   };
 
+  const handleDeleteGroup = async () => {
+    const res = await deleteGroup(groupId);
+    if (res.status === 200) navigation.navigate("Home");
+  };
+
   const getMemberId = async () => {
     const id = await AsyncStorage.getItem("id");
     setMemberId(id);
@@ -77,12 +84,14 @@ const GroupDetail = ({ groupId }) => {
         diaries={diaries}
         memberId={memberId}
         leaveGroup={leaveGroup}
+        handleDeleteGroup={handleDeleteGroup}
       />
       <BottomModal
         bottomSheetModalRef={bottomSheetModalRef}
         handleCloseModalPress={handleCloseModalPress}
         openExitModalAndCloseModal={openExitModalAndCloseModal}
         groupId={groupId}
+        host={groupData.host}
       />
     </View>
   );

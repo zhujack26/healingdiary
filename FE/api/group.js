@@ -83,3 +83,12 @@ export const exitGroup = async (groupId, memberId) => {
     console.log("exitGroup", e);
   }
 };
+
+export const deleteGroup = async (groupId) => {
+  try {
+    const res = await axiosInstance(deleteConfig(`/clubs/${groupId}`));
+    return res;
+  } catch (e) {
+    console.log("exitGroup", e);
+  }
+};
