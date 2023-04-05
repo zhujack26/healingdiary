@@ -1,10 +1,9 @@
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { GlobalColors } from "../../constants/color";
-import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { getCalendarDiary } from "../../api/diary";
 const DateCheck = (date1, date2) => {
   return (
     date1.year === date2.year &&
@@ -40,60 +39,41 @@ const getEmotionForDate = (date, dateList) => {
   }
   return null;
 };
+
 const CustomDayComponent = ({ date, state, onPress }) => {
-  const dummyData = [
-    {
-      year: 2023,
-      month: 4,
-      day: 1,
-      emotion: {
-        emotionCode: 1,
-        value: "불행",
-      },
-    },
-    {
-      year: 2023,
-      month: 4,
-      day: 3,
-      emotion: {
-        emotionCode: 2,
-        value: "나쁨",
-      },
-    },
-  ];
-
-  const today = new Date();
-  const currentDate = {
-    year: today.getFullYear(),
-    month: today.getMonth() + 1,
-    day: today.getDate(),
-  };
-
-  const isToday = DateCheck(date, currentDate);
-  const handlePress = () => {
-    if (state !== "disabled") {
-      onPress(date);
-    }
-  };
-
-  const emotion = getEmotionForDate(date, dummyData);
+  const [calendarData, setCalendarData] = useState([]);
+  const emotion = getEmotionForDate(date, calendarData);
   const imageUri = emotion
     ? getImageUriFromEmotionCode(emotion.emotionCode)
     : null;
 
+  // const today = new Date();
+  // const currentDate = {
+  //   year: today.getFullYear(),
+  //   month: today.getMonth() + 1,
+  //   day: today.getDate(),
+  // };
+
+  // const isToday = DateCheck(date, currentDate);
+  // const handlePress = () => {
+  //   if (state !== "disabled") {
+  //     onPress(date);
+  //   }
+  // };
+
   return (
     <View>
-      <TouchableOpacity onPress={handlePress} style={styles.box}>
+      <TouchableOpacity style={styles.box}>
         <Text
           style={{
-            backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
+            // backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
             color:
               state === "disabled"
                 ? GlobalColors.colors.gray500
                 : GlobalColors.colors.black500,
             paddingVertical: 3,
             paddingHorizontal: 3,
-            borderRadius: isToday ? 16 : null,
+            // borderRadius: isToday ? 16 : null,
           }}
         >
           {date.day}
@@ -143,6 +123,19 @@ LocaleConfig.defaultLocale = "ko";
 const CalendarView = () => {
   const navigation = useNavigation();
   const [selected, setSelected] = useState("");
+  const [calendarData, setCalendarData] = useState([]);
+
+  useEffect(() => {
+    const getCalendarDiaries = async () => {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const res = await getCalendarDiary(year, month);
+      console.log(res);
+      setCalendarData(res);
+    };
+    getCalendarDiaries();
+  }, []);
   return (
     <Calendar
       theme={{

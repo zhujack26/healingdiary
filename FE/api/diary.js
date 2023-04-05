@@ -58,3 +58,14 @@ export const getSearchTagDiary = async (tag) => {
     console.log("getSearchTagDiary", e);
   }
 };
+
+export const getCalendarDiary = async (year, month) => {
+  try {
+    const res = await axiosInstance(
+      getDataConfig(`/diaries/calendar?year=${year}&month=${month}`)
+    );
+    return res.data;
+  } catch (e) {
+    console.log("getCalendarDiary", e);
+  }
+};
