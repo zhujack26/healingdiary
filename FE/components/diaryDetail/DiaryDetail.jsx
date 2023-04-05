@@ -49,7 +49,9 @@ const DiaryDetail = ({ diaryId }) => {
   };
 
   const navigateToMakingInput = () => {
-    navigation.navigate("MakingInput");
+    navigation.navigate("MakingInput", {
+      diaryId: diaryId,
+    });
   };
 
   const callGetDiaryDetail = async () => {
