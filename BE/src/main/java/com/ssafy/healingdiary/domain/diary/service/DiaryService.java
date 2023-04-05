@@ -19,6 +19,7 @@ import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
+import com.ssafy.healingdiary.domain.diary.repository.DiaryTagRepository;
 import com.ssafy.healingdiary.domain.diary.repository.EmotionRepository;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
@@ -31,6 +32,7 @@ import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient;
 import com.ssafy.healingdiary.infra.speech.ClovaSpeechClient.NestRequestEntity;
 import com.ssafy.healingdiary.infra.storage.StorageClient;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +56,7 @@ public class DiaryService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final TagRepository tagRepository;
+    private final DiaryTagRepository diaryTagRepository;
     private final ClovaSpeechClient clovaSpeechClient;
     private final ClovaClient clovaClient;
     private final Gson gson;
@@ -113,7 +116,7 @@ public class DiaryService {
             .content(content)
             .build();
 
-        List<DiaryTag> tags = diaryCreateRequest.getTags()
+        List<Tag> tags = diaryCreateRequest.getTags()
             .stream()
             .map(tagContent -> {
                 Tag tag = tagRepository.findByContentLike(tagContent);
@@ -121,7 +124,15 @@ public class DiaryService {
                     tag = Tag.builder()
                         .content(tagContent)
                         .build();
+                    tag = tagRepository.save(tag);
                 }
+                return tag;
+            })
+            .collect(Collectors.toList());
+
+        List<DiaryTag> diaryTags = tags
+            .stream()
+            .map(tag -> {
                 DiaryTag diaryTag = DiaryTag.builder()
                     .diary(diary)
                     .tag(tag)
@@ -129,8 +140,9 @@ public class DiaryService {
                 return diaryTag;
             })
             .collect(Collectors.toList());
+        diaryTags = diaryTagRepository.saveAll(diaryTags);
 
-        diary.setDiaryTag(tags);
+        diary.setDiaryTag(diaryTags);
         Diary savedDiary = diaryRepository.save(diary);
 
         Map<String, Object> map = new HashMap<>();
