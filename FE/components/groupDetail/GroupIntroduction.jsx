@@ -1,9 +1,29 @@
-import { View, Text, Pressable, StyleSheet, Dimensions } from "react-native";
+import { useState } from "react";
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Dimensions,
+  Alert,
+} from "react-native";
 import { GlobalColors } from "./../../constants/color";
 import { Ionicons } from "@expo/vector-icons";
 
 const { width } = Dimensions.get("window");
-const GroupIntroduction = ({ navigation, groupData, groupId, signupGroup }) => {
+const GroupIntroduction = ({
+  navigation,
+  groupData,
+  groupId,
+  signupGroup,
+  isMember,
+}) => {
+  const [isDisabled, setIsDisabled] = useState(false);
+  const handleSignupGroup = () => {
+    setIsDisabled(true);
+    signupGroup(groupId);
+    Alert.alert("가입 신청이 완료되었습니다.");
+  };
   return (
     <>
       <View style={styles.groupInfo}>
@@ -27,16 +47,18 @@ const GroupIntroduction = ({ navigation, groupData, groupId, signupGroup }) => {
             {groupData.host && <Text style={styles.inviteText}>초대</Text>}
           </View>
         </View>
-        {groupData.host ? (
+        {isMember ? (
           <Pressable style={styles.buttonContainer} onPress={() => {}}>
             <Text style={styles.buttonText}>글쓰기</Text>
           </Pressable>
         ) : (
           <Pressable
-            style={styles.buttonContainer}
-            onPress={() => {
-              signupGroup(groupId);
-            }}
+            style={[
+              styles.buttonContainer,
+              isDisabled && styles.disabledButton,
+            ]}
+            onPress={handleSignupGroup}
+            disabled={isDisabled}
           >
             <Text style={styles.buttonText}>가입하기</Text>
           </Pressable>
@@ -63,12 +85,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    width: width,
   },
 
   groupName: {
+    width: 200,
     fontFamily: "KoddiUDOnGothic-ExtraBold",
     fontSize: 24,
     marginBottom: 16,
+    flexWrap: "wrap",
   },
 
   groupInviteContainer: {
@@ -104,6 +129,11 @@ const styles = StyleSheet.create({
     backgroundColor: GlobalColors.colors.primary500,
     justifyContent: "center",
     alignItems: "center",
+    marginRight: 36,
+  },
+
+  disabledButton: {
+    opacity: 0.5,
   },
 
   buttonText: {

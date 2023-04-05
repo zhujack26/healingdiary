@@ -17,7 +17,7 @@ export default function App() {
   });
 
   useEffect(() => {
-    removeData = async () => {
+    const removeData = async () => {
       await AsyncStorage.removeItem("jwtToken");
     };
 
