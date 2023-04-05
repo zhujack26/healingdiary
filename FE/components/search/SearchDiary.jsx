@@ -1,5 +1,8 @@
 import { FlatList, KeyboardAvoidingView, StyleSheet } from "react-native";
 import DiaryItem from "../diary/DiaryItem";
+import { useEffect, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { getSearchDiary } from "../../api/diary";
 
 const DATA = {
   content: [
@@ -56,12 +59,26 @@ const DATA = {
   ],
 };
 
-const SearchDiary = () => {
+const SearchDiary = ({ search }) => {
+  const navigation = useNavigation();
+  const [diaries, setDiaries] = useState([]);
+
+  const callSearchDiary = async () => {
+    const res = await getSearchDiary(search);
+    setDiaries(res.data);
+  };
+
+  useEffect(() => {
+    callSearchDiary();
+  }, [search]);
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       <FlatList
-        data={DATA.content}
-        renderItem={({ item }) => <DiaryItem content={item} />}
+        data={diaries.content}
+        renderItem={({ item }) => (
+          <DiaryItem content={item} navigation={navigation} />
+        )}
         keyExtractor={(item) => item.diaryId}
       />
     </KeyboardAvoidingView>

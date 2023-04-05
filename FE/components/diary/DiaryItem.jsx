@@ -10,17 +10,15 @@ import { GlobalColors } from "./../../constants/color";
 
 const { width, height } = Dimensions.get("window");
 
-const DiaryItem = ({ content }) => {
+const DiaryItem = ({ content, navigation }) => {
   return (
     <Pressable style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={content.imageUrl} style={styles.image} />
+        <Image source={{ uri: content?.imageUrl }} style={styles.image} />
         <View style={styles.hashtags}>
-          {content?.tags.map((hashtag, index) => (
-            <View style={styles.hashtag} key={index}>
-              <Text style={styles.tagText}>#{hashtag}</Text>
-            </View>
-          ))}
+          <View style={styles.hashtag}>
+            <Text style={styles.tagText}>#{content?.emotion.value}</Text>
+          </View>
         </View>
       </View>
     </Pressable>

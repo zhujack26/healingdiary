@@ -27,7 +27,7 @@ const Search = () => {
 
   const renderItem = () => {
     const searchComponent = [
-      <SearchDiary />,
+      <SearchDiary search={search} />,
       <SearchGroup search={search} />,
       <SearchTag />,
     ];
