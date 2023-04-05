@@ -1,7 +1,5 @@
 import { useState } from "react";
 import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { GlobalColors } from "../../constants/color";
-import { AntDesign } from "@expo/vector-icons";
 
 const DefalutImagePicker = ({ onSelect }) => {
   const [selectedImage, setSelectedImage] = useState(null);

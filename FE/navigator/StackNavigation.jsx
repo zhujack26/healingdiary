@@ -28,6 +28,8 @@ import GroupCompleteButton from "../components/createGroupDiary/GroupCompleteBut
 import GroupMemberAllowScreen from "../screens/GroupMemberAllowScreen";
 import Create from "../components/createGroupDiary/Create";
 import CreateDetail from "../components/createGroupDiary/CreateDetail";
+import Making from "../components/making/Making";
+import MakingDetail from "../components/making/MakingDetail";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
@@ -94,7 +96,7 @@ const StackNavigation = () => {
           />
           <Stack.Screen
             name="Making"
-            component={MakingScreen}
+            component={Making}
             options={({ navigation }) => ({
               headerRight: (props) => (
                 <NextButton {...props} navigation={navigation} />
@@ -109,7 +111,7 @@ const StackNavigation = () => {
           />
           <Stack.Screen
             name="MakingDetail"
-            component={MakingDetailScreen}
+            component={MakingDetail}
             options={({ navigation }) => ({
               headerRight: (props) => (
                 <CompleteButton {...props} navigation={navigation} />
