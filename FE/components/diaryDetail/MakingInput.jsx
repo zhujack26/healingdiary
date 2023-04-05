@@ -31,7 +31,10 @@ const MakingInput = ({ route }) => {
   const callCreateComment = async (data) => {
     const res = await createComment(data);
     if (res.status === 200) {
-      navigation.navigate("diaryDetail", { diaryId: res.data.diaryId });
+      navigation.navigate("diaryDetail", {
+        diaryId: diaryId,
+        refreshKey: Date.now(),
+      });
     } else {
       Alert.alert("댓글 작성에 실패했습니다.");
     }

@@ -14,7 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import { getDiaryComment } from "../../api/comment";
 import { getDiaryDetail } from "../../api/diary";
 
-const DiaryDetail = ({ diaryId }) => {
+const DiaryDetail = ({ diaryId, refreshKey }) => {
   const navigation = useNavigation();
   const [sound, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
@@ -77,6 +77,9 @@ const DiaryDetail = ({ diaryId }) => {
     callGetDiaryDetail();
   }, []);
 
+  useEffect(() => {
+    callGetDiaryComment();
+  }, [refreshKey]);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
