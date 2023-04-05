@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     position: "absolute",
-    top: Platform.OS === "ios" ? 56 : 32,
+    top: Platform.OS === "ios" ? 24 : 32,
   },
 });
