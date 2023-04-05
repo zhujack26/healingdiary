@@ -15,6 +15,7 @@ import NotificationScreen from "../screens/NotificationScreen";
 import KakaoWebView from "../components/login/KakaoWebView";
 import ModifyingInformScreen from "../screens/ModifyingInformScreen";
 import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
+import GroupNextButton from "../components/createGroupDiary/GroupNextButton";
 import NextButton from "../components/making/NextButton";
 import DiaryDetailScreen from "../screens/DiaryDetailScreen";
 import CalendarDiaryListScreen from "../screens/CalendarDiaryListScreen";
@@ -23,17 +24,16 @@ import MakingInput from "../components/diaryDetail/MakingInput";
 import { BottomTabContextProvider } from "../context/BottomTabContext";
 import SearchScreen from "./../screens/SearchScreen";
 import CompleteButton from "../components/making/CompleteButton";
+import GroupCompleteButton from "../components/createGroupDiary/GroupCompleteButton";
 import GroupMemberAllowScreen from "../screens/GroupMemberAllowScreen";
+import Create from "../components/createGroupDiary/Create";
+import CreateDetail from "../components/createGroupDiary/CreateDetail";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
   return (
     <BottomTabContextProvider>
       <NavigationContainer>
-        {/* <Stack.Navigator
-        initialRouteName="userinform"
-        component= {UserInformScreen}
-        > */}
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{
@@ -113,6 +113,36 @@ const StackNavigation = () => {
             options={({ navigation }) => ({
               headerRight: (props) => (
                 <CompleteButton {...props} navigation={navigation} />
+              ),
+              headerTitle: () => <Date />,
+              headerTitleAlign: "center",
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor: GlobalColors.colors.primary500,
+              },
+            })}
+          />
+          <Stack.Screen
+            name="Create"
+            component={Create}
+            options={({ navigation }) => ({
+              headerRight: (props) => (
+                <GroupNextButton {...props} navigation={navigation} />
+              ),
+              headerTitle: () => <Date />,
+              headerTitleAlign: "center",
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor: GlobalColors.colors.primary500,
+              },
+            })}
+          />
+          <Stack.Screen
+            name="CreateDetail"
+            component={CreateDetail}
+            options={({ navigation }) => ({
+              headerRight: (props) => (
+                <GroupCompleteButton {...props} navigation={navigation} />
               ),
               headerTitle: () => <Date />,
               headerTitleAlign: "center",

@@ -37,7 +37,7 @@ const GroupItem = ({ content, navigation }) => {
             source={{ uri: content?.clubImageUrl }}
             style={styles.image}
             resizeMode="cover"
-            onLoadEnd={handleImageLoad}
+            onLoad={handleImageLoad}
           />
           <View style={styles.hashtags}>
             {content?.tags.map((hashtag, index) => (
