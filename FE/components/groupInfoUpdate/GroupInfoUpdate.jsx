@@ -88,8 +88,9 @@ const GroupInfoUpdate = ({ isEdit }) => {
     formData.append("description", description);
     formData.append("tags", tags);
     const res = await createGroup(formData);
-    if (res.status === 200) navigation.navigate("diaryBottomTab");
-    else console.log("생성 실패");
+    if (res.status === 200) {
+      navigation.navigate("Home", { refreshKey: Date.now() });
+    } else console.log("생성 실패");
   };
 
   return (

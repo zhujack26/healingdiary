@@ -12,7 +12,7 @@ import { getRecentDiary } from "./../../api/diary";
 
 const { width, height } = Dimensions.get("window");
 
-const Home = () => {
+const Home = ({ refreshKey }) => {
   const initialDiaries = useRef([]);
   const initialGroups = useRef([]);
   const initialRecentDiaries = useRef([]);
@@ -59,7 +59,7 @@ const Home = () => {
   }, [diaries, groups, recentDiaries]);
 
   return (
-    <BottomTabContainer>
+    <BottomTabContainer key={refreshKey}>
       <ScrollView style={styles.container}>
         <RecommendGroup groups={groups} />
         <RecommendDiary diaries={diaries} />
