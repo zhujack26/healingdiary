@@ -33,8 +33,9 @@ const CompleteButton = ({
     formData.append("image", file);
     formData.append("emotionCode", emotionResponse.emotion.emotionCode);
     formData.append("recordUrl", emotionResponse.recordUrl);
-    // const hashtags = selectedTags.map((tag) => tag.keyword);
-    formData.append("tags", selectedTags);
+    const hashtags = selectedTags.map((tag) => tag.keyword);
+    formData.append("tags", hashtags);
+    console.log("태그폼 확인", hashtags);
     const res = await createDiary(formData);
     console.log(res);
     if (res.status === 200) navigation.navigate("diaryBottomTab");

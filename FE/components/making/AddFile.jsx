@@ -24,7 +24,7 @@ const AddFile = (props) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [3, 3],
-      quality: 1,
+      quality: 0.05,
     });
     if (!result.canceled && result.assets && result.assets[0]) {
       const newImage = { uri: result.assets[0].uri };

@@ -20,9 +20,11 @@ const AddHashtag = ({
   emotionResponse,
   onSelectedTags,
 }) => {
+  const notifySelectedTags = () => {
+    onSelectedTags(selectedTags);
+  };
   useEffect(() => {
     onSelectedTags(selectedTags);
-    console.log("check", emotionResponse);
     if (selectedTags.some((tag) => DATA.includes(tag))) {
       onToggleCompleteButtonVisibility(true);
     } else {
@@ -46,6 +48,7 @@ const AddHashtag = ({
         selectedTags.filter((selectedTag) => selectedTag !== tag)
       );
       setDataTags(dataTags - 1); // DATA에서 선택한 해시태그 개수를 줄입니다.
+      notifySelectedTags();
       onToggleCompleteButtonVisibility(false);
     } else {
       if (dataTags < maxDataTags) {
@@ -72,12 +75,14 @@ const AddHashtag = ({
       if (!isTagAlreadySelected(newTag)) {
         // 중복되지 않은 경우에만 추가
         setSelectedTags([...selectedTags, newTag]);
+        notifySelectedTags();
         setInputText("");
       }
     }
   };
   const handleSelectedTagPress = (tag) => {
     setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
+    notifySelectedTags();
   };
   const renderTextInput = () => (
     <View>
@@ -112,15 +117,6 @@ const AddHashtag = ({
       return null;
     }
   };
-  // const getToken = async () => {
-  //   try {
-  //     const token = await AsyncStorage.getItem("jwtToken");
-  //     console.log("확인1");
-  //     return token;
-  //   } catch (error) {
-  //     console.error("Error getting token:", error);
-  //   }
-  // };
 
   return (
     <View style={styles.container}>

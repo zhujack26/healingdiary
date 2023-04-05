@@ -4,7 +4,6 @@ const NextButton = ({ navigation, visible, response, selectedImage }) => {
   if (!visible) {
     return null;
   }
-  console.log("in nextbutton", selectedImage);
   return (
     <TouchableOpacity
       onPress={() =>
