@@ -46,8 +46,8 @@ const GroupScreen = ({ navigation }) => {
   const renderItem = () => {
     const searchComponent = [
       <GroupList />,
-      <MyGroupList />,
       <RecommendGroup />,
+      <MyGroupList />,
     ];
     return searchComponent[activeIndex];
   };

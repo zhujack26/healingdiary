@@ -64,7 +64,7 @@ const MakingInput = ({ route }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: GlobalColors.colors.background500,
     padding: 20,
   },
   input: {
