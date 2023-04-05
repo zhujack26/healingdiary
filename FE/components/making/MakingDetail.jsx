@@ -1,33 +1,31 @@
 import { View, StyleSheet } from "react-native";
 import AddHashtag from "./AddHashtag";
 import { GlobalColors } from "../../constants/color";
-import GroupCompleteButton from "./GroupCompleteButton";
+import CompleteButton from "./CompleteButton";
 import { useState, useEffect } from "react";
 
-const CreateDetail = ({ navigation, route }) => {
-  const { response, selectedImage, groupId } = route.params;
+const MakingDetail = ({ navigation, route }) => {
+  const { response, selectedImage } = route.params;
   const [emotionResponse, setEmotionResponse] = useState(response);
   const [completeButtonVisible, setCompleteButtonVisible] = useState(false);
   const toggleCompleteButtonVisibility = (visible = true) => {
     setCompleteButtonVisible(visible);
   };
   const [selectedTags, setSelectedTags] = useState([]);
-
+  console.log("check1:", selectedTags);
   const handleSelectedTags = (tags) => {
     setSelectedTags(tags);
   };
-
   useEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
-        <GroupCompleteButton
+        <CompleteButton
           {...props}
           visible={completeButtonVisible}
           navigation={navigation}
           selectedTags={selectedTags}
           emotionResponse={emotionResponse}
           selectedImage={selectedImage}
-          groupId={groupId}
         />
       ),
     });
@@ -37,9 +35,8 @@ const CreateDetail = ({ navigation, route }) => {
     selectedTags,
     emotionResponse,
     selectedImage,
-    groupId,
   ]);
-
+  console.log("check2:", selectedTags);
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
@@ -68,4 +65,4 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40,
   },
 });
-export default CreateDetail;
+export default MakingDetail;

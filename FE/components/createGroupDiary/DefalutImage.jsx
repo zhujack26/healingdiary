@@ -55,13 +55,13 @@ const DefalutImage = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/4.jpg",
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/4.jpg",
           }}
           style={styles.image}
         />
@@ -69,13 +69,13 @@ const DefalutImage = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/5.jpg",
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/5.jpg",
           }}
           style={styles.image}
         />
@@ -83,13 +83,13 @@ const DefalutImage = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/3.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/6.jpg",
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/3.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/6.jpg",
           }}
           style={styles.image}
         />
@@ -97,13 +97,13 @@ const DefalutImage = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/7.jpg",
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/7.jpg",
           }}
           style={styles.image}
         />
@@ -111,13 +111,13 @@ const DefalutImage = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/8.jpgg",
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/8.jpg",
           }}
           style={styles.image}
         />
@@ -125,13 +125,27 @@ const DefalutImage = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/9.jpeg",
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/9.jpeg",
+          }}
+          style={styles.image}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          handleImagePress({
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/10.jpg",
+          })
+        }
+      >
+        <Image
+          source={{
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/10.jpg",
           }}
           style={styles.image}
         />

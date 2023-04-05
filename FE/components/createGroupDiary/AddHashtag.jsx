@@ -24,6 +24,7 @@ const AddHashtag = ({
     onSelectedTags(selectedTags);
   };
   useEffect(() => {
+    console.log(selectedTags);
     onSelectedTags(selectedTags);
     if (selectedTags.some((tag) => DATA.includes(tag))) {
       onToggleCompleteButtonVisibility(true);
@@ -52,7 +53,10 @@ const AddHashtag = ({
       onToggleCompleteButtonVisibility(false);
     } else {
       if (dataTags < maxDataTags) {
-        setSelectedTags([...selectedTags, tag]);
+        setSelectedTags([
+          ...selectedTags.filter((t) => !DATA.includes(t)),
+          tag,
+        ]);
         setDataTags(dataTags + 1); // DATA에서 선택한 해시태그 개수를 늘립니다.
         onToggleCompleteButtonVisibility(true);
       }

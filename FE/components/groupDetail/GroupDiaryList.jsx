@@ -35,7 +35,7 @@ const GroupDiaryList = ({
       renderItem={({ item }) => (
         <DiaryItem content={item} navigation={navigation} />
       )}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item.diaryId}
       ListHeaderComponent={
         <GroupIntroduction
           navigation={navigation}
