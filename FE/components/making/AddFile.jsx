@@ -13,7 +13,7 @@ import DefalutImagePicker from "./DefalutImagePicker";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
-const AddFile = () => {
+const AddFile = (props) => {
   const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const pickImage = () => {
@@ -24,10 +24,14 @@ const AddFile = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [3, 3],
-      quality: 1,
+      quality: 0.05,
     });
     if (!result.canceled && result.assets && result.assets[0]) {
-      setImage({ uri: result.assets[0].uri });
+      const newImage = { uri: result.assets[0].uri };
+      setImage(newImage);
+      if (props.onSelectedImage) {
+        props.onSelectedImage(newImage);
+      }
     }
     setModalVisible(false);
   };
@@ -60,6 +64,9 @@ const AddFile = () => {
               onSelect={(selectedImage) => {
                 setImage(selectedImage);
                 setModalVisible(false);
+                if (props.onSelectedImage) {
+                  props.onSelectedImage(selectedImage);
+                }
               }}
             />
           </View>

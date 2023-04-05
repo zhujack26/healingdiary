@@ -15,15 +15,30 @@ const DATA = [
   { id: 4, keyword: "기쁨" },
   { id: 5, keyword: "행복" },
 ];
-const AddHashtag = ({ onToggleCompleteButtonVisibility }) => {
+const AddHashtag = ({
+  onToggleCompleteButtonVisibility,
+  emotionResponse,
+  onSelectedTags,
+}) => {
+  const notifySelectedTags = () => {
+    onSelectedTags(selectedTags);
+  };
   useEffect(() => {
+    onSelectedTags(selectedTags);
     if (selectedTags.some((tag) => DATA.includes(tag))) {
       onToggleCompleteButtonVisibility(true);
     } else {
       onToggleCompleteButtonVisibility(false);
     }
-  }, [selectedTags, onToggleCompleteButtonVisibility]);
-  const [selectedTags, setSelectedTags] = useState([]);
+  }, [selectedTags, onSelectedTags, onToggleCompleteButtonVisibility]);
+  const [selectedTags, setSelectedTags] = useState(() => {
+    if (emotionResponse) {
+      const { emotionCode, value } = emotionResponse.emotion;
+      const tag = DATA.find((t) => t.id === emotionCode);
+      return tag ? [tag] : [];
+    }
+    return [];
+  });
   const [inputText, setInputText] = useState("");
   const [dataTags, setDataTags] = useState(0); // DATA에서 선택한 해시태그 개수를 저장하는 상태 변수 추가
   const maxDataTags = 1; // 최대 선택 가능한 DATA 해시태그 개수를 1개로 설정
@@ -33,6 +48,7 @@ const AddHashtag = ({ onToggleCompleteButtonVisibility }) => {
         selectedTags.filter((selectedTag) => selectedTag !== tag)
       );
       setDataTags(dataTags - 1); // DATA에서 선택한 해시태그 개수를 줄입니다.
+      notifySelectedTags();
       onToggleCompleteButtonVisibility(false);
     } else {
       if (dataTags < maxDataTags) {
@@ -59,12 +75,14 @@ const AddHashtag = ({ onToggleCompleteButtonVisibility }) => {
       if (!isTagAlreadySelected(newTag)) {
         // 중복되지 않은 경우에만 추가
         setSelectedTags([...selectedTags, newTag]);
+        notifySelectedTags();
         setInputText("");
       }
     }
   };
   const handleSelectedTagPress = (tag) => {
     setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
+    notifySelectedTags();
   };
   const renderTextInput = () => (
     <View>

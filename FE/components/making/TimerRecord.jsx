@@ -7,7 +7,7 @@ import { Audio } from "expo-av";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const TimerRecord = ({ onToggleNextButtonVisibility }) => {
+const TimerRecord = ({ onToggleNextButtonVisibility, onResponse }) => {
   const [time, setTime] = useState(180);
   const [intervalId, setIntervalId] = useState(null);
   const [timerRunning, setTimerRunning] = useState(false);
@@ -132,7 +132,7 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
       console.log("fileUri:", fileUri);
       console.log("mimeType:", mimeType);
 
-      formData.append("record", {
+      formData.append("rec", {
         uri: fileUri,
         name: "record.m4a",
         type: mimeType,
@@ -147,6 +147,7 @@ const TimerRecord = ({ onToggleNextButtonVisibility }) => {
       });
 
       console.log("성공:", response.data);
+      onResponse(response.data);
     } catch (error) {
       console.error("실패:", error);
     }

@@ -1,18 +1,22 @@
 import { View, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
-// import Timer from "../components/making/Timer";
 import AddFile from "../components/making/AddFile";
 import { useState, useEffect } from "react";
 import NextButton from "../components/making/NextButton";
 import TimerRecord from "../components/making/TimerRecord";
 
 const MakingScreen = ({ navigation }) => {
+  const [response, setResponse] = useState(null);
+  console.log("check MakingScren", response);
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
-
   const toggleNextButtonVisibility = (visible = true) => {
     setNextButtonVisible(visible);
   };
+  const [selectedImage, setSelectedImage] = useState(null);
 
+  const handleSelectedImage = (image) => {
+    setSelectedImage(image);
+  };
   useEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
@@ -20,17 +24,20 @@ const MakingScreen = ({ navigation }) => {
           {...props}
           visible={nextButtonVisible}
           navigation={navigation}
+          response={response}
+          selectedImage={selectedImage}
         />
       ),
     });
-  }, [navigation, nextButtonVisible]);
+  }, [navigation, nextButtonVisible, response]);
 
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
-        <AddFile />
+        <AddFile onSelectedImage={handleSelectedImage} />
         <TimerRecord
           onToggleNextButtonVisibility={toggleNextButtonVisibility}
+          onResponse={setResponse}
         />
       </View>
     </View>

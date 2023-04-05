@@ -4,12 +4,20 @@ import { GlobalColors } from "../constants/color";
 import CompleteButton from "../components/making/CompleteButton";
 import { useState, useEffect } from "react";
 
-const MakingDetailScreen = ({ navigation }) => {
+const MakingDetailScreen = ({ navigation, route }) => {
+  const { response, selectedImage } = route.params;
+  const [emotionResponse, setEmotionResponse] = useState(response);
+  console.log("check1", emotionResponse);
+  console.log("check1", selectedImage);
   const [completeButtonVisible, setCompleteButtonVisible] = useState(false);
   const toggleCompleteButtonVisibility = (visible = true) => {
     setCompleteButtonVisible(visible);
   };
+  const [selectedTags, setSelectedTags] = useState([]);
 
+  const handleSelectedTags = (tags) => {
+    setSelectedTags(tags);
+  };
   useEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
@@ -17,16 +25,27 @@ const MakingDetailScreen = ({ navigation }) => {
           {...props}
           visible={completeButtonVisible}
           navigation={navigation}
+          selectedTags={selectedTags}
+          emotionResponse={emotionResponse}
+          selectedImage={selectedImage}
         />
       ),
     });
-  }, [navigation, completeButtonVisible]);
+  }, [
+    navigation,
+    completeButtonVisible,
+    selectedTags,
+    emotionResponse,
+    selectedImage,
+  ]);
 
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
         <AddHashtag
           onToggleCompleteButtonVisibility={toggleCompleteButtonVisibility}
+          emotionResponse={emotionResponse}
+          onSelectedTags={handleSelectedTags}
         />
       </View>
     </View>
