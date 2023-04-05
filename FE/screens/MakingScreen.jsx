@@ -7,7 +7,6 @@ import TimerRecord from "../components/making/TimerRecord";
 
 const MakingScreen = ({ navigation }) => {
   const [response, setResponse] = useState(null);
-  console.log("check MakingScren", response);
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
   const toggleNextButtonVisibility = (visible = true) => {
     setNextButtonVisible(visible);

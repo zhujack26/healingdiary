@@ -7,18 +7,17 @@ const extensionToMimeType = {
   png: "image/png",
   gif: "image/gif",
 };
-const CompleteButton = ({
+const GroupCompleteButton = ({
   navigation,
   visible,
   selectedTags,
   emotionResponse,
   selectedImage,
+  groupId,
 }) => {
   if (!visible) {
     return null;
   }
-  console.log("check3:", selectedTags);
-
   const handleOnPress = async () => {
     const extension = selectedImage.uri.split(".").pop();
     const fileName = selectedImage.uri.split("/").pop();
@@ -32,11 +31,13 @@ const CompleteButton = ({
       name: fileName,
     };
     const formData = new FormData();
+    formData.append("clubId", groupId);
     formData.append("image", file);
     formData.append("emotionCode", emotionResponse.emotion.emotionCode);
     formData.append("recordUrl", emotionResponse.recordUrl);
     const hashtags = selectedTags.map((tag) => tag.keyword);
     formData.append("tags", hashtags);
+    console.log("폼데이터 확인", formData);
     console.log("태그폼 확인", hashtags);
     const res = await createDiary(formData);
     console.log(res);
@@ -50,4 +51,4 @@ const CompleteButton = ({
   );
 };
 
-export default CompleteButton;
+export default GroupCompleteButton;

@@ -12,6 +12,7 @@ export const getDataConfig = (url, data) => {
     method: "GET",
     url: API_END_POINT + url,
     data: data,
+    //body에 같이 들어가는
   };
 };
 
