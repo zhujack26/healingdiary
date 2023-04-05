@@ -16,6 +16,7 @@ const CreateDetail = ({ navigation, route }) => {
   const handleSelectedTags = (tags) => {
     setSelectedTags(tags);
   };
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
