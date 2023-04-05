@@ -7,13 +7,23 @@ import {
   Pressable,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
-import ReplyListItem from "./ReplyListItem";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import ReplyListItem from "./ReplyListItem";
 
-const CommentListItem = ({ comment, onDelete }) => {
+const CommentListItem = ({ diaryId, comment, onDelete }) => {
+  const navigation = useNavigation();
   const handleDelete = () => {
     onDelete && onDelete(comment.commentId);
   };
+
+  const navigateToMakingInput = () => {
+    navigation.navigate("MakingInput", {
+      diaryId: diaryId,
+      parentId: comment?.commentId,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.container1}>
@@ -21,7 +31,7 @@ const CommentListItem = ({ comment, onDelete }) => {
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={require("../../assets/images/SAMPLE3.png")}
+              source={{ uri: comment?.memberImageUrl }}
             />
           </View>
           <View style={styles.commentContainer}>
@@ -36,7 +46,9 @@ const CommentListItem = ({ comment, onDelete }) => {
         {/* 시간경과, 답글달기 */}
         <View style={styles.etc}>
           <Text style={[styles.regular, styles.time]}>1일전</Text>
-          <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
+          <Pressable onPress={navigateToMakingInput}>
+            <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
+          </Pressable>
           <Pressable style={styles.trash} onPress={handleDelete}>
             <AntDesign name="delete" size={12} color="gray" />
           </Pressable>

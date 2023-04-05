@@ -80,13 +80,18 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
   useEffect(() => {
     callGetDiaryComment();
   }, [refreshKey]);
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         style={styles.container}
         data={comments}
         renderItem={({ item }) => (
-          <CommentListItem comment={item} onDelete={handleDeleteComment} />
+          <CommentListItem
+            comment={item}
+            onDelete={handleDeleteComment}
+            diaryId={diaryId}
+          />
         )}
         ListHeaderComponent={
           <>

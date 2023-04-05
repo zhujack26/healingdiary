@@ -13,10 +13,12 @@ import { useNavigation } from "@react-navigation/native";
 
 const MakingInput = ({ route }) => {
   const navigation = useNavigation();
-  const { diaryId } = route.params;
+  const { diaryId, parentId } = route.params;
+
   const [text, setText] = useState("");
   const data = {
     diaryId: diaryId,
+    parentId: parentId ? parentId : null,
     content: text,
   };
 
