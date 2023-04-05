@@ -40,40 +40,39 @@ const getEmotionForDate = (date, dateList) => {
   return null;
 };
 
-const CustomDayComponent = ({ date, state, onPress }) => {
-  const [calendarData, setCalendarData] = useState([]);
+const CustomDayComponent = ({ date, state, onPress, calendarData }) => {
   const emotion = getEmotionForDate(date, calendarData);
   const imageUri = emotion
     ? getImageUriFromEmotionCode(emotion.emotionCode)
     : null;
 
-  // const today = new Date();
-  // const currentDate = {
-  //   year: today.getFullYear(),
-  //   month: today.getMonth() + 1,
-  //   day: today.getDate(),
-  // };
+  const today = new Date();
+  const currentDate = {
+    year: today.getFullYear(),
+    month: today.getMonth() + 1,
+    day: today.getDate(),
+  };
 
-  // const isToday = DateCheck(date, currentDate);
-  // const handlePress = () => {
-  //   if (state !== "disabled") {
-  //     onPress(date);
-  //   }
-  // };
+  const isToday = DateCheck(date, currentDate);
+  const handlePress = () => {
+    if (state !== "disabled") {
+      onPress(date);
+    }
+  };
 
   return (
     <View>
-      <TouchableOpacity style={styles.box}>
+      <TouchableOpacity onPress={isToday} style={styles.box}>
         <Text
           style={{
-            // backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
+            backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
             color:
               state === "disabled"
                 ? GlobalColors.colors.gray500
                 : GlobalColors.colors.black500,
             paddingVertical: 3,
             paddingHorizontal: 3,
-            // borderRadius: isToday ? 16 : null,
+            borderRadius: isToday ? 16 : null,
           }}
         >
           {date.day}
@@ -146,6 +145,7 @@ const CalendarView = () => {
         <CustomDayComponent
           date={date}
           state={state}
+          calendarData={calendarData}
           onPress={(day) => {
             console.log("selected day");
             navigation.navigate("calendarDiaryList", {
