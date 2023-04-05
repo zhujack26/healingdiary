@@ -22,7 +22,7 @@ const HeaderRightButtons = ({ navigation }) => {
   useEffect(() => {
     getUserImage();
     getNotice();
-  }, [getUserImage, getNotice]);
+  }, []);
 
   return (
     <View style={{ flexDirection: "row" }}>
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -3,
     right: 5,
+    zIndex: 999,
   },
 });
 
