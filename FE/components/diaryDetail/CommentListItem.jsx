@@ -56,14 +56,13 @@ const CommentListItem = ({ diaryId, comment, onDelete }) => {
       </View>
       {/* 대댓글 */}
       <View style={styles.replyList}>
-        {comment.children && (
-          <FlatList
-            renderItem={({ item }) => (
-              <ReplyListItem item={item} onDelete={onDelete} />
-            )}
-            data={comment?.children}
-          />
-        )}
+        <FlatList
+          data={comment?.children}
+          renderItem={({ item }) => (
+            <ReplyListItem reply={item} onDelete={onDelete} diaryId={diaryId} />
+          )}
+          keyExtractor={(item) => item.commendId}
+        />
       </View>
     </View>
   );
