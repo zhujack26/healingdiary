@@ -62,6 +62,15 @@ export const getClubList = async () => {
   }
 };
 
+export const getMyClubList = async () => {
+  try {
+    const res = await axiosInstance(getConfig("/clubs?all=false"));
+    return res.data;
+  } catch (e) {
+    console.log("getMyClubList", e);
+  }
+};
+
 export const inviteGroupMember = async (groupId, memberId) => {
   try {
     const res = await axiosInstance(
