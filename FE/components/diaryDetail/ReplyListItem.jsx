@@ -2,6 +2,7 @@ import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { timeAgo } from "../../util/time";
 
 const ReplyListItem = ({ reply, onDelete, diaryId }) => {
   const navigation = useNavigation();
@@ -29,7 +30,9 @@ const ReplyListItem = ({ reply, onDelete, diaryId }) => {
         </View>
       </View>
       <View style={styles.etc}>
-        <Text style={[styles.regular, styles.time]}>1일전</Text>
+        <Text style={[styles.regular, styles.time]}>
+          {timeAgo(reply?.datetime)}
+        </Text>
         <Pressable onPress={navigateToMakingInput}>
           <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
         </Pressable>

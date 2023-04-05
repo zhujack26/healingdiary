@@ -9,6 +9,7 @@ import {
 import { GlobalColors } from "../../constants/color";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { timeAgo } from "../../util/time";
 import ReplyListItem from "./ReplyListItem";
 
 const CommentListItem = ({ diaryId, comment, onDelete }) => {
@@ -35,9 +36,7 @@ const CommentListItem = ({ diaryId, comment, onDelete }) => {
             />
           </View>
           <View style={styles.commentContainer}>
-            {/* 닉네임 */}
             <Text style={[styles.bold, styles.text]}>{comment?.nickname}</Text>
-            {/* 댓글 */}
             <Text style={[styles.regular, styles.text2]}>
               {comment?.content}
             </Text>
@@ -45,7 +44,9 @@ const CommentListItem = ({ diaryId, comment, onDelete }) => {
         </View>
         {/* 시간경과, 답글달기 */}
         <View style={styles.etc}>
-          <Text style={[styles.regular, styles.time]}>1일전</Text>
+          <Text style={[styles.regular, styles.time]}>
+            {timeAgo(comment?.datetime)}
+          </Text>
           <Pressable onPress={navigateToMakingInput}>
             <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
           </Pressable>
@@ -61,7 +62,7 @@ const CommentListItem = ({ diaryId, comment, onDelete }) => {
           renderItem={({ item }) => (
             <ReplyListItem reply={item} onDelete={onDelete} diaryId={diaryId} />
           )}
-          keyExtractor={(item) => item.commendId}
+          keyExtractor={(item) => item.commentId}
         />
       </View>
     </View>
