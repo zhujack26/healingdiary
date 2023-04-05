@@ -1,5 +1,14 @@
-import { getConfig, getDataConfig } from "./config";
+import { getConfig, getDataConfig, postFormConfig } from "./config";
 import axiosInstance from "./interceptor";
+
+export const createDiary = async (data) => {
+  try {
+    const res = await axiosInstance(postFormConfig("/diaries", data));
+    return res;
+  } catch (e) {
+    console.log("createDiary", e);
+  }
+};
 
 export const getDetailDiary = async () => {
   try {
@@ -9,8 +18,6 @@ export const getDetailDiary = async () => {
     console.log("getDetailDiary", e);
   }
 };
-
-//일기 감정 분석
 
 export const getRecommendDiary = async () => {
   try {

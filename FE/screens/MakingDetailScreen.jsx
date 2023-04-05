@@ -25,10 +25,19 @@ const MakingDetailScreen = ({ navigation, route }) => {
           {...props}
           visible={completeButtonVisible}
           navigation={navigation}
+          selectedTags={selectedTags}
+          emotionResponse={emotionResponse}
+          selectedImage={selectedImage}
         />
       ),
     });
-  }, [navigation, completeButtonVisible]);
+  }, [
+    navigation,
+    completeButtonVisible,
+    selectedTags,
+    emotionResponse,
+    selectedImage,
+  ]);
 
   return (
     <View style={styles.container}>
