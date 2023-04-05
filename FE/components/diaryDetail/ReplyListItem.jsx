@@ -11,6 +11,7 @@ const ReplyListItem = ({
   callReplyDeleteComment,
 }) => {
   const navigation = useNavigation();
+
   const navigateToMakingInput = () => {
     navigation.navigate("MakingInput", {
       diaryId: diaryId,
