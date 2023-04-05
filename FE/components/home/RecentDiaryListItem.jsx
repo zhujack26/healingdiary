@@ -16,12 +16,12 @@ const RecentDiaryListItem = ({ item, navigateToScreen }) => {
     <View style={styles.recentDiary}>
       <Pressable
         onPress={() => {
-          navigateToScreen("diaryDetail", item.id);
+          navigateToScreen("diaryDetail", item.diaryId);
         }}
       >
-        <Image source={item?.image} style={styles.image} />
+        <Image source={{ uri: item?.imageUrl }} style={styles.image} />
         <View style={styles.hashtag}>
-          <Text style={styles.tagText}>#{item?.hashtags}</Text>
+          <Text style={styles.tagText}>#{item?.emotion.value}</Text>
         </View>
       </Pressable>
     </View>

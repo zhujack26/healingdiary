@@ -58,3 +58,12 @@ export const getSearchTagDiary = async (tag) => {
     console.log("getSearchTagDiary", e);
   }
 };
+
+export const getRecentDiary = async () => {
+  try {
+    const res = await axiosInstance("/diaries?all=false&size=5");
+    return res.data;
+  } catch (e) {
+    console.log("getRecentDiary", e);
+  }
+};

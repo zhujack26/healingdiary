@@ -8,12 +8,11 @@ const { width } = Dimensions.get("window");
 
 const RecentDiary = ({ diaries, navigateToScreen }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
-
   return (
     <>
       <Title>최근 일기</Title>
       <Animated.FlatList
-        data={diaries}
+        data={diaries.content}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <RecentDiaryListItem
