@@ -6,12 +6,11 @@ import { timeAgo } from "../../util/time";
 
 const ReplyListItem = ({
   reply,
-  callDeleteComment,
   diaryId,
+  memberId,
   callReplyDeleteComment,
 }) => {
   const navigation = useNavigation();
-
   const navigateToMakingInput = () => {
     navigation.navigate("MakingInput", {
       diaryId: diaryId,
@@ -37,14 +36,16 @@ const ReplyListItem = ({
         <Pressable onPress={navigateToMakingInput}>
           <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
         </Pressable>
-        <Pressable
-          style={styles.trash}
-          onPress={() => {
-            callReplyDeleteComment(reply?.commentId);
-          }}
-        >
-          <AntDesign name="delete" size={12} color="gray" />
-        </Pressable>
+        {memberId === reply?.memberId.toString() && (
+          <Pressable
+            style={styles.trash}
+            onPress={() => {
+              callReplyDeleteComment(reply?.commentId);
+            }}
+          >
+            <AntDesign name="delete" size={12} color="gray" />
+          </Pressable>
+        )}
       </View>
     </View>
   );

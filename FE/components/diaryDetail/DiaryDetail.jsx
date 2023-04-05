@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { deleteComment, getDiaryComment } from "../../api/comment";
 import { getDiaryDetail } from "../../api/diary";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const DiaryDetail = ({ diaryId, refreshKey }) => {
   const navigation = useNavigation();
@@ -21,6 +22,7 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [comments, setComments] = useState([]);
   const [diary, setDiary] = useState({});
+  const [memberId, setMemberId] = useState("");
 
   const navigationGoBack = () => {
     navigation.goBack();
@@ -84,6 +86,10 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
     }
   };
 
+  const getMemberID = async () => {
+    setMemberId(await AsyncStorage.getItem("id"));
+  };
+
   useEffect(() => {
     return sound
       ? () => {
@@ -95,6 +101,7 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
   useEffect(() => {
     callGetDiaryComment();
     callGetDiaryDetail();
+    getMemberID();
   }, []);
 
   useEffect(() => {
@@ -112,6 +119,7 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
             diaryId={diaryId}
             callDeleteComment={callDeleteComment}
             callReplyDeleteComment={callReplyDeleteComment}
+            memberId={memberId}
           />
         )}
         ListHeaderComponent={

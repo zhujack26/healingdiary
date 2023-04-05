@@ -17,6 +17,7 @@ const CommentListItem = ({
   comment,
   callDeleteComment,
   callReplyDeleteComment,
+  memberId,
 }) => {
   const navigation = useNavigation();
 
@@ -51,12 +52,14 @@ const CommentListItem = ({
           <Pressable onPress={navigateToMakingInput}>
             <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
           </Pressable>
-          <Pressable
-            style={styles.trash}
-            onPress={() => callDeleteComment(comment?.commentId)}
-          >
-            <AntDesign name="delete" size={12} color="gray" />
-          </Pressable>
+          {memberId === comment?.memberId.toString() && (
+            <Pressable
+              style={styles.trash}
+              onPress={() => callDeleteComment(comment?.commentId)}
+            >
+              <AntDesign name="delete" size={12} color="gray" />
+            </Pressable>
+          )}
         </View>
       </View>
       {/* 대댓글 */}
@@ -67,8 +70,8 @@ const CommentListItem = ({
             <ReplyListItem
               reply={item}
               diaryId={diaryId}
-              callDeleteComment={callDeleteComment}
               callReplyDeleteComment={callReplyDeleteComment}
+              memberId={memberId}
             />
           )}
           keyExtractor={(item) => item.commentId}
