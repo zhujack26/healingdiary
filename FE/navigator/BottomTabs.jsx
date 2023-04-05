@@ -66,7 +66,9 @@ const BottomTabs = () => {
         name="Home"
         component={HomeScreen}
         options={({ navigation }) => ({
-          headerRight: () => <HeaderRightButtons navigation={navigation} />,
+          headerRight: () => (
+            <HeaderRightButtons navigation={navigation} refresh={Date.now()} />
+          ),
           headerShadowVisible: false,
           headerStyle: headerStyle,
           headerTitle: () => <Header />,
