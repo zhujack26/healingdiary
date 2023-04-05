@@ -1,7 +1,8 @@
 import DiaryDetail from "../components/diaryDetail/DiaryDetail";
 
 const DiaryDetailScreen = ({ route }) => {
-  return <DiaryDetail route={route} />;
+  const { diaryId } = route.params;
+  return <DiaryDetail diaryId={diaryId} />;
 };
 
 export default DiaryDetailScreen;

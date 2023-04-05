@@ -10,9 +10,9 @@ export const createDiary = async (data) => {
   }
 };
 
-export const getDetailDiary = async () => {
+export const getDiaryDetail = async (diaryId) => {
   try {
-    const res = await axiosInstance(getDataConfig("/diaries/${diaryID}"));
+    const res = await axiosInstance(getDataConfig(`/diaries/${diaryId}`));
     return res.data;
   } catch (e) {
     console.log("getDetailDiary", e);

@@ -9,15 +9,12 @@ const DiaryDetailThumbAndPlayer = ({
   playSound,
   stopSound,
   isPlaying,
+  diary,
 }) => {
   return (
     <>
       <View style={styles.header}>
-        <Image
-          style={styles.image}
-          source={require("../../assets/images/SAMPLE3.png")}
-        />
-
+        <Image style={styles.image} source={{ uri: diary.imageUrl }} />
         <Pressable style={styles.circle}>
           <Ionicons
             name={isPlaying ? "ios-stop" : "play"}

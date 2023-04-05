@@ -11,143 +11,30 @@ import DiaryDetailThumbAndPlayer from "./DiaryDetailThumbAndPlayer";
 import CommentListItem from "./CommentListItem";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { getDiaryComment } from "../../api/comment";
+import { getDiaryDetail } from "../../api/diary";
 
-const DATA = {
-  createdDate: "2023-03-23T13:47:02.140Z",
-  diaryId: 0,
-  emotion: {
-    code: 0,
-    value: "string",
-  },
-  imageUrl: require("../../assets/images/SAMPLE1.png"),
-  recordUrl: require("../../assets/sounds/SAMPLE1.mp3"),
-  tags: ["해시태그", "해그태시", "해해해시"],
-};
-
-const comments = [
-  {
-    children: [
-      {
-        commentId: 3,
-        memberId: 1,
-        parentId: 1,
-        memberImageUrl: "회원1.jpg",
-        nickname: "닉넴",
-        datetime: "2023-03-24T02:00:00",
-        content: "댓글1",
-        children: null,
-      },
-    ],
-    commentId: "1",
-    content: "안녕하세요 ssafy 입니다. 잘부탁드립니다.",
-    datetime: "2023-03-23T13:47:02.140Z",
-    memberId: 0,
-    memberImageUrl: "",
-    nickname: "닉네임임",
-    parentId: 1,
-  },
-  {
-    children: [
-      {
-        commentId: 3,
-        memberId: 1,
-        parentId: 1,
-        memberImageUrl: "회원1.jpg",
-        nickname: "닉넴",
-        datetime: "2023-03-24T02:00:00",
-        content: "댓글2",
-        children: null,
-      },
-    ],
-    commentId: "2",
-    content: "두번째 댓글임",
-    datetime: "2023-03-23T13:47:02.140Z",
-    memberId: 1,
-    memberImageUrl: "",
-    nickname: "닉네임임",
-    parentId: 2,
-  },
-  {
-    children: [
-      {
-        commentId: 3,
-        memberId: 1,
-        parentId: 1,
-        memberImageUrl: "회원1.jpg",
-        nickname: "닉넴",
-        datetime: "2023-03-24T02:00:00",
-        content: "댓글3",
-        children: null,
-      },
-    ],
-    commentId: "3",
-    content: "세번째 댓글임",
-    datetime: "2023-03-23T13:47:02.140Z",
-    memberId: 2,
-    memberImageUrl: "",
-    nickname: "닉네임임",
-    parentId: 3,
-  },
-  {
-    children: null,
-    commentId: "1",
-    content: "댓글이지",
-    datetime: "2023-03-23T13:47:02.140Z",
-    memberId: 0,
-    memberImageUrl: "",
-    nickname: "닉네임임",
-    parentId: 1,
-  },
-
-  {
-    children: [
-      {
-        commentId: 3,
-        memberId: 1,
-        parentId: 1,
-        memberImageUrl: "회원1.jpg",
-        nickname: "닉넴",
-        datetime: "2023-03-24T02:00:00",
-        content: "댓글",
-        children: null,
-      },
-      {
-        commentId: 4,
-        memberId: 1,
-        parentId: 1,
-        memberImageUrl: "회원1.jpg",
-        nickname: "닉넴",
-        datetime: "2023-03-24T02:00:00",
-        content: "댓글",
-        children: null,
-      },
-    ],
-    commentId: "1",
-    content: "댓글이지",
-    datetime: "2023-03-23T13:47:02.140Z",
-    memberId: 0,
-    memberImageUrl: "",
-    nickname: "닉네임임",
-    parentId: 1,
-  },
-];
-
-const DiaryDetail = ({ route }) => {
+const DiaryDetail = ({ diaryId }) => {
   const navigation = useNavigation();
-  const id = route.params.id;
-
   const [sound, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [diary, setDiary] = useState({});
 
   const navigationGoBack = () => {
     navigation.goBack();
   };
 
   const playSound = async () => {
-    const { sound } = await Audio.Sound.createAsync(DATA.recordUrl);
+    const { sound } = await Audio.Sound.createAsync({ uri: diary.recordUrl });
     setSound(sound);
     await sound.playAsync();
     setIsPlaying(true);
+    sound.setOnPlaybackStatusUpdate((status) => {
+      if (status.didJustFinish) {
+        setIsPlaying(false);
+      }
+    });
   };
 
   const stopSound = async () => {
@@ -157,6 +44,24 @@ const DiaryDetail = ({ route }) => {
     }
   };
 
+  const handleDeleteComment = (commentId) => {
+    console.log(`댓글 ID ${commentId}가 삭제되었습니다.`);
+  };
+
+  const navigateToMakingInput = () => {
+    navigation.navigate("MakingInput");
+  };
+
+  const callGetDiaryDetail = async () => {
+    const res = await getDiaryDetail(diaryId);
+    setDiary(res);
+  };
+
+  const callGetDiaryComment = async () => {
+    const res = await getDiaryComment(diaryId);
+    setComments(res.data.content);
+  };
+
   useEffect(() => {
     return sound
       ? () => {
@@ -164,12 +69,12 @@ const DiaryDetail = ({ route }) => {
         }
       : undefined;
   }, [sound]);
-  const handleDeleteComment = (commentId) => {
-    console.log(`댓글 ID ${commentId}가 삭제되었습니다.`);
-  };
-  const navigateToMakingInput = () => {
-    navigation.navigate("MakingInput");
-  };
+
+  useEffect(() => {
+    callGetDiaryComment();
+    callGetDiaryDetail();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -185,8 +90,9 @@ const DiaryDetail = ({ route }) => {
               playSound={playSound}
               stopSound={stopSound}
               isPlaying={isPlaying}
+              diary={diary}
             />
-            <Hashtag tags={DATA.tags} />
+            <Hashtag tags={diary?.tags} />
             <TouchableOpacity onPress={navigateToMakingInput}>
               <Text style={styles.reply}>댓글 달기</Text>
             </TouchableOpacity>
