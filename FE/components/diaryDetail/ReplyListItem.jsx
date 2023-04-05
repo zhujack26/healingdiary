@@ -4,7 +4,12 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { timeAgo } from "../../util/time";
 
-const ReplyListItem = ({ reply, onDelete, diaryId }) => {
+const ReplyListItem = ({
+  reply,
+  callDeleteComment,
+  diaryId,
+  callReplyDeleteComment,
+}) => {
   const navigation = useNavigation();
 
   const navigateToMakingInput = () => {
@@ -12,10 +17,6 @@ const ReplyListItem = ({ reply, onDelete, diaryId }) => {
       diaryId: diaryId,
       parentId: reply?.parentId,
     });
-  };
-
-  const handleDelete = () => {
-    onDelete && onDelete(item.reply);
   };
 
   return (
@@ -36,7 +37,12 @@ const ReplyListItem = ({ reply, onDelete, diaryId }) => {
         <Pressable onPress={navigateToMakingInput}>
           <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
         </Pressable>
-        <Pressable style={styles.trash} onPress={handleDelete}>
+        <Pressable
+          style={styles.trash}
+          onPress={() => {
+            callReplyDeleteComment(reply?.commentId);
+          }}
+        >
           <AntDesign name="delete" size={12} color="gray" />
         </Pressable>
       </View>

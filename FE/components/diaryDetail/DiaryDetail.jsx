@@ -4,6 +4,7 @@ import {
   FlatList,
   Text,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Audio } from "expo-av";
 import Hashtag from "./Hashtag";
@@ -11,7 +12,7 @@ import DiaryDetailThumbAndPlayer from "./DiaryDetailThumbAndPlayer";
 import CommentListItem from "./CommentListItem";
 import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { getDiaryComment } from "../../api/comment";
+import { deleteComment, getDiaryComment } from "../../api/comment";
 import { getDiaryDetail } from "../../api/diary";
 
 const DiaryDetail = ({ diaryId, refreshKey }) => {
@@ -44,10 +45,6 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
     }
   };
 
-  const handleDeleteComment = (commentId) => {
-    console.log(`댓글 ID ${commentId}가 삭제되었습니다.`);
-  };
-
   const navigateToMakingInput = () => {
     navigation.navigate("MakingInput", {
       diaryId: diaryId,
@@ -62,6 +59,29 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
   const callGetDiaryComment = async () => {
     const res = await getDiaryComment(diaryId);
     setComments(res.data.content);
+  };
+
+  const callDeleteComment = async (commentId) => {
+    const res = await deleteComment(commentId);
+    if (res.status === 200) {
+      Alert.alert("댓글이 삭제됐습니다.");
+      const updatedComments = comments.filter(
+        (comment) => comment.commentId !== commentId
+      );
+      setComments(updatedComments);
+    } else {
+      Alert.alert("댓글 삭제에 실패했습니다.");
+    }
+  };
+
+  const callReplyDeleteComment = async (commentId) => {
+    const res = await deleteComment(commentId);
+    if (res.status === 200) {
+      Alert.alert("댓글이 삭제됐습니다.");
+      callGetDiaryComment();
+    } else {
+      Alert.alert("댓글 삭제에 실패했습니다.");
+    }
   };
 
   useEffect(() => {
@@ -89,8 +109,9 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
         renderItem={({ item }) => (
           <CommentListItem
             comment={item}
-            onDelete={handleDeleteComment}
             diaryId={diaryId}
+            callDeleteComment={callDeleteComment}
+            callReplyDeleteComment={callReplyDeleteComment}
           />
         )}
         ListHeaderComponent={

@@ -1,7 +1,7 @@
 export const timeAgo = (date) => {
   const seconds = Math.floor((new Date() - new Date(date)) / 1000);
   if (seconds < 60) {
-    return "a few seconds ago";
+    return "몇초전";
   }
 
   const minutes = Math.floor(seconds / 60);

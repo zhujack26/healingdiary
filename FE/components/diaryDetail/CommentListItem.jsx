@@ -12,11 +12,13 @@ import { useNavigation } from "@react-navigation/native";
 import { timeAgo } from "../../util/time";
 import ReplyListItem from "./ReplyListItem";
 
-const CommentListItem = ({ diaryId, comment, onDelete }) => {
+const CommentListItem = ({
+  diaryId,
+  comment,
+  callDeleteComment,
+  callReplyDeleteComment,
+}) => {
   const navigation = useNavigation();
-  const handleDelete = () => {
-    onDelete && onDelete(comment.commentId);
-  };
 
   const navigateToMakingInput = () => {
     navigation.navigate("MakingInput", {
@@ -42,7 +44,6 @@ const CommentListItem = ({ diaryId, comment, onDelete }) => {
             </Text>
           </View>
         </View>
-        {/* 시간경과, 답글달기 */}
         <View style={styles.etc}>
           <Text style={[styles.regular, styles.time]}>
             {timeAgo(comment?.datetime)}
@@ -50,7 +51,10 @@ const CommentListItem = ({ diaryId, comment, onDelete }) => {
           <Pressable onPress={navigateToMakingInput}>
             <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
           </Pressable>
-          <Pressable style={styles.trash} onPress={handleDelete}>
+          <Pressable
+            style={styles.trash}
+            onPress={() => callDeleteComment(comment?.commentId)}
+          >
             <AntDesign name="delete" size={12} color="gray" />
           </Pressable>
         </View>
@@ -60,7 +64,12 @@ const CommentListItem = ({ diaryId, comment, onDelete }) => {
         <FlatList
           data={comment?.children}
           renderItem={({ item }) => (
-            <ReplyListItem reply={item} onDelete={onDelete} diaryId={diaryId} />
+            <ReplyListItem
+              reply={item}
+              diaryId={diaryId}
+              callDeleteComment={callDeleteComment}
+              callReplyDeleteComment={callReplyDeleteComment}
+            />
           )}
           keyExtractor={(item) => item.commentId}
         />
