@@ -2,7 +2,7 @@ import { StyleSheet, FlatList, View, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { GlobalColors } from "../../constants/color";
 
-import GroupDiaryListItem from "./GroupDiaryListItem";
+import GroupItem from "../group/GroupItem";
 import GroupIntroduction from "./GroupIntroduction";
 import ExitModal from "./ExitModal";
 
