@@ -62,6 +62,15 @@ export const getClubList = async () => {
   }
 };
 
+export const getMyClubList = async () => {
+  try {
+    const res = await axiosInstance(getConfig("/clubs?all=false"));
+    return res.data;
+  } catch (e) {
+    console.log("getMyClubList", e);
+  }
+};
+
 export const inviteGroupMember = async (groupId, memberId) => {
   try {
     const res = await axiosInstance(
@@ -119,5 +128,16 @@ export const rejectAndExitMember = async (data) => {
     return res;
   } catch (e) {
     console.log("callMemberReject", e);
+  }
+};
+
+export const searchGroup = async (keyword) => {
+  try {
+    const res = await axiosInstance(
+      getConfig(`/clubs?all=true&keyword=${keyword}`)
+    );
+    return res;
+  } catch (e) {
+    console.log("searchGroup", e);
   }
 };
