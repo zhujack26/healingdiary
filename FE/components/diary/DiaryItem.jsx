@@ -5,21 +5,49 @@ import {
   Image,
   Dimensions,
   Pressable,
+  ActivityIndicator,
 } from "react-native";
 import { GlobalColors } from "./../../constants/color";
+import { useState } from "react";
 
 const { width, height } = Dimensions.get("window");
 
 const DiaryItem = ({ content, navigation }) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
+
   return (
     <Pressable style={styles.container}>
       <View style={styles.imageContainer}>
-        <Image source={{ uri: content?.imageUrl }} style={styles.image} />
-        <View style={styles.hashtags}>
-          <View style={styles.hashtag}>
-            <Text style={styles.tagText}>#{content?.emotion.value}</Text>
+        {isLoading && (
+          <ActivityIndicator
+            style={StyleSheet.absoluteFill}
+            color={GlobalColors.colors.primary500}
+            size="large"
+          />
+        )}
+        <Image
+          source={{ uri: content?.imageUrl }}
+          style={styles.image}
+          onLoadEnd={handleImageLoad}
+        />
+        {!isLoading && (
+          <View style={styles.hashtags}>
+            {!content?.tags.includes(content?.emotion.value) && (
+              <View style={styles.hashtag}>
+                <Text style={styles.tagText}>#{content?.emotion.value}</Text>
+              </View>
+            )}
+            {content?.tags.map((hashtag, index) => (
+              <View style={styles.hashtag} key={index}>
+                <Text style={styles.tagText}>#{hashtag}</Text>
+              </View>
+            ))}
           </View>
-        </View>
+        )}
       </View>
     </Pressable>
   );

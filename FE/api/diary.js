@@ -31,3 +31,12 @@ export const getSearchDiary = async (keyword) => {
     console.log("getSearchDiary", e);
   }
 };
+
+export const getSearchTagDiary = async (tag) => {
+  try {
+    const res = await axiosInstance(getConfig(`/diaries?all=true&tag=${tag}`));
+    return res;
+  } catch (e) {
+    console.log("getSearchTagDiary", e);
+  }
+};

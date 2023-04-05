@@ -29,7 +29,7 @@ const Search = () => {
     const searchComponent = [
       <SearchDiary search={search} />,
       <SearchGroup search={search} />,
-      <SearchTag />,
+      <SearchTag search={search} />,
     ];
     return searchComponent[activeIndex];
   };
