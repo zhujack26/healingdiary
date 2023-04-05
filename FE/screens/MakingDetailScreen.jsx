@@ -7,14 +7,12 @@ import { useState, useEffect } from "react";
 const MakingDetailScreen = ({ navigation, route }) => {
   const { response, selectedImage } = route.params;
   const [emotionResponse, setEmotionResponse] = useState(response);
-  console.log("check1", emotionResponse);
-  console.log("check1", selectedImage);
   const [completeButtonVisible, setCompleteButtonVisible] = useState(false);
   const toggleCompleteButtonVisibility = (visible = true) => {
     setCompleteButtonVisible(visible);
   };
   const [selectedTags, setSelectedTags] = useState([]);
-
+  console.log("check1:", selectedTags);
   const handleSelectedTags = (tags) => {
     setSelectedTags(tags);
   };
@@ -38,7 +36,7 @@ const MakingDetailScreen = ({ navigation, route }) => {
     emotionResponse,
     selectedImage,
   ]);
-
+  console.log("check2:", selectedTags);
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
