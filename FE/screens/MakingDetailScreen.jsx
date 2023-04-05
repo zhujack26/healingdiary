@@ -5,14 +5,19 @@ import CompleteButton from "../components/making/CompleteButton";
 import { useState, useEffect } from "react";
 
 const MakingDetailScreen = ({ navigation, route }) => {
-  const { response } = route.params;
+  const { response, selectedImage } = route.params;
   const [emotionResponse, setEmotionResponse] = useState(response);
   console.log("check1", emotionResponse);
+  console.log("check1", selectedImage);
   const [completeButtonVisible, setCompleteButtonVisible] = useState(false);
   const toggleCompleteButtonVisibility = (visible = true) => {
     setCompleteButtonVisible(visible);
   };
+  const [selectedTags, setSelectedTags] = useState([]);
 
+  const handleSelectedTags = (tags) => {
+    setSelectedTags(tags);
+  };
   useEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
@@ -31,6 +36,7 @@ const MakingDetailScreen = ({ navigation, route }) => {
         <AddHashtag
           onToggleCompleteButtonVisibility={toggleCompleteButtonVisibility}
           emotionResponse={emotionResponse}
+          onSelectedTags={handleSelectedTags}
         />
       </View>
     </View>

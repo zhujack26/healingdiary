@@ -12,6 +12,11 @@ const MakingScreen = ({ navigation }) => {
   const toggleNextButtonVisibility = (visible = true) => {
     setNextButtonVisible(visible);
   };
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleSelectedImage = (image) => {
+    setSelectedImage(image);
+  };
   useEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
@@ -20,6 +25,7 @@ const MakingScreen = ({ navigation }) => {
           visible={nextButtonVisible}
           navigation={navigation}
           response={response}
+          selectedImage={selectedImage}
         />
       ),
     });
@@ -28,7 +34,7 @@ const MakingScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
-        <AddFile />
+        <AddFile onSelectedImage={handleSelectedImage} />
         <TimerRecord
           onToggleNextButtonVisibility={toggleNextButtonVisibility}
           onResponse={setResponse}

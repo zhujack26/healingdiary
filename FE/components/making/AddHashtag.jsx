@@ -15,15 +15,20 @@ const DATA = [
   { id: 4, keyword: "기쁨" },
   { id: 5, keyword: "행복" },
 ];
-const AddHashtag = ({ onToggleCompleteButtonVisibility, emotionResponse }) => {
+const AddHashtag = ({
+  onToggleCompleteButtonVisibility,
+  emotionResponse,
+  onSelectedTags,
+}) => {
   useEffect(() => {
+    onSelectedTags(selectedTags);
     console.log("check", emotionResponse);
     if (selectedTags.some((tag) => DATA.includes(tag))) {
       onToggleCompleteButtonVisibility(true);
     } else {
       onToggleCompleteButtonVisibility(false);
     }
-  }, [selectedTags, onToggleCompleteButtonVisibility]);
+  }, [selectedTags, onSelectedTags, onToggleCompleteButtonVisibility]);
   const [selectedTags, setSelectedTags] = useState(() => {
     if (emotionResponse) {
       const { emotionCode, value } = emotionResponse.emotion;
@@ -107,6 +112,15 @@ const AddHashtag = ({ onToggleCompleteButtonVisibility, emotionResponse }) => {
       return null;
     }
   };
+  // const getToken = async () => {
+  //   try {
+  //     const token = await AsyncStorage.getItem("jwtToken");
+  //     console.log("확인1");
+  //     return token;
+  //   } catch (error) {
+  //     console.error("Error getting token:", error);
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
