@@ -8,7 +8,6 @@ export const GlobalColors = {
     gray500: "#9A9797",
     gray600: "#A4A4A4",
     white500: "#ffffff",
-    black500: "#000000",
     background500: "#f3f3f3",
     red500: "#EF4444",
   },

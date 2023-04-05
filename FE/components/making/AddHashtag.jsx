@@ -102,8 +102,6 @@ const AddHashtag = ({
           * 해시태그는 최대 3개까지 가능합니다 *
         </Text>
       );
-    } else {
-      null;
     }
   };
   const warningTextEmotion = () => {
@@ -113,8 +111,6 @@ const AddHashtag = ({
           * 감정은 최소 1개를 선택해야 합니다. *
         </Text>
       );
-    } else {
-      return null;
     }
   };
 

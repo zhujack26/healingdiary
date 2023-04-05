@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     marginBottom: 16,
-    borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
   },

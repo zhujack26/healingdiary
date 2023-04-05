@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
   inform: {
     alignItems: "center",
     top: 100,
-    width: 400,
     width: "100%",
     height: "90%",
     backgroundColor: GlobalColors.colors.white500,
