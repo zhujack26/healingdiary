@@ -130,3 +130,14 @@ export const rejectAndExitMember = async (data) => {
     console.log("callMemberReject", e);
   }
 };
+
+export const searchGroup = async (keyword) => {
+  try {
+    const res = await axiosInstance(
+      getConfig(`/clubs?all=true&keyword=${keyword}`)
+    );
+    return res;
+  } catch (e) {
+    console.log("searchGroup", e);
+  }
+};
