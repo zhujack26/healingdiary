@@ -6,20 +6,15 @@ import RecentDiaryListItem from "./RecentDiaryListItem";
 
 const { width } = Dimensions.get("window");
 
-const RecentDiary = ({ diaries, navigateToScreen }) => {
+const RecentDiary = ({ diaries }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   return (
     <>
       <Title>최근 일기</Title>
       <Animated.FlatList
         data={diaries.content}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <RecentDiaryListItem
-            item={item}
-            navigateToScreen={navigateToScreen}
-          />
-        )}
+        keyExtractor={(item) => item.diaryId}
+        renderItem={({ item }) => <RecentDiaryListItem item={item} />}
         horizontal
         showsHorizontalScrollIndicator={false}
         decelerationRate={0.8}

@@ -13,7 +13,6 @@ import { getRecentDiary } from "./../../api/diary";
 const { width, height } = Dimensions.get("window");
 
 const Home = () => {
-  const navigation = useNavigation();
   const initialDiaries = useRef([]);
   const initialGroups = useRef([]);
   const initialRecentDiaries = useRef([]);
@@ -21,10 +20,6 @@ const Home = () => {
   const [diaries, setDiaries] = useState([]);
   const [groups, setGroups] = useState([]);
   const [recentDiaries, setRecentDiaries] = useState([]);
-
-  const navigateToScreen = (screen, id) => {
-    navigation.navigate(screen, { id: id });
-  };
 
   useFocusEffect(
     useCallback(() => {
@@ -66,12 +61,9 @@ const Home = () => {
   return (
     <BottomTabContainer>
       <ScrollView style={styles.container}>
-        <RecommendGroup groups={groups} navigateToScreen={navigateToScreen} />
-        <RecommendDiary diaries={diaries} navigateToScreen={navigateToScreen} />
-        <RecentDiary
-          diaries={recentDiaries}
-          navigateToScreen={navigateToScreen}
-        />
+        <RecommendGroup groups={groups} />
+        <RecommendDiary diaries={diaries} />
+        <RecentDiary diaries={recentDiaries} />
       </ScrollView>
     </BottomTabContainer>
   );

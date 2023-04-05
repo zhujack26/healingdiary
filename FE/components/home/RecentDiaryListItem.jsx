@@ -11,12 +11,13 @@ import { GlobalColors } from "../../constants/color";
 
 const { width } = Dimensions.get("window");
 
-const RecentDiaryListItem = ({ item, navigateToScreen }) => {
+const RecentDiaryListItem = ({ item }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.recentDiary}>
       <Pressable
         onPress={() => {
-          navigateToScreen("diaryDetail", item.diaryId);
+          navigation.navigate("diaryDetail", { diaryId: item.diaryId });
         }}
       >
         <Image source={{ uri: item?.imageUrl }} style={styles.image} />
