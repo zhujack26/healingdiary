@@ -32,7 +32,7 @@ const CalendarDiaryListItem = ({ content }) => {
           <Image source={{ uri: CALM }} style={styles.emotionImage} />
         )}
         {content?.emotion.emotionCode === 4 && (
-          <Image source={{ uri: PLEASURE }} />
+          <Image source={{ uri: PLEASURE }} style={styles.emotionImage} />
         )}
         {content?.emotion.emotionCode === 5 && (
           <Image source={{ uri: HAPPY }} style={styles.emotionImage} />
