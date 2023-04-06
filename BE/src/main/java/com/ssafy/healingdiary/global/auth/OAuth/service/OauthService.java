@@ -47,10 +47,11 @@ public class OauthService {
 
         String memberId = jwtTokenizer.getId(jwtToken);
 
-        redisUtil.dataExpirationsInput(memberId,refreshToken,7);
+        redisUtil.dataExpirationsInput(memberId, refreshToken, 7);
         return cookieUtil.HandlerMethod(refreshToken, LoginResponse.toEntity(foundMember, jwtToken));
 
     }
+
     public ResponseEntity<LoginResponse> kakaoOauthLogin(String accesstoken) throws JsonProcessingException {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
         String memberEmail = "KAKAO_" + kakaoOauthTokenResDto.getKakaoOauthTokenResponse().getEmail();
@@ -64,11 +65,12 @@ public class OauthService {
 
         String memberId = jwtTokenizer.getId(jwtToken);
 
-        redisUtil.dataExpirationsInput(memberId,refreshToken,7);
+        redisUtil.dataExpirationsInput(memberId, refreshToken, 7);
         return cookieUtil.HandlerMethod(refreshToken, LoginResponse.toEntity(foundMember, jwtToken));
 
 
     }
+
     public LoginResponse signUp(String accesstoken, SignupReqDto signupReqDto) throws JsonProcessingException {
         if (signupReqDto.getProvider().equals("GOOGLE")) {
             return this.googleSignUp(accesstoken, signupReqDto);
@@ -100,10 +102,11 @@ public class OauthService {
 
         String memberId = jwtTokenizer.getId(jwtToken);
 
-        redisUtil.dataExpirationsInput(memberId,refreshToken,7);
+        redisUtil.dataExpirationsInput(memberId, refreshToken, 7);
 
         return LoginResponse.toEntity(saveUser, jwtToken);
     }
+
     public LoginResponse kakaoSignup(String accesstoken, SignupReqDto signupReqDto)
             throws JsonProcessingException {
         KakaoOauthTokenResDto kakaoOauthTokenResDto = this.kakaoOauthCheckToken(accesstoken);
@@ -123,7 +126,7 @@ public class OauthService {
 
         String memberId = jwtTokenizer.getId(jwtToken);
 
-        redisUtil.dataExpirationsInput(memberId,refreshToken,7);
+        redisUtil.dataExpirationsInput(memberId, refreshToken, 7);
 
         return LoginResponse.toEntity(saveUser, jwtToken);
     }
@@ -143,6 +146,7 @@ public class OauthService {
 
         return objectMapper.readValue(response.getBody(), GoogleOauthTokenResponse.class);
     }
+
     public KakaoOauthTokenResDto kakaoOauthCheckToken(String accessToken)
             throws JsonProcessingException {
         String KAKAO_USERINFO_REQUEST_URL = "https://kapi.kakao.com/v2/user/me";

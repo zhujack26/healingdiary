@@ -11,5 +11,4 @@ public class KakaoOauthTokenResDto {
     private KakaoOauthTokenResponse kakaoOauthTokenResponse;
 
 
-
 }

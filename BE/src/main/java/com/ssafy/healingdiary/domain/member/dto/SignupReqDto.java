@@ -14,5 +14,4 @@ public class SignupReqDto {
     private String disease;
 
 
-
 }

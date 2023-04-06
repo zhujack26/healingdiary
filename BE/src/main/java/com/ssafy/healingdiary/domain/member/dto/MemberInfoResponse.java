@@ -17,7 +17,7 @@ public class MemberInfoResponse {
 
     private String region;
 
-    public static MemberInfoResponse of(Member member){
+    public static MemberInfoResponse of(Member member) {
         return MemberInfoResponse.builder()
                 .nickname(member.getNickname())
                 .disease(member.getDisease())

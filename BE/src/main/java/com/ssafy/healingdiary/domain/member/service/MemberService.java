@@ -1,9 +1,5 @@
 package com.ssafy.healingdiary.domain.member.service;
 
-import static com.ssafy.healingdiary.global.error.ErrorCode.BAD_REQUEST;
-import static com.ssafy.healingdiary.global.error.ErrorCode.LOG_OUT;
-import static com.ssafy.healingdiary.global.error.ErrorCode.MEMBER_NOT_FOUND;
-
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.dto.MemberInfoResponse;
 import com.ssafy.healingdiary.domain.member.dto.MemberUpdateResponse;
@@ -16,9 +12,6 @@ import com.ssafy.healingdiary.global.jwt.JwtTokenizer;
 import com.ssafy.healingdiary.global.jwt.TokenRegenerateResponse;
 import com.ssafy.healingdiary.global.redis.RedisUtil;
 import com.ssafy.healingdiary.infra.storage.S3StorageClient;
-import java.io.IOException;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +19,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+
+import static com.ssafy.healingdiary.global.error.ErrorCode.*;
 
 @Service
 @Transactional
@@ -53,7 +52,7 @@ public class MemberService {
     }
 
     public MemberUpdateResponse memberUpdate(String providerEmail, String nickname, String disease,
-        String region, MultipartFile file) throws IOException {
+                                             String region, MultipartFile file) throws IOException {
         Member member = memberRepository.findMemberByProviderEmail(providerEmail);
 
         if (member == null) {
@@ -128,16 +127,16 @@ public class MemberService {
         redisUtil.deleteData(memberId);
         //엑세스토큰 재발급
         String newAccessToken = jwtTokenizer.createAccessToken(
-            jwtTokenizer.getUsernameFromToken(refreshTokenInRedis),
-            jwtTokenizer.getRoleListFromToken(refreshTokenInRedis));
+                jwtTokenizer.getUsernameFromToken(refreshTokenInRedis),
+                jwtTokenizer.getRoleListFromToken(refreshTokenInRedis));
         //리프레시토큰 재발급
         String newRefreshToken = jwtTokenizer.createRefreshToken(
-            jwtTokenizer.getUsernameFromToken(refreshTokenInRedis),
-            jwtTokenizer.getRoleListFromToken(refreshTokenInRedis));
+                jwtTokenizer.getUsernameFromToken(refreshTokenInRedis),
+                jwtTokenizer.getRoleListFromToken(refreshTokenInRedis));
 
         redisUtil.dataExpirationsInput(memberId, newRefreshToken, 7);
         TokenRegenerateResponse tokenRegenerateResponse = TokenRegenerateResponse.of(
-            newAccessToken);
+                newAccessToken);
 
         return cookieUtil.TokenCookie(newRefreshToken, tokenRegenerateResponse);
     }
