@@ -36,7 +36,7 @@ const GroupSetting = ({
       <Pressable
         style={styles.settingList}
         onPress={() =>
-          navigateAndCloseModal("groupMember", { groupId: groupId })
+          navigateAndCloseModal("groupMember", { groupId: groupId, host: host })
         }
       >
         <Text style={styles.settingListText}>소모임 멤버</Text>

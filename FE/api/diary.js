@@ -10,9 +10,9 @@ export const createDiary = async (data) => {
   }
 };
 
-export const getDetailDiary = async () => {
+export const getDiaryDetail = async (diaryId) => {
   try {
-    const res = await axiosInstance(getDataConfig("/diaries/${diaryID}"));
+    const res = await axiosInstance(getDataConfig(`/diaries/${diaryId}`));
     return res.data;
   } catch (e) {
     console.log("getDetailDiary", e);
@@ -59,6 +59,15 @@ export const getSearchTagDiary = async (tag) => {
   }
 };
 
+export const getRecentDiary = async () => {
+  try {
+    const res = await axiosInstance("/diaries?all=false&size=5");
+    return res.data;
+  } catch (e) {
+    console.log("getRecentDiary", e);
+  }
+};
+
 export const getCalendarDiary = async (year, month) => {
   try {
     const res = await axiosInstance(
@@ -78,5 +87,14 @@ export const getStatisticsDiary = async (year, month) => {
     return res.data;
   } catch (e) {
     console.log("getCalendarDiary", e);
+  }
+export const getCalendarDetailDiary = async (year, month, day) => {
+  try {
+    const res = await axiosInstance(
+      getConfig(`/diaries?all=false&year=${year}&month=${month}&day=${day}`)
+    );
+    return res;
+  } catch (e) {
+    console.log("getCalendarDetailDiary", e);
   }
 };

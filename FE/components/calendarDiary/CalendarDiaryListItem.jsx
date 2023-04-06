@@ -7,21 +7,41 @@ import {
   Pressable,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
+import { BAD, CALM, HAPPY, PLEASURE, UNHAPPY } from "../../constants/emtion";
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 
 const CalendarDiaryListItem = ({ content }) => {
+  const navigation = useNavigation();
   return (
-    <Pressable style={styles.diary}>
+    <Pressable
+      style={styles.diary}
+      onPress={() => {
+        navigation.navigate("diaryDetail", { diaryId: content.diaryId });
+      }}
+    >
       <View style={styles.date}>
-        <Text style={styles.days}>{content.createdDate.slice(8, 10)}</Text>
-        <Text style={styles.dayOf}>일</Text>
-        <Text>{content.emotion.value}</Text>
+        {content?.emotion.emotionCode === 1 && (
+          <Image source={{ uri: UNHAPPY }} style={styles.emotionImage} />
+        )}
+        {content?.emotion.emotionCode === 2 && (
+          <Image source={{ uri: BAD }} style={styles.emotionImage} />
+        )}
+        {content?.emotion.emotionCode === 3 && (
+          <Image source={{ uri: CALM }} style={styles.emotionImage} />
+        )}
+        {content?.emotion.emotionCode === 4 && (
+          <Image source={{ uri: PLEASURE }} />
+        )}
+        {content?.emotion.emotionCode === 5 && (
+          <Image source={{ uri: HAPPY }} style={styles.emotionImage} />
+        )}
       </View>
 
       <View style={styles.imageContainer}>
         <Image
-          source={content.imageUrl}
+          source={{ uri: content?.imageUrl }}
           style={styles.image}
           resizeMode="cover"
         />
@@ -48,6 +68,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     marginBottom: 8,
+  },
+
+  emotionImage: {
+    width: 45,
+    height: 45,
   },
 
   date: {

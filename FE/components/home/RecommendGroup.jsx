@@ -16,7 +16,7 @@ const NotRecommendDiary = () => {
   );
 };
 
-const RecommendGroup = ({ groups, navigateToScreen }) => {
+const RecommendGroup = ({ groups }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   return (
     <>
@@ -25,12 +25,7 @@ const RecommendGroup = ({ groups, navigateToScreen }) => {
       <Animated.FlatList
         data={groups.content?.slice(0, 3)}
         keyExtractor={(item) => item.clubId}
-        renderItem={({ item }) => (
-          <RecommentGroupListItem
-            item={item}
-            navigateToScreen={navigateToScreen}
-          />
-        )}
+        renderItem={({ item }) => <RecommentGroupListItem item={item} />}
         horizontal
         showsHorizontalScrollIndicator={false}
         decelerationRate={0.8}

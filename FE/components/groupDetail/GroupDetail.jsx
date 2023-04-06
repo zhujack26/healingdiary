@@ -18,7 +18,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GroupDetail = ({ groupId }) => {
   const navigation = useNavigation();
-  console.log(groupId);
   const [groupData, setGroupData] = useState({});
   const [groupMember, setGroupMember] = useState([]);
   const [diaries, setDiaries] = useState([]);

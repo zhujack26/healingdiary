@@ -14,7 +14,6 @@ const { width, height } = Dimensions.get("window");
 
 const GroupItem = ({ content, navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
-
   const handleImageLoad = () => {
     setIsLoading(false);
   };

@@ -1,10 +1,10 @@
 import { useNavigation } from "@react-navigation/native";
 import { FlatList } from "react-native";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getClubList } from "../../api/group";
 import GroupItem from "./GroupItem";
 
-const GroupList = () => {
+const GroupList = ({}) => {
   const navigation = useNavigation();
   const [clubList, setClubList] = useState([]);
   const getClub = async () => {
@@ -15,6 +15,7 @@ const GroupList = () => {
   useEffect(() => {
     getClub();
   }, []);
+
   return (
     <>
       <FlatList
@@ -28,4 +29,4 @@ const GroupList = () => {
   );
 };
 
-export default GroupList;
+export default React.memo(GroupList);
