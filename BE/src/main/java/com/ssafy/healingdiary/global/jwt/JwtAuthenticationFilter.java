@@ -2,18 +2,20 @@ package com.ssafy.healingdiary.global.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.healingdiary.global.auth.PrincipalDetailsService;
+import com.ssafy.healingdiary.global.error.ErrorCode;
+import com.ssafy.healingdiary.global.error.ErrorResponse;
 import io.jsonwebtoken.ExpiredJwtException;
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 
 @RequiredArgsConstructor
@@ -47,9 +49,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         catch(ExpiredJwtException e){
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            response.setStatus(ErrorCode.TOKEN_NOT_VALID.getStatus().value());
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(new ObjectMapper().writeValueAsString(TokenResponse.reissue()));
+            response.getWriter().write(new ObjectMapper().writeValueAsString(new ErrorResponse(ErrorCode.TOKEN_NOT_VALID)));
             response.getWriter().flush();
             response.getWriter().close();
 
