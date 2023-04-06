@@ -180,8 +180,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             .innerJoin(diary.member, member)
             .where(
                 member.id.ne(m.getId()),
-                member.disease.eq(m.getDisease())
-                        .or(member.region.eq(m.getRegion()))
+                diseaseOrRegion(m.getDisease(), m.getRegion())
             )
             .orderBy(diary.createdDate.desc())
             .limit(num)
@@ -288,6 +287,10 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
         else {
             return null;
         }
+    }
+
+    private BooleanExpression diseaseOrRegion(String disease, String region) {
+        return member.disease.eq(disease).or(member.region.eq(region));
     }
 
 }
