@@ -82,7 +82,6 @@ public class MemberService {
             return foundMember;
         } else {
             NicknameCheckResponse foundMember = NicknameCheckResponse.of(true);
-            System.out.println(foundMember);
             return foundMember;
         }
     }
