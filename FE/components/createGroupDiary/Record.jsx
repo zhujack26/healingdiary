@@ -7,7 +7,7 @@ import { Audio } from "expo-av";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const TimerRecord = ({ onToggleNextButtonVisibility, onResponse }) => {
+const Record = ({ onToggleNextButtonVisibility, onResponse }) => {
   const [time, setTime] = useState(180);
   const [intervalId, setIntervalId] = useState(null);
   const [timerRunning, setTimerRunning] = useState(false);
@@ -251,4 +251,4 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-export default TimerRecord;
+export default Record;

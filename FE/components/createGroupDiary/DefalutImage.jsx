@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { TouchableOpacity, Image, StyleSheet } from "react-native";
 
-const DefalutImagePicker = ({ onSelect }) => {
+const DefalutImage = ({ onSelect }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const handleImagePress = (image) => {
     setSelectedImage(image);
@@ -125,13 +125,13 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/9.jpg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/9.jpeg",
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/9.jpg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/9.jpeg",
           }}
           style={styles.image}
         />
@@ -163,4 +163,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DefalutImagePicker;
+export default DefalutImage;

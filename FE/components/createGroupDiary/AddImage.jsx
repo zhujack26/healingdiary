@@ -9,11 +9,11 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
-import DefalutImagePicker from "./DefalutImagePicker";
+import DefalutImage from "./DefalutImage";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
-const AddFile = (props) => {
+const AddImage = (props) => {
   const [image, setImage] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const pickImage = () => {
@@ -60,7 +60,7 @@ const AddFile = (props) => {
                 <AntDesign name="plus" size={48} color="black" />
               </View>
             </TouchableOpacity>
-            <DefalutImagePicker
+            <DefalutImage
               onSelect={(selectedImage) => {
                 setImage(selectedImage);
                 setModalVisible(false);
@@ -134,4 +134,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddFile;
+export default AddImage;

@@ -25,7 +25,7 @@ const GroupIntroduction = ({
     Alert.alert("가입 신청이 완료되었습니다.");
   };
   return (
-    <>
+    <View style={styles.container}>
       <View style={styles.groupInfo}>
         <View>
           <Text style={styles.groupName}>{groupData.name}</Text>
@@ -48,7 +48,12 @@ const GroupIntroduction = ({
           </View>
         </View>
         {isMember ? (
-          <Pressable style={styles.buttonContainer} onPress={() => {}}>
+          <Pressable
+            style={styles.buttonContainer}
+            onPress={() => {
+              navigation.navigate("Create", { groupId: groupId });
+            }}
+          >
             <Text style={styles.buttonText}>글쓰기</Text>
           </Pressable>
         ) : (
@@ -74,13 +79,16 @@ const GroupIntroduction = ({
           </View>
         ))}
       </View>
-    </>
+    </View>
   );
 };
 
 export default GroupIntroduction;
 
 const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 16,
+  },
   groupInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
