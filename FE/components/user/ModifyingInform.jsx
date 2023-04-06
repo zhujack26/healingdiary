@@ -52,7 +52,7 @@ const ModifyingInform = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [3, 3],
-      quality: 0.01,
+      quality: 0.05,
     });
     if (!result.canceled && result.assets && result.assets[0]) {
       setImage(result.assets[0].uri);

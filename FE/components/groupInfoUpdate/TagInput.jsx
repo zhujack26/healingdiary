@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 import { GlobalColors } from "./../../constants/color";
 
@@ -44,12 +44,12 @@ const styles = StyleSheet.create({
     width: "auto",
     paddingTop: 12,
     backgroundColor: GlobalColors.colors.primary400,
-    borderRadius: 20,
+    borderRadius: 16,
   },
   input: {
     width: "auto",
     fontFamily: "KoddiUDOnGothic-Regular",
-    padding: 3,
+    padding: 11,
     fontSize: 18,
   },
 });

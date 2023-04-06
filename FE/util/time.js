@@ -1,5 +1,10 @@
+import moment from "moment-timezone";
+
 export const timeAgo = (date) => {
-  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+  const timezone = "Asia/Seoul";
+  const now = moment().tz(timezone);
+  const targetDate = moment.utc(date).tz(timezone);
+  const seconds = Math.floor((now - targetDate) / 1000);
   if (seconds < 60) {
     return "몇초전";
   }
