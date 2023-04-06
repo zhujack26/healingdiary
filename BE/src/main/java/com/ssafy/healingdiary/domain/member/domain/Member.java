@@ -60,7 +60,7 @@ public class Member extends BaseEntity {
                              String region, String imageUrl) {
         this.nickname = nickname;
         this.region = region;
-        this.disease = this.getDisease();
+        this.disease = disease;
         this.memberImageUrl = imageUrl;
     }
 
