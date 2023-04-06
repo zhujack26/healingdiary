@@ -111,7 +111,7 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/8.jpgg",
+            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/8.jpg",
           })
         }
       >
