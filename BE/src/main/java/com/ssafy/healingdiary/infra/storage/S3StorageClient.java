@@ -50,8 +50,7 @@ public class S3StorageClient implements StorageClient {
     @Override
     public String uploadFile(MultipartFile file) throws IOException {
         if (file != null && !file.isEmpty()) {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename()
-                .replaceAll("[~!@#$%^&*()_+ ]", "_");
+            String fileName = String.valueOf(UUID.randomUUID());
             InputStream inputStream = file.getInputStream();
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentLength(file.getSize());
