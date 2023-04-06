@@ -62,8 +62,6 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
         List<ClubSimpleResponse> result = queryFactory
             .selectFrom(club)
             .leftJoin(club.clubMember, clubMember)
-            .leftJoin(club.clubTag, clubTag)
-            .leftJoin(clubTag.tag, tag)
             .where(
                 club.id.in(idSet)
             )
@@ -73,8 +71,7 @@ public class ClubRepositoryImpl implements ClubRepositoryCustom {
                     new QClubSimpleResponse(
                         club.id,
                         club.clubImageUrl,
-                        club.name,
-                        list(tag.content)
+                        club.name
                     )
                 )
             );
