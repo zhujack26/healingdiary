@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Dimensions, StyleSheet } from "react-native";
 import { GlobalColors } from "../constants/color";
 
@@ -10,11 +10,13 @@ import BottomTabContainer from "../components/BottomTabContainer/BottomTabContai
 
 const { width, height } = Dimensions.get("window");
 
-const GroupScreen = ({ navigation }) => {
+const GroupScreen = ({ navigation, route }) => {
+  const { refreshKey } = route.params ? route.params : undefined;
   const [activeIndex, setActiveIndex] = useState(0);
   const handleActiveIndex = (index) => {
     setActiveIndex(index);
   };
+
   const Buttons = ({ activeIndex, handleActiveIndex }) => {
     return (
       <View style={styles.buttons}>
@@ -53,7 +55,7 @@ const GroupScreen = ({ navigation }) => {
   };
 
   return (
-    <BottomTabContainer>
+    <BottomTabContainer key={refreshKey}>
       <View style={styles.container}>
         <Buttons
           activeIndex={activeIndex}

@@ -8,47 +8,18 @@ import RecommendGroup from "./RecommendGroup";
 import RecentDiary from "./RecentDiary";
 import BottomTabContainer from "../BottomTabContainer/BottomTabContainer";
 import { getRecommendGroup } from "../../api/group";
+import { getRecentDiary } from "./../../api/diary";
 
 const { width, height } = Dimensions.get("window");
 
-const DIARYIES = [
-  {
-    id: 0,
-    hashtags: "감정1",
-    image: require("../../assets/images/SAMPLE6.png"),
-  },
-  {
-    id: 1,
-    hashtags: "감정2",
-    image: require("../../assets/images/SAMPLE5.png"),
-  },
-  {
-    id: 2,
-    hashtags: "감정3",
-    image: require("../../assets/images/SAMPLE4.png"),
-  },
-  {
-    id: 3,
-    hashtags: "감정4",
-    image: require("../../assets/images/SAMPLE3.png"),
-  },
-  {
-    id: 4,
-    hashtags: "감정5",
-    image: require("../../assets/images/SAMPLE1.png"),
-  },
-];
-const Home = () => {
-  const navigation = useNavigation();
+const Home = ({ refreshKey }) => {
   const initialDiaries = useRef([]);
   const initialGroups = useRef([]);
+  const initialRecentDiaries = useRef([]);
 
   const [diaries, setDiaries] = useState([]);
   const [groups, setGroups] = useState([]);
-
-  const navigateToScreen = (screen, id) => {
-    navigation.navigate(screen, { id: id });
-  };
+  const [recentDiaries, setRecentDiaries] = useState([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -66,8 +37,16 @@ const Home = () => {
         }
       };
 
+      const callGetRecentDiary = async () => {
+        const res = await getRecentDiary();
+        if (JSON.stringify(res) !== JSON.stringify(initialGroups.current)) {
+          setRecentDiaries(res);
+        }
+      };
+
       getRecoDiary();
       getRecoGroup();
+      callGetRecentDiary();
 
       return () => {};
     }, [])
@@ -76,14 +55,15 @@ const Home = () => {
   useEffect(() => {
     initialDiaries.current = diaries;
     initialGroups.current = groups;
-  }, [diaries, groups]);
+    initialRecentDiaries.current = recentDiaries;
+  }, [diaries, groups, recentDiaries]);
 
   return (
-    <BottomTabContainer>
+    <BottomTabContainer key={refreshKey}>
       <ScrollView style={styles.container}>
-        <RecommendGroup groups={groups} navigateToScreen={navigateToScreen} />
-        <RecommendDiary diaries={diaries} navigateToScreen={navigateToScreen} />
-        <RecentDiary diaries={DIARYIES} navigateToScreen={navigateToScreen} />
+        <RecommendGroup groups={groups} />
+        <RecommendDiary diaries={diaries} />
+        <RecentDiary diaries={recentDiaries} />
       </ScrollView>
     </BottomTabContainer>
   );

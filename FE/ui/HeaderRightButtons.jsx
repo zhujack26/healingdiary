@@ -5,7 +5,7 @@ import { getNotification } from "../api/notification";
 import { GlobalColors } from "../constants/color";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HeaderRightButtons = ({ navigation }) => {
+const HeaderRightButtons = ({ navigation, refresh }) => {
   const [userImage, setUserImage] = useState(null);
   const [notice, setNotice] = useState([]);
 
@@ -22,7 +22,7 @@ const HeaderRightButtons = ({ navigation }) => {
   useEffect(() => {
     getUserImage();
     getNotice();
-  }, [getUserImage, getNotice]);
+  }, [refresh]);
 
   return (
     <View style={{ flexDirection: "row" }}>
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -3,
     right: 5,
+    zIndex: 999,
   },
 });
 

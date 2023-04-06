@@ -1,11 +1,11 @@
 import { View, StyleSheet } from "react-native";
 import { rejectAndExitMember, getGroupMemebrList } from "../../api/group";
 import { useEffect, useState } from "react";
+
 import GroupMemberList from "./GroupMemberList";
 
-const GroupMember = ({ groupId }) => {
+const GroupMember = ({ groupId, host }) => {
   const [groupMember, setGroupMember] = useState([]);
-
   const refreshUser = (memberId) => {
     setGroupMember((groupMembers) =>
       groupMembers.filter((groupMember) => groupMember.memberId !== memberId)
@@ -34,6 +34,7 @@ const GroupMember = ({ groupId }) => {
       <GroupMemberList
         groupMember={groupMember}
         groupId={groupId}
+        host={host}
         callRejectMember={callRejectMember}
       />
     </View>
