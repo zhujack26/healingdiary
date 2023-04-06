@@ -90,7 +90,7 @@ const GroupInfoUpdate = ({ isEdit }) => {
       formData.append("tags", tags);
       const res = await createGroup(formData);
       if (res.status === 200) {
-        navigation.navigate("Home", { refreshKey: Date.now() });
+        navigation.navigate("Group", { refreshKey: Date.now() });
       } else {
         Alert.alert("소모임 생성 실패!");
       }

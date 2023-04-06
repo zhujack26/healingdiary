@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getClubList } from "../../api/group";
 import GroupItem from "./GroupItem";
 
-const GroupList = () => {
+const GroupList = ({}) => {
   const navigation = useNavigation();
   const [clubList, setClubList] = useState([]);
   const getClub = async () => {
