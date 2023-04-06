@@ -7,10 +7,6 @@ import TimerRecord from "./TimerRecord";
 
 const Making = ({ navigation }) => {
   const [response, setResponse] = useState(null);
-  const [nextButtonVisible, setNextButtonVisible] = useState(false);
-  const toggleNextButtonVisibility = (visible = true) => {
-    setNextButtonVisible(visible);
-  };
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleSelectedImage = (image) => {
@@ -21,23 +17,19 @@ const Making = ({ navigation }) => {
       headerRight: (props) => (
         <NextButton
           {...props}
-          visible={nextButtonVisible}
           navigation={navigation}
           response={response}
           selectedImage={selectedImage}
         />
       ),
     });
-  }, [navigation, nextButtonVisible, response]);
+  }, [navigation, selectedImage, response]);
 
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
         <AddFile onSelectedImage={handleSelectedImage} />
-        <TimerRecord
-          onToggleNextButtonVisibility={toggleNextButtonVisibility}
-          onResponse={setResponse}
-        />
+        <TimerRecord onResponse={setResponse} />
       </View>
     </View>
   );

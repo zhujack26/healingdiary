@@ -7,7 +7,7 @@ import { Audio } from "expo-av";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const TimerRecord = ({ onToggleNextButtonVisibility, onResponse }) => {
+const TimerRecord = ({ onResponse }) => {
   const [time, setTime] = useState(180);
   const [intervalId, setIntervalId] = useState(null);
   const [timerRunning, setTimerRunning] = useState(false);
@@ -19,7 +19,6 @@ const TimerRecord = ({ onToggleNextButtonVisibility, onResponse }) => {
       clearInterval(intervalId);
       setTimerRunning(false);
       setTime(180);
-      onToggleNextButtonVisibility(true);
       if (recording) {
         stopRecording();
       }
@@ -49,7 +48,6 @@ const TimerRecord = ({ onToggleNextButtonVisibility, onResponse }) => {
     clearInterval(intervalId);
     setTime(180);
     setTimerRunning(false);
-    onToggleNextButtonVisibility(true);
     if (recording) {
       stopRecording();
     }
