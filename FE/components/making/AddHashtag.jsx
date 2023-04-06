@@ -21,7 +21,8 @@ const AddHashtag = ({
   onSelectedTags,
 }) => {
   const notifySelectedTags = () => {
-    onSelectedTags(selectedTags);
+    const customTags = selectedTags.filter((tag) => !DATA.includes(tag));
+    onSelectedTags(customTags);
   };
   useEffect(() => {
     onSelectedTags(selectedTags);
@@ -55,6 +56,7 @@ const AddHashtag = ({
         setSelectedTags([...selectedTags, tag]);
         setDataTags(dataTags + 1); // DATA에서 선택한 해시태그 개수를 늘립니다.
         onToggleCompleteButtonVisibility(true);
+        notifySelectedTags();
       }
     }
   };
