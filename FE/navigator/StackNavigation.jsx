@@ -4,7 +4,6 @@ import { GlobalColors } from "../constants/color";
 import { BottomTabContextProvider } from "../context/BottomTabContext";
 import BottomTabs from "./BottomTabs";
 import LoginScreen from "./../screens/LoginScreen";
-import Date from "../ui/Date";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
@@ -83,7 +82,6 @@ const StackNavigation = () => {
             component={CalendarDiaryListScreen}
             options={{
               title: "",
-              headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -99,7 +97,6 @@ const StackNavigation = () => {
                 <NextButton {...props} navigation={navigation} />
               ),
               title: "",
-              // headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -115,7 +112,6 @@ const StackNavigation = () => {
                 <CompleteButton {...props} navigation={navigation} />
               ),
               title: "",
-              // headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -130,7 +126,6 @@ const StackNavigation = () => {
               headerRight: (props) => (
                 <GroupNextButton {...props} navigation={navigation} />
               ),
-              headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -145,7 +140,6 @@ const StackNavigation = () => {
               headerRight: (props) => (
                 <GroupCompleteButton {...props} navigation={navigation} />
               ),
-              headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -173,7 +167,6 @@ const StackNavigation = () => {
             component={GroupMemberScreen}
             options={{
               title: "",
-              headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -187,7 +180,6 @@ const StackNavigation = () => {
             component={GroupMemberAllowScreen}
             options={{
               title: "",
-              headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
