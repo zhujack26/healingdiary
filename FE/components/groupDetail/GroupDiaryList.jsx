@@ -20,7 +20,6 @@ const GroupDiaryList = ({
   isMember,
 }) => {
   const navigation = useNavigation();
-  console.log(diaries);
   const NotDiary = () => {
     return (
       <View style={styles.notContainer}>

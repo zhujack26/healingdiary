@@ -11,7 +11,6 @@ import BottomTabContainer from "../components/BottomTabContainer/BottomTabContai
 const { width, height } = Dimensions.get("window");
 
 const GroupScreen = ({ navigation, route }) => {
-  const { refreshKey } = route.params ? route.params : undefined;
   const [activeIndex, setActiveIndex] = useState(0);
   const handleActiveIndex = (index) => {
     setActiveIndex(index);
@@ -55,7 +54,7 @@ const GroupScreen = ({ navigation, route }) => {
   };
 
   return (
-    <BottomTabContainer key={refreshKey}>
+    <BottomTabContainer>
       <View style={styles.container}>
         <Buttons
           activeIndex={activeIndex}
