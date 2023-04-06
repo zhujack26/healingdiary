@@ -272,7 +272,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
     public static BooleanExpression dateEq(Integer year, Integer month, Integer day) {
         if (year != null && month != null && day != null) {
             LocalDateTime startOfDay = LocalDateTime.of(year, month, day, 0, 0, 0);
-            LocalDateTime endOfDay = LocalDateTime.of(year, month, day, 59, 59, 59);
+            LocalDateTime endOfDay = LocalDateTime.of(year, month, day, 23, 59, 59);
             return diary.createdDate.between(startOfDay, endOfDay);
         }
         else if(year != null && month != null) {
