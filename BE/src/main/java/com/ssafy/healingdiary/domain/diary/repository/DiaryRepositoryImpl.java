@@ -179,6 +179,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             .from(diary)
             .innerJoin(diary.member, member)
             .where(
+                member.id.ne(m.getId()),
                 member.disease.eq(m.getDisease())
                         .or(member.region.eq(m.getRegion()))
             )
@@ -219,7 +220,10 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             List<Long> idList2 = queryFactory
                 .select(diary.id)
                 .from(diary)
-                .where(diary.id.notIn(idList))
+                .where(
+                    member.id.ne(m.getId()),
+                    diary.id.notIn(idList)
+                )
                 .orderBy(diary.createdDate.desc())
                 .limit(limit)
                 .fetch();
