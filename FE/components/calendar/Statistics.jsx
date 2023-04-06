@@ -12,6 +12,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 const Statistics = () => {
   const [StatisticsData, setStatisticsData] = useState([]);
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   useEffect(() => {
     const getStatisticsDiaries = async () => {
@@ -47,8 +48,10 @@ const Statistics = () => {
       let newMonth = prevMonth + offset;
       if (newMonth < 1) {
         newMonth = 12;
+        setCurrentYear((prevYear) => prevYear - 1); // 년도 감소
       } else if (newMonth > 12) {
         newMonth = 1;
+        setCurrentYear((prevYear) => prevYear + 1); // 년도 증가
       }
       return newMonth;
     });
@@ -59,11 +62,13 @@ const Statistics = () => {
   return (
     <View style={styles.container}>
       <View style={styles.monthSelector}>
-        <Pressable onPress={() => changeMonth(-1)} style={{ right: 130 }}>
+        <Pressable onPress={() => changeMonth(-1)} style={{ right: 100 }}>
           <AntDesign name="left" size={15} color="gray" />
         </Pressable>
-        <Text style={{ marginHorizontal: 10 }}>{currentMonth}월</Text>
-        <Pressable onPress={() => changeMonth(1)} style={{ left: 130 }}>
+        <Text style={{ marginHorizontal: 10 }}>
+          {currentYear}년 {currentMonth}월
+        </Text>
+        <Pressable onPress={() => changeMonth(1)} style={{ left: 100 }}>
           <AntDesign name="right" size={15} color="gray" />
         </Pressable>
       </View>
@@ -89,19 +94,20 @@ const Statistics = () => {
           x="value"
           y="count"
           barWidth={30}
-          alignment="start"
           style={{
             data: {
               fill: ({ datum }) => {
                 switch (datum.value) {
                   case "불행":
-                    return GlobalColors.colors.red500;
+                    return GlobalColors.colors.emotionCode1;
+                  case "나쁨":
+                    return GlobalColors.colors.emotionCode2;
                   case "평온":
-                    return "";
+                    return GlobalColors.colors.emotionCode3;
                   case "기쁨":
-                    return "";
+                    return GlobalColors.colors.emotionCode4;
                   case "행복":
-                    return GlobalColors.colors.primary500;
+                    return GlobalColors.colors.emotionCode5;
                   default:
                     return GlobalColors.colors.primary500;
                 }

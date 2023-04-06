@@ -63,7 +63,7 @@ const CustomDayComponent = ({ date, state, onPress, calendarData }) => {
   return (
     <View>
       <TouchableOpacity onPress={handlePress} style={styles.box}>
-        <Text
+        <View
           style={{
             backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
             color:
@@ -71,17 +71,27 @@ const CustomDayComponent = ({ date, state, onPress, calendarData }) => {
                 ? GlobalColors.colors.gray500
                 : GlobalColors.colors.black500,
             paddingVertical: 3,
-            paddingHorizontal: 3,
+            paddingHorizontal: 10,
             borderRadius: isToday ? 16 : null,
           }}
         >
-          {date.day}
-        </Text>
+          <Text
+            style={{
+              backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
+              color:
+                state === "disabled"
+                  ? GlobalColors.colors.gray500
+                  : GlobalColors.colors.black500,
+            }}
+          >
+            {date.day}
+          </Text>
+        </View>
         {emotion && (
           <View style={styles.empty}>
             <Image
               source={{ uri: imageUri }}
-              style={{ width: 36, height: 36, top: -25 }}
+              style={{ width: 40, height: 40, top: -25, borderRadius: 16 }}
               resizeMode="contain"
             />
           </View>
