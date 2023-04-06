@@ -25,7 +25,6 @@ public class NoticeService {
 
     public List<NoticeListResponse> searchNoticeAll(String memberId) {
         Member member = memberRepository.getReferenceById(Long.parseLong(memberId));
-        System.out.println(memberId + "~~~~~~~~~~~~~");
         List<NoticeListResponse> list = noticeRepository.findByMember(member)
                 .stream().map((NoticeListResponse::of))
                 .collect(Collectors.toList());
