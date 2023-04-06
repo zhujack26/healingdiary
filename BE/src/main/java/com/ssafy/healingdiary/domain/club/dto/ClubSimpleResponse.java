@@ -6,18 +6,21 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder
 public class ClubSimpleResponse {
+
     Long clubId;
     String name;
     String clubImageUrl;
     List<String> tags;
 
     @QueryProjection
-    public ClubSimpleResponse(Long clubId, String clubImageUrl, String name, List<String> tags) {
+    public ClubSimpleResponse(Long clubId, String clubImageUrl, String name) {
         this.clubId = clubId;
-        this.name = name;
         this.clubImageUrl = clubImageUrl;
+        this.name = name;
+    }
+
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 }
