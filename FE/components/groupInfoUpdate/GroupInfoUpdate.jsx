@@ -31,7 +31,7 @@ const GroupInfoUpdate = ({ isEdit }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [3, 3],
-      quality: 0.05,
+      quality: 0.1,
     });
     if (!result.canceled && result.assets && result.assets[0]) {
       setImage({ uri: result.assets[0].uri });

@@ -1,8 +1,8 @@
 import { Calendar, LocaleConfig } from "react-native-calendars";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { GlobalColors } from "../../constants/color";
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useEffect, useState, useCallback } from "react";
 import { getCalendarDiary } from "../../api/diary";
 import { BAD, CALM, HAPPY, PLEASURE, UNHAPPY } from "../../constants/emtion";
 const DateCheck = (date1, date2) => {
@@ -135,16 +135,18 @@ const CalendarView = () => {
   const [selected, setSelected] = useState("");
   const [calendarData, setCalendarData] = useState([]);
 
-  useEffect(() => {
-    const getCalendarDiaries = async () => {
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = today.getMonth() + 1;
-      const res = await getCalendarDiary(year, month);
-      setCalendarData(res);
-    };
-    getCalendarDiaries();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const getCalendarDiaries = async () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        const res = await getCalendarDiary(year, month);
+        setCalendarData(res);
+      };
+      getCalendarDiaries();
+    }, [])
+  );
 
   return (
     <Calendar

@@ -91,6 +91,11 @@ const BottomTabs = () => {
             <Ionicons name="calendar-sharp" color={color} size={size} />
           ),
         }}
+        screenOptions={({ route }) => ({
+          params: {
+            refreshKey: Date.now(),
+          },
+        })}
         listeners={{
           tabPress: (e) => opened && e.preventDefault(),
         }}

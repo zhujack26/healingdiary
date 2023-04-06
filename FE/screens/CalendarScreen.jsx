@@ -2,7 +2,6 @@ import { ScrollView, StyleSheet } from "react-native";
 import BottomTabContainer from "../components/BottomTabContainer/BottomTabContainer";
 import CalendarView from "../components/calendar/CalendarView";
 import Statistics from "../components/calendar/Statistics";
-import { useFocusEffect } from "@react-navigation/native";
 
 const CalendarScreen = () => {
   return (
