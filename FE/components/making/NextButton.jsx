@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity } from "react-native";
 
 const NextButton = ({ navigation, response, selectedImage }) => {
-  if (!response) {
+  if (!response || !selectedImage) {
     return null;
   }
   return (
