@@ -1,13 +1,16 @@
 package com.ssafy.healingdiary.global.error;
 
 import java.time.LocalDateTime;
+
+import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-
+@Builder
+@RequiredArgsConstructor
 public class ErrorResponse {
 
-    private final LocalDateTime time = LocalDateTime.now();
     private final int status;
     private final String error;
     private final String code;
