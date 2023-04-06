@@ -11,6 +11,7 @@ import HomeScreen from "../screens/HomeScreen";
 import SearchScreen from "../screens/SearchScreen";
 import HeaderRightButtons from "../ui/HeaderRightButtons";
 import AddButton from "./../ui/AddButton";
+import Header from "../ui/Header";
 
 const Tab = createBottomTabNavigator();
 const BottomTabs = () => {
@@ -65,10 +66,12 @@ const BottomTabs = () => {
         name="Home"
         component={HomeScreen}
         options={({ navigation }) => ({
-          headerRight: () => <HeaderRightButtons navigation={navigation} />,
+          headerRight: () => (
+            <HeaderRightButtons navigation={navigation} refresh={Date.now()} />
+          ),
           headerShadowVisible: false,
           headerStyle: headerStyle,
-          title: "메인",
+          headerTitle: () => <Header />,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" color={color} size={size} />
           ),
@@ -82,6 +85,8 @@ const BottomTabs = () => {
         component={CalendarScreen}
         options={{
           headerStyle: headerStyle,
+          headerShadowVisible: false,
+          headerTitle: () => <Header />,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="calendar-sharp" color={color} size={size} />
           ),
@@ -113,7 +118,8 @@ const BottomTabs = () => {
         options={({ navigation }) => ({
           headerRight: () => <HeaderRightButtons navigation={navigation} />,
           headerStyle: headerStyle,
-          title: "소모임",
+          headerShadowVisible: false,
+          headerTitle: () => <Header />,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="md-people-outline" color={color} size={size} />
           ),

@@ -7,12 +7,19 @@ import {
   Pressable,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
+import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
-const RecommendDiaryListItem = ({ item, navigateToScreen }) => {
+const RecommendDiaryListItem = ({ item }) => {
+  const navigation = useNavigation();
   return (
-    <Pressable style={styles.diaries} onPress={() => {}}>
+    <Pressable
+      style={styles.diaries}
+      onPress={() => {
+        navigation.navigate("diaryDetail", { diaryId: item.diaryId });
+      }}
+    >
       <View style={styles.diary}>
         <Image source={{ uri: item?.imageUrl }} style={styles.image} />
         <View style={styles.hashtag}>

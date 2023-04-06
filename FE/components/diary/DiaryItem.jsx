@@ -14,13 +14,17 @@ const { width, height } = Dimensions.get("window");
 
 const DiaryItem = ({ content, navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
-
   const handleImageLoad = () => {
     setIsLoading(false);
   };
 
   return (
-    <Pressable style={styles.container}>
+    <Pressable
+      style={styles.container}
+      onPress={() => {
+        navigation.navigate("diaryDetail", { diaryId: content.diaryId });
+      }}
+    >
       <View style={styles.imageContainer}>
         {isLoading && (
           <ActivityIndicator

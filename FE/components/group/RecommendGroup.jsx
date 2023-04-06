@@ -19,7 +19,9 @@ const RecommendGroup = () => {
   return (
     <FlatList
       data={clubList.content}
-      renderItem={({ item }) => <GroupItem content={item} navigation={navigation}/>}
+      renderItem={({ item }) => (
+        <GroupItem content={item} navigation={navigation} />
+      )}
       keyExtractor={(item) => item.clubId}
     />
   );

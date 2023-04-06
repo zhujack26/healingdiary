@@ -7,13 +7,27 @@ import {
   Pressable,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
-import ReplyListItem from "./ReplyListItem";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { timeAgo } from "../../util/time";
+import ReplyListItem from "./ReplyListItem";
 
-const CommentListItem = ({ comment, onDelete }) => {
-  const handleDelete = () => {
-    onDelete && onDelete(comment.commentId);
+const CommentListItem = ({
+  diaryId,
+  comment,
+  callDeleteComment,
+  callReplyDeleteComment,
+  memberId,
+}) => {
+  const navigation = useNavigation();
+
+  const navigateToMakingInput = () => {
+    navigation.navigate("MakingInput", {
+      diaryId: diaryId,
+      parentId: comment?.commentId,
+    });
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.container1}>
@@ -21,37 +35,47 @@ const CommentListItem = ({ comment, onDelete }) => {
           <View style={styles.imageContainer}>
             <Image
               style={styles.image}
-              source={require("../../assets/images/SAMPLE3.png")}
+              source={{ uri: comment?.memberImageUrl }}
             />
           </View>
           <View style={styles.commentContainer}>
-            {/* 닉네임 */}
             <Text style={[styles.bold, styles.text]}>{comment?.nickname}</Text>
-            {/* 댓글 */}
             <Text style={[styles.regular, styles.text2]}>
               {comment?.content}
             </Text>
           </View>
         </View>
-        {/* 시간경과, 답글달기 */}
         <View style={styles.etc}>
-          <Text style={[styles.regular, styles.time]}>1일전</Text>
-          <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
-          <Pressable style={styles.trash} onPress={handleDelete}>
-            <AntDesign name="delete" size={12} color="gray" />
+          <Text style={[styles.regular, styles.time]}>
+            {timeAgo(comment?.datetime)}
+          </Text>
+          <Pressable onPress={navigateToMakingInput}>
+            <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
           </Pressable>
+          {memberId === comment?.memberId.toString() && (
+            <Pressable
+              style={styles.trash}
+              onPress={() => callDeleteComment(comment?.commentId)}
+            >
+              <AntDesign name="delete" size={12} color="gray" />
+            </Pressable>
+          )}
         </View>
       </View>
       {/* 대댓글 */}
       <View style={styles.replyList}>
-        {comment.children && (
-          <FlatList
-            renderItem={({ item }) => (
-              <ReplyListItem item={item} onDelete={onDelete} />
-            )}
-            data={comment?.children}
-          />
-        )}
+        <FlatList
+          data={comment?.children}
+          renderItem={({ item }) => (
+            <ReplyListItem
+              reply={item}
+              diaryId={diaryId}
+              callReplyDeleteComment={callReplyDeleteComment}
+              memberId={memberId}
+            />
+          )}
+          keyExtractor={(item) => item.commentId}
+        />
       </View>
     </View>
   );

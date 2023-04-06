@@ -1,31 +1,52 @@
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { GlobalColors } from "../../constants/color";
 import { AntDesign } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { timeAgo } from "../../util/time";
 
-const ReplyListItem = ({ item, onDelete }) => {
-  const handleDelete = () => {
-    onDelete && onDelete(item.commentId);
+const ReplyListItem = ({
+  reply,
+  diaryId,
+  memberId,
+  callReplyDeleteComment,
+}) => {
+  const navigation = useNavigation();
+
+  const navigateToMakingInput = () => {
+    navigation.navigate("MakingInput", {
+      diaryId: diaryId,
+      parentId: reply?.parentId,
+    });
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
         <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={require("../../assets/images/SAMPLE3.png")}
-          />
+          <Image style={styles.image} source={{ uri: reply?.memberImageUrl }} />
         </View>
         <View style={styles.commentContainer}>
-          <Text style={[styles.bold, styles.text]}>{item.nickname} </Text>
-          <Text style={[styles.regular, styles.text]}>{item.content}</Text>
+          <Text style={[styles.bold, styles.text]}>{reply?.nickname} </Text>
+          <Text style={[styles.regular, styles.text]}>{reply?.content}</Text>
         </View>
       </View>
       <View style={styles.etc}>
-        <Text style={[styles.regular, styles.time]}>1일전</Text>
-        <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
-        <Pressable style={styles.trash} onPress={handleDelete}>
-          <AntDesign name="delete" size={12} color="gray" />
+        <Text style={[styles.regular, styles.time]}>
+          {timeAgo(reply?.datetime)}
+        </Text>
+        <Pressable onPress={navigateToMakingInput}>
+          <Text style={[styles.regular, styles.reply]}>답글 달기</Text>
         </Pressable>
+        {memberId === reply?.memberId.toString() && (
+          <Pressable
+            style={styles.trash}
+            onPress={() => {
+              callReplyDeleteComment(reply?.commentId);
+            }}
+          >
+            <AntDesign name="delete" size={12} color="gray" />
+          </Pressable>
+        )}
       </View>
     </View>
   );
