@@ -1,14 +1,14 @@
 import { ScrollView, StyleSheet } from "react-native";
 import BottomTabContainer from "../components/BottomTabContainer/BottomTabContainer";
 import CalendarView from "../components/calendar/CalendarView";
-import Statistics2 from "../components/calendar/Statistics2";
+import Statistics from "../components/calendar/Statistics";
 
 const CalendarScreen = () => {
   return (
     <BottomTabContainer>
       <ScrollView contentContainerStyle={styles.container}>
         <CalendarView />
-        <Statistics2 />
+        <Statistics />
       </ScrollView>
     </BottomTabContainer>
   );

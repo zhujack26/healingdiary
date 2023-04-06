@@ -79,6 +79,15 @@ export const getCalendarDiary = async (year, month) => {
   }
 };
 
+export const getStatisticsDiary = async (year, month) => {
+  try {
+    const res = await axiosInstance(
+      getDataConfig(`/diaries/emotion?year=${year}&month=${month}`)
+    );
+    return res.data;
+  } catch (e) {
+    console.log("getCalendarDiary", e);
+  }
 export const getCalendarDetailDiary = async (year, month, day) => {
   try {
     const res = await axiosInstance(
