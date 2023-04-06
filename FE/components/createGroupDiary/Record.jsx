@@ -113,7 +113,6 @@ const Record = ({ onToggleNextButtonVisibility, onResponse }) => {
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem("jwtToken");
-      console.log("확인1");
       return token;
     } catch (error) {
       console.error("Error getting token:", error);

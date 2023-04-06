@@ -88,6 +88,7 @@ export const getStatisticsDiary = async (year, month) => {
   } catch (e) {
     console.log("getCalendarDiary", e);
   }
+};
 export const getCalendarDetailDiary = async (year, month, day) => {
   try {
     const res = await axiosInstance(

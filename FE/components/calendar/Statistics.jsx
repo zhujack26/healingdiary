@@ -36,7 +36,6 @@ const Statistics = () => {
       const year = today.getFullYear();
       const month = currentMonth;
       const res = await getStatisticsDiary(year, month);
-      console.log(res);
       setStatisticsData(processData(res));
     };
     getStatisticsDiaries();
