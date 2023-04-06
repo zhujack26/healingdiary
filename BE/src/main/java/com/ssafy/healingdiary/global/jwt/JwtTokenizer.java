@@ -85,16 +85,6 @@ public class JwtTokenizer {
     }
 
 
-    // 서명 검증
-    public void verifySignature(String jws, // jws는 signature가 들어간 jwt라는 의미
-                                String encodedSecretKey) {
-        Key key = getKeyFromEncodedKey(encodedSecretKey);
-
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jws);
-    }
 
     // jws안에 있는 Claims얻는 메서드
     public Jws<Claims> getClaims(String jws) {
