@@ -34,21 +34,11 @@ const Item = ({ name, location, action, time }) => (
     </View>
   </View>
 );
-const Detail = () => {
+const Detail = ({ notice }) => {
   const [data, setData] = React.useState(DATA);
-  const [notice, setNotice] = useState([]);
   const handleDelete = (id) => {
     setData((prevData) => prevData.filter((item) => item.id !== id));
   };
-
-  const getNotice = useCallback(async () => {
-    const res = await getNotification();
-    setNotice(res ? res : []);
-  }, []);
-
-  useEffect(() => {
-    getNotice();
-  }, []);
 
   const renderItem = ({ item }) => (
     <Item

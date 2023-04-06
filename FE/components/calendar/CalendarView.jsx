@@ -62,7 +62,7 @@ const CustomDayComponent = ({ date, state, onPress, calendarData }) => {
 
   return (
     <View>
-      <TouchableOpacity onPress={isToday} style={styles.box}>
+      <TouchableOpacity onPress={handlePress} style={styles.box}>
         <Text
           style={{
             backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
@@ -130,11 +130,11 @@ const CalendarView = () => {
       const year = today.getFullYear();
       const month = today.getMonth() + 1;
       const res = await getCalendarDiary(year, month);
-      console.log(res);
       setCalendarData(res);
     };
     getCalendarDiaries();
   }, []);
+
   return (
     <Calendar
       theme={{
@@ -147,7 +147,6 @@ const CalendarView = () => {
           state={state}
           calendarData={calendarData}
           onPress={(day) => {
-            console.log("selected day");
             navigation.navigate("calendarDiaryList", {
               date: { year: day.year, month: day.month, day: day.day },
             });
