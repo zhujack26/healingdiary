@@ -1,6 +1,5 @@
 package com.ssafy.healingdiary.domain.member.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 

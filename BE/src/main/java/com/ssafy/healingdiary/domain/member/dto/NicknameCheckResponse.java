@@ -10,7 +10,7 @@ public class NicknameCheckResponse {
 
     private Boolean result;
 
-    public static NicknameCheckResponse of(Boolean result){
+    public static NicknameCheckResponse of(Boolean result) {
         return NicknameCheckResponse.builder()
                 .result(result)
                 .build();

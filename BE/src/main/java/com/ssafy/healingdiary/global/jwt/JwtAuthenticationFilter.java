@@ -26,17 +26,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
 
 
-
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        try{
+        try {
             String path = request.getServletPath();
             if (path.endsWith("reissue")) {
                 filterChain.doFilter(request, response);
-            }
-            else{
+            } else {
                 String token = request.getHeader("Authorization").replace("Bearer ", "");
                 boolean isTokenValid = jwtTokenizer.validateToken(token);
                 if (StringUtils.hasText(token) && isTokenValid) {
@@ -47,8 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
                 filterChain.doFilter(request, response);
             }
-        }
-        catch(ExpiredJwtException e){
+        } catch (ExpiredJwtException e) {
             response.setStatus(ErrorCode.TOKEN_NOT_VALID.getStatus().value());
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(new ObjectMapper().writeValueAsString(new ErrorResponse(ErrorCode.TOKEN_NOT_VALID)));
