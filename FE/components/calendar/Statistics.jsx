@@ -1,4 +1,4 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Button, Text, Pressable } from "react-native";
 import {
   VictoryBar,
   VictoryChart,
@@ -6,81 +6,114 @@ import {
   VictoryLabel,
 } from "victory-native";
 import { GlobalColors } from "../../constants/color";
+import { useEffect, useState } from "react";
+import { getStatisticsDiary } from "../../api/diary";
+import { AntDesign } from "@expo/vector-icons";
 
-const data = [
-  { emotion: "감동", value: 5 },
-  { emotion: "우울", value: 1 },
-  { emotion: "행복", value: 4 },
-  { emotion: "즐거움", value: 9 },
-  { emotion: "당황", value: 5 },
-];
-const getImageUriFromEmotion = (emotion) => {
-  switch (emotion) {
-    case "기쁨":
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%EA%B8%B0%EC%81%A8.png";
-    case "나쁨":
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%EB%82%98%EC%81%A8.png";
-    case "불행":
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%EB%B6%88%ED%96%89.png";
-    case "평온":
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%ED%8F%89%EC%98%A8.png";
-    case "행복":
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%ED%96%89%EB%B3%B5.png";
-    default:
-      return null;
-  }
-};
+const Statistics = () => {
+  const [StatisticsData, setStatisticsData] = useState([]);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
+  useEffect(() => {
+    const getStatisticsDiaries = async () => {
+      const processData = (data) => {
+        const defaultData = defaultEmotions.map((emotion) => ({
+          value: emotion,
+          count: 0,
+        }));
+        const updatedData = [...defaultData];
 
-const Statistics2 = () => {
+        data.forEach((item) => {
+          const index = defaultData.findIndex((d) => d.value === item.value);
+          if (index >= 0) {
+            updatedData[index].count = item.count;
+          }
+        });
+
+        return updatedData;
+      };
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = currentMonth;
+      const res = await getStatisticsDiary(year, month);
+      console.log(res);
+      setStatisticsData(processData(res));
+    };
+    getStatisticsDiaries();
+  }, [currentMonth]);
+
+  // 월 변경 함수
+  const changeMonth = (offset) => {
+    setCurrentMonth((prevMonth) => {
+      let newMonth = prevMonth + offset;
+      if (newMonth < 1) {
+        newMonth = 12;
+      } else if (newMonth > 12) {
+        newMonth = 1;
+      }
+      return newMonth;
+    });
+  };
+  const defaultEmotions = ["불행", "나쁨", "평온", "기쁨", "행복"];
+  const maxCount = Math.max(...StatisticsData.map((d) => d.count));
+  const minCount = Math.min(...StatisticsData.map((d) => d.count));
   return (
     <View style={styles.container}>
+      <View style={styles.monthSelector}>
+        <Pressable onPress={() => changeMonth(-1)} style={{ right: 130 }}>
+          <AntDesign name="left" size={15} color="gray" />
+        </Pressable>
+        <Text style={{ marginHorizontal: 10 }}>{currentMonth}월</Text>
+        <Pressable onPress={() => changeMonth(1)} style={{ left: 130 }}>
+          <AntDesign name="right" size={15} color="gray" />
+        </Pressable>
+      </View>
       <VictoryChart
-        domainPadding={{ x: 20 }}
+        domainPadding={{ x: 30 }}
         height={200}
-        width={330}
-        padding={{ top: 10, bottom: 30, left: 50, right: 30 }}
+        width={370}
+        padding={{ top: 20, bottom: 30, left: 40, right: 40 }}
       >
         <VictoryAxis
           style={{
             tickLabels: { fontSize: 12, padding: 15 },
           }}
-          tickValues={data.map((d) => d.emotion)}
+          tickValues={defaultEmotions}
         />
-        <VictoryAxis dependentAxis />
+        <VictoryAxis
+          dependentAxis
+          tickValues={[minCount, maxCount]} // 최소 값과 최대 값만 표시
+          tickFormat={(t) => (t > 0 ? Math.round(t) : "")}
+        />
         <VictoryBar
-          data={data}
-          x="emotion"
-          y="value"
+          data={StatisticsData}
+          x="value"
+          y="count"
           barWidth={30}
           alignment="start"
           style={{
             data: {
-              fill: GlobalColors.colors.primary500,
+              fill: ({ datum }) => {
+                switch (datum.value) {
+                  case "불행":
+                    return GlobalColors.colors.red500;
+                  case "평온":
+                    return "";
+                  case "기쁨":
+                    return "";
+                  case "행복":
+                    return GlobalColors.colors.primary500;
+                  default:
+                    return GlobalColors.colors.primary500;
+                }
+              },
             },
           }}
-          labels={({ datum }) => ""}
           labelComponent={
             <VictoryLabel
               dy={-20}
               dx={-15}
               renderInPortal={false}
               style={{ height: 30, width: 30 }}
-              children={({ x, y, datum }) => {
-                const imageUri = getImageUriFromEmotion(datum.emotion);
-                return (
-                  <Image
-                    source={{ uri: imageUri }}
-                    style={{
-                      position: "absolute",
-                      left: x,
-                      top: y,
-                      width: 30,
-                      height: 30,
-                    }}
-                    resizeMode="contain"
-                  />
-                );
-              }}
             />
           }
         />
@@ -97,9 +130,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     elevation: 4,
     marginTop: 20,
-    padding: 10,
+    padding: 30,
     backgroundColor: GlobalColors.colors.white500,
+  },
+  monthSelector: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 10,
   },
 });
 
-export default Statistics2;
+export default Statistics;

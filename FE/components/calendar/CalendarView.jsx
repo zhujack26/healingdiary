@@ -62,7 +62,7 @@ const CustomDayComponent = ({ date, state, onPress, calendarData }) => {
 
   return (
     <View>
-      <TouchableOpacity onPress={isToday} style={styles.box}>
+      <TouchableOpacity onPress={handlePress} style={styles.box}>
         <Text
           style={{
             backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
