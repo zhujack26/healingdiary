@@ -10,5 +10,10 @@ export const GlobalColors = {
     white500: "#ffffff",
     background500: "#f3f3f3",
     red500: "#EF4444",
+    emotionCode4: "#6AFF4C", //기쁨
+    emotionCode5: "#2F8ECE", //행복
+    emotionCode3: "#FEC343", //평온
+    emotionCode2: "#F58835", //나쁨
+    emotionCode1: "#FF333A", //불행
   },
 };
