@@ -4,6 +4,7 @@ import { GlobalColors } from "../../constants/color";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { getCalendarDiary } from "../../api/diary";
+import { BAD, CALM, HAPPY, PLEASURE, UNHAPPY } from "../../constants/emtion";
 const DateCheck = (date1, date2) => {
   return (
     date1.year === date2.year &&
@@ -18,15 +19,15 @@ const DateList = (date, dateList) => {
 const getImageUriFromEmotionCode = (emotionCode) => {
   switch (emotionCode) {
     case 1:
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%EB%B6%88%ED%96%89.png";
+      return UNHAPPY;
     case 2:
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%EB%82%98%EC%81%A8.png";
+      return BAD;
     case 3:
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%ED%8F%89%EC%98%A8.png";
+      return CALM;
     case 4:
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%EA%B8%B0%EC%81%A8.png";
+      return PLEASURE;
     case 5:
-      return "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/%ED%96%89%EB%B3%B5.png";
+      return HAPPY;
     default:
       return null;
   }
@@ -64,7 +65,7 @@ const CustomDayComponent = ({ date, state, onPress, calendarData }) => {
     <View>
       <TouchableOpacity onPress={handlePress} style={styles.box}>
         <View
-        style={{
+          style={{
             backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
             color:
               state === "disabled"
@@ -73,7 +74,8 @@ const CustomDayComponent = ({ date, state, onPress, calendarData }) => {
             paddingVertical: 3,
             paddingHorizontal: 10,
             borderRadius: isToday ? 16 : null,
-          }}>
+          }}
+        >
           <Text
             style={{
               backgroundColor: isToday ? GlobalColors.colors.primary400 : null,

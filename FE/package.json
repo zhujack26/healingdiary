@@ -45,7 +45,8 @@
     "react-native-swipe-list-view": "^3.2.9",
     "react-native-tab-view": "^3.5.1",
     "react-native-webview": "11.23.1",
-    "victory-native": "^36.6.8"
+    "victory-native": "^36.6.8",
+    "expo-localization": "~14.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

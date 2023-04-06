@@ -98,7 +98,8 @@ const StackNavigation = () => {
               headerRight: (props) => (
                 <NextButton {...props} navigation={navigation} />
               ),
-              headerTitle: () => <Date />,
+              title: "",
+              // headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -113,7 +114,8 @@ const StackNavigation = () => {
               headerRight: (props) => (
                 <CompleteButton {...props} navigation={navigation} />
               ),
-              headerTitle: () => <Date />,
+              title: "",
+              // headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
