@@ -220,7 +220,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
                 .select(diary.id)
                 .from(diary)
                 .where(
-                    member.id.ne(m.getId()),
+                    diary.member.id.ne(m.getId()),
                     diary.id.notIn(idList)
                 )
                 .orderBy(diary.createdDate.desc())
