@@ -35,7 +35,6 @@ const Item = ({ name, location, action, time }) => (
   </View>
 );
 const Detail = ({ notice }) => {
-  console.log(notice);
   const [data, setData] = React.useState(DATA);
   const handleDelete = (id) => {
     setData((prevData) => prevData.filter((item) => item.id !== id));

@@ -66,7 +66,7 @@ export const getRecentDiary = async () => {
   } catch (e) {
     console.log("getRecentDiary", e);
   }
-}
+};
 
 export const getCalendarDiary = async (year, month) => {
   try {
@@ -76,5 +76,16 @@ export const getCalendarDiary = async (year, month) => {
     return res.data;
   } catch (e) {
     console.log("getCalendarDiary", e);
+  }
+};
+
+export const getCalendarDetailDiary = async (year, month, day) => {
+  try {
+    const res = await axiosInstance(
+      getConfig(`/diaries?all=false&year=${year}&month=${month}&day=${day}`)
+    );
+    return res;
+  } catch (e) {
+    console.log("getCalendarDetailDiary", e);
   }
 };
