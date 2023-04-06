@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { TouchableOpacity, Image, StyleSheet } from "react-native";
 import {
   img1,
   img2,

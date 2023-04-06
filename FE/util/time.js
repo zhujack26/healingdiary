@@ -1,4 +1,3 @@
-import * as Localization from "expo-localization";
 import moment from "moment-timezone";
 
 export const timeAgo = (date) => {
