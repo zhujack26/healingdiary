@@ -59,62 +59,30 @@ SSAFY 8기 특화프로젝트 (2023.02.27 ~ 2023.04.07)
 <br><br><br>
 # 🎨 기능 소개
 
-### ◾ 소셜 로그인 및 메인 화면
-![로그인](/uploads/e3a47c65af6fea14f5fd9b31db82ab8b/로그인.gif)
+|소셜 로그인 및 메인 화면|일기 작성|캘린더 및 감정 통계 조회|
+|:---:|:---:|:---:|
+|![로그인](/uploads/e3a47c65af6fea14f5fd9b31db82ab8b/로그인.gif)|![일기_작성](/uploads/7050d876b395886802f47af97f331f3b/일기_작성.gif)|![달력_일기_데이터_조회](/uploads/d2d34aef58ea8132b4b18862ef86058d/달력_일기_데이터_조회.gif)|
 
-### ◾ 일기 작성
-![일기_작성](/uploads/7050d876b395886802f47af97f331f3b/일기_작성.gif)
+|소모임 생성|소모임 초대|
+|:---:|:---:|
+|![소모임_생성](/uploads/ba7cbd7bf3f8721f61aaa32d9f19773b/소모임_생성.gif)|![초대_기능](/uploads/fda66b296d967f4882cc0aa29213178d/초대_기능.gif)|
 
-### ◾ 소모임 생성
-![소모임_생성](/uploads/ba7cbd7bf3f8721f61aaa32d9f19773b/소모임_생성.gif)
+|일기 및 소모임 검색|소모임 일기 조회|댓글 조회 및 작성|
+|:---:|:---:|:---:|
+|![검색_기능](/uploads/22320c4102e65491cc55b389fc5fe8a7/검색_기능.gif)|![소모임_내_일기_조회](/uploads/ebcd909f454839c931184dcbc31ed067/소모임_내_일기_조회.gif)|![댓글_조회_및_작성](/uploads/98e9823e9c4f8895b9f06ff4bf17f408/댓글_조회_및_작성.gif)|
 
-### ◾ 소모임 초대
-![초대_기능](/uploads/fda66b296d967f4882cc0aa29213178d/초대_기능.gif)
 
-### ◾ 소모임 내 일기 조회
-![댓글_조회_및_작성](/uploads/98e9823e9c4f8895b9f06ff4bf17f408/댓글_조회_및_작성.gif)
-
-### ◾ 댓글 조회 및 작성
-![소모임_내_일기_조회](/uploads/ebcd909f454839c931184dcbc31ed067/소모임_내_일기_조회.gif)
-
-### ◾ 일기 및 소모임 검색
-![검색_기능](/uploads/22320c4102e65491cc55b389fc5fe8a7/검색_기능.gif)
-
-### ◾ 캘린더 및 감정 통계 조회
-![달력_일기_데이터_조회](/uploads/d2d34aef58ea8132b4b18862ef86058d/달력_일기_데이터_조회.gif)
 
 <br><br>
 # ⚒기술 스택
-
-### Front-end
-[![Javascript][Javascript.com]][Javascript-url]
-[![ReactNative][ReactNative.com]][ReactNative-url]
-[![Expo][Expo.com]][Expo-url]
-
-### Back-end
-[![Java][Java.com]][Java-url]
-[![SpringBoot][SpringBoot.com]][SpringBoot-url]
-[![SpringSecurity][SpringSecurity.com]][SpringSecurity-url]
-[![Gradle][Gradle.com]][Gradle-url]
-
-### Database
-[![Mysql][Mysql.com]][Mysql-url]
-[![Redis][Redis.com]][Redis-url]
-
-### Storage
-[![AmazonS3][AmazonS3.com]][AmazonS3-url]
-
-### DevOps
-[![Git][Git.com]][Git-url]
-[![GitLab][GitLab.com]][GitLab-url]
-[![AmazonEC2][AmazonEC2.com]][AmazonEC2-url]
-[![Docker][Docker.com]][Docker-url]
-[![Jenkins][Jenkins.com]][Jenkins-url]
-[![Sonarqube][Sonarqube.com]][Sonarqube-url]
-
-### Collaboration
-[![Jira][Jira.com]][Jira-url]
-[![Notion][Notion.com]][Notion-url]
+|||
+|:---:|:---:|
+|<b>Front-end</b>|[![Javascript][Javascript.com]][Javascript-url][![ReactNative][ReactNative.com]][ReactNative-url][![Expo][Expo.com]][Expo-url]|
+|<b>Back-end</b>|[![Java][Java.com]][Java-url][![SpringBoot][SpringBoot.com]][SpringBoot-url][![SpringSecurity][SpringSecurity.com]][SpringSecurity-url][![Gradle][Gradle.com]][Gradle-url]|
+|<b>Database</b>|[![Mysql][Mysql.com]][Mysql-url][![Redis][Redis.com]][Redis-url]|
+|<b>Storage</b>|[![AmazonS3][AmazonS3.com]][AmazonS3-url]|
+|<b>DevOps</b>|[![Git][Git.com]][Git-url][![GitLab][GitLab.com]][GitLab-url][![AmazonEC2][AmazonEC2.com]][AmazonEC2-url][![Docker][Docker.com]][Docker-url][![Jenkins][Jenkins.com]][Jenkins-url][![Sonarqube][Sonarqube.com]][Sonarqube-url]|
+|<b>Collaboration</b>|[![Jira][Jira.com]][Jira-url][![Notion][Notion.com]][Notion-url]|
 
 
 
