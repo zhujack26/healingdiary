@@ -1,13 +1,7 @@
 import { Text, TouchableOpacity } from "react-native";
 
-const GroupNextButton = ({
-  navigation,
-  visible,
-  response,
-  selectedImage,
-  groupId,
-}) => {
-  if (!visible) {
+const GroupNextButton = ({ navigation, response, selectedImage, groupId }) => {
+  if (!response || !selectedImage) {
     return null;
   }
   return (

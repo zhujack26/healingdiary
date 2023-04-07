@@ -37,10 +37,7 @@ const GroupCompleteButton = ({
     formData.append("recordUrl", emotionResponse.recordUrl);
     const hashtags = selectedTags.map((tag) => tag.keyword);
     formData.append("tags", hashtags);
-    console.log("폼데이터 확인", formData);
-    console.log("태그폼 확인", hashtags);
     const res = await createDiary(formData);
-    console.log(res);
     if (res.status === 200) navigation.navigate("diaryBottomTab");
     else console.log("생성 실패");
   };

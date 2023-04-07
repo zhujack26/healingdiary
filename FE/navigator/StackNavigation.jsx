@@ -126,6 +126,7 @@ const StackNavigation = () => {
               headerRight: (props) => (
                 <GroupNextButton {...props} navigation={navigation} />
               ),
+              title: "",
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -140,6 +141,7 @@ const StackNavigation = () => {
               headerRight: (props) => (
                 <GroupCompleteButton {...props} navigation={navigation} />
               ),
+              title: "",
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
