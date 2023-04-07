@@ -24,7 +24,7 @@ const RecommendDiary = ({ diaries }) => {
       <Animated.FlatList
         data={diaries}
         keyExtractor={(item) => item.diaryId.toString()}
-        renderItem={RecommendDiaryListItem}
+        renderItem={({ item }) => <RecommendDiaryListItem item={item} />}
         horizontal
         showsHorizontalScrollIndicator={false}
         decelerationRate={0.8}

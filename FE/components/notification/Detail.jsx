@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { Image, Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
-import { DATA } from "../../model/DataNotification";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { GlobalColors } from "../../constants/color";
-import { getNotification } from "../../api/notification";
 
 const formatTime = (minutes) => {
   const hours = Math.floor(minutes / 60);
@@ -24,7 +22,7 @@ const Item = ({ name, location, action, time }) => (
   <View style={styles.item}>
     <Image
       style={styles.image}
-      source={require("../../assets/images/SAMPLE1.png")}
+      source={require("../../assets/images/SAMPLE2.png")}
     />
     <View style={styles.textContainer}>
       <Text style={styles.text}>
@@ -34,21 +32,11 @@ const Item = ({ name, location, action, time }) => (
     </View>
   </View>
 );
-const Detail = () => {
+const Detail = ({ notice }) => {
   const [data, setData] = React.useState(DATA);
-  const [notice, setNotice] = useState([]);
   const handleDelete = (id) => {
     setData((prevData) => prevData.filter((item) => item.id !== id));
   };
-
-  const getNotice = useCallback(async () => {
-    const res = await getNotification();
-    setNotice(res ? res : []);
-  }, []);
-
-  useEffect(() => {
-    getNotice();
-  }, []);
 
   const renderItem = ({ item }) => (
     <Item

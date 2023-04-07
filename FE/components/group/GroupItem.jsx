@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   Image,
   Text,
@@ -6,12 +6,17 @@ import {
   StyleSheet,
   Pressable,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
 
 const { width, height } = Dimensions.get("window");
 
 const GroupItem = ({ content, navigation }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
   return (
     <Pressable
       onPress={() =>
@@ -19,11 +24,19 @@ const GroupItem = ({ content, navigation }) => {
       }
     >
       <View style={styles.container}>
+        {isLoading && (
+          <ActivityIndicator
+            style={StyleSheet.absoluteFill}
+            color={GlobalColors.colors.primary500}
+            size="large"
+          />
+        )}
         <View>
           <Image
             source={{ uri: content?.clubImageUrl }}
             style={styles.image}
             resizeMode="cover"
+            onLoad={handleImageLoad}
           />
           <View style={styles.hashtags}>
             {content?.tags.map((hashtag, index) => (

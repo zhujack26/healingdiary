@@ -1,10 +1,10 @@
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { GlobalColors } from "../../constants/color";
-import { Entypo } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { useEffect, useState, useCallback } from "react";
+import { getCalendarDiary } from "../../api/diary";
+import { BAD, CALM, HAPPY, PLEASURE, UNHAPPY } from "../../constants/emtion";
 const DateCheck = (date1, date2) => {
   return (
     date1.year === date2.year &&
@@ -16,44 +16,36 @@ const DateCheck = (date1, date2) => {
 const DateList = (date, dateList) => {
   return dateList.some((d) => DateCheck(date, d));
 };
-const getIconNameFromEmotionCode = (emotionCode) => {
+const getImageUriFromEmotionCode = (emotionCode) => {
   switch (emotionCode) {
     case 1:
-      return "emoji-happy";
+      return UNHAPPY;
     case 2:
-      return "emoji-sad";
-    // 여기에 더 추가
+      return BAD;
+    case 3:
+      return CALM;
+    case 4:
+      return PLEASURE;
+    case 5:
+      return HAPPY;
+    default:
+      return null;
   }
 };
 const getEmotionForDate = (date, dateList) => {
   const targetDate = dateList.find((d) => DateCheck(date, d));
   if (targetDate) {
-    const iconName = getIconNameFromEmotionCode(targetDate.emotion.code);
-    return { ...targetDate.emotion, iconName };
+    const imageUri = getImageUriFromEmotionCode(targetDate.emotion.emotionCode);
+    return { ...targetDate.emotion, imageUri };
   }
   return null;
 };
-const CustomDayComponent = ({ date, state, onPress }) => {
-  const dummyData = [
-    {
-      day: 12,
-      emotion: {
-        code: 1,
-        value: "기쁨",
-      },
-      month: 3,
-      year: 2023,
-    },
-    {
-      day: 13,
-      emotion: {
-        code: 2,
-        value: "슬픔",
-      },
-      month: 3,
-      year: 2023,
-    },
-  ];
+
+const CustomDayComponent = ({ date, state, onPress, calendarData }) => {
+  const emotion = getEmotionForDate(date, calendarData);
+  const imageUri = emotion
+    ? getImageUriFromEmotionCode(emotion.emotionCode)
+    : null;
 
   const today = new Date();
   const currentDate = {
@@ -69,12 +61,10 @@ const CustomDayComponent = ({ date, state, onPress }) => {
     }
   };
 
-  const emotion = getEmotionForDate(date, dummyData);
-
   return (
     <View>
       <TouchableOpacity onPress={handlePress} style={styles.box}>
-        <Text
+        <View
           style={{
             backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
             color:
@@ -82,18 +72,28 @@ const CustomDayComponent = ({ date, state, onPress }) => {
                 ? GlobalColors.colors.gray500
                 : GlobalColors.colors.black500,
             paddingVertical: 3,
-            paddingHorizontal: 3,
+            paddingHorizontal: 10,
             borderRadius: isToday ? 16 : null,
           }}
         >
-          {date.day}
-        </Text>
+          <Text
+            style={{
+              backgroundColor: isToday ? GlobalColors.colors.primary400 : null,
+              color:
+                state === "disabled"
+                  ? GlobalColors.colors.gray500
+                  : GlobalColors.colors.black500,
+            }}
+          >
+            {date.day}
+          </Text>
+        </View>
         {emotion && (
           <View style={styles.empty}>
-            <Entypo
-              name={emotion.iconName}
-              size={16}
-              color={GlobalColors.colors.primary500}
+            <Image
+              source={{ uri: imageUri }}
+              style={{ width: 40, height: 40, top: -25, borderRadius: 16 }}
+              resizeMode="contain"
             />
           </View>
         )}
@@ -133,6 +133,21 @@ LocaleConfig.defaultLocale = "ko";
 const CalendarView = () => {
   const navigation = useNavigation();
   const [selected, setSelected] = useState("");
+  const [calendarData, setCalendarData] = useState([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      const getCalendarDiaries = async () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+        const res = await getCalendarDiary(year, month);
+        setCalendarData(res);
+      };
+      getCalendarDiaries();
+    }, [])
+  );
+
   return (
     <Calendar
       theme={{
@@ -143,8 +158,8 @@ const CalendarView = () => {
         <CustomDayComponent
           date={date}
           state={state}
+          calendarData={calendarData}
           onPress={(day) => {
-            console.log("selected day");
             navigation.navigate("calendarDiaryList", {
               date: { year: day.year, month: day.month, day: day.day },
             });
@@ -178,7 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   empty: {
-    height: 18,
+    height: 10,
     textShadowRadius: 10,
   },
 });

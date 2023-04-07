@@ -14,10 +14,11 @@ export default function App() {
     "KoddiUDOnGothic-Bold": require("./assets/fonts/KoddiUDOnGothic-Bold.ttf"),
     "KoddiUDOnGothic-ExtraBold": require("./assets/fonts/KoddiUDOnGothic-ExtraBold.ttf"),
     "KoddiUDOnGothic-Regular": require("./assets/fonts/KoddiUDOnGothic-Regular.ttf"),
+    "SoakUpTheSunScript-Bold": require("./assets/fonts/SoakUpTheSunScript-Bold.otf"),
   });
 
   useEffect(() => {
-    removeData = async () => {
+    const removeData = async () => {
       await AsyncStorage.removeItem("jwtToken");
     };
 

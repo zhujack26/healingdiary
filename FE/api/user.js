@@ -56,6 +56,6 @@ export const userInfoUpdate = async (data) => {
     const response = await axiosInstance(postFormConfig("/members/info", data));
     return response;
   } catch (error) {
-    console.log("e", error);
+    console.log("userInfoUpdate", error);
   }
 };
