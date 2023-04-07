@@ -5,7 +5,6 @@ export const timeAgo = (date) => {
   const now = moment().tz(timezone);
   const targetDate = moment.utc(date).tz(timezone);
   const seconds = Math.floor((now - targetDate) / 1000);
-  console.log("check:", now);
   if (seconds < 60) {
     return "몇초전";
   }

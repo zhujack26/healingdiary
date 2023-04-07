@@ -111,7 +111,6 @@ const Record = ({ onResponse }) => {
   const getToken = async () => {
     try {
       const token = await AsyncStorage.getItem("jwtToken");
-      console.log("확인1");
       return token;
     } catch (error) {
       console.error("Error getting token:", error);
@@ -120,31 +119,23 @@ const Record = ({ onResponse }) => {
   const uploadRecording = async (uri) => {
     try {
       const token = await getToken();
-      console.log(token);
       const apiUrl = `http://j8b203.p.ssafy.io:8080/diaries/analyze`;
       const formData = new FormData();
 
       const fileUri = uri;
       const fileTypeMatch = /\.(\w+)$/.exec(fileUri);
       const mimeType = fileTypeMatch ? `audio/${fileTypeMatch[1]}` : "audio";
-      console.log("fileUri:", fileUri);
-      console.log("mimeType:", mimeType);
-
       formData.append("rec", {
         uri: fileUri,
         name: "record.m4a",
         type: mimeType,
       });
-      console.log(formData, apiUrl);
-
       const response = await axios.post(apiUrl, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
-
-      console.log("성공:", response.data);
       onResponse(response.data);
     } catch (error) {
       console.error("실패:", error);
