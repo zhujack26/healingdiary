@@ -211,7 +211,69 @@ SSAFY 8기 특화프로젝트 (2023.02.27 ~ 2023.04.07)
   ```
    <br>   
 
+### client build
 
+1. 원격 저장소 복제
+
+ `$ git clone https://lab.ssafy.com/s08-ai-speech-sub2/S08P22B203.git`
+
+2. 프로젝트 폴더 > FE 이동
+
+```
+cd FE
+```
+
+1. [expo.dev](http://expo.dev)에 접속해서 새로운 프로젝트 생성
+2. 프로젝트에서 생성된 projectid 복사
+3. app.json 변경
+
+```json
+{
+  "expo": {
+    "name": "diary",
+    "slug": "diary",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#f3f3f3",
+    "scheme": "com.ssafy.healingdiary",
+    "jsEngine": "hermes",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "jsEngine": "jsc",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ssafy.healingdiary"
+    },
+    "android": {
+      "package": "com.ssafy.healingdiary",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "packagerOpts": {
+      "sourceExts": ["js", "json", "ts", "tsx", "jsx"]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "projectid"
+      }
+    }
+  }
+}
+```
+
+1. `eas-build:configure` 입력 후 `android` 선택
+2. `eas-build -p android --profile preview`
 
 
 <!-- CONTACT -->
