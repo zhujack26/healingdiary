@@ -52,13 +52,17 @@ const AddHashtag = ({
   const handleTagSelection = (tag) => {
     const maxDataTags = 1;
     const selectedEmotionTag = selectedTags.find((t) => DATA.includes(t));
+
     if (selectedTags.includes(tag)) {
       setSelectedTags(
         selectedTags.filter((selectedTag) => selectedTag !== tag)
       );
-      setDataTags(dataTags - 1);
+      if (DATA.includes(tag)) {
+        setDataTags(dataTags - 1);
+        onToggleCompleteButtonVisibility(false);
+      }
+
       notifySelectedTags();
-      onToggleCompleteButtonVisibility(false);
     } else {
       if (dataTags < maxDataTags) {
         if (selectedEmotionTag) {
@@ -70,8 +74,10 @@ const AddHashtag = ({
         } else {
           setSelectedTags([...selectedTags, tag]);
         }
-        setDataTags(dataTags + 1);
-        onToggleCompleteButtonVisibility(true);
+        if (DATA.includes(tag)) {
+          setDataTags(dataTags + 1);
+          onToggleCompleteButtonVisibility(true);
+        }
         notifySelectedTags();
       }
     }
@@ -100,7 +106,6 @@ const AddHashtag = ({
   };
   const handleSelectedTagPress = (tag) => {
     setSelectedTags(selectedTags.filter((selectedTag) => selectedTag !== tag));
-    notifySelectedTags();
   };
   const renderTextInput = () => (
     <View>
