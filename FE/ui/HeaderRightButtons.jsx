@@ -5,9 +5,10 @@ import { getNotification } from "../api/notification";
 import { GlobalColors } from "../constants/color";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const HeaderRightButtons = ({ navigation }) => {
+const HeaderRightButtons = ({ navigation, refresh }) => {
   const [userImage, setUserImage] = useState(null);
   const [notice, setNotice] = useState([]);
+  const check = notice.some((notice) => !notice.checkStatus);
 
   const getUserImage = useCallback(async () => {
     const data = await AsyncStorage.getItem("userImage");
@@ -22,12 +23,12 @@ const HeaderRightButtons = ({ navigation }) => {
   useEffect(() => {
     getUserImage();
     getNotice();
-  }, [getUserImage, getNotice]);
+  }, [refresh]);
 
   return (
     <View style={{ flexDirection: "row" }}>
-      <TouchableOpacity onPress={() => navigation.navigate("Notification")}>
-        {notice.length > 0 && <View style={styles.circle}></View>}
+      <TouchableOpacity>
+        {check && <View style={styles.circle}></View>}
         <MaterialCommunityIcons
           name="bell"
           size={24}
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -3,
     right: 5,
+    zIndex: 999,
   },
 });
 

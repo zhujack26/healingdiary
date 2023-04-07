@@ -1,8 +1,17 @@
 import { useState } from "react";
-import { View, TouchableOpacity, Image, StyleSheet } from "react-native";
-import { GlobalColors } from "../../constants/color";
-import { AntDesign } from "@expo/vector-icons";
-
+import { TouchableOpacity, Image, StyleSheet } from "react-native";
+import {
+  img1,
+  img2,
+  img3,
+  img4,
+  img5,
+  img6,
+  img7,
+  img8,
+  img9,
+  img10,
+} from "../../constants/defaultImage";
 const DefalutImagePicker = ({ onSelect }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const handleImagePress = (image) => {
@@ -15,13 +24,13 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: img1,
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: img1,
           }}
           style={styles.image}
         />
@@ -29,13 +38,13 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: img2,
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: img2,
           }}
           style={styles.image}
         />
@@ -43,13 +52,13 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/3.jpeg",
+            uri: img3,
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/3.jpeg",
+            uri: img3,
           }}
           style={styles.image}
         />
@@ -57,13 +66,13 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: img4,
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: img4,
           }}
           style={styles.image}
         />
@@ -71,13 +80,13 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: img5,
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: img5,
           }}
           style={styles.image}
         />
@@ -85,13 +94,13 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/3.jpeg",
+            uri: img6,
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/3.jpeg",
+            uri: img6,
           }}
           style={styles.image}
         />
@@ -99,13 +108,13 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: img7,
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/1.jpeg",
+            uri: img7,
           }}
           style={styles.image}
         />
@@ -113,13 +122,13 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: img8,
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: img8,
           }}
           style={styles.image}
         />
@@ -127,13 +136,27 @@ const DefalutImagePicker = ({ onSelect }) => {
       <TouchableOpacity
         onPress={() =>
           handleImagePress({
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: img9,
           })
         }
       >
         <Image
           source={{
-            uri: "https://bje-s3-bucket.s3.ap-northeast-2.amazonaws.com/diary_default_image/2.jpeg",
+            uri: img9,
+          }}
+          style={styles.image}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() =>
+          handleImagePress({
+            uri: img10,
+          })
+        }
+      >
+        <Image
+          source={{
+            uri: img10,
           }}
           style={styles.image}
         />

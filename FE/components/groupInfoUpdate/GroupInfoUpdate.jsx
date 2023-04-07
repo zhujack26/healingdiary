@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Platform } from "react-native";
+import { Platform, Alert } from "react-native";
 import { createGroup } from "../../api/group";
 import * as ImagePicker from "expo-image-picker";
 import GroupInfoUpdateHeader from "./GroupInfoUpdateHeader";
@@ -31,7 +31,7 @@ const GroupInfoUpdate = ({ isEdit }) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [3, 3],
-      quality: 1,
+      quality: 0.1,
     });
     if (!result.canceled && result.assets && result.assets[0]) {
       setImage({ uri: result.assets[0].uri });
@@ -70,26 +70,33 @@ const GroupInfoUpdate = ({ isEdit }) => {
     }
   };
   const registGroup = async () => {
-    const extension = image.uri.split(".").pop();
-    const fileName = image.uri.split("/").pop();
-    const mimeType = extensionToMimeType[extension];
-    const file = {
-      uri:
-        Platform.OS === "android"
-          ? image.uri
-          : image.uri.replace("file://", ""),
-      type: mimeType,
-      name: fileName,
-    };
-    const tags = selectedTags.map((tag) => tag.keyword);
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("tags", tags);
-    const res = await createGroup(formData);
-    if (res.status === 200) navigation.navigate("diaryBottomTab");
-    else console.log("생성 실패");
+    try {
+      const extension = image.uri.split(".").pop();
+      const fileName = image.uri.split("/").pop();
+      const mimeType = extensionToMimeType[extension];
+      const file = {
+        uri:
+          Platform.OS === "android"
+            ? image.uri
+            : image.uri.replace("file://", ""),
+        type: mimeType,
+        name: fileName,
+      };
+      const tags = selectedTags.map((tag) => tag.keyword);
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("tags", tags);
+      const res = await createGroup(formData);
+      if (res.status === 200) {
+        navigation.navigate("Group", { refreshKey: Date.now() });
+      } else {
+        Alert.alert("소모임 생성 실패!");
+      }
+    } catch (e) {
+      Alert.alert("입력에 오류가있습니다");
+    }
   };
 
   return (

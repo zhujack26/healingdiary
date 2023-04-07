@@ -1,12 +1,9 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GlobalColors } from "../constants/color";
+import { BottomTabContextProvider } from "../context/BottomTabContext";
 import BottomTabs from "./BottomTabs";
 import LoginScreen from "./../screens/LoginScreen";
-import Date from "../ui/Date";
-import MakingScreen from "../screens/MakingScreen";
-import { Text, TouchableOpacity } from "react-native";
-import MakingDetailScreen from "../screens/MakingDetailScreen";
 import GroupDetailScreen from "../screens/GroupDetailScreen";
 import UserInformScreen from "../screens/UserInformScreen";
 import GroupInfoUpdateScreen from "./../screens/GroupInfoUpdateScreen";
@@ -14,26 +11,27 @@ import GroupMemberScreen from "./../screens/GroupMemberScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import KakaoWebView from "../components/login/KakaoWebView";
 import ModifyingInformScreen from "../screens/ModifyingInformScreen";
-import GroupMemberAllow from "./../components/groupMemberAllow/GroupMemberAllow";
+import GroupNextButton from "../components/createGroupDiary/GroupNextButton";
 import NextButton from "../components/making/NextButton";
 import DiaryDetailScreen from "../screens/DiaryDetailScreen";
 import CalendarDiaryListScreen from "../screens/CalendarDiaryListScreen";
 import InviteScreen from "../screens/InviteScreen";
 import MakingInput from "../components/diaryDetail/MakingInput";
-import { BottomTabContextProvider } from "../context/BottomTabContext";
 import SearchScreen from "./../screens/SearchScreen";
 import CompleteButton from "../components/making/CompleteButton";
+import GroupCompleteButton from "../components/createGroupDiary/GroupCompleteButton";
 import GroupMemberAllowScreen from "../screens/GroupMemberAllowScreen";
+import Header from "../ui/Header";
+import Create from "../components/createGroupDiary/Create";
+import CreateDetail from "../components/createGroupDiary/CreateDetail";
+import Making from "../components/making/Making";
+import MakingDetail from "../components/making/MakingDetail";
 
 const Stack = createNativeStackNavigator();
 const StackNavigation = () => {
   return (
     <BottomTabContextProvider>
       <NavigationContainer>
-        {/* <Stack.Navigator
-        initialRouteName="userinform"
-        component= {UserInformScreen}
-        > */}
         <Stack.Navigator
           initialRouteName="Login"
           screenOptions={{
@@ -84,7 +82,6 @@ const StackNavigation = () => {
             component={CalendarDiaryListScreen}
             options={{
               title: "",
-              headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -94,12 +91,12 @@ const StackNavigation = () => {
           />
           <Stack.Screen
             name="Making"
-            component={MakingScreen}
+            component={Making}
             options={({ navigation }) => ({
               headerRight: (props) => (
                 <NextButton {...props} navigation={navigation} />
               ),
-              headerTitle: () => <Date />,
+              title: "",
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -109,12 +106,42 @@ const StackNavigation = () => {
           />
           <Stack.Screen
             name="MakingDetail"
-            component={MakingDetailScreen}
+            component={MakingDetail}
             options={({ navigation }) => ({
               headerRight: (props) => (
                 <CompleteButton {...props} navigation={navigation} />
               ),
-              headerTitle: () => <Date />,
+              title: "",
+              headerTitleAlign: "center",
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor: GlobalColors.colors.primary500,
+              },
+            })}
+          />
+          <Stack.Screen
+            name="Create"
+            component={Create}
+            options={({ navigation }) => ({
+              headerRight: (props) => (
+                <GroupNextButton {...props} navigation={navigation} />
+              ),
+              title: "",
+              headerTitleAlign: "center",
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor: GlobalColors.colors.primary500,
+              },
+            })}
+          />
+          <Stack.Screen
+            name="CreateDetail"
+            component={CreateDetail}
+            options={({ navigation }) => ({
+              headerRight: (props) => (
+                <GroupCompleteButton {...props} navigation={navigation} />
+              ),
+              title: "",
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -142,7 +169,6 @@ const StackNavigation = () => {
             component={GroupMemberScreen}
             options={{
               title: "",
-              headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -156,7 +182,6 @@ const StackNavigation = () => {
             component={GroupMemberAllowScreen}
             options={{
               title: "",
-              headerTitle: () => <Date />,
               headerTitleAlign: "center",
               headerShadowVisible: false,
               headerStyle: {
@@ -168,10 +193,14 @@ const StackNavigation = () => {
             name="Notification"
             component={NotificationScreen}
             options={{
-              headerTitle: "알림",
+              headerTitle: () => <Header />,
               headerTitleAlign: "center",
               headerShown: true,
               headerShadowVisible: false,
+              headerStyle: {
+                fontFamily: "KoddiUDOnGothic-Bold",
+                backgroundColor: GlobalColors.colors.background500,
+              },
             }}
           />
           <Stack.Screen
@@ -186,7 +215,7 @@ const StackNavigation = () => {
             name="MakingInput"
             component={MakingInput}
             options={{
-              headerTitle: "댓글 달기",
+              headerTitle: "댓글",
               headerShown: true,
             }}
           />

@@ -1,10 +1,11 @@
 import { View, StyleSheet } from "react-native";
 import Detail from "../components/notification/Detail";
 
-const NotificationScreen = () => {
+const NotificationScreen = ({ route }) => {
+  const { notice } = route.params;
   return (
     <View>
-      <Detail />
+      <Detail notice={notice} />
     </View>
   );
 };

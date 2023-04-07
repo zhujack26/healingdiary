@@ -11,7 +11,6 @@ import { GlobalColors } from "../../constants/color";
 import { duplicationNickname, kakaoSignup } from "../../api/user";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
-import Profile from "./Profile";
 import Nickname from "./Nickname";
 import Location from "./Location";
 import Disease from "./Disease";
@@ -81,7 +80,6 @@ const UserInform = () => {
       await AsyncStorage.setItem("userImage", res.data.member_image_url);
       navigation.navigate("diaryBottomTab");
     } else if (res.status === 409) {
-      console.log("이미 가입된 회원");
       // 나중에 에러처리 필요함
     }
   };

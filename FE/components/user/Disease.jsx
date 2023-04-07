@@ -6,6 +6,10 @@ const items = [
   { id: 1, label: "암", value: "암" },
   { id: 2, label: "심장질환", value: "심장질환" },
   { id: 3, label: "뇌질환", value: "뇌질환" },
+  { id: 3, label: "폐질환", value: "폐질환" },
+  { id: 3, label: "간질환", value: "간질환" },
+  { id: 3, label: "당뇨병", value: "당뇨병" },
+  { id: 3, label: "인플루엔자", value: "인플루엔자" },
 ];
 
 const Disease = ({ title, onChangeDisease, selectedDisease }) => {

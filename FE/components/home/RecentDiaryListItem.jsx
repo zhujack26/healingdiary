@@ -11,17 +11,18 @@ import { GlobalColors } from "../../constants/color";
 
 const { width } = Dimensions.get("window");
 
-const RecentDiaryListItem = ({ item, navigateToScreen }) => {
+const RecentDiaryListItem = ({ item }) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.recentDiary}>
       <Pressable
         onPress={() => {
-          navigateToScreen("diaryDetail", item.id);
+          navigation.navigate("diaryDetail", { diaryId: item.diaryId });
         }}
       >
-        <Image source={item?.image} style={styles.image} />
+        <Image source={{ uri: item?.imageUrl }} style={styles.image} />
         <View style={styles.hashtag}>
-          <Text style={styles.tagText}>#{item?.hashtags}</Text>
+          <Text style={styles.tagText}>#{item?.emotion.value}</Text>
         </View>
       </Pressable>
     </View>

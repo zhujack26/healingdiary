@@ -1,17 +1,9 @@
-import { useState } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { GlobalColors } from "../../constants/color";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 
-const SearchBox = () => {
-  const [search, setSearch] = useState("");
-  const navigation = useNavigation();
-  const updateSearch = (search) => {
-    setSearch(search);
-  };
-
+const SearchBox = ({ navigation, search, updateSearch }) => {
   return (
     <View style={styles.container}>
       <Pressable onPress={() => navigation.goBack()}>

@@ -4,7 +4,7 @@ import { GlobalColors } from "../../constants/color";
 const renderHashTagItem = ({ item }) => {
   return (
     <View style={styles.hashtag}>
-      <Text style={styles.hashtagText}>#{item}</Text>
+      <Text style={styles.hashtagText}>#{item.content}</Text>
     </View>
   );
 };
