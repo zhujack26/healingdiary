@@ -179,8 +179,8 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             .from(diary)
             .innerJoin(diary.member, member)
             .where(
-                member.disease.eq(m.getDisease())
-                        .or(member.region.eq(m.getRegion()))
+                member.id.ne(m.getId()),
+                diseaseOrRegion(m.getDisease(), m.getRegion())
             )
             .orderBy(diary.createdDate.desc())
             .limit(num)
@@ -219,7 +219,10 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
             List<Long> idList2 = queryFactory
                 .select(diary.id)
                 .from(diary)
-                .where(diary.id.notIn(idList))
+                .where(
+                    diary.member.id.ne(m.getId()),
+                    diary.id.notIn(idList)
+                )
                 .orderBy(diary.createdDate.desc())
                 .limit(limit)
                 .fetch();
@@ -272,7 +275,7 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
     public static BooleanExpression dateEq(Integer year, Integer month, Integer day) {
         if (year != null && month != null && day != null) {
             LocalDateTime startOfDay = LocalDateTime.of(year, month, day, 0, 0, 0);
-            LocalDateTime endOfDay = LocalDateTime.of(year, month, day, 59, 59, 59);
+            LocalDateTime endOfDay = LocalDateTime.of(year, month, day, 23, 59, 59);
             return diary.createdDate.between(startOfDay, endOfDay);
         }
         else if(year != null && month != null) {
@@ -284,6 +287,10 @@ public class DiaryRepositoryImpl implements DiaryRepositoryCustom {
         else {
             return null;
         }
+    }
+
+    private BooleanExpression diseaseOrRegion(String disease, String region) {
+        return member.disease.eq(disease).or(member.region.eq(region));
     }
 
 }

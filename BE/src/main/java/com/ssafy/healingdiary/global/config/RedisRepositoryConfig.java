@@ -21,7 +21,7 @@ public class RedisRepositoryConfig {
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
         LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(
-            redisProperties.getHost(), redisProperties.getPort());
+                redisProperties.getHost(), redisProperties.getPort());
         lettuceConnectionFactory.setPassword(redisProperties.getPassword());
         return lettuceConnectionFactory;
     }

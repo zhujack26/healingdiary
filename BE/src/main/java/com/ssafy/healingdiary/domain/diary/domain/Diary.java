@@ -41,7 +41,7 @@ public class Diary extends BaseEntity {
     private Club club;
 
     @Builder.Default
-    @OneToMany(mappedBy = "diary",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
     private List<DiaryTag> diaryTag = new ArrayList<>();
 
     @NotNull
