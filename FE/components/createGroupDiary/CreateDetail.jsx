@@ -12,11 +12,9 @@ const CreateDetail = ({ navigation, route }) => {
     setCompleteButtonVisible(visible);
   };
   const [selectedTags, setSelectedTags] = useState([]);
-
   const handleSelectedTags = (tags) => {
     setSelectedTags(tags);
   };
-
   useEffect(() => {
     navigation.setOptions({
       headerRight: (props) => (
@@ -39,7 +37,6 @@ const CreateDetail = ({ navigation, route }) => {
     selectedImage,
     groupId,
   ]);
-
   return (
     <View style={styles.container}>
       <View style={styles.inform}>

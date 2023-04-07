@@ -7,7 +7,7 @@ import { Audio } from "expo-av";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Record = ({ onToggleNextButtonVisibility, onResponse }) => {
+const Record = ({ onResponse }) => {
   const [time, setTime] = useState(180);
   const [intervalId, setIntervalId] = useState(null);
   const [timerRunning, setTimerRunning] = useState(false);
@@ -19,7 +19,6 @@ const Record = ({ onToggleNextButtonVisibility, onResponse }) => {
       clearInterval(intervalId);
       setTimerRunning(false);
       setTime(180);
-      onToggleNextButtonVisibility(true);
       if (recording) {
         stopRecording();
       }
@@ -49,7 +48,6 @@ const Record = ({ onToggleNextButtonVisibility, onResponse }) => {
     clearInterval(intervalId);
     setTime(180);
     setTimerRunning(false);
-    onToggleNextButtonVisibility(true);
     if (recording) {
       stopRecording();
     }
@@ -121,31 +119,23 @@ const Record = ({ onToggleNextButtonVisibility, onResponse }) => {
   const uploadRecording = async (uri) => {
     try {
       const token = await getToken();
-      console.log(token);
       const apiUrl = `http://j8b203.p.ssafy.io:8080/diaries/analyze`;
       const formData = new FormData();
 
       const fileUri = uri;
       const fileTypeMatch = /\.(\w+)$/.exec(fileUri);
       const mimeType = fileTypeMatch ? `audio/${fileTypeMatch[1]}` : "audio";
-      console.log("fileUri:", fileUri);
-      console.log("mimeType:", mimeType);
-
       formData.append("rec", {
         uri: fileUri,
         name: "record.m4a",
         type: mimeType,
       });
-      console.log(formData, apiUrl);
-
       const response = await axios.post(apiUrl, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
-
-      console.log("성공:", response.data);
       onResponse(response.data);
     } catch (error) {
       console.error("실패:", error);

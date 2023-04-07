@@ -9,7 +9,7 @@ export const timeAgo = (date) => {
     return "몇초전";
   }
 
-  const minutes = Math.floor(seconds / 60);
+  const minutes = Math.floor(seconds - targetDate / 60);
   if (minutes < 60) {
     return `${minutes}분 전`;
   }
