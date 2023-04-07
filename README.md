@@ -43,7 +43,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-# 프로젝트 소개
+# 🍃 프로젝트 소개
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
@@ -56,12 +56,35 @@ SSAFY 8기 특화프로젝트 (2023.02.27 ~ 2023.04.07)
 음성을 텍스트로 변환 후 녹음과 함께 저장하고, 선택적으로 해시태그를 달 수 있습니다. 목소리로만 기록한 일기일지라도 내용이나 태그로 나중에 쉽게 검색할 수 있습니다.
 
 개인적인 비밀일기 뿐만 아니라 소모임을 생성해 함께 일상을 공유하고, 나와 같은 질병 혹은 지역의 다른 사람들의 일기나 소모임을 추천하여 더 다채로운 활동을 할 수 있습니다.
+<br><br><br>
+# 🎨 기능 소개
 
+### ◾ 소셜 로그인 및 메인 화면
+![로그인](/uploads/e3a47c65af6fea14f5fd9b31db82ab8b/로그인.gif)
 
+### ◾ 일기 작성
+![일기_작성](/uploads/7050d876b395886802f47af97f331f3b/일기_작성.gif)
 
+### ◾ 소모임 생성
+![소모임_생성](/uploads/ba7cbd7bf3f8721f61aaa32d9f19773b/소모임_생성.gif)
+
+### ◾ 소모임 초대
+![초대_기능](/uploads/fda66b296d967f4882cc0aa29213178d/초대_기능.gif)
+
+### ◾ 소모임 내 일기 조회
+![댓글_조회_및_작성](/uploads/98e9823e9c4f8895b9f06ff4bf17f408/댓글_조회_및_작성.gif)
+
+### ◾ 댓글 조회 및 작성
+![소모임_내_일기_조회](/uploads/ebcd909f454839c931184dcbc31ed067/소모임_내_일기_조회.gif)
+
+### ◾ 일기 및 소모임 검색
+![검색_기능](/uploads/22320c4102e65491cc55b389fc5fe8a7/검색_기능.gif)
+
+### ◾ 캘린더 및 감정 통계 조회
+![달력_일기_데이터_조회](/uploads/d2d34aef58ea8132b4b18862ef86058d/달력_일기_데이터_조회.gif)
 
 <br><br>
-# 기술 스택
+# ⚒기술 스택
 
 ### Front-end
 [![Javascript][Javascript.com]][Javascript-url]
@@ -98,7 +121,7 @@ SSAFY 8기 특화프로젝트 (2023.02.27 ~ 2023.04.07)
 
 
 <br><br>
-# 프로젝트 구성도
+# ⚙프로젝트 구성도
 
 |아키텍처(Architecture)|
 |:---:|
@@ -112,7 +135,7 @@ SSAFY 8기 특화프로젝트 (2023.02.27 ~ 2023.04.07)
 <br><br><br>
 <!-- GETTING STARTED -->
 
-# 실행 방법
+# 💻 실행 방법
 
 
 ### Server Build
@@ -278,13 +301,13 @@ SSAFY 8기 특화프로젝트 (2023.02.27 ~ 2023.04.07)
 1. `eas-build:configure` 입력 후 `android` 선택
 2. `eas-build -p android --profile preview`
 
-
+<br><br><br>
 <!-- CONTACT -->
-# 팀 소개
+# 👥 팀 소개
 
 |강정훈(팀장)|김민준|김혜정|백정은|박주승|한상준|
 |:---:|:---:|:---:|:---:|:---:|:---:|
-|Back-end|Back-end|Back-end|Back-end|Front-end|Front-end|
+|Back-end|Back-end|Back-end|Back-end<br>CI/CD|Front-end|Front-end|
 
 <br>
 
