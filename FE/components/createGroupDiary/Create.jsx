@@ -8,10 +8,6 @@ import AddImage from "./AddImage";
 const Create = ({ navigation, route }) => {
   const { groupId } = route.params;
   const [response, setResponse] = useState(null);
-  const [nextButtonVisible, setNextButtonVisible] = useState(false);
-  const toggleNextButtonVisibility = (visible = true) => {
-    setNextButtonVisible(visible);
-  };
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleSelectedImage = (image) => {
@@ -22,7 +18,6 @@ const Create = ({ navigation, route }) => {
       headerRight: (props) => (
         <GroupNextButton
           {...props}
-          visible={nextButtonVisible}
           navigation={navigation}
           response={response}
           selectedImage={selectedImage}
@@ -30,16 +25,13 @@ const Create = ({ navigation, route }) => {
         />
       ),
     });
-  }, [navigation, nextButtonVisible, response]);
+  }, [navigation, selectedImage, response]);
 
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
         <AddImage onSelectedImage={handleSelectedImage} />
-        <Record
-          onToggleNextButtonVisibility={toggleNextButtonVisibility}
-          onResponse={setResponse}
-        />
+        <Record onResponse={setResponse} />
       </View>
     </View>
   );

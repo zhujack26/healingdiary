@@ -17,8 +17,6 @@ const CompleteButton = ({
   if (!visible) {
     return null;
   }
-  console.log("check3:", selectedTags);
-
   const handleOnPress = async () => {
     const extension = selectedImage.uri.split(".").pop();
     const fileName = selectedImage.uri.split("/").pop();
@@ -37,9 +35,7 @@ const CompleteButton = ({
     formData.append("recordUrl", emotionResponse.recordUrl);
     const hashtags = selectedTags.map((tag) => tag.keyword);
     formData.append("tags", hashtags);
-    console.log("태그폼 확인", hashtags);
     const res = await createDiary(formData);
-    console.log(res);
     if (res.status === 200) navigation.navigate("diaryBottomTab");
     else console.log("생성 실패");
   };

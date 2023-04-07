@@ -10,7 +10,6 @@ const Login = () => {
   useEffect(() => {
     const checkToken = async () => {
       const token = await AsyncStorage.getItem("jwtToken");
-      console.log(token);
       if (token) navigation.navigate("diaryBottomTab");
     };
     checkToken();
