@@ -1,15 +1,12 @@
-import moment from "moment-timezone";
-
 export const timeAgo = (date) => {
-  const timezone = "Asia/Seoul";
-  const now = moment().tz(timezone);
-  const targetDate = moment.utc(date).tz(timezone);
-  const seconds = Math.floor((now - targetDate) / 1000);
+  const now = new Date();
+  now.setHours(now.getHours()); // subtract 9 hours from the current time
+  const seconds = Math.floor((now - new Date(date)) / 1000);
   if (seconds < 60) {
     return "몇초전";
   }
 
-  const minutes = Math.floor(seconds - targetDate / 60);
+  const minutes = Math.floor(seconds / 60);
   if (minutes < 60) {
     return `${minutes}분 전`;
   }
