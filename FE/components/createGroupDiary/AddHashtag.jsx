@@ -21,10 +21,10 @@ const AddHashtag = ({
   onSelectedTags,
 }) => {
   const notifySelectedTags = () => {
-    onSelectedTags(selectedTags);
+    const customTags = selectedTags.filter((tag) => !DATA.includes(tag));
+    onSelectedTags(customTags);
   };
   useEffect(() => {
-    console.log(selectedTags);
     onSelectedTags(selectedTags);
     if (selectedTags.some((tag) => DATA.includes(tag))) {
       onToggleCompleteButtonVisibility(true);
@@ -41,24 +41,38 @@ const AddHashtag = ({
     return [];
   });
   const [inputText, setInputText] = useState("");
-  const [dataTags, setDataTags] = useState(0); // DATA에서 선택한 해시태그 개수를 저장하는 상태 변수 추가
-  const maxDataTags = 1; // 최대 선택 가능한 DATA 해시태그 개수를 1개로 설정
+  const [dataTags, setDataTags] = useState(() => {
+    if (emotionResponse) {
+      const { emotionCode } = emotionResponse.emotion;
+      const tag = DATA.find((t) => t.id === emotionCode);
+      return tag ? 1 : 0;
+    }
+    return 0;
+  });
   const handleTagSelection = (tag) => {
+    const maxDataTags = 1;
+    const selectedEmotionTag = selectedTags.find((t) => DATA.includes(t));
     if (selectedTags.includes(tag)) {
       setSelectedTags(
         selectedTags.filter((selectedTag) => selectedTag !== tag)
       );
-      setDataTags(dataTags - 1); // DATA에서 선택한 해시태그 개수를 줄입니다.
+      setDataTags(dataTags - 1);
       notifySelectedTags();
       onToggleCompleteButtonVisibility(false);
     } else {
       if (dataTags < maxDataTags) {
-        setSelectedTags([
-          ...selectedTags.filter((t) => !DATA.includes(t)),
-          tag,
-        ]);
-        setDataTags(dataTags + 1); // DATA에서 선택한 해시태그 개수를 늘립니다.
+        if (selectedEmotionTag) {
+          setSelectedTags(
+            selectedTags
+              .filter((selectedTag) => selectedTag !== selectedEmotionTag)
+              .concat(tag)
+          );
+        } else {
+          setSelectedTags([...selectedTags, tag]);
+        }
+        setDataTags(dataTags + 1);
         onToggleCompleteButtonVisibility(true);
+        notifySelectedTags();
       }
     }
   };

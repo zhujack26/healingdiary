@@ -17,8 +17,6 @@ const CompleteButton = ({
   if (!visible) {
     return null;
   }
-  console.log("check3:", selectedTags);
-
   const handleOnPress = async () => {
     const extension = selectedImage.uri.split(".").pop();
     const fileName = selectedImage.uri.split("/").pop();

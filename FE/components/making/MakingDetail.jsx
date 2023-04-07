@@ -12,7 +12,6 @@ const MakingDetail = ({ navigation, route }) => {
     setCompleteButtonVisible(visible);
   };
   const [selectedTags, setSelectedTags] = useState([]);
-  console.log("check1:", selectedTags);
   const handleSelectedTags = (tags) => {
     setSelectedTags(tags);
   };
@@ -36,7 +35,6 @@ const MakingDetail = ({ navigation, route }) => {
     emotionResponse,
     selectedImage,
   ]);
-  console.log("check2:", selectedTags);
   return (
     <View style={styles.container}>
       <View style={styles.inform}>
