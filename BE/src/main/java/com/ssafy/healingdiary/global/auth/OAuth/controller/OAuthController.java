@@ -10,11 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -50,6 +46,7 @@ public class OAuthController {
         return null;
 
     }
+
     @ApiOperation(value = "회원가입", notes = "회원가입, 어떤 소셜 회원가입인지 넣어주는 것이 중요함")
     @PostMapping("/signup")
     public ResponseEntity<LoginResponse> googleSignUp(@RequestHeader("Authorization") String accessToken,
@@ -57,7 +54,7 @@ public class OAuthController {
         try {
             LoginResponse loginResponse = oauthService.signUp(accessToken, signupReqDto);
             return new ResponseEntity<>(loginResponse, HttpStatus.OK);
-        }catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         return null;

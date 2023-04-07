@@ -2,26 +2,17 @@ package com.ssafy.healingdiary.domain.member.domain;
 
 import com.ssafy.healingdiary.domain.club.domain.ClubMember;
 import com.ssafy.healingdiary.domain.diary.domain.Diary;
-import com.ssafy.healingdiary.domain.member.dto.MemberUpdateRequest;
 import com.ssafy.healingdiary.domain.member.dto.SignupReqDto;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.GoogleOauthTokenResponse;
 import com.ssafy.healingdiary.global.auth.OAuth.dto.KakaoOauthTokenResDto;
 import com.ssafy.healingdiary.global.common.domain.BaseEntity;
 import com.sun.istack.NotNull;
+import lombok.*;
+
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import javax.persistence.AttributeOverride;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -66,17 +57,17 @@ public class Member extends BaseEntity {
     }
 
     public void updateMember(String nickname, String disease,
-        String region, String imageUrl) {
+                             String region, String imageUrl) {
         this.nickname = nickname;
         this.region = region;
-        this.disease = this.getDisease();
+        this.disease = disease;
         this.memberImageUrl = imageUrl;
     }
 
     public static Member googleSignupMember(String providerEmail,
-                       SignupReqDto signupReqDto,
-                       GoogleOauthTokenResponse googleOauthTokenResponse,
-                       String userRole) {
+                                            SignupReqDto signupReqDto,
+                                            GoogleOauthTokenResponse googleOauthTokenResponse,
+                                            String userRole) {
         return Member.builder()
                 .providerEmail(providerEmail)
                 .nickname(signupReqDto.getNickname())
@@ -86,10 +77,11 @@ public class Member extends BaseEntity {
                 .roles(userRole)
                 .build();
     }
+
     public static Member kakaoSignupMember(String providerEmail,
-                                            SignupReqDto signupReqDto,
-                                            KakaoOauthTokenResDto kakaoOauthTokenResDto,
-                                            String userRole) {
+                                           SignupReqDto signupReqDto,
+                                           KakaoOauthTokenResDto kakaoOauthTokenResDto,
+                                           String userRole) {
         return Member.builder()
                 .providerEmail(providerEmail)
                 .nickname(signupReqDto.getNickname())
@@ -99,8 +91,6 @@ public class Member extends BaseEntity {
                 .roles(userRole)
                 .build();
     }
-
-
 
 
 }

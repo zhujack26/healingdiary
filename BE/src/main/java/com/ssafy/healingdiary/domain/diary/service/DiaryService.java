@@ -13,12 +13,12 @@ import com.ssafy.healingdiary.domain.diary.domain.Diary;
 import com.ssafy.healingdiary.domain.diary.domain.DiaryTag;
 import com.ssafy.healingdiary.domain.diary.domain.Emotion;
 import com.ssafy.healingdiary.domain.diary.dto.CalendarResponse;
-import com.ssafy.healingdiary.domain.diary.dto.DiaryCreateRequest;
 import com.ssafy.healingdiary.domain.diary.dto.DiaryDetailResponse;
 import com.ssafy.healingdiary.domain.diary.dto.DiarySimpleResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionResponse;
 import com.ssafy.healingdiary.domain.diary.dto.EmotionStatisticResponse;
 import com.ssafy.healingdiary.domain.diary.repository.DiaryRepository;
+import com.ssafy.healingdiary.domain.diary.repository.DiaryTagRepository;
 import com.ssafy.healingdiary.domain.diary.repository.EmotionRepository;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import com.ssafy.healingdiary.domain.member.repository.MemberRepository;
@@ -54,6 +54,7 @@ public class DiaryService {
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
     private final TagRepository tagRepository;
+    private final DiaryTagRepository diaryTagRepository;
     private final ClovaSpeechClient clovaSpeechClient;
     private final ClovaClient clovaClient;
     private final Gson gson;
@@ -80,62 +81,6 @@ public class DiaryService {
         Diary diary = diaryRepository.findById(diaryId).orElseThrow(()->new CustomException(DIARY_NOT_FOUND));
         DiaryDetailResponse diaryDetailResponse = DiaryDetailResponse.of(diary);
         return diaryDetailResponse;
-    }
-
-    public Map<String, Object> createDiary(Long memberId, DiaryCreateRequest diaryCreateRequest, MultipartFile image)
-        throws IOException {
-        String recordUrl = diaryCreateRequest.getRecordUrl();
-        if(!redisTemplate.hasKey(recordUrl)){
-            throw new CustomException(RECORD_NOT_FOUND);
-        }
-
-        ValueOperations<String, String> valueOperations = (ValueOperations<String, String>) redisTemplate.opsForValue();
-        String content = valueOperations.get(recordUrl);
-        String imageUrl = storageClient.uploadFile(image);
-        Member member = memberRepository.getReferenceById(memberId);
-
-        Club club = null;
-        if(diaryCreateRequest.getClubId()!=null) {
-            try{
-                club = clubRepository.getReferenceById(diaryCreateRequest.getClubId());
-            } catch (EntityNotFoundException e){
-                throw new CustomException(CLUB_NOT_FOUND);
-            }
-        }
-        Emotion emotion = emotionRepository.getReferenceById(diaryCreateRequest.getEmotionCode());
-
-        Diary diary = Diary.builder()
-            .member(member)
-            .club(club)
-            .emotion(emotion)
-            .diaryImageUrl(imageUrl)
-            .recordUrl(recordUrl)
-            .content(content)
-            .build();
-
-        List<DiaryTag> tags = diaryCreateRequest.getTags()
-            .stream()
-            .map(tagContent -> {
-                Tag tag = tagRepository.findByContentLike(tagContent);
-                if(tag==null) {
-                    tag = Tag.builder()
-                        .content(tagContent)
-                        .build();
-                }
-                DiaryTag diaryTag = DiaryTag.builder()
-                    .diary(diary)
-                    .tag(tag)
-                    .build();
-                return diaryTag;
-            })
-            .collect(Collectors.toList());
-
-        diary.setDiaryTag(tags);
-        Diary savedDiary = diaryRepository.save(diary);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("diaryId", savedDiary.getId());
-        return map;
     }
 
     public void deleteDiary(Long memberId, Long diaryId) throws IOException {

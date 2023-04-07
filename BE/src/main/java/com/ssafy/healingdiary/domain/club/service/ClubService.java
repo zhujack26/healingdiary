@@ -71,6 +71,16 @@ public class ClubService {
         Slice<ClubSimpleResponse> clubSimpleResponseList = clubRepository.findByOption(all,
             memberId,
             keyword, tagContent, pageable);
+        clubSimpleResponseList.stream().forEach((response -> {
+            Club club = clubRepository.findById(response.getClubId()).get();
+            List<String> tags = clubTagRepository.findByClub(club).stream()
+                .map((clubTag -> {
+                    return clubTag.getTag().getContent();
+                }))
+                .collect(Collectors.toList());
+            response.setTags(tags);
+        }));
+
         return clubSimpleResponseList;
     }
 

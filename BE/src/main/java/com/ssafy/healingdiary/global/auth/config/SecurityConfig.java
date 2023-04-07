@@ -24,48 +24,49 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtTokenizer = jwtTokenizer;
         this.principalDetailsService = principalDetailsService;
     }
+
     @Override
     public void configure(WebSecurity web) throws Exception {
         web
-            .ignoring()
-            .antMatchers(
-                "/v2/api-docs/**",
-                "/",
-                "/webjars/**",
-                "/swagger-ui/**",
-                "/swagger-ui.html/**",
-                "/swagger-resources/**",
-                "/swagger-ui.html",
-                "/auth/account/**",
-                "/members/nickname"
+                .ignoring()
+                .antMatchers(
+                        "/v2/api-docs/**",
+                        "/",
+                        "/webjars/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html/**",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/auth/account/**",
+                        "/members/nickname"
 
-            );
+                );
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .httpBasic().disable()
-            .cors()
-            .and()
-            .formLogin().disable()
-            .csrf().disable()
-            .authorizeRequests()
-            .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-            .antMatchers(
-                "/",
-                "/webjars/**",
-                "/auth/account/**",
-                "/swagger-ui.html/**", "/swagger-ui/**",
-                "/v2/api-docs/**", "/swagger-resources/**",
-                "/members/nickname","/members/reissue").permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .addFilterBefore(new JwtAuthenticationFilter(principalDetailsService, jwtTokenizer),
-                UsernamePasswordAuthenticationFilter.class);
+                .httpBasic().disable()
+                .cors()
+                .and()
+                .formLogin().disable()
+                .csrf().disable()
+                .authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                .antMatchers(
+                        "/",
+                        "/webjars/**",
+                        "/auth/account/**",
+                        "/swagger-ui.html/**", "/swagger-ui/**",
+                        "/v2/api-docs/**", "/swagger-resources/**",
+                        "/members/nickname", "/members/reissue").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(new JwtAuthenticationFilter(principalDetailsService, jwtTokenizer),
+                        UsernamePasswordAuthenticationFilter.class);
 
     }
 }

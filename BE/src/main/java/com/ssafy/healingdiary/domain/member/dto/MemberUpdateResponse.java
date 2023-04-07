@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ssafy.healingdiary.domain.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
+
 @Getter
 @Builder
 public class MemberUpdateResponse {
@@ -15,7 +16,7 @@ public class MemberUpdateResponse {
     @JsonProperty("image_url")
     private String imageUrl;
 
-    public static MemberUpdateResponse of(Member member){
+    public static MemberUpdateResponse of(Member member) {
         return MemberUpdateResponse.builder()
                 .nickname(member.getNickname())
                 .disease(member.getDisease())

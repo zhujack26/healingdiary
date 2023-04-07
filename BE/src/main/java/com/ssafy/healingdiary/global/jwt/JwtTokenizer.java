@@ -1,25 +1,21 @@
 package com.ssafy.healingdiary.global.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 
 @Slf4j
@@ -38,7 +34,6 @@ public class JwtTokenizer {
 
     @Value("${jwt.expiration-refreshtoken-minutes}")
     private int refreshtokenExpiration;
-
 
 
     public String encodeBase64SecretKey(String secretKey) {
@@ -85,17 +80,6 @@ public class JwtTokenizer {
     }
 
 
-    // 서명 검증
-    public void verifySignature(String jws, // jws는 signature가 들어간 jwt라는 의미
-                                String encodedSecretKey) {
-        Key key = getKeyFromEncodedKey(encodedSecretKey);
-
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jws);
-    }
-
     // jws안에 있는 Claims얻는 메서드
     public Jws<Claims> getClaims(String jws) {
         Key key = getKeyFromEncodedKey(encodeBase64SecretKey(secretKey));
@@ -119,20 +103,22 @@ public class JwtTokenizer {
         String id = Jwts.parserBuilder().setSigningKey(encodeBase64SecretKey(secretKey)).build().parseClaimsJws(token).getBody().getSubject();
         return id;
     }
+
     public List<String> getRoleListFromToken(String token) {
-        Jws<Claims>  claims = getClaims(token);
+        Jws<Claims> claims = getClaims(token);
         Claims claim = claims.getBody();
         List<String> roleList = claim.get("role", List.class);
         return roleList;
     }
 
     public String getUsernameFromToken(String token) {
-        Jws<Claims>  claims = getClaims(token);
+        Jws<Claims> claims = getClaims(token);
         Claims claim = claims.getBody();
         String id = claim.get("sub", String.class);
 
         return id;
     }
+
     public boolean validateToken(String jwtToken) {
         try {
             Jwts.parser().setSigningKey(encodeBase64SecretKey(secretKey)).parseClaimsJws(jwtToken);
@@ -148,6 +134,7 @@ public class JwtTokenizer {
             return false;
         }
     }
+
     public Claims parseClaims(String accessToken) {
         try {
             Key key = getKeyFromEncodedKey(encodeBase64SecretKey(secretKey));
@@ -157,8 +144,6 @@ public class JwtTokenizer {
             return e.getClaims();
         }
     }
-
-
 
 
 }
