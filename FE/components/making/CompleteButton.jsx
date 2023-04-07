@@ -13,6 +13,7 @@ const CompleteButton = ({
   selectedTags,
   emotionResponse,
   selectedImage,
+  emotionCode,
 }) => {
   if (!visible) {
     return null;
