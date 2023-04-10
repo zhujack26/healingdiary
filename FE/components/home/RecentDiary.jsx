@@ -1,16 +1,25 @@
 import { useRef } from "react";
-import { Animated, Dimensions } from "react-native";
-
+import { Animated, Dimensions, StyleSheet, View, Text } from "react-native";
+import { GlobalColors } from "../../constants/color";
 import Title from "../../ui/Title";
 import RecentDiaryListItem from "./RecentDiaryListItem";
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
+
+const NotRecentDiary = () => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.notText}>추천 일기가 없어요!</Text>
+    </View>
+  );
+};
 
 const RecentDiary = ({ diaries }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   return (
     <>
       <Title>최근 일기</Title>
+      {diaries.content.length === 0 && <NotRecentDiary />}
       <Animated.FlatList
         data={diaries.content}
         keyExtractor={(item) => item.diaryId}
@@ -30,3 +39,18 @@ const RecentDiary = ({ diaries }) => {
 };
 
 export default RecentDiary;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  notText: {
+    padding: height / 20,
+    fontFamily: "KoddiUDOnGothic-ExtraBold",
+    color: GlobalColors.colors.black500,
+    fontSize: 18,
+  },
+});
