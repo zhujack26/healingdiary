@@ -67,7 +67,9 @@ const GroupSetting = ({
           openExitModalAndCloseModal();
         }}
       >
-        <Text style={styles.settingListText}>소모임 나가기</Text>
+        <Text style={styles.settingListText}>
+          {host ? "소모임 삭제" : "소모임 나가기"}
+        </Text>
         <Ionicons
           name="chevron-forward-outline"
           size={24}
