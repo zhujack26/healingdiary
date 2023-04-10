@@ -1,7 +1,7 @@
 import { FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { getRecommendGroup } from "./../../api/group";
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import GroupItem from "./GroupItem";
 
 const RecommendGroup = () => {
@@ -12,9 +12,11 @@ const RecommendGroup = () => {
     setClubList(res);
   };
 
-  useEffect(() => {
-    getRecoGroup();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getRecoGroup();
+    }, [])
+  );
 
   return (
     <FlatList

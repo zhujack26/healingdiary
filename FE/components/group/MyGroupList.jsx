@@ -1,7 +1,7 @@
 import { FlatList } from "react-native";
-import { useEffect, useState } from "react";
+import { useState, useCallback } from "react";
 import { getMyClubList } from "../../api/group";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import GroupItem from "./GroupItem";
 
 const MyGroupList = () => {
@@ -12,9 +12,11 @@ const MyGroupList = () => {
     setClubList(res);
   };
 
-  useEffect(() => {
-    getClub();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getClub();
+    }, [])
+  );
 
   return (
     <>
