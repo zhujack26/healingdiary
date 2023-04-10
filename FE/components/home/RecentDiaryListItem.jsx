@@ -6,21 +6,38 @@ import {
   Image,
   StyleSheet,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
 
 const { width } = Dimensions.get("window");
 
 const RecentDiaryListItem = ({ item }) => {
+  const [isLoading, setIsLoading] = useState(true);
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
+
   const navigation = useNavigation();
   return (
     <View style={styles.recentDiary}>
+      {isLoading && (
+        <ActivityIndicator
+          style={StyleSheet.absoluteFill}
+          color={GlobalColors.colors.primary500}
+          size="large"
+        />
+      )}
       <Pressable
         onPress={() => {
           navigation.navigate("diaryDetail", { diaryId: item.diaryId });
         }}
       >
-        <Image source={{ uri: item?.imageUrl }} style={styles.image} />
+        <Image
+          source={{ uri: item?.imageUrl }}
+          style={styles.image}
+          onLoadEnd={handleImageLoad}
+        />
         <View style={styles.hashtag}>
           <Text style={styles.tagText}>#{item?.emotion.value}</Text>
         </View>

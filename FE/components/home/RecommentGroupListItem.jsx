@@ -6,13 +6,18 @@ import {
   StyleSheet,
   Dimensions,
   Text,
+  ActivityIndicator,
 } from "react-native";
 import { GlobalColors } from "../../constants/color";
-
+import { useState } from "react";
 const { width } = Dimensions.get("window");
 
 const RecommentGroupListItem = ({ item }) => {
   const navigation = useNavigation();
+  const [isLoading, setIsLoading] = useState(true);
+  const handleImageLoad = () => {
+    setIsLoading(false);
+  };
 
   return (
     <Pressable
@@ -20,6 +25,13 @@ const RecommentGroupListItem = ({ item }) => {
         navigation.navigate("groupDetail", { groupId: item.clubId });
       }}
     >
+      {isLoading && (
+        <ActivityIndicator
+          style={StyleSheet.absoluteFill}
+          color={GlobalColors.colors.primary500}
+          size="large"
+        />
+      )}
       <View style={styles.container}>
         <View>
           <Image
