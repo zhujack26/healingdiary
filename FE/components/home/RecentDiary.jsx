@@ -9,7 +9,7 @@ const { width, height } = Dimensions.get("window");
 const NotRecentDiary = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.notText}>추천 일기가 없어요!</Text>
+      <Text style={styles.notText}>최근 일기가 없어요!</Text>
     </View>
   );
 };
