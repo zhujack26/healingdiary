@@ -63,7 +63,10 @@ const GroupSetting = ({
       )}
       <Pressable
         style={styles.settingList}
-        onPress={openExitModalAndCloseModal}
+        onPress={() => {
+          openExitModalAndCloseModal;
+          navigateAndCloseModal("Group");
+        }}
       >
         <Text style={styles.settingListText}>소모임 나가기</Text>
         <Ionicons
