@@ -88,10 +88,16 @@ const DiaryDetail = ({ diaryId }) => {
   };
 
   const callDeleteDiary = async () => {
-    const res = await deleteDiary(diary.diaryId);
-    if (res.status === 200) {
-      toggleModal(false);
-      navigation.navigate("Home");
+    try {
+      const res = await deleteDiary(diary.diaryId);
+      if (res.status === 200) {
+        toggleModal(false);
+        navigation.navigate("Home");
+      } else {
+        Alert.alert("알 수 없는 오류가 발생했습니다.");
+      }
+    } catch (e) {
+      Alert.alert("권한이 없습니다.");
     }
   };
 
