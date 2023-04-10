@@ -94,7 +94,9 @@ const DiaryDetail = ({ diaryId }) => {
         toggleModal(false);
         navigation.navigate("Home");
       } else {
-        Alert.alert("알 수 없는 오류가 발생했습니다.");
+        Alert.alert("일기가 존재하지 않습니다.");
+        toggleModal(false);
+        navigation.navigate("Home");
       }
     } catch (e) {
       Alert.alert("권한이 없습니다.");
