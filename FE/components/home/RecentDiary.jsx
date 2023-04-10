@@ -19,7 +19,7 @@ const RecentDiary = ({ diaries }) => {
   return (
     <>
       <Title>최근 일기</Title>
-      {diaries.content.length === 0 && <NotRecentDiary />}
+      {diaries.content?.length === 0 && <NotRecentDiary />}
       <Animated.FlatList
         data={diaries.content}
         keyExtractor={(item) => item.diaryId}
