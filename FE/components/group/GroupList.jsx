@@ -1,6 +1,6 @@
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { FlatList } from "react-native";
-import { useEffect, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { getClubList } from "../../api/group";
 import GroupItem from "./GroupItem";
 

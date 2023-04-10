@@ -12,12 +12,16 @@ const ExitModal = ({
   callDeleteGroup,
   host,
 }) => {
+  const navigation = useNavigation();
+
   const handleExitGroup = () => {
     exitCloseModalPress();
     if (host) {
       callDeleteGroup(groupId);
+      navigation.navigate("Home");
     } else {
       callExitMember(groupId, memberId);
+      navigation.navigate("Home");
     }
   };
 

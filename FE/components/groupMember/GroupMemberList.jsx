@@ -12,9 +12,9 @@ const NotGroupMember = () => {
 const GroupMemberList = ({
   groupMember,
   groupId,
-  memberId,
   callRejectMember,
   host = { host },
+  memberId,
 }) => {
   if (groupMember?.length === 0) return <NotGroupMember />;
   return (

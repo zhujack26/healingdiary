@@ -3,9 +3,12 @@ import { rejectAndExitMember, getGroupMemebrList } from "../../api/group";
 import { useEffect, useState } from "react";
 
 import GroupMemberList from "./GroupMemberList";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GroupMember = ({ groupId, host }) => {
   const [groupMember, setGroupMember] = useState([]);
+  const [memberId, setMemberId] = useState("");
+
   const refreshUser = (memberId) => {
     setGroupMember((groupMembers) =>
       groupMembers.filter((groupMember) => groupMember.memberId !== memberId)
@@ -25,8 +28,13 @@ const GroupMember = ({ groupId, host }) => {
     return res;
   };
 
+  const getMemberId = async () => {
+    setMemberId(await AsyncStorage.getItem("id"));
+  };
+
   useEffect(() => {
     callGroupMemberList();
+    getMemberId();
   }, [groupId]);
 
   return (
@@ -34,6 +42,7 @@ const GroupMember = ({ groupId, host }) => {
       <GroupMemberList
         groupMember={groupMember}
         groupId={groupId}
+        memberId={memberId}
         host={host}
         callRejectMember={callRejectMember}
       />
