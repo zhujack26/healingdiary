@@ -7,22 +7,23 @@ import {
   Alert,
 } from "react-native";
 import { Audio } from "expo-av";
+import { useCallback, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { deleteComment, getDiaryComment } from "../../api/comment";
+import { deleteDiary, getDiaryDetail } from "../../api/diary";
 import Hashtag from "./Hashtag";
 import DiaryDetailThumbAndPlayer from "./DiaryDetailThumbAndPlayer";
 import CommentListItem from "./CommentListItem";
-import { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import { deleteComment, getDiaryComment } from "../../api/comment";
-import { getDiaryDetail } from "../../api/diary";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const DiaryDetail = ({ diaryId, refreshKey }) => {
+const DiaryDetail = ({ diaryId }) => {
   const navigation = useNavigation();
   const [sound, setSound] = useState();
   const [isPlaying, setIsPlaying] = useState(false);
   const [comments, setComments] = useState([]);
   const [diary, setDiary] = useState({});
   const [memberId, setMemberId] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
 
   const navigationGoBack = () => {
     navigation.goBack();
@@ -86,6 +87,18 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
     }
   };
 
+  const callDeleteDiary = async () => {
+    const res = await deleteDiary(diary.diaryId);
+    if (res.status === 200) {
+      toggleModal(false);
+      navigation.navigate("Home");
+    }
+  };
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
   const getMemberID = async () => {
     setMemberId(await AsyncStorage.getItem("id"));
   };
@@ -98,15 +111,13 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
       : undefined;
   }, [sound]);
 
-  useEffect(() => {
-    callGetDiaryComment();
-    callGetDiaryDetail();
-    getMemberID();
-  }, []);
-
-  useEffect(() => {
-    callGetDiaryComment();
-  }, [refreshKey]);
+  useFocusEffect(
+    useCallback(() => {
+      callGetDiaryComment();
+      callGetDiaryDetail();
+      getMemberID();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -130,6 +141,9 @@ const DiaryDetail = ({ diaryId, refreshKey }) => {
               stopSound={stopSound}
               isPlaying={isPlaying}
               diary={diary}
+              modalVisible={modalVisible}
+              toggleModal={toggleModal}
+              callDeleteDiary={callDeleteDiary}
             />
             <Hashtag tags={diary?.tags} />
             <TouchableOpacity onPress={navigateToMakingInput}>

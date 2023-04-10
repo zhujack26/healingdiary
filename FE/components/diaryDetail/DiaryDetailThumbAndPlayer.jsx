@@ -1,4 +1,12 @@
-import { View, Image, Dimensions, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  Dimensions,
+  StyleSheet,
+  Pressable,
+  Modal,
+} from "react-native";
 import { GlobalColors } from "../../constants/color";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -10,11 +18,15 @@ const DiaryDetailThumbAndPlayer = ({
   stopSound,
   isPlaying,
   diary,
+  modalVisible,
+  toggleModal,
+  callDeleteDiary,
 }) => {
   return (
     <>
       <View style={styles.header}>
         <Image style={styles.image} source={{ uri: diary.imageUrl }} />
+
         <Pressable style={styles.circle}>
           <Ionicons
             name={isPlaying ? "ios-stop" : "play"}
@@ -25,12 +37,30 @@ const DiaryDetailThumbAndPlayer = ({
         </Pressable>
       </View>
       <View style={styles.iconContainer}>
-        <Ionicons
-          name="chevron-back"
-          size={28}
-          color={GlobalColors.colors.secondary500}
-          onPress={navigationGoBack}
-        />
+        <Pressable onPress={navigationGoBack}>
+          <Ionicons
+            name="chevron-back"
+            size={28}
+            color={GlobalColors.colors.secondary500}
+          />
+        </Pressable>
+        {modalVisible && (
+          <Pressable style={styles.modalView} onPress={callDeleteDiary}>
+            <Ionicons
+              name="close"
+              size={16}
+              color={GlobalColors.colors.black500}
+            />
+            <Text style={styles.modalText}>일기 삭제</Text>
+          </Pressable>
+        )}
+        <Pressable onPress={toggleModal}>
+          <Ionicons
+            name="ellipsis-horizontal-sharp"
+            size={24}
+            color={GlobalColors.colors.secondary500}
+          />
+        </Pressable>
       </View>
     </>
   );
@@ -64,6 +94,22 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     borderColor: GlobalColors.colors.white500,
     borderWidth: 3,
+  },
+
+  modalView: {
+    width: 125,
+    height: 40,
+    backgroundColor: GlobalColors.colors.white500,
+    position: "absolute",
+    right: 15,
+    top: 25,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+  },
+
+  modalText: {
+    lineHeight: 18,
   },
 
   iconContainer: {

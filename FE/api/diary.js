@@ -1,3 +1,4 @@
+import { deleteConfig } from "./config";
 import { getConfig, getDataConfig, postFormConfig } from "./config";
 import axiosInstance from "./interceptor";
 
@@ -97,5 +98,14 @@ export const getCalendarDetailDiary = async (year, month, day) => {
     return res;
   } catch (e) {
     console.log("getCalendarDetailDiary", e);
+  }
+};
+
+export const deleteDiary = async (diaryId) => {
+  try {
+    const res = await axiosInstance(deleteConfig(`/diaries/${diaryId}`));
+    return res;
+  } catch (e) {
+    console.log("deleteDiary", e);
   }
 };

@@ -35,7 +35,6 @@ const MakingInput = ({ route }) => {
     if (res.status === 200) {
       navigation.navigate("diaryDetail", {
         diaryId: diaryId,
-        refreshKey: Date.now(),
       });
     } else {
       Alert.alert("댓글 작성에 실패했습니다.");
