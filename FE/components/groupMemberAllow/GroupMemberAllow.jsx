@@ -1,11 +1,22 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
 import { useEffect, useState } from "react";
 import {
   groupApplyList,
   approvalMember,
   rejectAndExitMember,
 } from "../../api/group";
+import { GlobalColors } from "./../../constants/color";
 import GroupMemberAllowList from "./GroupMemberAllowList";
+
+const { width, height } = Dimensions.get("window");
+
+const NotMemeber = () => {
+  return (
+    <View style={styles.notContainer}>
+      <Text style={styles.notText}>가입요청한 멤버가 없어요!</Text>
+    </View>
+  );
+};
 
 const GroupMemberAllow = ({ groupId }) => {
   const [users, setUsers] = useState([]);
@@ -40,6 +51,8 @@ const GroupMemberAllow = ({ groupId }) => {
     callGetGroupApplyLists();
   }, []);
 
+  if (users?.length === 0) return <NotMemeber />;
+
   return (
     <View style={styles.container}>
       <GroupMemberAllowList
@@ -59,5 +72,17 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 32,
     paddingHorizontal: 16,
+  },
+
+  notContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  notText: {
+    fontFamily: "KoddiUDOnGothic-ExtraBold",
+    color: GlobalColors.colors.black500,
+    fontSize: 18,
   },
 });
