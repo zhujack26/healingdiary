@@ -100,6 +100,7 @@ const DiaryDetail = ({ diaryId }) => {
       }
     } catch (e) {
       Alert.alert("권한이 없습니다.");
+      toggleModal(false);
     }
   };
 
