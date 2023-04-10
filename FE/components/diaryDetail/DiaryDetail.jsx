@@ -91,16 +91,16 @@ const DiaryDetail = ({ diaryId }) => {
     try {
       const res = await deleteDiary(diary.diaryId);
       if (res.status === 200) {
-        toggleModal(false);
+        setModalVisible(false);
         navigation.navigate("Home");
       } else {
         Alert.alert("일기가 존재하지 않습니다.");
-        toggleModal(false);
+        setModalVisible(false);
         navigation.navigate("Home");
       }
     } catch (e) {
       Alert.alert("권한이 없습니다.");
-      toggleModal(false);
+      setModalVisible(false);
     }
   };
 
