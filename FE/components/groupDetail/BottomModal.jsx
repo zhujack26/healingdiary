@@ -13,6 +13,7 @@ const BottomModal = ({
   openExitModalAndCloseModal,
   groupId,
   host,
+  isMember,
 }) => {
   const snapPoints = useMemo(() => ["70%"], []);
   const navigation = useNavigation();
@@ -50,6 +51,7 @@ const BottomModal = ({
           navigateAndCloseModal={navigateAndCloseModal}
           groupId={groupId}
           host={host}
+          isMember={isMember}
         />
       </BottomSheetModal>
     </BottomSheetModalProvider>

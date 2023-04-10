@@ -23,8 +23,8 @@ const GroupDetail = ({ groupId }) => {
   const [diaries, setDiaries] = useState([]);
   const [exitModalVisible, setExitModalVisible] = useState(false);
   const [memberId, setMemberId] = useState("");
-  const bottomSheetModalRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
+  const bottomSheetModalRef = useRef(null);
   let isMember = groupMember.some(
     (member) => member.memberId?.toString() === memberId
   );
@@ -129,6 +129,7 @@ const GroupDetail = ({ groupId }) => {
         openExitModalAndCloseModal={openExitModalAndCloseModal}
         groupId={groupId}
         host={groupData.host}
+        isMember={isMember}
       />
     </View>
   );

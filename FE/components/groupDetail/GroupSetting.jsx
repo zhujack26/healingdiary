@@ -9,6 +9,7 @@ const GroupSetting = ({
   navigateAndCloseModal,
   groupId,
   host,
+  isMember,
 }) => {
   return (
     <View style={styles.container}>
@@ -61,21 +62,23 @@ const GroupSetting = ({
           />
         </Pressable>
       )}
-      <Pressable
-        style={styles.settingList}
-        onPress={() => {
-          openExitModalAndCloseModal();
-        }}
-      >
-        <Text style={styles.settingListText}>
-          {host ? "소모임 삭제" : "소모임 나가기"}
-        </Text>
-        <Ionicons
-          name="chevron-forward-outline"
-          size={24}
-          color={GlobalColors.colors.gray600}
-        />
-      </Pressable>
+      {isMember && (
+        <Pressable
+          style={styles.settingList}
+          onPress={() => {
+            openExitModalAndCloseModal();
+          }}
+        >
+          <Text style={styles.settingListText}>
+            {host ? "소모임 삭제" : "소모임 나가기"}
+          </Text>
+          <Ionicons
+            name="chevron-forward-outline"
+            size={24}
+            color={GlobalColors.colors.gray600}
+          />
+        </Pressable>
+      )}
     </View>
   );
 };
