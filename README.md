@@ -30,9 +30,9 @@
 <br><br>
 
 <!-- PROJECT LOGO -->
-
-<img src="README/22865f2e4df2fe29716dca3fe800e56d37f53fc0.png" title="" alt="logo.png" data-align="center">
-
+<div align="left">
+<img src="README/22865f2e4df2fe29716dca3fe800e56d37f53fc0.png" title="" alt="logo.png" />
+<div/>
 <h3 align="center">힐링 다이어리</h3>
 
 <p align="center">
